@@ -1,0 +1,20 @@
+{
+  "created_utc": "2026-10-20T07:04:36.331042+00:00",
+  "archive": "admin-source.tar.gz",
+  "archive_sha256": "6262590224ffe9d126580ba2f73816c99fefd3946ded2a222b244a7ab8594db6",
+  "baseline_snapshot": "/tmp/medveda-admin-diagnostic.V2CQ8j",
+  "baseline_live_asset_sha256": {
+    "index-C2NsJ0MC.js": "ed488a157eea53cc92ef485a2ce64545eedb74f942699478739b3f74a5fab4ac",
+    "Settings-CbyKiEd1.js": "9d5f93f3c6b1913539f2bc35fb3e2d07cb679aadc0d1b511d7a44d6d5ee359"
+  },
+  "changed_vs_baseline": {
+    "admin-panel/package.json": "01a5d7d301f04d00b44ff3f9f6ea8a4a232136e285512e1f34f71b35c908dca4",
+    "admin-panel/scripts/play-service-account-diagnostic-selftest.cjs": "874f1c16c506e32a7fdc40da2e6c3a1e98b3494598f0154b831970ddd16ed03c",
+    "admin-panel/src/services/playServiceAccountDiagnostic.ts": "e6e452eaa38c5e15d48259e4aacf1e2a9135de7fb45d46103e3ec532ddb68e89"
+  },
+  "vercel_project_name": "admin_panel-medveda",
+  "vercel_root_directory": "admin-panel",
+  "deployed": false,
+  "rollback_archive": "admin-rollback-source.tar.gz",
+  "rollback_archive_sha256": "ac0849a5d6bade5e23afac34e7284bd8a96497513972fcc383493691b470322e"
+}

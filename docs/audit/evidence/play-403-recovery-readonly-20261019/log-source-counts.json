@@ -1,0 +1,32 @@
+{
+  "result": [
+    {
+      "event_count": 2,
+      "source": "function_edge_logs"
+    },
+    {
+      "event_count": 4,
+      "source": "auth_audit_logs"
+    },
+    {
+      "event_count": 3653,
+      "source": "pgbouncer_logs"
+    },
+    {
+      "event_count": 42,
+      "source": "edge_logs"
+    },
+    {
+      "event_count": 126,
+      "source": "postgres_logs"
+    },
+    {
+      "event_count": 9,
+      "source": "auth_logs"
+    },
+    {
+      "event_count": 4,
+      "source": "function_logs"
+    }
+  ]
+}

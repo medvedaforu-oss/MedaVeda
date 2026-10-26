@@ -1,0 +1,26 @@
+{
+  "source_aab_sha256": "11eb7ebdb20eb92ea2886377e10a150fc77ff6a85254c46259273dcf698be5a3",
+  "eas_build_id": "50890688-cbf8-4e69-833e-1c801dd4743c",
+  "method": "java -jar /tmp/medveda-bundletool.jar dump manifest --bundle=/tmp/medveda-versioncode-4.aab --module=base",
+  "bundletool_exit_code": 0,
+  "package": "in.medveda.app",
+  "version_code": "4",
+  "version_name": "1.2.0",
+  "billing_permission_count": 1,
+  "billing_permission_declarations": [
+    {
+      "{http://schemas.android.com/apk/res/android}name": "com.android.vending.BILLING"
+    }
+  ],
+  "billingclient_version_metadata": [
+    "8.3.0"
+  ],
+  "sdk_attributes": {
+    "{http://schemas.android.com/apk/res/android}minSdkVersion": "24",
+    "{http://schemas.android.com/apk/res/android}targetSdkVersion": "36"
+  },
+  "compiled_manifest_xml_sha256": "ba4002b64ef42731b7013a8213791671ea9aad05bb241e67ed8a24a758eac937",
+  "artifact_billing_prerequisite": "PROVEN for this downloaded EAS versionCode 4 AAB",
+  "match_to_play_uploaded_bundle": "UNVERIFIED; no Play Console artifact digest/track readback is available",
+  "licensed_purchase": "NOT TESTED"
+}

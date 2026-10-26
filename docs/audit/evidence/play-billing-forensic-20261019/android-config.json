@@ -1,0 +1,10 @@
+{
+  "package": "in.medveda.app",
+  "runtimeVersion": "1.2.0-play",
+  "provider": "play",
+  "billing_permission": true,
+  "expo_iap_version": "3.4.4",
+  "openiap_google_version": "1.3.26",
+  "native_build_executed": false,
+  "installed_device_verified": false
+}

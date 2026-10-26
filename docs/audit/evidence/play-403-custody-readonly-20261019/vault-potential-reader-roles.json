@@ -1,0 +1,44 @@
+[
+  {
+    "rolname": "anon",
+    "vault_schema_usage": false,
+    "decrypted_view_select": false,
+    "encrypted_table_select": false
+  },
+  {
+    "rolname": "authenticated",
+    "vault_schema_usage": false,
+    "decrypted_view_select": false,
+    "encrypted_table_select": false
+  },
+  {
+    "rolname": "postgres",
+    "vault_schema_usage": true,
+    "decrypted_view_select": true,
+    "encrypted_table_select": true
+  },
+  {
+    "rolname": "service_role",
+    "vault_schema_usage": true,
+    "decrypted_view_select": true,
+    "encrypted_table_select": true
+  },
+  {
+    "rolname": "supabase_admin",
+    "vault_schema_usage": true,
+    "decrypted_view_select": true,
+    "encrypted_table_select": true
+  },
+  {
+    "rolname": "supabase_auth_admin",
+    "vault_schema_usage": false,
+    "decrypted_view_select": false,
+    "encrypted_table_select": false
+  },
+  {
+    "rolname": "supabase_read_only_user",
+    "vault_schema_usage": true,
+    "decrypted_view_select": true,
+    "encrypted_table_select": true
+  }
+]

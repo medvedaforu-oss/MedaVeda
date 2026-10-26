@@ -1,0 +1,199 @@
+[
+  {
+    "invocation_inventory": {
+      "captured_at": "2026-10-19T12:43:54.421104+00:00",
+      "cron_jobs": [
+        {
+          "jobid": 1,
+          "jobname": "purge-analytics-events-12m",
+          "active": true,
+          "schedule": "30 3 * * *",
+          "command_md5": "c51998ddfc958df2f8397143da1e086b",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "public.purge_old_analytics_events"
+          ]
+        },
+        {
+          "jobid": 2,
+          "jobname": "purge-payment-sessions-30d",
+          "active": true,
+          "schedule": "40 3 * * *",
+          "command_md5": "7217093ac7addcd3fb03fd168f09045f",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "public.purge_old_payment_sessions"
+          ]
+        },
+        {
+          "jobid": 5,
+          "jobname": "release-wallet-credits",
+          "active": true,
+          "schedule": "*/15 * * * *",
+          "command_md5": "3f68216521a9351ec1ec629a45ea3653",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "public.release_due_wallet_credits"
+          ]
+        },
+        {
+          "jobid": 8,
+          "jobname": "play-catalog-sync",
+          "active": false,
+          "schedule": "* * * * *",
+          "command_md5": "0695ecada930651e3ef5013398b86ee4",
+          "references_endpoint": true,
+          "references_secret_name": true,
+          "references_auth_header": true,
+          "qualified_function_calls": [
+            "net.http_post"
+          ]
+        },
+        {
+          "jobid": 9,
+          "jobname": "play-consume",
+          "active": false,
+          "schedule": "* * * * *",
+          "command_md5": "798b0f87023a75f85c4da0e49e9d4501",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "net.http_post"
+          ]
+        },
+        {
+          "jobid": 10,
+          "jobname": "play-reconcile",
+          "active": false,
+          "schedule": "* * * * *",
+          "command_md5": "f7f614c7f54555445f07f51e0084c41e",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "net.http_post"
+          ]
+        },
+        {
+          "jobid": 11,
+          "jobname": "play-voids",
+          "active": false,
+          "schedule": "* * * * *",
+          "command_md5": "c0a5bf045ba423fc018e3ac80900ecdb",
+          "references_endpoint": false,
+          "references_secret_name": false,
+          "references_auth_header": false,
+          "qualified_function_calls": [
+            "net.http_post"
+          ]
+        }
+      ],
+      "catalog_cron_runs": [
+        {
+          "jobid": 8,
+          "runid": 3527,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:11:00.019091+00:00",
+          "end_time": "2026-10-19T05:11:00.039064+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3526,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:10:00.011581+00:00",
+          "end_time": "2026-10-19T05:10:00.014374+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3525,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:09:00.020047+00:00",
+          "end_time": "2026-10-19T05:09:00.033582+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3524,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:08:00.012739+00:00",
+          "end_time": "2026-10-19T05:08:00.019978+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3523,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:07:00.030315+00:00",
+          "end_time": "2026-10-19T05:07:00.049955+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3522,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:06:00.010809+00:00",
+          "end_time": "2026-10-19T05:06:00.013554+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3521,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:05:00.039583+00:00",
+          "end_time": "2026-10-19T05:05:00.067678+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3520,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:04:00.016786+00:00",
+          "end_time": "2026-10-19T05:04:00.024575+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3519,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:03:00.047646+00:00",
+          "end_time": "2026-10-19T05:03:00.059867+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3518,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:02:00.085258+00:00",
+          "end_time": "2026-10-19T05:02:00.107728+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3517,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:01:00.111283+00:00",
+          "end_time": "2026-10-19T05:01:00.129818+00:00"
+        },
+        {
+          "jobid": 8,
+          "runid": 3515,
+          "status": "succeeded",
+          "start_time": "2026-10-19T05:00:00.016625+00:00",
+          "end_time": "2026-10-19T05:00:00.021981+00:00"
+        }
+      ],
+      "all_queued_http_count": 0,
+      "catalog_related_queued_http": null,
+      "recent_http_response_summary": null,
+      "catalog_sql_sessions": null,
+      "database_catalog_caller_functions": null,
+      "recent_catalog_events": [
+        {
+          "id": 10,
+          "price_inr": 1,
+          "event": "queued",
+          "created_at": "2026-10-19T05:15:54.54702+00:00"
+        }
+      ]
+    }
+  }
+]

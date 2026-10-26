@@ -1,0 +1,27 @@
+const capturedHeaders = [
+  "x-goog-request-id",
+  "x-guploader-uploadid",
+  "www-authenticate",
+  "server",
+  "date"
+];
+const secretKeys = /^(?:access_token|refresh_token|id_token|purchase_?token|private_key|client_secret|assertion|authorization|password)$/i;
+// Preserve every field and Google diagnostic word, except secret values and user emails.
+// In particular, do not allowlist ErrorInfo reasons/domains/metadata or truncate errors.
+export function redact(value, secrets) {
+  if (typeof value === "string") {
+    let result = value;
+    for (const secret of secrets){
+      if (secret) result = result.replaceAll(secret, "[secret masked]");
+    }
+    return result.replace(/-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----[\s\S]*?-----END (?:[A-Z]+ )?PRIVATE KEY-----/g, "[private key masked]").replace(/\b(?:ya29\.[A-Za-z0-9._~-]+|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)\b/g, "[token masked]").replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, (email)=>email.toLowerCase().endsWith(".gserviceaccount.com") ? email : "[user email masked]");
+  }
+  if (Array.isArray(value)) return value.map((entry)=>redact(entry, secrets));
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, entry])=>[
+        key,
+        secretKeys.test(key) ? "[secret masked]" : redact(entry, secrets)
+      ]));
+  }
+  return value;
+}

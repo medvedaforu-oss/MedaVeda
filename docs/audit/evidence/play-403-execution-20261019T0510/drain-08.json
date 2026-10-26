@@ -1,0 +1,39 @@
+[
+  {
+    "preflight": {
+      "captured_at": "2026-10-19T05:13:10.206676+00:00",
+      "catalog": [
+        {
+          "price_inr": 1,
+          "candidate_sku": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+          "purchase_option_id": "buy",
+          "status": "failed",
+          "attempts": 1,
+          "lease_id": null,
+          "lease_until": null,
+          "updated_at": "2026-10-18T16:55:04.668537+00:00"
+        },
+        {
+          "price_inr": 2,
+          "candidate_sku": "notes_2_00_v_d93112f242a94a9b83d5bb2c31ef11a3",
+          "purchase_option_id": "buy",
+          "status": "failed",
+          "attempts": 1,
+          "lease_id": null,
+          "lease_until": null,
+          "updated_at": "2026-10-19T03:09:01.348036+00:00"
+        }
+      ],
+      "cron": [
+        {
+          "jobid": 8,
+          "jobname": "play-catalog-sync",
+          "active": false,
+          "schedule": "* * * * *"
+        }
+      ],
+      "queued_catalog_http": 0,
+      "running_catalog_cron_sql": 0
+    }
+  }
+]

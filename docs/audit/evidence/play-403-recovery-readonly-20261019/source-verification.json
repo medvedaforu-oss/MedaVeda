@@ -1,0 +1,25 @@
+{
+  "frozen_r2_sources_match": true,
+  "sources": [
+    {
+      "file": "supabase/functions/_shared/cors.ts",
+      "sha256": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f"
+    },
+    {
+      "file": "supabase/functions/_shared/googlePlay.ts",
+      "sha256": "1433bf1ff301aac2b604c1f0ddf665d1087ec34f832752ed1d756c5a9997789d"
+    },
+    {
+      "file": "supabase/functions/_shared/playCatalog.ts",
+      "sha256": "fadaba0a53eb9d891ed5e10fdb6ebb586ee3c32ee15e18e57cbac4992fa4e95f"
+    },
+    {
+      "file": "supabase/functions/_shared/supabaseAdmin.ts",
+      "sha256": "6ef7980900206f1ac91b07bf371f6794c17930d30c6c1a16a1097331f040b2da"
+    },
+    {
+      "file": "supabase/functions/sync-play-catalog/index.ts",
+      "sha256": "94f4b5eb2d474eae9cb1c9c23667f5c6589f65265b7af79691e9dc3259ced693"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "operations": [
+    "oauth.token",
+    "catalog.get",
+    "catalog.readback.created",
+    "catalog.readback.activated",
+    "catalog.price-conversion",
+    "catalog.patch",
+    "catalog.activate"
+  ],
+  "reasons": [
+    "accessNotConfigured",
+    "insufficientPermissions",
+    "permissionDenied",
+    "forbidden",
+    "rateLimitExceeded",
+    "userRateLimitExceeded",
+    "quotaExceeded",
+    "backendError",
+    "PERMISSION_DENIED",
+    "RESOURCE_EXHAUSTED",
+    "INTERNAL",
+    "UNAVAILABLE",
+    "INVALID_ARGUMENT",
+    "UNAUTHENTICATED",
+    "NOT_FOUND",
+    "invalid_grant",
+    "invalid_client",
+    "unauthorized_client"
+  ],
+  "detail_reasons": [
+    "SERVICE_DISABLED",
+    "SERVICE_ACCESS_DENIED",
+    "CONSUMER_INVALID",
+    "BILLING_DISABLED",
+    "ACCESS_TOKEN_SCOPE_INSUFFICIENT",
+    "IAM_PERMISSION_DENIED",
+    "USER_PROJECT_DENIED",
+    "RATE_LIMIT_EXCEEDED",
+    "RESOURCE_QUOTA_EXCEEDED",
+    "SECURITY_POLICY_VIOLATED",
+    "API_KEY_INVALID",
+    "API_KEY_SERVICE_BLOCKED",
+    "API_KEY_IP_ADDRESS_BLOCKED",
+    "API_KEY_HTTP_REFERRER_BLOCKED",
+    "CREDENTIALS_MISSING",
+    "ACCOUNT_STATE_INVALID"
+  ],
+  "domains": [
+    "googleapis.com",
+    "androidpublisher.googleapis.com",
+    "serviceusage.googleapis.com"
+  ],
+  "detail_types": [
+    "ErrorInfo",
+    "QuotaFailure",
+    "PreconditionFailure",
+    "RetryInfo"
+  ]
+}

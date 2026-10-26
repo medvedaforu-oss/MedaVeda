@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "version": 3,
+  "matching_sources": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/playCatalog.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/sync-play-catalog/index.ts"
+  ]
+}

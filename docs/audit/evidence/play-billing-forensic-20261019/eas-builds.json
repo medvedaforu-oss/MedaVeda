@@ -1,0 +1,190 @@
+[
+  {
+    "id": "50890688-cbf8-4e69-833e-1c801dd4743c",
+    "status": "FINISHED",
+    "buildProfile": "production",
+    "distribution": "STORE",
+    "appIdentifier": "in.medveda.app",
+    "appVersion": "1.2.0",
+    "appBuildVersion": "4",
+    "runtime": {
+      "id": "01a14128-deb0-71cc-9361-d6b163c6e48c",
+      "version": "1.2.0-play"
+    },
+    "updateChannel": {
+      "id": "01a0c339-9cbe-7aa9-8d3c-48a9fb101cef",
+      "name": "production"
+    },
+    "gitCommitHash": "5bb3e3ec5b236ed6cfb4edefafbb35a80daec53a",
+    "createdAt": "2026-10-18T16:15:21.762Z",
+    "completedAt": "2026-10-18T16:30:21.030Z"
+  },
+  {
+    "id": "80a94c70-7ddc-4b1d-8bdd-8db43a0e25df",
+    "status": "FINISHED",
+    "buildProfile": "internal-testing",
+    "distribution": "STORE",
+    "appIdentifier": "in.medveda.app",
+    "appVersion": "1.2.0",
+    "appBuildVersion": "3",
+    "runtime": {
+      "id": "01a14128-deb0-71cc-9361-d6b163c6e48c",
+      "version": "1.2.0-play"
+    },
+    "updateChannel": {
+      "id": "01a14f53-64a0-79b3-b0e8-24e82cb77479",
+      "name": "internal-testing"
+    },
+    "gitCommitHash": "75c29c2a4fb3d74bc793a88c19482c629a7e5b6d",
+    "createdAt": "2026-10-18T14:04:08.397Z",
+    "completedAt": "2026-10-18T14:20:06.497Z"
+  },
+  {
+    "id": "c9cdda93-0bcc-438c-a224-c8b61a4ac2d2",
+    "status": "FINISHED",
+    "buildProfile": "production",
+    "distribution": "STORE",
+    "appIdentifier": "in.medveda.app",
+    "appVersion": "1.2.0",
+    "appBuildVersion": "2",
+    "runtime": {
+      "id": "01a14128-deb0-71cc-9361-d6b163c6e48c",
+      "version": "1.2.0-play"
+    },
+    "updateChannel": {
+      "id": "01a0c339-9cbe-7aa9-8d3c-48a9fb101cef",
+      "name": "production"
+    },
+    "gitCommitHash": "75c29c2a4fb3d74bc793a88c19482c629a7e5b6d",
+    "createdAt": "2026-10-15T20:02:39.868Z",
+    "completedAt": "2026-10-15T20:22:13.018Z"
+  },
+  {
+    "id": "2ead2581-88a5-42f7-bb5f-f744ed84ed92",
+    "status": "FINISHED",
+    "buildProfile": "preview",
+    "distribution": "INTERNAL",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.1.0",
+    "appBuildVersion": "7",
+    "runtime": {
+      "id": "01a0c33a-c795-79c3-b148-bb3d7133a5ad",
+      "version": "1.1.0"
+    },
+    "updateChannel": {
+      "id": "01a0c409-c40a-7578-9f4b-e70f03442341",
+      "name": "preview"
+    },
+    "gitCommitHash": "281fa81093c8720aa9d4bdd4f8e05056d41ae881",
+    "createdAt": "2026-09-23T14:24:29.331Z",
+    "completedAt": "2026-09-23T15:54:44.605Z"
+  },
+  {
+    "id": "4e2f4d16-f95f-4598-90bf-c725b1488ebc",
+    "status": "FINISHED",
+    "buildProfile": "production",
+    "distribution": "STORE",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.1.0",
+    "appBuildVersion": "7",
+    "runtime": {
+      "id": "01a0c33a-c795-79c3-b148-bb3d7133a5ad",
+      "version": "1.1.0"
+    },
+    "updateChannel": {
+      "id": "01a0c339-9cbe-7aa9-8d3c-48a9fb101cef",
+      "name": "production"
+    },
+    "gitCommitHash": "164637395d9d42d405309f94566bb007090835d8",
+    "createdAt": "2026-09-21T14:57:29.271Z",
+    "completedAt": "2026-09-21T15:42:47.051Z"
+  },
+  {
+    "id": "c75e729a-59dd-46cd-b56c-0ce62c636641",
+    "status": "FINISHED",
+    "buildProfile": "shrink-test",
+    "distribution": "INTERNAL",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.1.0",
+    "appBuildVersion": "6",
+    "runtime": {
+      "id": "01a0c33a-c795-79c3-b148-bb3d7133a5ad",
+      "version": "1.1.0"
+    },
+    "updateChannel": {
+      "id": "01a0c404-8611-775c-8062-c426900c1037",
+      "name": "shrink-test"
+    },
+    "gitCommitHash": "99b7c2fd1f0337a5da9b83c110747e27401b024b",
+    "createdAt": "2026-09-21T13:02:49.082Z",
+    "completedAt": "2026-09-21T13:27:13.002Z"
+  },
+  {
+    "id": "afc2f25e-8133-412c-80ff-7ef53f27b7eb",
+    "status": "FINISHED",
+    "buildProfile": "preview",
+    "distribution": "INTERNAL",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.1.0",
+    "appBuildVersion": "6",
+    "runtime": {
+      "id": "01a0c33a-c795-79c3-b148-bb3d7133a5ad",
+      "version": "1.1.0"
+    },
+    "updateChannel": {
+      "id": "01a0c409-c40a-7578-9f4b-e70f03442341",
+      "name": "preview"
+    },
+    "gitCommitHash": "57ba339f2a804ec48971f7cc902f63abc58840b1",
+    "createdAt": "2026-09-21T12:57:33.137Z",
+    "completedAt": "2026-09-21T13:16:35.055Z"
+  },
+  {
+    "id": "ffd3e9fc-e9aa-4239-bc48-f84ed410d4fc",
+    "status": "FINISHED",
+    "buildProfile": "production",
+    "distribution": "STORE",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.1.0",
+    "appBuildVersion": "6",
+    "runtime": {
+      "id": "01a0c33a-c795-79c3-b148-bb3d7133a5ad",
+      "version": "1.1.0"
+    },
+    "updateChannel": {
+      "id": "01a0c339-9cbe-7aa9-8d3c-48a9fb101cef",
+      "name": "production"
+    },
+    "gitCommitHash": "b4364836e5f37f3f643c4d7338f2cf84e1d96039",
+    "createdAt": "2026-09-21T09:10:04.401Z",
+    "completedAt": "2026-09-21T09:34:10.206Z"
+  },
+  {
+    "id": "13fc01bb-7e2c-4bd0-b7da-f804d382ca67",
+    "status": "FINISHED",
+    "buildProfile": "preview",
+    "distribution": "INTERNAL",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.0.0",
+    "appBuildVersion": "3",
+    "runtime": null,
+    "updateChannel": null,
+    "gitCommitHash": "1fca24bfb261d33d228ba059cc38cad671cd1afa",
+    "createdAt": "2026-07-25T18:38:37.445Z",
+    "completedAt": "2026-07-25T18:50:43.302Z"
+  },
+  {
+    "id": "5745b71c-8ffb-4fa3-9cc0-2999d061db61",
+    "status": "FINISHED",
+    "buildProfile": "preview",
+    "distribution": "INTERNAL",
+    "appIdentifier": "com.ayurpulse.app",
+    "appVersion": "1.0.0",
+    "appBuildVersion": "3",
+    "runtime": null,
+    "updateChannel": null,
+    "gitCommitHash": "51112cc484694841036e94c54d4b9e6f31e613ae",
+    "createdAt": "2026-07-25T17:55:42.212Z",
+    "completedAt": "2026-07-25T18:08:06.072Z"
+  }
+]

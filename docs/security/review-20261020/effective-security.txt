@@ -1,0 +1,246 @@
+           relname           | relrowsecurity | policies 
+-----------------------------+----------------+----------
+ admin_settings              | t              |        0
+ admins                      | t              |        1
+ analytics_events            | t              |        1
+ app_config                  | t              |        4
+ app_settings                | t              |        2
+ chapters                    | t              |        3
+ courses                     | t              |        2
+ discount_race_orders        | t              |        0
+ first_discount_reservations | t              |        0
+ first_purchase_identities   | t              |        0
+ note_pdf_validation_jobs    | t              |        0
+ note_upload_requests        | t              |        0
+ notes                       | t              |        3
+ notifications               | t              |        2
+ order_review_flags          | t              |        1
+ orders                      | t              |        1
+ payment_captures            | t              |        0
+ payment_compensations       | t              |        0
+ payment_jobs                | t              |        0
+ payment_race_orders         | t              |        0
+ payment_sessions            | t              |        1
+ payments                    | t              |        2
+ play_payment_jobs           | t              |        0
+ play_price_sync             | t              |        1
+ play_price_sync_logs        | t              |        0
+ play_price_tiers            | t              |        1
+ play_recovery_cursor        | t              |        0
+ play_void_sweep_state       | t              |        0
+ play_void_tokens            | t              |        0
+ products                    | t              |        3
+ profiles                    | t              |        3
+ provider_events             | t              |        0
+ purchases                   | t              |        1
+ push_tokens                 | t              |        1
+ quiz_scores                 | t              |        1
+ quiz_tests                  | t              |        3
+ rate_limits                 | t              |        0
+ razorpay_webhook_events     | t              |        0
+ referral_settings           | t              |        2
+ referral_settings_audit     | t              |        1
+ referrals                   | t              |        1
+ subjects                    | t              |        3
+ ucb_external_refunds        | t              |        0
+ verified_quiz_attempts      | t              |        1
+ videos                      | t              |        3
+ wallet_ledger               | t              |        2
+ wallet_order_reservations   | t              |        0
+ wallet_race_orders          | t              |        0
+ wallet_release_orders       | t              |        0
+ years                       | t              |        2
+(50 rows)
+
+        tablename        |              policyname              |        roles         |  cmd   |                                                                                                                    qual                                                                                                                    |                           with_check                           
+-------------------------+--------------------------------------+----------------------+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------
+ admins                  | admins_admin_only                    | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ analytics_events        | analytics_insert_own_or_anon         | {anon,authenticated} | INSERT |                                                                                                                                                                                                                                            | ((user_id IS NULL) OR (user_id = ( SELECT auth.uid() AS uid)))
+ app_config              | app_config_admin_delete              | {authenticated}      | DELETE | am_i_admin()                                                                                                                                                                                                                               | 
+ app_config              | app_config_admin_insert              | {authenticated}      | INSERT |                                                                                                                                                                                                                                            | am_i_admin()
+ app_config              | app_config_admin_update              | {authenticated}      | UPDATE | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ app_config              | app_config_public_read               | {anon,authenticated} | SELECT | true                                                                                                                                                                                                                                       | 
+ app_settings            | app_settings_admin_update            | {public}             | UPDATE | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ app_settings            | public read app_settings             | {public}             | SELECT | (( SELECT auth.uid() AS uid) IS NOT NULL)                                                                                                                                                                                                  | 
+ chapters                | chapters_admin_write                 | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ chapters                | chapters_public_read_active          | {authenticated}      | SELECT | ((active = true) AND has_content_access(course_id, year_id))                                                                                                                                                                               | 
+ chapters                | chapters_published_ancestry          | {authenticated}      | SELECT | (am_i_admin() OR (active AND content_is_published(course_id, year_id, subject_id, id)))                                                                                                                                                    | 
+ courses                 | courses_admin_write                  | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ courses                 | courses_public_read_active           | {public}             | SELECT | ((active = true) OR am_i_admin())                                                                                                                                                                                                          | 
+ notes                   | notes_admin_write                    | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ notes                   | notes_public_read_active             | {authenticated}      | SELECT | ((active = true) AND has_content_access(course_id, year_id))                                                                                                                                                                               | 
+ notes                   | notes_published_ancestry             | {authenticated}      | SELECT | (am_i_admin() OR (active AND content_is_published(course_id, year_id, NULL::text, chapter_id)))                                                                                                                                            | 
+ notifications           | notifications_admin_write            | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ notifications           | notifications_public_read_active     | {public}             | SELECT | ((active = true) OR am_i_admin())                                                                                                                                                                                                          | 
+ objects                 | note_quarantine_private              | {public}             | ALL    | (bucket_id <> 'note-quarantine'::text)                                                                                                                                                                                                     | (bucket_id <> 'note-quarantine'::text)
+ objects                 | notes_admin_write                    | {authenticated}      | ALL    | ((bucket_id = 'notes'::text) AND am_i_admin())                                                                                                                                                                                             | ((bucket_id = 'notes'::text) AND am_i_admin())
+ objects                 | notes_server_delete_only             | {public}             | DELETE | (bucket_id <> 'notes'::text)                                                                                                                                                                                                               | 
+ objects                 | notes_server_insert_only             | {public}             | INSERT |                                                                                                                                                                                                                                            | (bucket_id <> 'notes'::text)
+ objects                 | notes_server_update_only             | {public}             | UPDATE | (bucket_id <> 'notes'::text)                                                                                                                                                                                                               | (bucket_id <> 'notes'::text)
+ objects                 | notes_service_reads_only             | {public}             | SELECT | ((bucket_id <> 'notes'::text) OR am_i_admin())                                                                                                                                                                                             | 
+ objects                 | public read thumbnails               | {public}             | SELECT | (bucket_id = 'thumbnails'::text)                                                                                                                                                                                                           | 
+ order_review_flags      | order_review_flags_admin_select      | {authenticated}      | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ orders                  | orders_select_own_or_admin           | {public}             | SELECT | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                  | 
+ payment_sessions        | payment_sessions_select_own          | {public}             | SELECT | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                  | 
+ payments                | Users can view own payments          | {public}             | SELECT | (( SELECT auth.uid() AS uid) = user_id)                                                                                                                                                                                                    | 
+ payments                | payments_admin_read                  | {public}             | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ play_price_sync         | admin_read_play_sync                 | {authenticated}      | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ play_price_tiers        | admin_read_play_tiers                | {authenticated}      | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ products                | products_admin_write                 | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ products                | products_public_read_active          | {authenticated}      | SELECT | ((active = true) AND (am_i_admin() OR ((scope = 'bundle'::text) AND has_content_access(course_id, NULL::text)) OR ((scope = 'year'::text) AND has_content_access(course_id, year_id)) OR ((scope = 'subject'::text) AND (EXISTS ( SELECT 1+| 
+                         |                                      |                      |        |    FROM subjects s                                                                                                                                                                                                                        +| 
+                         |                                      |                      |        |   WHERE ((s.id = products.subject_id) AND has_content_access(products.course_id, s.year_id))))) OR ((scope = 'chapter'::text) AND (EXISTS ( SELECT 1                                                                                      +| 
+                         |                                      |                      |        |    FROM chapters c                                                                                                                                                                                                                        +| 
+                         |                                      |                      |        |   WHERE ((c.id = products.chapter_id) AND has_content_access(products.course_id, c.year_id)))))))                                                                                                                                          | 
+ products                | products_published_ancestry          | {authenticated}      | SELECT | (am_i_admin() OR (active AND                                                                                                                                                                                                              +| 
+                         |                                      |                      |        | CASE scope                                                                                                                                                                                                                                +| 
+                         |                                      |                      |        |     WHEN 'chapter'::text THEN (EXISTS ( SELECT 1                                                                                                                                                                                          +| 
+                         |                                      |                      |        |        FROM chapters c                                                                                                                                                                                                                    +| 
+                         |                                      |                      |        |       WHERE ((c.id = products.chapter_id) AND content_is_published(products.course_id, c.year_id, c.subject_id, c.id))))                                                                                                                  +| 
+                         |                                      |                      |        |     WHEN 'subject'::text THEN (EXISTS ( SELECT 1                                                                                                                                                                                          +| 
+                         |                                      |                      |        |        FROM subjects s                                                                                                                                                                                                                    +| 
+                         |                                      |                      |        |       WHERE ((s.id = products.subject_id) AND content_is_published(products.course_id, s.year_id, s.id))))                                                                                                                                +| 
+                         |                                      |                      |        |     WHEN 'year'::text THEN ((year_id IS NOT NULL) AND content_is_published(course_id, year_id))                                                                                                                                           +| 
+                         |                                      |                      |        |     WHEN 'bundle'::text THEN (content_is_published(course_id, NULL::text) AND (cardinality(year_ids) > 0) AND (NOT (EXISTS ( SELECT 1                                                                                                     +| 
+                         |                                      |                      |        |        FROM unnest(products.year_ids) y(id)                                                                                                                                                                                               +| 
+                         |                                      |                      |        |       WHERE ((y.id IS NULL) OR (NOT content_is_published(products.course_id, y.id)))))))                                                                                                                                                  +| 
+                         |                                      |                      |        |     ELSE false                                                                                                                                                                                                                            +| 
+                         |                                      |                      |        | END))                                                                                                                                                                                                                                      | 
+ profiles                | profiles_admin_all                   | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ profiles                | profiles_select_own_or_admin         | {public}             | SELECT | ((id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                       | 
+ profiles                | profiles_update_own                  | {authenticated}      | UPDATE | (id = ( SELECT auth.uid() AS uid))                                                                                                                                                                                                         | (id = ( SELECT auth.uid() AS uid))
+ purchases               | purchases_select_own_or_admin        | {public}             | SELECT | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                  | 
+ push_tokens             | push_tokens_own                      | {public}             | ALL    | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                  | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())
+ quiz_scores             | quiz_scores_own_or_admin             | {public}             | ALL    | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())                                                                                                                                                                                  | ((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())
+ quiz_tests              | quiz_tests_admin_write               | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ quiz_tests              | quiz_tests_public_read_active        | {authenticated}      | SELECT | ((active = true) AND has_content_access(course_id, year_id))                                                                                                                                                                               | 
+ quiz_tests              | quiz_tests_published_ancestry        | {authenticated}      | SELECT | (am_i_admin() OR (active AND content_is_published(course_id, year_id, subject_id)))                                                                                                                                                        | 
+ referral_settings       | referral_settings_admin_write        | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ referral_settings       | referral_settings_read_authenticated | {authenticated}      | SELECT | true                                                                                                                                                                                                                                       | 
+ referral_settings_audit | referral_settings_audit_admin_read   | {authenticated}      | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ referrals               | referrals_admin_write                | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ subjects                | subjects_admin_write                 | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ subjects                | subjects_public_read_active          | {authenticated}      | SELECT | ((active = true) AND has_content_access(course_id, year_id))                                                                                                                                                                               | 
+ subjects                | subjects_published_ancestry          | {authenticated}      | SELECT | (am_i_admin() OR (active AND content_is_published(course_id, year_id, id)))                                                                                                                                                                | 
+ verified_quiz_attempts  | verified_quiz_attempts_read          | {authenticated}      | SELECT | ((user_id = ( SELECT auth.uid() AS uid)) OR ( SELECT am_i_admin() AS am_i_admin))                                                                                                                                                          | 
+ videos                  | videos_admin_write                   | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ videos                  | videos_public_read_active            | {authenticated}      | SELECT | ((active = true) AND has_content_access(course_id, year_id))                                                                                                                                                                               | 
+ videos                  | videos_published_ancestry            | {authenticated}      | SELECT | (am_i_admin() OR (active AND content_is_published(course_id, year_id, subject_id)))                                                                                                                                                        | 
+ wallet_ledger           | wallet_ledger_select_admin           | {authenticated}      | SELECT | am_i_admin()                                                                                                                                                                                                                               | 
+ wallet_ledger           | wallet_ledger_select_own             | {authenticated}      | SELECT | (user_id = ( SELECT auth.uid() AS uid))                                                                                                                                                                                                    | 
+ years                   | years_admin_write                    | {public}             | ALL    | am_i_admin()                                                                                                                                                                                                                               | am_i_admin()
+ years                   | years_public_read_active             | {public}             | SELECT | (((active = true) AND (EXISTS ( SELECT 1                                                                                                                                                                                                  +| 
+                         |                                      |                      |        |    FROM courses c                                                                                                                                                                                                                         +| 
+                         |                                      |                      |        |   WHERE ((c.id = years.course_id) AND (c.active = true))))) OR am_i_admin())                                                                                                                                                               | 
+(59 rows)
+
+      tgrelid      |           tgname            |                                                                pg_get_triggerdef                                                                 
+-------------------+-----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------
+ referral_settings | referral_settings_audit_trg | CREATE TRIGGER referral_settings_audit_trg AFTER UPDATE ON public.referral_settings FOR EACH ROW EXECUTE FUNCTION log_referral_settings_change()
+(1 row)
+
+                                               pg_get_functiondef                                               
+----------------------------------------------------------------------------------------------------------------
+ CREATE OR REPLACE FUNCTION public.am_i_admin()                                                                +
+  RETURNS boolean                                                                                              +
+  LANGUAGE sql                                                                                                 +
+  STABLE SECURITY DEFINER                                                                                      +
+  SET search_path TO 'public'                                                                                  +
+ AS $function$                                                                                                 +
+   select exists (select 1 from public.admins where id = auth.uid())                                           +
+      and (not public.admin_mfa_required() or coalesce(auth.jwt() ->> 'aal', '') = 'aal2')                     +
+ $function$                                                                                                    +
+ 
+ CREATE OR REPLACE FUNCTION public.erase_user_data(p_user_id uuid)                                             +
+  RETURNS jsonb                                                                                                +
+  LANGUAGE plpgsql                                                                                             +
+  SECURITY DEFINER                                                                                             +
+  SET search_path TO 'public'                                                                                  +
+ AS $function$                                                                                                 +
+ declare                                                                                                       +
+   v_counts jsonb := '{}'::jsonb;                                                                              +
+   n bigint;                                                                                                   +
+ begin                                                                                                         +
+   if p_user_id is null then                                                                                   +
+     raise exception 'user id required';                                                                       +
+   end if;                                                                                                     +
+                                                                                                               +
+   -- Admin accounts are referenced by admins.id (no cascade); refuse.                                         +
+   if exists (select 1 from public.admins where id = p_user_id) then                                           +
+     return jsonb_build_object('status', 'admin_blocked');                                                     +
+   end if;                                                                                                     +
+                                                                                                               +
+   delete from public.analytics_events where user_id = p_user_id;                                              +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('analytics_events', n);           +
+   delete from public.quiz_scores where user_id = p_user_id;                                                   +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('quiz_scores', n);                +
+   delete from public.push_tokens where user_id = p_user_id;                                                   +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('push_tokens', n);                +
+   delete from public.payment_sessions where user_id = p_user_id;                                              +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('payment_sessions', n);           +
+   delete from public.purchases where user_id = p_user_id;                                                     +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('purchases', n);                  +
+   delete from public.referrals where referrer_id = p_user_id or referred_id = p_user_id;                      +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('referrals', n);                  +
+                                                                                                               +
+   -- Retained for tax/accounting: anonymise instead of delete.                                                +
+   update public.payments set user_id = null where user_id = p_user_id;                                        +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('payments_anonymised', n);        +
+   update public.orders set user_id = null where user_id = p_user_id;                                          +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('orders_anonymised', n);          +
+                                                                                                               +
+   delete from public.profiles where id = p_user_id;                                                           +
+   get diagnostics n = row_count; v_counts := v_counts || jsonb_build_object('profiles', n);                   +
+                                                                                                               +
+   return jsonb_build_object('status', 'erased', 'counts', v_counts);                                          +
+ end;                                                                                                          +
+ $function$                                                                                                    +
+ 
+ CREATE OR REPLACE FUNCTION public.has_content_access(p_course_id text, p_year_id text)                        +
+  RETURNS boolean                                                                                              +
+  LANGUAGE sql                                                                                                 +
+  STABLE SECURITY DEFINER                                                                                      +
+  SET search_path TO 'public'                                                                                  +
+ AS $function$                                                                                                 +
+   select                                                                                                      +
+     public.am_i_admin()                                                                                       +
+     or (public.content_is_published(p_course_id, p_year_id) and (exists (                                     +
+       select 1 from public.profiles pr                                                                        +
+       where pr.id = auth.uid()                                                                                +
+         and pr.course_id = p_course_id                                                                        +
+     )                                                                                                         +
+     or exists (                                                                                               +
+       select 1                                                                                                +
+       from public.purchases pu                                                                                +
+       left join public.chapters ch on pu.scope = 'chapter' and ch.id = pu.chapter_id                          +
+       left join public.subjects sb on pu.scope = 'subject' and sb.id = pu.subject_id                          +
+       where pu.user_id = auth.uid()                                                                           +
+         and pu.status = 'success'                                                                             +
+         and pu.course_id = p_course_id                                                                        +
+         and (                                                                                                 +
+           p_year_id is null                                                                                   +
+           or (pu.scope = 'year' and pu.year_id = p_year_id)                                                   +
+           or (pu.scope = 'bundle' and p_year_id = any(pu.year_ids))                                           +
+           or (pu.scope = 'chapter' and ch.year_id = p_year_id)                                                +
+           or (pu.scope = 'subject' and sb.year_id = p_year_id)                                                +
+         )                                                                                                     +
+     )));                                                                                                      +
+ $function$                                                                                                    +
+ 
+ CREATE OR REPLACE FUNCTION public.has_prior_purchase_identity(p_uid uuid)                                     +
+  RETURNS boolean                                                                                              +
+  LANGUAGE sql                                                                                                 +
+  STABLE SECURITY DEFINER                                                                                      +
+  SET search_path TO 'public'                                                                                  +
+ AS $function$                                                                                                 +
+   select exists (                                                                                             +
+     select 1                                                                                                  +
+       from public.profiles p                                                                                  +
+       join public.first_purchase_identities i                                                                 +
+         on i.identity_hash in (public.identity_hash('email', p.email), public.identity_hash('phone', p.phone))+
+      where p.id = p_uid and i.account_id <> p_uid                                                             +
+   );                                                                                                          +
+ $function$                                                                                                    +
+ 
+(4 rows)
+

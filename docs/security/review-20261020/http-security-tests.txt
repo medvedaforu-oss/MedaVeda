@@ -1,0 +1,8 @@
+Check docs/security/review-20261020/httpSecurity_test.ts
+running 3 tests from ./docs/security/review-20261020/httpSecurity_test.ts
+origin allowlist, native calls and private response headers ... ok (50ms)
+stream limit and JSON object validation ... ok (2ms)
+webhook body bytes are unchanged ... ok (913µs)
+
+ok | 3 passed | 0 failed (60ms)
+

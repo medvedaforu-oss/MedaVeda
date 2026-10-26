@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-10-19T12:59:28.643211+00:00",
+  "metadata": {
+    "id": "f0e3d974-a8e8-436c-9063-6943e4b36a08",
+    "slug": "sync-play-catalog",
+    "status": "ACTIVE",
+    "version": 3,
+    "updated_at": 1792386900163,
+    "verify_jwt": false
+  },
+  "preflight": [
+    {
+      "preflight": {
+        "captured_at": "2026-10-19T12:59:27.477876+00:00",
+        "catalog": [
+          {
+            "price_inr": 2,
+            "candidate_sku": "notes_2_00_v_d93112f242a94a9b83d5bb2c31ef11a3",
+            "purchase_option_id": "buy",
+            "status": "failed",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "updated_at": "2026-10-19T03:09:01.348036+00:00"
+          },
+          {
+            "price_inr": 1,
+            "candidate_sku": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+            "purchase_option_id": "buy",
+            "status": "pending",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "updated_at": "2026-10-19T05:15:54.54702+00:00"
+          }
+        ],
+        "cron": [
+          {
+            "jobid": 8,
+            "jobname": "play-catalog-sync",
+            "active": false,
+            "schedule": "* * * * *"
+          }
+        ],
+        "queued_catalog_http": 0,
+        "running_catalog_cron_sql": 0
+      }
+    }
+  ],
+  "all_seven_cron_definitions_and_states_unchanged": true,
+  "active_cron_helper_sources_unchanged": true,
+  "other_identified_active_catalog_schedulers": 0,
+  "production_writes": 0,
+  "function_invocations": 0,
+  "worker_retries": 0,
+  "rollback_attempts": 0
+}

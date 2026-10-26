@@ -1,0 +1,58 @@
+[
+  {
+    "id": "26f68e95-1270-4a51-8e34-ebb982cc10a0",
+    "slug": "create-play-order",
+    "version": 2,
+    "status": "ACTIVE",
+    "updated_at": 1792259108507,
+    "verify_jwt": true
+  },
+  {
+    "id": "2a705e42-40cc-4b66-a41c-877bd616e09b",
+    "slug": "verify-play-purchase",
+    "version": 2,
+    "status": "ACTIVE",
+    "updated_at": 1792259116603,
+    "verify_jwt": true
+  },
+  {
+    "id": "f0e3d974-a8e8-436c-9063-6943e4b36a08",
+    "slug": "sync-play-catalog",
+    "version": 3,
+    "status": "ACTIVE",
+    "updated_at": 1792386900163,
+    "verify_jwt": false
+  },
+  {
+    "id": "68c7064c-489d-4e50-9315-88e8cf82af1f",
+    "slug": "play-payment-worker",
+    "version": 2,
+    "status": "ACTIVE",
+    "updated_at": 1792259132736,
+    "verify_jwt": false
+  },
+  {
+    "id": "7a040048-e8a0-4d28-9025-51c03c982870",
+    "slug": "diagnose-play-service-account",
+    "version": 1,
+    "status": "ACTIVE",
+    "updated_at": 1792470057269,
+    "verify_jwt": false
+  },
+  {
+    "id": "7d2ebf45-1931-4ffa-a163-8dc58adf1964",
+    "slug": "diagnose-play-pricing",
+    "version": 1,
+    "status": "ACTIVE",
+    "updated_at": 1792481330217,
+    "verify_jwt": true
+  },
+  {
+    "id": "bfc0b0c6-225a-4e9a-a3f2-d62631ce4c02",
+    "slug": "diagnose-play-matrix",
+    "version": 2,
+    "status": "ACTIVE",
+    "updated_at": 1792486574836,
+    "verify_jwt": true
+  }
+]

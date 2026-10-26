@@ -1,0 +1,24 @@
+{
+  "revision": "r2",
+  "production_changes_executed": false,
+  "google_requests_executed": false,
+  "retry_policy": "matches production v2",
+  "retry_parity_cases": 20,
+  "deno_tests_passed": 5,
+  "structured_error_redaction": "PASS",
+  "operator_redaction_and_guards": "PASS",
+  "cron_resume_action": "removed; no recurring jobs will be enabled",
+  "candidate_type_check": "PASS, cached production-version dependencies",
+  "auth_catalog_ast_comparison": "PASS",
+  "original_rollback_artifact_checksums_unchanged": true,
+  "candidate_archive_sha256": "266ee71e6613721f69380eca2fb9c36266edec791f2550fa8b10050d739f188e",
+  "admin_session_file_configured": false,
+  "credential_identity": "unverified",
+  "api_enablement": "unverified",
+  "validation_source_sha256": {
+    "supabase/tests/play_catalog_api_test.ts": "de624b1df4e4065a5054ee53697ab24e79b3367bc78c1fe947e3082a2813983c",
+    "supabase/tests/play_diagnostic_sanitization_review_test.ts": "aa01947a7b6efddeb704dbbdf38f62e1c681ef275797c3d6b3a8c28e67dd67fc",
+    "supabase/tests/play-catalog-worker-selftest.cjs": "7ff8ad11bf36c148e62189fe92dfd025c3f6df2505e8eaf29a8c274a39633a45",
+    "supabase/tests/fixtures/play-catalog-production-v2.ts.txt": "49827cf0d467e8600eea095f2a87641b7263a2c1c372581fe8f2abe0ea9da225"
+  }
+}

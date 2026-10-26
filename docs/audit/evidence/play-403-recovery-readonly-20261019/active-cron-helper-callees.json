@@ -1,0 +1,11 @@
+[
+  {
+    "schema": "public",
+    "name": "accounts_share_network",
+    "source_md5": "7b94d260944d780c3e68fde8e6474eb1",
+    "mentions_http": false,
+    "mentions_execute": false,
+    "mentions_catalog": false,
+    "qualified_function_calls": null
+  }
+]

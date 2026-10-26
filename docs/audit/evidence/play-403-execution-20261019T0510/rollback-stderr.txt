@@ -1,0 +1,1 @@
+Rollback stopped: URLError. Read metadata; do not repeat the write automatically.

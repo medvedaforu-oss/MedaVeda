@@ -1,0 +1,812 @@
+{
+  "scope": "Authenticated read-only management queries; no production mutations. No user rows, secret values, headers, Google request paths or payment tokens retained.",
+  "operations": {
+    "captured_at": "2026-10-18T18:00:09.370316+00:00",
+    "project": "xbvenkfmesugrbjuufyw",
+    "mode": "read-only",
+    "functions": [
+      {
+        "slug": "verify-payment",
+        "name": "verify-payment",
+        "status": "ACTIVE",
+        "version": 67,
+        "updated_at": 1790106848094,
+        "verify_jwt": false
+      },
+      {
+        "slug": "send-push-notification",
+        "name": "send-push-notification",
+        "status": "ACTIVE",
+        "version": 50,
+        "updated_at": 1789993120363,
+        "verify_jwt": false
+      },
+      {
+        "slug": "razorpay-webhook",
+        "name": "razorpay-webhook",
+        "status": "ACTIVE",
+        "version": 49,
+        "updated_at": 1790106854078,
+        "verify_jwt": false
+      },
+      {
+        "slug": "delete-account",
+        "name": "delete-account",
+        "status": "ACTIVE",
+        "version": 18,
+        "updated_at": 1789896585559,
+        "verify_jwt": true
+      },
+      {
+        "slug": "create-order",
+        "name": "create-order",
+        "status": "ACTIVE",
+        "version": 22,
+        "updated_at": 1790106841912,
+        "verify_jwt": true
+      },
+      {
+        "slug": "get-note-url",
+        "name": "get-note-url",
+        "status": "ACTIVE",
+        "version": 17,
+        "updated_at": 1789981639814,
+        "verify_jwt": true
+      },
+      {
+        "slug": "get-video-url",
+        "name": "get-video-url",
+        "status": "ACTIVE",
+        "version": 17,
+        "updated_at": 1789981644543,
+        "verify_jwt": true
+      },
+      {
+        "slug": "login-with-mobile",
+        "name": "login-with-mobile",
+        "status": "ACTIVE",
+        "version": 17,
+        "updated_at": 1789990093212,
+        "verify_jwt": false
+      },
+      {
+        "slug": "request-password-reset-by-mobile",
+        "name": "request-password-reset-by-mobile",
+        "status": "ACTIVE",
+        "version": 17,
+        "updated_at": 1789990100784,
+        "verify_jwt": false
+      },
+      {
+        "slug": "create-play-order",
+        "name": "create-play-order",
+        "status": "ACTIVE",
+        "version": 2,
+        "updated_at": 1792259108507,
+        "verify_jwt": true
+      },
+      {
+        "slug": "verify-play-purchase",
+        "name": "verify-play-purchase",
+        "status": "ACTIVE",
+        "version": 2,
+        "updated_at": 1792259116603,
+        "verify_jwt": true
+      },
+      {
+        "slug": "sync-play-catalog",
+        "name": "sync-play-catalog",
+        "status": "ACTIVE",
+        "version": 2,
+        "updated_at": 1792259125241,
+        "verify_jwt": false
+      },
+      {
+        "slug": "play-payment-worker",
+        "name": "play-payment-worker",
+        "status": "ACTIVE",
+        "version": 2,
+        "updated_at": 1792259132736,
+        "verify_jwt": false
+      },
+      {
+        "slug": "upload-note-pdf",
+        "name": "upload-note-pdf",
+        "status": "ACTIVE",
+        "version": 2,
+        "updated_at": 1792338990701,
+        "verify_jwt": false
+      }
+    ],
+    "migrations": [
+      {
+        "version": "20260701000000"
+      },
+      {
+        "version": "20260718"
+      },
+      {
+        "version": "20260721"
+      },
+      {
+        "version": "20260801"
+      },
+      {
+        "version": "20260801150000"
+      },
+      {
+        "version": "20260919120000"
+      },
+      {
+        "version": "20260919130000"
+      },
+      {
+        "version": "20260920120000"
+      },
+      {
+        "version": "20260920130000"
+      },
+      {
+        "version": "20260920140000"
+      },
+      {
+        "version": "20260921120000"
+      },
+      {
+        "version": "20260921130000"
+      },
+      {
+        "version": "20260922100000"
+      },
+      {
+        "version": "20260923100000"
+      },
+      {
+        "version": "20260924100000"
+      },
+      {
+        "version": "20260924110000"
+      },
+      {
+        "version": "20260924120000"
+      },
+      {
+        "version": "20260924130000"
+      },
+      {
+        "version": "20260924140000"
+      },
+      {
+        "version": "20260924150000"
+      },
+      {
+        "version": "20260925100000"
+      },
+      {
+        "version": "20260925110000"
+      },
+      {
+        "version": "20260925120000"
+      },
+      {
+        "version": "20260925130000"
+      },
+      {
+        "version": "20260925140000"
+      },
+      {
+        "version": "20260926100000"
+      },
+      {
+        "version": "20260926110000"
+      },
+      {
+        "version": "20260926120000"
+      },
+      {
+        "version": "20260926130000"
+      },
+      {
+        "version": "20260927100000"
+      },
+      {
+        "version": "20260927110000"
+      },
+      {
+        "version": "20260927120000"
+      },
+      {
+        "version": "20260927130000"
+      },
+      {
+        "version": "20260928100000"
+      },
+      {
+        "version": "20260928110000"
+      },
+      {
+        "version": "20260929100000"
+      },
+      {
+        "version": "20260930100000"
+      },
+      {
+        "version": "20260930110000"
+      },
+      {
+        "version": "20261001100000"
+      },
+      {
+        "version": "20261012100000"
+      },
+      {
+        "version": "20261012110000"
+      },
+      {
+        "version": "20261012120000"
+      },
+      {
+        "version": "20261013090000"
+      },
+      {
+        "version": "20261013100000"
+      },
+      {
+        "version": "20261013110000"
+      },
+      {
+        "version": "20261014100000"
+      },
+      {
+        "version": "20261014110000"
+      },
+      {
+        "version": "20261015100000"
+      },
+      {
+        "version": "20261015120000"
+      },
+      {
+        "version": "20261016090000"
+      },
+      {
+        "version": "20261016100000"
+      },
+      {
+        "version": "20261018100000"
+      },
+      {
+        "version": "20261018110000"
+      },
+      {
+        "version": "20261018120000"
+      },
+      {
+        "version": "20261018130000"
+      }
+    ],
+    "cron_jobs": [
+      {
+        "jobid": 8,
+        "jobname": "play-catalog-sync",
+        "schedule": "* * * * *",
+        "active": true
+      },
+      {
+        "jobid": 9,
+        "jobname": "play-consume",
+        "schedule": "* * * * *",
+        "active": false
+      },
+      {
+        "jobid": 10,
+        "jobname": "play-reconcile",
+        "schedule": "* * * * *",
+        "active": false
+      },
+      {
+        "jobid": 11,
+        "jobname": "play-voids",
+        "schedule": "* * * * *",
+        "active": false
+      }
+    ],
+    "cron_runs": [
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 18:00:00.017057+00",
+        "end_time": "2026-10-18 18:00:00.025423+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:59:00.011201+00",
+        "end_time": "2026-10-18 17:59:00.014017+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:58:00.017331+00",
+        "end_time": "2026-10-18 17:58:00.023581+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:57:00.010745+00",
+        "end_time": "2026-10-18 17:57:00.013544+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:56:00.012695+00",
+        "end_time": "2026-10-18 17:56:00.022068+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:55:00.014712+00",
+        "end_time": "2026-10-18 17:55:00.017726+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:54:00.021988+00",
+        "end_time": "2026-10-18 17:54:00.032815+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:53:00.015958+00",
+        "end_time": "2026-10-18 17:53:00.018768+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:52:00.11881+00",
+        "end_time": "2026-10-18 17:52:00.158277+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:51:00.01153+00",
+        "end_time": "2026-10-18 17:51:00.014498+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:50:00.020556+00",
+        "end_time": "2026-10-18 17:50:00.028923+00"
+      },
+      {
+        "jobid": 8,
+        "status": "succeeded",
+        "start_time": "2026-10-18 17:49:00.010916+00",
+        "end_time": "2026-10-18 17:49:00.01375+00"
+      }
+    ],
+    "catalog": [
+      {
+        "price_inr": "1.00",
+        "candidate_sku": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+        "status": "failed",
+        "attempts": 1,
+        "next_attempt_at": "2026-10-18 16:55:34.668537+00",
+        "lease_until": null,
+        "last_synced_at": null,
+        "updated_at": "2026-10-18 16:55:04.668537+00",
+        "has_error": true
+      }
+    ],
+    "play_metrics": [
+      {
+        "backlog_count": 0,
+        "parked_count": 0,
+        "oldest_job_at": null,
+        "cursor_lag_seconds": "255496.925367000000",
+        "cursor_failures": 0
+      }
+    ],
+    "vault_presence": [
+      {
+        "name": "PLAY_CATALOG_CRON_SECRET",
+        "matching_secrets": 1,
+        "sufficient_length": true
+      },
+      {
+        "name": "PLAY_PAYMENT_CRON_SECRET",
+        "matching_secrets": 1,
+        "sufficient_length": true
+      }
+    ],
+    "http_statuses": [
+      {
+        "id": 66,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 18:00:00.024842+00",
+        "has_error": false
+      },
+      {
+        "id": 65,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:59:00.013994+00",
+        "has_error": false
+      },
+      {
+        "id": 64,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:58:00.023577+00",
+        "has_error": false
+      },
+      {
+        "id": 63,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:57:00.01354+00",
+        "has_error": false
+      },
+      {
+        "id": 62,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:56:00.02204+00",
+        "has_error": false
+      },
+      {
+        "id": 61,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:55:00.017689+00",
+        "has_error": false
+      },
+      {
+        "id": 60,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:54:00.032769+00",
+        "has_error": false
+      },
+      {
+        "id": 59,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:53:00.018744+00",
+        "has_error": false
+      },
+      {
+        "id": 58,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:52:00.158386+00",
+        "has_error": false
+      },
+      {
+        "id": 57,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:51:00.014465+00",
+        "has_error": false
+      },
+      {
+        "id": 56,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:50:00.028901+00",
+        "has_error": false
+      },
+      {
+        "id": 55,
+        "status_code": 200,
+        "timed_out": false,
+        "created": "2026-10-18 17:49:00.013751+00",
+        "has_error": false
+      }
+    ]
+  },
+  "security": {
+    "captured_at": "2026-10-18T18:01:23.064998+00:00",
+    "project": "xbvenkfmesugrbjuufyw",
+    "mode": "read-only",
+    "catalog_error_class": [
+      {
+        "price_inr": "1.00",
+        "error_class": "Google Play API 403"
+      }
+    ],
+    "cron_last_runs": [
+      {
+        "jobname": "play-catalog-sync",
+        "last_start": "2026-10-18 18:01:00.07521+00",
+        "last_end": "2026-10-18 18:01:00.092637+00"
+      },
+      {
+        "jobname": "play-consume",
+        "last_start": null,
+        "last_end": null
+      },
+      {
+        "jobname": "play-reconcile",
+        "last_start": null,
+        "last_end": null
+      },
+      {
+        "jobname": "play-voids",
+        "last_start": null,
+        "last_end": null
+      }
+    ],
+    "http_result_counts": [
+      {
+        "id": 67,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 66,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 65,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 64,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 63,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 62,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 61,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 60,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 59,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 58,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 57,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      },
+      {
+        "id": 56,
+        "status_code": 200,
+        "processed": "0",
+        "result_state": null
+      }
+    ],
+    "required_relations": [
+      {
+        "verified_quiz": true,
+        "trusted_uploads": true,
+        "quarantine": true
+      }
+    ],
+    "function_security": [
+      {
+        "proname": "claim_note_pdf_validation",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public, pg_temp"
+        ],
+        "definition_hash": "2e1c238ed1a418ffcb0bbd8ac2b5f114",
+        "authenticated_execute": false,
+        "anon_execute": false,
+        "service_execute": true
+      },
+      {
+        "proname": "finish_note_pdf_validation",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public, pg_temp"
+        ],
+        "definition_hash": "de9a8b083fc774d3a30a3fbb37e277aa",
+        "authenticated_execute": false,
+        "anon_execute": false,
+        "service_execute": true
+      },
+      {
+        "proname": "save_note_with_upload",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public, pg_temp"
+        ],
+        "definition_hash": "9094a413f4fdf34ddd78abe89f8e4ea3",
+        "authenticated_execute": true,
+        "anon_execute": false,
+        "service_execute": true
+      },
+      {
+        "proname": "settle_play_purchase",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public"
+        ],
+        "definition_hash": "51149f55fcadf5d7255f72d63e1d80ff",
+        "authenticated_execute": false,
+        "anon_execute": false,
+        "service_execute": true
+      },
+      {
+        "proname": "submit_quiz_attempt",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public, pg_temp"
+        ],
+        "definition_hash": "8223f8ed6d9a90757a9baa48909fe8ff",
+        "authenticated_execute": true,
+        "anon_execute": false,
+        "service_execute": true
+      },
+      {
+        "proname": "user_can_access_note",
+        "prosecdef": true,
+        "proconfig": [
+          "search_path=public"
+        ],
+        "definition_hash": "238c6616da61066cd6173bbc0936be69",
+        "authenticated_execute": false,
+        "anon_execute": false,
+        "service_execute": true
+      }
+    ],
+    "rls_grants": [
+      {
+        "relname": "note_pdf_validation_jobs",
+        "relrowsecurity": true,
+        "auth_insert": false,
+        "auth_update": false,
+        "anon_insert": false
+      },
+      {
+        "relname": "note_upload_requests",
+        "relrowsecurity": true,
+        "auth_insert": false,
+        "auth_update": false,
+        "anon_insert": false
+      },
+      {
+        "relname": "quiz_scores",
+        "relrowsecurity": true,
+        "auth_insert": true,
+        "auth_update": true,
+        "anon_insert": false
+      },
+      {
+        "relname": "verified_quiz_attempts",
+        "relrowsecurity": true,
+        "auth_insert": false,
+        "auth_update": false,
+        "anon_insert": false
+      }
+    ],
+    "storage": [
+      {
+        "id": "notes",
+        "public": false,
+        "file_size_limit": 52428800,
+        "allowed_mime_types": [
+          "application/pdf"
+        ]
+      },
+      {
+        "id": "thumbnails",
+        "public": true,
+        "file_size_limit": null,
+        "allowed_mime_types": null
+      }
+    ],
+    "current_verified_tiers": [
+      {
+        "active_verified_tiers": 0
+      }
+    ],
+    "ucb_backlog_counts": {
+      "http_status": 400,
+      "available": false,
+      "note": "Initial query used a nonexistent table; corrected orders.external_report_status and ucb_external_refunds aggregates are in release_dependencies."
+    },
+    "edge_secret_presence": {
+      "GOOGLE_PLAY_PACKAGE_NAME": true,
+      "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON": true,
+      "PLAY_CATALOG_CRON_SECRET": true,
+      "PLAY_PAYMENT_CRON_SECRET": true,
+      "UCB_SENTRY_DSN": false
+    },
+    "cron_secret_matches": {
+      "PLAY_CATALOG_CRON_SECRET": true,
+      "PLAY_PAYMENT_CRON_SECRET": true
+    }
+  },
+  "release_dependencies": {
+    "captured_at": "2026-10-18T18:02:05.713557+00:00",
+    "project": "xbvenkfmesugrbjuufyw",
+    "mode": "read-only",
+    "ucb_reports": [],
+    "ucb_refunds": [],
+    "payment_gate": [
+      {
+        "key": "min_app_version",
+        "value": "1.1.0"
+      },
+      {
+        "key": "require_ucb_for_razorpay",
+        "value": "false"
+      }
+    ],
+    "quarantine": [
+      {
+        "id": "note-quarantine",
+        "public": false,
+        "file_size_limit": 52428800,
+        "allowed_mime_types": [
+          "application/pdf"
+        ]
+      }
+    ],
+    "policies": [
+      {
+        "schemaname": "public",
+        "tablename": "quiz_scores",
+        "policyname": "quiz_scores_own_or_admin",
+        "roles": "{public}",
+        "cmd": "ALL",
+        "expression_hash": "5af72da3010ddf0d6477f1951f2e82a7"
+      },
+      {
+        "schemaname": "public",
+        "tablename": "verified_quiz_attempts",
+        "policyname": "verified_quiz_attempts_read",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "expression_hash": "a157064c9365bd04b146b2e95e85308b"
+      },
+      {
+        "schemaname": "storage",
+        "tablename": "objects",
+        "policyname": "note_quarantine_private",
+        "roles": "{public}",
+        "cmd": "ALL",
+        "expression_hash": "0bc51370b72857659a923affaa8e0749"
+      }
+    ],
+    "quarantine_queue": []
+  }
+}

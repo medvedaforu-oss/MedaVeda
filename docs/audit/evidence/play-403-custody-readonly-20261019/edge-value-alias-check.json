@@ -1,0 +1,7 @@
+{
+  "checked_at_utc": "2026-10-19T12:57:44.863778+00:00",
+  "catalog_secret_exists": true,
+  "other_edge_secret_names_with_identical_digest": [],
+  "secret_values_and_digests_omitted": true,
+  "vault_read_not_attempted": true
+}

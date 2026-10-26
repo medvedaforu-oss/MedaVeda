@@ -1,0 +1,8 @@
+{
+  "condition": "Admin-session read-only revalidation raised TimeoutError before worker submission",
+  "stopped_at_utc": "2026-10-19T05:24:27.824331+00:00",
+  "worker_write_attempted": false,
+  "worker_request_submitted": false,
+  "requeue_executed": true,
+  "conditional_rollback_authorized": true
+}

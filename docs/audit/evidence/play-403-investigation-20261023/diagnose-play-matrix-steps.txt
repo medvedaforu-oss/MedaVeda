@@ -1,0 +1,36 @@
+const steps = [
+        {
+          operation: "tokeninfo",
+          method: "GET",
+          endpoint: "https://oauth2.googleapis.com/tokeninfo",
+          url: `https://oauth2.googleapis.com/tokeninfo?${new URLSearchParams({
+            access_token: token
+          })}`
+        },
+        {
+          operation: "legacy_products",
+          method: "GET",
+          endpoint: `/applications/${pkg}/inappproducts?maxResults=1`,
+          url: `${base}/inappproducts?maxResults=1`
+        },
+        {
+          operation: "one_time_products",
+          method: "GET",
+          endpoint: `/applications/${pkg}/oneTimeProducts?pageSize=1`,
+          url: `${base}/oneTimeProducts?pageSize=1`
+        },
+        {
+          operation: "convert_region_prices",
+          method: "POST",
+          endpoint: `/applications/${pkg}/pricing:convertRegionPrices`,
+          url: `${base}/pricing:convertRegionPrices`,
+          body: {
+            price: {
+              currencyCode: "INR",
+              units: "1",
+              nanos: 0
+            }
+          }
+        }
+      ];
+      

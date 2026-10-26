@@ -1,0 +1,66 @@
+[
+  {
+    "additional_containment": {
+      "active_cron_function_checks": [
+        {
+          "schema": "public",
+          "name": "purge_old_analytics_events",
+          "source_md5": "360438606ad5f8fe38dba94ca7fe67b1",
+          "mentions_http": false,
+          "mentions_execute": false,
+          "mentions_catalog": false,
+          "qualified_function_calls": null
+        },
+        {
+          "schema": "public",
+          "name": "purge_old_payment_sessions",
+          "source_md5": "5a4f71791361c22b9246c1c8a920ea25",
+          "mentions_http": false,
+          "mentions_execute": false,
+          "mentions_catalog": false,
+          "qualified_function_calls": null
+        },
+        {
+          "schema": "public",
+          "name": "release_due_wallet_credits",
+          "source_md5": "b7011747abd841bda7daf7cec45b375e",
+          "mentions_http": false,
+          "mentions_execute": false,
+          "mentions_catalog": false,
+          "qualified_function_calls": [
+            "public.order_review_flags",
+            "public.accounts_share_network"
+          ]
+        }
+      ],
+      "http_trigger_inventory": null,
+      "pg_net_settings": [
+        {
+          "name": "pg_net.batch_size",
+          "setting": "200",
+          "unit": null
+        },
+        {
+          "name": "pg_net.database_name",
+          "setting": "postgres",
+          "unit": null
+        },
+        {
+          "name": "pg_net.ttl",
+          "setting": "6 hours",
+          "unit": null
+        },
+        {
+          "name": "pg_net.username",
+          "setting": "",
+          "unit": null
+        }
+      ],
+      "retained_http_responses": {
+        "count": 360,
+        "oldest": "2026-10-18T23:12:00.013048+00:00",
+        "newest": "2026-10-19T05:11:00.039016+00:00"
+      }
+    }
+  }
+]

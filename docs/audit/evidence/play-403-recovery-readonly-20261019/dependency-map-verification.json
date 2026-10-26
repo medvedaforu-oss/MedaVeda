@@ -1,0 +1,5 @@
+{
+  "matches_frozen_r2_import_map": true,
+  "sha256": "2bc0e9dd253eef6a0082429e959dc4fde1cfbb5676efa79b81fda9a1a60a6f84",
+  "production_dependency_pin": "npm:@supabase/supabase-js@2.118.0"
+}

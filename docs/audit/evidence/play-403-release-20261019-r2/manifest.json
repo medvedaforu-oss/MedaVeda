@@ -1,0 +1,45 @@
+{
+  "project_ref": "xbvenkfmesugrbjuufyw",
+  "function_slug": "sync-play-catalog",
+  "baseline_version": 2,
+  "verify_jwt": false,
+  "cli_version": "2.120.0",
+  "changed_sources": [
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/playCatalog.ts",
+    "supabase/functions/sync-play-catalog/index.ts"
+  ],
+  "files": {
+    "rollback": {
+      "supabase/config.toml": "a2fe93efd4ccacd028acec001a2ee76c13e217462be05aa5be2d15f7db295499",
+      "supabase/functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+      "supabase/functions/_shared/googlePlay.ts": "d38975020491c430fce7e9966d4c5c634e13ec0910c0611bf879e0acd5401bf7",
+      "supabase/functions/_shared/playCatalog.ts": "d34b3b9dedfab58122db564f5c55518f533a425b0daed2247cdcc5d0e32eba60",
+      "supabase/functions/_shared/supabaseAdmin.ts": "6ef7980900206f1ac91b07bf371f6794c17930d30c6c1a16a1097331f040b2da",
+      "supabase/functions/sync-play-catalog/index.ts": "49827cf0d467e8600eea095f2a87641b7263a2c1c372581fe8f2abe0ea9da225"
+    },
+    "candidate": {
+      "supabase/config.toml": "a2fe93efd4ccacd028acec001a2ee76c13e217462be05aa5be2d15f7db295499",
+      "supabase/functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+      "supabase/functions/_shared/googlePlay.ts": "1433bf1ff301aac2b604c1f0ddf665d1087ec34f832752ed1d756c5a9997789d",
+      "supabase/functions/_shared/playCatalog.ts": "fadaba0a53eb9d891ed5e10fdb6ebb586ee3c32ee15e18e57cbac4992fa4e95f",
+      "supabase/functions/_shared/supabaseAdmin.ts": "6ef7980900206f1ac91b07bf371f6794c17930d30c6c1a16a1097331f040b2da",
+      "supabase/functions/import_map.json": "2bc0e9dd253eef6a0082429e959dc4fde1cfbb5676efa79b81fda9a1a60a6f84",
+      "supabase/functions/sync-play-catalog/index.ts": "94f4b5eb2d474eae9cb1c9c23667f5c6589f65265b7af79691e9dc3259ced693"
+    }
+  },
+  "archive_sha256": {
+    "rollback-source.tar.gz": "c69ec2c511883d52ab63763d87688a844a725ea3257175b7d568819c40d5fac0",
+    "candidate-source.tar.gz": "266ee71e6613721f69380eca2fb9c36266edec791f2550fa8b10050d739f188e",
+    "production-v2.eszip.gz": "6edc0dd5527034f703c5d0288dbd86014d7d4ef8975dd5a5a15a8fc3f9b93a89"
+  },
+  "production_bundle_sha256": "a7e299ca54793bae4d83187599b2212849ac73ca34243d7fba2e86f735069a69",
+  "candidate_dependency_pin": "npm:@supabase/supabase-js@2.118.0 (observed in deployed bundle)",
+  "revision": "r2",
+  "supersedes_manifest_sha256": "e3758345d436479bbe9b0a29feafbfe07439acf63052ef1962758977b19ff1ba",
+  "retry_policy": "production v2: catalog 408 terminal; OAuth HTTP failures retryable",
+  "structured_details": "bounded allowlist; log only; no raw response fields",
+  "operator_manifest_sha256": "9160fb7feecfc657cc4999f444e134f4fee42da769a8ccc0525da68e1abcbbce",
+  "validation_sha256": "89582a8e3066c93a84f2b7647540f7bd355fb0d4c3a1ab2fcca21cbce33dad4d",
+  "patch_sha256": "20f1b261b592fa835bc797289ad43b7dd9e308275059de0710a5b35f75b8b4df"
+}

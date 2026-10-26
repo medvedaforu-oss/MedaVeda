@@ -1,0 +1,72 @@
+[
+  {
+    "jobid": 1,
+    "jobname": "purge-analytics-events-12m",
+    "active": true,
+    "schedule": "30 3 * * *",
+    "command_md5": "c51998ddfc958df2f8397143da1e086b",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  },
+  {
+    "jobid": 2,
+    "jobname": "purge-payment-sessions-30d",
+    "active": true,
+    "schedule": "40 3 * * *",
+    "command_md5": "7217093ac7addcd3fb03fd168f09045f",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  },
+  {
+    "jobid": 5,
+    "jobname": "release-wallet-credits",
+    "active": true,
+    "schedule": "*/15 * * * *",
+    "command_md5": "3f68216521a9351ec1ec629a45ea3653",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  },
+  {
+    "jobid": 8,
+    "jobname": "play-catalog-sync",
+    "active": false,
+    "schedule": "* * * * *",
+    "command_md5": "0695ecada930651e3ef5013398b86ee4",
+    "catalog_endpoint_reference": true,
+    "catalog_secret_name_reference": true,
+    "catalog_auth_header_reference": true
+  },
+  {
+    "jobid": 9,
+    "jobname": "play-consume",
+    "active": false,
+    "schedule": "* * * * *",
+    "command_md5": "798b0f87023a75f85c4da0e49e9d4501",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  },
+  {
+    "jobid": 10,
+    "jobname": "play-reconcile",
+    "active": false,
+    "schedule": "* * * * *",
+    "command_md5": "f7f614c7f54555445f07f51e0084c41e",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  },
+  {
+    "jobid": 11,
+    "jobname": "play-voids",
+    "active": false,
+    "schedule": "* * * * *",
+    "command_md5": "c0a5bf045ba423fc018e3ac80900ecdb",
+    "catalog_endpoint_reference": false,
+    "catalog_secret_name_reference": false,
+    "catalog_auth_header_reference": false
+  }
+]

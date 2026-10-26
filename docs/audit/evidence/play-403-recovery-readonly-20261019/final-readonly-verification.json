@@ -1,0 +1,159 @@
+{
+  "verified_at_utc": "2026-10-19T12:48:53.043698+00:00",
+  "mode": "candidate",
+  "metadata": {
+    "id": "f0e3d974-a8e8-436c-9063-6943e4b36a08",
+    "slug": "sync-play-catalog",
+    "status": "ACTIVE",
+    "version": 3,
+    "updated_at": 1792386900163,
+    "verify_jwt": false
+  },
+  "deployed_bundle_sha256": "25eeb7fc54b95113d93703376563d6d673f2bb4a3ce5f06655fbcd3265a1d23f",
+  "source_hashes_match": true,
+  "archive_hashes_match": true,
+  "queue_state_unchanged": true,
+  "cron_paused": true,
+  "all_queued_http": 0,
+  "active_catalog_sql": 0,
+  "preflight": [
+    {
+      "preflight": {
+        "captured_at": "2026-10-19T12:48:45.254106+00:00",
+        "catalog": [
+          {
+            "price_inr": 2,
+            "candidate_sku": "notes_2_00_v_d93112f242a94a9b83d5bb2c31ef11a3",
+            "purchase_option_id": "buy",
+            "status": "failed",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "updated_at": "2026-10-19T03:09:01.348036+00:00"
+          },
+          {
+            "price_inr": 1,
+            "candidate_sku": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+            "purchase_option_id": "buy",
+            "status": "pending",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "updated_at": "2026-10-19T05:15:54.54702+00:00"
+          }
+        ],
+        "cron": [
+          {
+            "jobid": 8,
+            "jobname": "play-catalog-sync",
+            "active": false,
+            "schedule": "* * * * *"
+          }
+        ],
+        "queued_catalog_http": 0,
+        "running_catalog_cron_sql": 0
+      }
+    }
+  ],
+  "monitoring": [
+    {
+      "monitoring": {
+        "captured_at": "2026-10-19T12:48:46.175115+00:00",
+        "jobs": [
+          {
+            "price_inr": 1,
+            "candidate_sku": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+            "purchase_option_id": "buy",
+            "status": "pending",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "next_attempt_at": "2026-10-19T05:15:54.54702+00:00",
+            "last_synced_at": null,
+            "updated_at": "2026-10-19T05:15:54.54702+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 2,
+            "candidate_sku": "notes_2_00_v_d93112f242a94a9b83d5bb2c31ef11a3",
+            "purchase_option_id": "buy",
+            "status": "failed",
+            "attempts": 1,
+            "lease_id": null,
+            "lease_until": null,
+            "next_attempt_at": "2026-10-19T03:09:31.348036+00:00",
+            "last_synced_at": null,
+            "updated_at": "2026-10-19T03:09:01.348036+00:00",
+            "safe_error": "Google Play API 403"
+          }
+        ],
+        "events": [
+          {
+            "price_inr": 1,
+            "event": "queued",
+            "created_at": "2026-10-19T05:15:54.54702+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 2,
+            "event": "failed",
+            "created_at": "2026-10-19T03:09:01.348036+00:00",
+            "safe_error": "Google Play API 403"
+          },
+          {
+            "price_inr": 2,
+            "event": "claimed",
+            "created_at": "2026-10-19T03:09:00.273244+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 2,
+            "event": "queued",
+            "created_at": "2026-10-19T03:08:53.433909+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 1,
+            "event": "failed",
+            "created_at": "2026-10-18T16:55:04.668537+00:00",
+            "safe_error": "Google Play API 403"
+          },
+          {
+            "price_inr": 1,
+            "event": "claimed",
+            "created_at": "2026-10-18T16:55:03.481+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 1,
+            "event": "queued",
+            "created_at": "2026-10-18T07:58:45.154098+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 1,
+            "event": "queued",
+            "created_at": "2026-10-18T03:31:08.394601+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 1,
+            "event": "queued",
+            "created_at": "2026-10-18T03:31:08.394601+00:00",
+            "safe_error": null
+          },
+          {
+            "price_inr": 1,
+            "event": "queued",
+            "created_at": "2026-10-18T03:31:08.394601+00:00",
+            "safe_error": null
+          }
+        ],
+        "tiers": null,
+        "http": null
+      }
+    }
+  ],
+  "production_writes": 0,
+  "function_invocations": 0
+}

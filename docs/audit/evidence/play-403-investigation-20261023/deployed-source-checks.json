@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "sync-play-catalog",
+    "sha256": "25eeb7fc54b95113d93703376563d6d673f2bb4a3ce5f06655fbcd3265a1d23f",
+    "bytes": 8231162,
+    "contains_convert_region_prices": true,
+    "contains_catalog_price_conversion_operation": true,
+    "contains_configured_regions_version": false,
+    "contains_tokeninfo": false,
+    "contains_one_time_products_operation": false,
+    "contains_subscriptions_list": false,
+    "contains_INR_49_request_literal": false
+  },
+  {
+    "slug": "diagnose-play-matrix",
+    "sha256": "a674e721d132083a4b6fda69cb9d72d78f3eb633f884ffa72c885d6c370bbd0e",
+    "bytes": 8223876,
+    "contains_convert_region_prices": true,
+    "contains_catalog_price_conversion_operation": true,
+    "contains_configured_regions_version": false,
+    "contains_tokeninfo": true,
+    "contains_one_time_products_operation": true,
+    "contains_subscriptions_list": false,
+    "contains_INR_49_request_literal": false
+  },
+  {
+    "slug": "diagnose-play-pricing",
+    "sha256": "6749b159e79728379c95bf238f2e32b92114f73d5e8c99e241e30dcaa0325c66",
+    "bytes": 8220385,
+    "contains_convert_region_prices": true,
+    "contains_catalog_price_conversion_operation": true,
+    "contains_configured_regions_version": false,
+    "contains_tokeninfo": false,
+    "contains_one_time_products_operation": false,
+    "contains_subscriptions_list": false,
+    "contains_INR_49_request_literal": false
+  }
+]

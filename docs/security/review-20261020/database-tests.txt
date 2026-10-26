@@ -1,0 +1,109 @@
+NOTICE:  database "ap_ci_96937" does not exist, skipping
+== build: stub + migrations + seed
+PASS  play_catalog_queue_regression_checks
+PASS  play_duplicate_settlement_checks
+PASS  f7_checks                            0FAIL,25PASS
+PASS  f8_checks                            0FAIL,17PASS
+PASS  batch1_checks                        0FAIL,78PASS
+PASS  batch3_checks                        0FAIL,30PASS
+PASS  batch3b_checks                       0FAIL,31PASS
+PASS  phase2_referral_wallet_checks        0FAIL,125PASS
+PASS  referral_limits_checks               0FAIL,65PASS
+PASS  referral_off_wallet_checks           0FAIL,19PASS
+PASS  high_phone_and_notes_checks          0FAIL,23PASS
+PASS  medium_db_checks                     0FAIL,34PASS
+PASS  low_grants_checks                    0FAIL,19PASS
+PASS  admin_mfa_checks                     0FAIL,23PASS
+PASS  ucb_checks                           0FAIL,28PASS
+PASS  verified_content_checks              0FAIL,53PASS
+PASS  account_deletion_checks
+PASS  critical_fixes_checks
+PASS  app_config_checks
+PASS  null_year_fallback_checks
+PASS  course_wide_browsing_checks
+PASS  content_publication_checks
+PASS  payment_queue_checks
+PASS  referral_switch_off_paths
+PASS  play_catalog_sync_checks
+PASS  play_payment_pg_checks
+PASS  play_entitlement_snapshot_checks
+== edge-function harnesses
+PASS  pdf-validation + upload-body + note-pdf-hash (9 cases)
+PASS F01 no underfunded grant across independent settlement sessions
+PASS F01 failure and expiry release wallet reservations
+PASS F02 concurrent orders reserve one discount; stale discounted capture is compensated without access
+PASS F10 parallel Play token settlements grant once
+PASS F10 parallel webhook/client Razorpay settlement grants once
+PASS F05 missing settlement receipt cannot return success
+PASS F05 authoritative capture timestamp persisted separately from receipt
+PASS F03 UCB wallet shortfall capture is reported despite refused entitlement
+PASS F03 verified capture for an unknown local order is recorded and compensated
+PASS F10 independent Play and Razorpay sessions
+PASS F10 mocked Google reporting scenarios
+PASS F10 mocked Play consumption failure
+PASS F10 missing completion time prevents Google call
+PASS F10 transient rejection records failed state
+PASS F10 retry then success
+PASS F10 F05 Google transactionTime is provider capture time, 25h before receipt
+PASS F10 permanent Google rejection stays failed
+PASS F10 Google amount mismatch rejected
+PASS F10 first partial refund
+PASS F10 second partial refund uses prior reported amount
+PASS F10 Google consumption failure recorded for retry after grant
+PASS unsigned recover denied: 401
+PASS wrong owner denied: 403
+PASS recovery limiter fails closed before provider lookup: 429, lookups=0
+PASS F04 eleventh refunded token checked despite ten permanent mock Google failures (11 unique tokens)
+PASS F03 full automatic compensation retries and queues Google refund with stable request id
+PASS F08 rejects missing both
+PASS F08 rejects blank URL
+PASS F08 rejects blank secret
+PASS F08 rejects invalid URL
+PASS F08 rejects short secret
+PASS F08 rejects duplicate URL rows
+PASS F08 rejects duplicate secret rows
+PASS F08 accepts valid configuration
+PASS successful Play consumption
+PASS failed consumption and retry
+PASS duplicate token/job does not consume twice
+PASS concurrent worker claim
+PASS expired lease reclaimed
+PASS retry limit parks failed job
+PASS Google API failure retried without false check timestamp
+PASS refunded purchase reverses entitlement
+PASS voided token deduplicated and reversed
+PASS void observed before settlement reverses later entitlement
+PASS stale lease cannot finish job
+PASS stale lease cannot advance void cursor
+PASS void API failure releases cursor for retry
+PASS direct verification consumption race
+PASS concurrent direct consume 409 confirmed with fresh Google read
+PASS Razorpay paths untouched
+PASS dedicated cron authentication
+PASS Play-only migration dependencies and SQL lease fences
+PASS Play Cron configuration, idempotency, authentication, and secret safety
+PASS worker auth, safe logs, Publisher retry parity and terminal OAuth permission failures across 20 cases
+PASS catalog failure persistence errors and expired leases return 503
+PASS play service-account diagnostic (43 cases; auth/MFA, exact match, safe output, read-only)
+PASS checkout distinguishes terminal catalog failures from pending/stale tiers and fails closed on lookup errors
+PASS real verification handler validates v2 receipt then settles and consumes
+PASS invalid ownership/token/SKU/option/refund/cancellation/pending/API/network cases cannot settle
+PASS failed settlement never consumes; duplicate conflicts; paid replay and concurrent consumption remain idempotent
+PASS declared native Razorpay creation denied before writes; website request retains Razorpay checkout
+PASS content URL publication handlers: 41 cases with real service-role SQL authorization; Auth/Storage mocked
+PASS rollout disabled keeps legacy checkout
+PASS enabled rejects missing version
+PASS enabled rejects old version
+PASS enabled rejects absent choice
+PASS enabled accepts supported choice
+PASS malformed config fails closed
+PASS disabled rollout still requires valid config
+PASS missing rollout fails closed
+PASS F07 production rejects test key with ALLOW_TEST_MODE=true
+PASS F07 unset marker rejects test key with ALLOW_TEST_MODE=true
+PASS F07 staging accepts intentional test key
+PASS F07 production accepts live key
+PASS F03 ambiguous Razorpay refund response recovered by stable marker without second POST
+PASS F06 1,500 mocked Google jobs drained in 41 minutes; 1575 calls, 1.5s modeled latency, 5% first-attempt failure
+PASS  webhook-harness (23 checks)
+ALL SUITES PASSED

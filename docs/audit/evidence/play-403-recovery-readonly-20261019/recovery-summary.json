@@ -1,0 +1,35 @@
+{
+  "status": "observed_idle_and_contained_external_caller_assurance_incomplete",
+  "production_writes": 0,
+  "function_invocations": 0,
+  "rollback_attempts": 0,
+  "current_version": 3,
+  "status_active": true,
+  "source_matches_frozen_r2": true,
+  "cron_job_8_paused": true,
+  "one_rupee_pending_attempts": 1,
+  "two_rupee_unchanged": true,
+  "all_http_requests_queued": 0,
+  "catalog_leases": 0,
+  "last_catalog_cron_start": "2026-10-19T05:11:00.019091+00:00",
+  "last_verified_at_utc": "2026-10-19T12:48:53.043698+00:00",
+  "log_window_start": "2026-10-19T05:11:32Z",
+  "log_window_end": "2026-10-19T12:46:43Z",
+  "observed_invocations": [
+    {
+      "method": "GET",
+      "status": 405
+    },
+    {
+      "method": "POST",
+      "status": 401
+    }
+  ],
+  "external_caller_inventory_user_answer": "Unknown",
+  "rollback_applied": false,
+  "prior_rollback_submission_phase": "unknown; only URLError retained",
+  "immediate_rollback_necessary_on_current_evidence": false,
+  "single_recommended_next_action": "Confirm external caller and cron-secret custody inventory while retaining paused v3; no production change before separate approval",
+  "google_403_root_cause": "unconfirmed",
+  "recorded_at_utc": "2026-10-19T12:50:39.705363+00:00"
+}
