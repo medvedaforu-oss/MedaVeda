@@ -115,7 +115,7 @@ export default function TestListScreen() {
               title={item.title}
               questionCount={item.questions?.length ?? 0}
               locked={false}
-              free={false}
+              free={true}
               onPress={() => handleTestPress(item)}
               downloaded={isDownloaded(item.id)}
               saving={savingId === item.id}

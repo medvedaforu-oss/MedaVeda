@@ -17,6 +17,7 @@ type Props = {
   title: string;
   questionCount: number;
   onPress: () => void;
+  // Compatibility only: MCQs are always free, regardless of legacy props.
   locked?: boolean;
   free?: boolean;
   // OFFLINE MODE - all optional, default to "no download affordance",
@@ -31,39 +32,33 @@ export default function TestCard({
   title,
   questionCount,
   onPress,
-  locked = false,
-  free = false,
   downloaded = false,
   saving = false,
   onDownloadPress,
   onRemoveDownloadPress,
 }: Props) {
-  const showDownloadAction = !locked && !!(onDownloadPress || onRemoveDownloadPress);
+  const showDownloadAction = !!(onDownloadPress || onRemoveDownloadPress);
 
   return (
     <TouchableOpacity
-      style={[styles.card, locked && styles.cardLocked]}
+      style={styles.card}
       onPress={onPress}
       activeOpacity={0.85}
     >
-      <Text style={styles.icon}>{locked ? "🔒" : free ? "🎁" : "📝"}</Text>
+      <Text style={styles.icon}>📝</Text>
 
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <Text style={[styles.title, locked && styles.titleLocked]}>
+          <Text style={styles.title}>
             {title}
           </Text>
-          {free && (
-            <View style={styles.freeBadge}>
-              <Text style={styles.freeBadgeText}>FREE</Text>
-            </View>
-          )}
+          <View style={styles.freeBadge}>
+            <Text style={styles.freeBadgeText}>FREE</Text>
+          </View>
         </View>
 
         <Text style={styles.subtitle}>
-          {locked
-            ? "Premium - Purchase required to unlock"
-            : downloaded
+          {downloaded
             ? `${questionCount} Questions - Available Offline`
             : `${questionCount} Questions - Tap to Start Test`}
         </Text>
@@ -105,15 +100,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     ...SHADOW.card,
-  },
-
-  cardLocked: {
-    backgroundColor: COLORS.surfaceMuted,
-    opacity: 0.85,
-  },
-
-  titleLocked: {
-    color: COLORS.subtitle,
   },
 
   icon: {
