@@ -1,5 +1,6 @@
 import { supabase } from "../config/supabase";
 import { toCamelCase } from "../utils/caseConvert";
+import { traceVideo } from "../utils/videoDiagnostics";
 import { Video } from "../types/video";
 
 export async function getVideosBySubject(subjectId: string): Promise<Video[]> {
@@ -13,6 +14,9 @@ export async function getVideosBySubject(subjectId: string): Promise<Video[]> {
     .eq("subject_id", subjectId)
     .eq("active", true);
   if (error) throw error;
+  for (const row of data ?? []) {
+    traceVideo("row.received", { raw: row.youtube_url, mapped: toCamelCase<Video>(row).youtubeUrl });
+  }
   return (data ?? []).map((row: any) => ({
     ...toCamelCase<Video>(row),
     subjectTitle: row.subjects?.title ?? "",

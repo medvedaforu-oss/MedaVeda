@@ -11,7 +11,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 
 import VideoCard from "../../components/VideoCard";
 import ErrorState from "../../components/ErrorState";
-import { openVideoLink } from "../../utils/videoLink";
+import { openVideo } from "../../utils/videoLink";
 import { RootStackParamList } from "../../types/navigation";
 import EmptyState from "../../components/EmptyState";
 import SearchBar from "../../components/SearchBar";
@@ -21,6 +21,7 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 
 import { fetchVideosBySubject, Video } from "../../services/videosService";
+import { traceVideo } from "../../utils/videoDiagnostics";
 import { logError } from "../../utils/logger";
 
 // MedVeda 2.0: Video Lectures are always free for every student, for
@@ -43,11 +44,14 @@ export default function VideosScreen() {
     setError(null);
     setVideos([]);
 
+    traceVideo("fetch.start");
     fetchVideosBySubject(subjectId)
       .then((data) => {
+        traceVideo("fetch.resolved", { count: data.length });
         if (isMounted) setVideos(data);
       })
       .catch((err) => {
+        traceVideo("fetch.failed");
         logError("Failed to load videos:", err);
         if (isMounted) {
           setError("Could not load videos. Check your internet connection and try again.");
@@ -84,6 +88,7 @@ export default function VideosScreen() {
         <ErrorState message={error} onRetry={() => setAttempt(value => value + 1)} />
       ) : (
         <FlatList
+          keyboardShouldPersistTaps="handled"
           data={filteredData}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
@@ -92,7 +97,11 @@ export default function VideosScreen() {
             <VideoCard
               title={item.title}
               locked={false}
-              onPress={() => void openVideoLink(item.youtubeUrl)}
+              onPressIn={() => traceVideo("card.press-in")}
+              onPress={() => {
+                traceVideo("card.press", { raw: item.youtubeUrl });
+                void openVideo(item.youtubeUrl);
+              }}
             />
           )}
           ListEmptyComponent={<EmptyState title="🔍 No Videos Found" />}

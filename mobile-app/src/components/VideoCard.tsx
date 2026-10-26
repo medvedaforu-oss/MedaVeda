@@ -15,17 +15,22 @@ import { SPACING } from "../theme/spacing";
 type Props = {
   title: string;
   onPress: () => void;
+  onPressIn?: () => void;
   locked?: boolean;
 };
 
 export default function VideoCard({
   title,
   onPress,
+  onPressIn,
   locked = false,
 }: Props) {
   return (
     <TouchableOpacity
       style={[styles.card, locked && styles.cardLocked]}
+      accessibilityRole="button"
+      accessibilityLabel={`Watch ${title}`}
+      onPressIn={onPressIn}
       onPress={onPress}
       activeOpacity={0.85}
     >
