@@ -1,0 +1,18 @@
+{
+  "before": {
+    "javascript_bytes": 6770010,
+    "gzip_bytes": 1674655
+  },
+  "after": {
+    "javascript_bytes": 6776242,
+    "gzip_bytes": 1676590
+  },
+  "notification_preferences_reads": {
+    "rows": 100,
+    "before": 100,
+    "after": 1,
+    "filtered_rows_before_and_after": 50
+  },
+  "source_asset_bytes": 5020939,
+  "device_startup_render_fps_memory": "not measured"
+}

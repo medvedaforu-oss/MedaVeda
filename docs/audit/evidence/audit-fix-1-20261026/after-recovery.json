@@ -1,0 +1,78 @@
+[
+  {
+    "check": "tsc",
+    "exit": 0
+  },
+  {
+    "check": "lint",
+    "exit": 0
+  },
+  {
+    "check": "checkout-html-selftest.mjs",
+    "exit": 0
+  },
+  {
+    "check": "deep-link-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "offline-download-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "offline-owner-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "password-policy-selftest.mjs",
+    "exit": 0
+  },
+  {
+    "check": "password-recovery.test.cjs",
+    "exit": 0
+  },
+  {
+    "check": "payment-provider-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "payment-routing-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "play-lifecycle-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "play-restore-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "purchases-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "quiz-hooks-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "readiness-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "same-project-build-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "staging-build-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "check": "verify-signature-selftest.js",
+    "exit": 0
+  },
+  {
+    "check": "video-link-selftest.cjs",
+    "exit": 0
+  }
+]
