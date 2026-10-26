@@ -73,7 +73,7 @@ module.exports = ({ config }) => {
       "-dontwarn io.sentry.**",
     ].join("\n");
   }
-  next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }]];
+  next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }], "./plugins/withOptionalSentry.cjs"];
 
   const cert = path.join(__dirname, "code-signing", "certificate.pem");
   if (fs.existsSync(cert)) {

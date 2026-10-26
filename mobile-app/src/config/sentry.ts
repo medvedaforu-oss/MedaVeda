@@ -33,6 +33,7 @@ Sentry.init({
   release: Application.applicationId && Application.nativeApplicationVersion
     ? `${Application.applicationId}@${Application.nativeApplicationVersion}+${Application.nativeBuildVersion ?? "0"}`
     : undefined,
+  dist: Application.nativeBuildVersion ?? undefined,
   sendDefaultPii: false,
   // Performance tracing is off: span names are full request URLs (REST filters carry user ids / emails).
   tracesSampleRate: 0,
