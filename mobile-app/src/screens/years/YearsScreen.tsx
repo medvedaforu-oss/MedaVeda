@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useCallback } from "react";
 import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 
 import { useRoute, useNavigation } from "@react-navigation/native";
@@ -11,7 +13,6 @@ import useCourseYear from "../../hooks/useCourseYear";
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
-import { logError } from "../../utils/logger";
 
 const MODE_LABEL: Record<string, string> = {
   notes: "📚 Notes",
@@ -31,25 +32,15 @@ export default function YearsScreen() {
 
   const { mode } = route.params;
 
-  const [years, setYears] = useState<Year[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const { ready, courseId } = useCourseYear();
 
+  const load = useCallback(() => fetchYears(courseId), [courseId]);
+  const { value: years, loading, error, retry } = useLoadResource<Year[]>(load, [], ready);
+
   // Browsing a year does not change the registered year in the profile.
   // RLS scopes catalogue visibility to the course; PDFs still need entitlement.
-  useEffect(() => {
-    if (!ready) return;
-    setLoading(true);
-    fetchYears(courseId)
-      .then(setYears)
-      .catch((err) => {
-        logError("Failed to load years:", err);
-        setError("Could not load years. Please try again.");
-      })
-      .finally(() => setLoading(false));
-  }, [ready, courseId]);
+
 
   return (
     <View style={styles.container}>
@@ -60,7 +51,7 @@ export default function YearsScreen() {
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.accent} style={{ marginTop: SPACING.xl }} />
       ) : error ? (
-        <Text style={styles.empty}>{error}</Text>
+        <LoadError content="years" retry={retry} />
       ) : (
         <FlatList
           data={years}

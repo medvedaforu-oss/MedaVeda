@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -36,9 +38,10 @@ export default function NotesScreen() {
   const { chapterId, chapterTitle, subjectId, subjectTitle, yearId, yearTitle, unlocked } =
     route.params;
 
+  const load = useCallback(() => fetchNotesByChapter(chapterId), [chapterId]);
+  const { value: notes, loading, error, retry } = useLoadResource<Note[]>(load, []);
+
   const [search, setSearch] = useState("");
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
   // Tracks which note is currently having a signed URL resolved, so we
   // can show a brief spinner instead of a UI that looks unresponsive
   // while createSignedUrl() round-trips to Supabase.
@@ -73,27 +76,7 @@ export default function NotesScreen() {
       : notes.slice(0, FREE_PDF_COUNT).map((note) => note.id)
   );
 
-  useEffect(() => {
-    let isMounted = true;
 
-    fetchNotesByChapter(chapterId)
-      .then((data) => {
-        if (isMounted) setNotes(data);
-      })
-      .catch((err) => {
-        logError("Failed to load notes:", err);
-        if (isMounted) {
-          Alert.alert("Error", "Could not load notes. Please try again.");
-        }
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [chapterId]);
 
   const filteredData = notes.filter((item) =>
     `${item.title} ${item.description ?? ""}`.toLowerCase().includes(search.toLowerCase())
@@ -176,6 +159,8 @@ export default function NotesScreen() {
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.accent} />
+      ) : error ? (
+        <LoadError content="notes" retry={retry} />
       ) : (
         <FlatList
           data={filteredData}

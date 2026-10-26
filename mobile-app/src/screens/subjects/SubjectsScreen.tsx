@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -16,7 +18,6 @@ import { fetchSubjectsByYear, Subject } from "../../services/subjectsService";
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
-import { logError } from "../../utils/logger";
 
 export default function SubjectsScreen() {
   const route = useRoute<any>();
@@ -24,16 +25,12 @@ export default function SubjectsScreen() {
 
   const { yearId, yearTitle, mode } = route.params;
 
-  const [search, setSearch] = useState("");
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [loading, setLoading] = useState(true);
+  const load = useCallback(() => fetchSubjectsByYear(yearId), [yearId]);
+  const { value: subjects, loading, error, retry } = useLoadResource<Subject[]>(load, []);
 
-  useEffect(() => {
-    fetchSubjectsByYear(yearId)
-      .then(setSubjects)
-      .catch((err) => logError("Failed to load subjects:", err))
-      .finally(() => setLoading(false));
-  }, [yearId]);
+  const [search, setSearch] = useState("");
+
+
 
   const filteredData = subjects.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase())
@@ -62,6 +59,8 @@ export default function SubjectsScreen() {
           color={COLORS.accent}
           style={{ marginTop: SPACING.xl }}
         />
+      ) : error ? (
+        <LoadError content="subjects" retry={retry} />
       ) : (
         <FlatList
           data={filteredData}

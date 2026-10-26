@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 
 import { useFocusEffect, useRoute, useNavigation } from "@react-navigation/native";
@@ -19,7 +20,6 @@ import { SPACING } from "../../theme/spacing";
 
 import { fetchQuizTestsBySubject, QuizTest } from "../../services/quizService";
 import useDownloads from "../../hooks/useDownloads";
-import { logError } from "../../utils/logger";
 
 // MedVeda 2.0: Quiz Tests are always free for every student, for the
 // whole Subject - only PDF Notes are paid (and chapter-scoped) content.
@@ -36,8 +36,9 @@ export default function TestListScreen() {
 
   const { subjectId, subjectTitle, yearId, yearTitle } = route.params;
 
-  const [tests, setTests] = useState<QuizTest[]>([]);
-  const [loading, setLoading] = useState(true);
+  const load = useCallback(() => fetchQuizTestsBySubject(subjectId), [subjectId]);
+  const { value: tests, loading, error, retry } = useLoadResource<QuizTest[]>(load, []);
+
   const [savingId, setSavingId] = useState<string | null>(null);
 
   const { isDownloaded, saveQuiz, remove: removeDownload, refresh } = useDownloads();
@@ -48,27 +49,7 @@ export default function TestListScreen() {
     }, [refresh])
   );
 
-  useEffect(() => {
-    let isMounted = true;
 
-    fetchQuizTestsBySubject(subjectId)
-      .then((data) => {
-        if (isMounted) setTests(data);
-      })
-      .catch((err) => {
-        logError("Failed to load quiz tests:", err);
-        if (isMounted) {
-          Alert.alert("Error", "Could not load tests. Please try again.");
-        }
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [subjectId]);
 
   function handleTestPress(item: QuizTest) {
     navigation.navigate("Quiz", {
@@ -104,6 +85,8 @@ export default function TestListScreen() {
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.accent} />
+      ) : error ? (
+        <LoadError content="tests" retry={retry} />
       ) : (
         <FlatList
           data={tests}

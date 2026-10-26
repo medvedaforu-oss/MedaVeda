@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -26,7 +28,6 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
-import { logError } from "../../utils/logger";
 
 export default function ChapterDetailsScreen() {
   const navigation = useNavigation<any>();
@@ -41,8 +42,9 @@ export default function ChapterDetailsScreen() {
     yearTitle,
   } = route.params;
 
-  const [buyOptions, setBuyOptions] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const load = useCallback(() => fetchBuyOptionsForChapter(chapterId, subjectId, yearId, getCourseYear().courseId), [chapterId, subjectId, yearId]);
+  const { value: buyOptions, loading, error, retry } = useLoadResource<Product[]>(load, []);
+
 
   const { isChapterOwned, refresh: refreshPurchases } = usePurchases();
   const { buy, purchasing } = usePurchase();
@@ -52,12 +54,7 @@ export default function ChapterDetailsScreen() {
   // Notes purchase panel below, not access to Videos/Quiz.
   const notesUnlocked = isChapterOwned({ id: chapterId, subjectId, yearId });
 
-  useEffect(() => {
-    fetchBuyOptionsForChapter(chapterId, subjectId, yearId, getCourseYear().courseId)
-      .then(setBuyOptions)
-      .catch((err) => logError("Failed to load buy options:", err))
-      .finally(() => setLoading(false));
-  }, [chapterId, subjectId, yearId]);
+
 
   // Powers the Home dashboard's "Continue Learning" / "Recently Viewed"
   // sections - purely local (AsyncStorage), no backend write involved.
@@ -137,6 +134,8 @@ export default function ChapterDetailsScreen() {
 
           {loading ? (
             <ActivityIndicator size="large" color={COLORS.accent} />
+          ) : error ? (
+            <LoadError content="chapter options" retry={retry} />
           ) : buyOptions.length === 0 ? (
             <Text style={styles.empty}>
               No purchase options set up for this chapter yet.

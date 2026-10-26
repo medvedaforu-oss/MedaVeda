@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import LoadError from "../../components/LoadError";
+import useLoadResource from "../../hooks/useLoadResource";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -18,7 +20,6 @@ import usePurchases from "../../hooks/usePurchases";
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
-import { logError } from "../../utils/logger";
 
 export default function ChaptersScreen() {
   const route = useRoute<any>();
@@ -26,18 +27,14 @@ export default function ChaptersScreen() {
 
   const { subjectId, subjectTitle, yearId, yearTitle, mode } = route.params;
 
+  const load = useCallback(() => fetchChaptersBySubject(subjectId), [subjectId]);
+  const { value: chapters, loading, error, retry } = useLoadResource<Chapter[]>(load, []);
+
   const [search, setSearch] = useState("");
-  const [chapters, setChapters] = useState<Chapter[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const { isChapterOwned, refresh: refreshPurchases } = usePurchases();
 
-  useEffect(() => {
-    fetchChaptersBySubject(subjectId)
-      .then(setChapters)
-      .catch((err) => logError("Failed to load chapters:", err))
-      .finally(() => setLoading(false));
-  }, [subjectId]);
+
 
   // Ownership can change after a purchase completes in the browser.
   useFocusEffect(
@@ -99,6 +96,8 @@ export default function ChaptersScreen() {
           color={COLORS.accent}
           style={{ marginTop: SPACING.xl }}
         />
+      ) : error ? (
+        <LoadError content="chapters" retry={retry} />
       ) : (
         <FlatList
           data={filteredData}
