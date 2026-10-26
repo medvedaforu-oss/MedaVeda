@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  Linking,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 
-import { useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 
 import VideoCard from "../../components/VideoCard";
+import ErrorState from "../../components/ErrorState";
+import { openVideoLink } from "../../utils/videoLink";
+import { RootStackParamList } from "../../types/navigation";
 import EmptyState from "../../components/EmptyState";
 import SearchBar from "../../components/SearchBar";
 
@@ -26,15 +27,21 @@ import { logError } from "../../utils/logger";
 // the whole Subject - only PDF Notes are paid (and chapter-scoped)
 // content. No purchase check, no lock icons, no Unlock panel here.
 export default function VideosScreen() {
-  const route = useRoute<any>();
+  const route = useRoute<RouteProp<RootStackParamList, "Videos">>();
   const { subjectId, subjectTitle } = route.params;
 
   const [search, setSearch] = useState("");
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
+
   useEffect(() => {
     let isMounted = true;
+    setLoading(true);
+    setError(null);
+    setVideos([]);
 
     fetchVideosBySubject(subjectId)
       .then((data) => {
@@ -43,7 +50,7 @@ export default function VideosScreen() {
       .catch((err) => {
         logError("Failed to load videos:", err);
         if (isMounted) {
-          Alert.alert("Error", "Could not load videos. Please try again.");
+          setError("Could not load videos. Check your internet connection and try again.");
         }
       })
       .finally(() => {
@@ -53,29 +60,12 @@ export default function VideosScreen() {
     return () => {
       isMounted = false;
     };
-  }, [subjectId]);
+  }, [subjectId, attempt]);
 
-  const filteredData = videos.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  // Same safe-open pattern as SideDrawer/ContactScreen's "Follow us" links:
-  // canOpenURL first (the AndroidQueries plugin makes this reliable on
-  // Android 11+), then openURL - which itself falls back to the browser
-  // when the YouTube app isn't installed, since this is a plain https URL.
-  async function handleVideoPress(item: Video) {
-    try {
-      const supported = await Linking.canOpenURL(item.youtubeUrl);
-      if (supported) {
-        await Linking.openURL(item.youtubeUrl);
-      } else {
-        Alert.alert("Error", "Could not open the link.");
-      }
-    } catch (error) {
-      logError("Failed to open video link", error);
-      Alert.alert("Error", "Could not open the link.");
-    }
-  }
+  const filteredData = useMemo(() => {
+    const query = search.toLowerCase();
+    return videos.filter((item) => (item.title ?? "").toLowerCase().includes(query));
+  }, [videos, search]);
 
   return (
     <View style={styles.container}>
@@ -90,6 +80,8 @@ export default function VideosScreen() {
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.accent} />
+      ) : error ? (
+        <ErrorState message={error} onRetry={() => setAttempt(value => value + 1)} />
       ) : (
         <FlatList
           data={filteredData}
@@ -100,7 +92,7 @@ export default function VideosScreen() {
             <VideoCard
               title={item.title}
               locked={false}
-              onPress={() => handleVideoPress(item)}
+              onPress={() => void openVideoLink(item.youtubeUrl)}
             />
           )}
           ListEmptyComponent={<EmptyState title="🔍 No Videos Found" />}
