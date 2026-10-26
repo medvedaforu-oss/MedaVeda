@@ -19,7 +19,10 @@ export default function ForgotPasswordScreen() {
     if (!identifier) return;
     setLoading(true);
     try { await requestPasswordReset(identifier); }
-    finally {
+    catch {
+      // A transport rejection must not escape the submit handler. Keep the
+      // same account-neutral response used for returned delivery errors.
+    } finally {
       // Same response for both a missing profile and a delivery failure.
       setLoading(false);
       Alert.alert("Check your email", "If an account matches these details, a password reset email has been sent.");
