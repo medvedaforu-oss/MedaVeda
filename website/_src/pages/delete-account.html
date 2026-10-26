@@ -8,12 +8,11 @@
 <p>If you can't sign in, email <a href="mailto:{{SUPPORT_EMAIL}}?subject=Delete%20my%20MedVeda%20account">{{SUPPORT_EMAIL}}</a> with the subject "Delete my MedVeda account" from your <strong>registered email address</strong>, and include your registered mobile number so we can verify it is you. We will confirm by reply once done.</p>
 <h2>What is deleted</h2>
 <ul><li>Your account and sign-in credentials</li><li>Profile details: name, email, mobile number, course and year</li><li>Quiz scores and learning/usage records linked to you</li><li>Push notification tokens</li><li>Referral records and your referral code</li><li>Your purchases and unlocked access. <strong>Deleting your account removes access to notes you bought and this can't be restored.</strong></li></ul>
-<p>Data stored only on your phone (downloads, offline database, recent activity) is removed when you uninstall the app or clear its storage.</p>
+<p>Successful sign-out/account deletion clears account-owned downloads and offline study data. Some local settings/history may remain; clear app storage or uninstall to remove those copies.</p>
 <h2>What may be retained, and why</h2>
 <p>Where the law requires it, we may keep limited transaction and accounting records (for example order and payment references, amounts and dates) for tax, audit and dispute purposes. Razorpay separately keeps its own payment records under its legal obligations. Retained records are not used for any other purpose. {{DELETION_RETENTION_CONFIRM}}</p>
-<!-- DB-01: Draft retention wording for owner/legal review. Publish only after purge operation is verified. -->
-<p>Fraud-prevention hashes of email addresses and phone numbers, together with the original account ID, are kept up to 180 days after account deletion, then deleted. The retention cutoff is 180 days from the first recorded purchase, so these records may be deleted sooner after account deletion. They are used to detect repeat first-purchase discounts and referral abuse.</p>
+<p>Fraud-prevention email/phone hashes, the original account ID and first-purchase timestamp have a retention cutoff of 180 days from the first recorded purchase, including when an account is later deleted. Deleting an account does not restart that period. We have not yet confirmed automatic cleanup of these records; deletion at that cutoff is not guaranteed while cleanup is pending.</p>
 <h2>How long it takes</h2>
-<p>In-app deletion is applied straight away. Email requests are completed {{DELETION_TIMELINE}}.</p>
+<p>Successful in-app deletion is applied straight away. Wait for the success screen; if deletion fails, retry or contact support. Email requests are completed {{DELETION_TIMELINE}}.</p>
 <p>Questions? See our <a href="/privacy-policy">Privacy Policy</a> or <a href="/contact">contact us</a>.</p>
 </div></section>

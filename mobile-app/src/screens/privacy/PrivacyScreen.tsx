@@ -1,6 +1,8 @@
+import { PRIVACY_INVENTORY } from "../../constants/privacyInventory";
 import React from "react";
 import {
   ScrollView,
+  View,
   Text,
   StyleSheet,
 } from "react-native";
@@ -32,20 +34,15 @@ export default function PrivacyScreen() {
       <Text style={styles.heading}>
         Information We Collect
       </Text>
+      {PRIVACY_INVENTORY.map(row => (
+        <View key={row.category} style={styles.inventoryRow}>
+          <Text style={styles.inventoryLabel}>{row.category}</Text>
+          <Text style={styles.body}>{row.data}{"\n"}Where: {row.provider}{"\n"}Purpose: {row.purpose}</Text>
+        </View>
+      ))}
       <Text style={styles.body}>
-        • Account: full name, email address, mobile number{"\n"}
-        • Study profile: course, academic year, referral code{"\n"}
-        • Purchases and payments: orders, products, amounts, payment
-        provider, Razorpay IDs or Google Play purchase identifiers,
-        billing status, refunds and Indian billing state when you choose
-        Razorpay{"\n"}
-        • Learning activity: quiz scores and usage events (screens, notes, videos, quizzes, searches){"\n"}
-        • Notifications: push token, device platform and your preferences{"\n"}
-        • Crash and error data: device model, OS and app version{"\n"}
-        • Anything you send to support{"\n\n"}
-        We do not access device location, contacts or photos. We ask
-        for your billing state only when required for an eligible
-        Razorpay purchase.
+        We do not access device location, contacts or photos. Payment providers
+        handle card, UPI PIN and bank credentials; we do not store them.
       </Text>
       <Text style={styles.heading}>
         How We Use Your Information
@@ -74,11 +71,11 @@ export default function PrivacyScreen() {
       </Text>
       <Text style={styles.body}>
         Service providers that process data on our behalf:{"\n"}
-        • Supabase – database, sign-in and file storage (hosted in Seoul, South Korea){"\n"}
+        • Supabase – database, sign-in, server functions and file storage (project region: Seoul, South Korea){"\n"}
         • Razorpay – payments{"\n"}
-        • Resend – account emails (verification and password reset){"\n"}
+        • Configured account-email provider (intended to be Resend; live setup requires verification){"\n"}
         • Sentry – crash and error reports{"\n"}
-        • Expo – push notifications{"\n"}
+        • Expo and device push providers – push notifications{"\n"}
         • Google Play – app distribution, Google Play Billing, purchase
         verification and any required payment-program reporting{"\n\n"}
         Each provider follows its own privacy policy. We may also
@@ -105,19 +102,14 @@ export default function PrivacyScreen() {
         Data Retention
       </Text>
       <Text style={styles.body}>
-        Account data is kept while your account is active. After you
-        delete your account, personal data is erased within 30 days,
-        except the fraud-prevention records described below and payment,
-        invoice and tax records, which we must keep
-        for up to 8 years under Indian tax and accounting laws.
-        {/* DB-01: Draft for owner/legal review; verify purge operation before publishing. */}
-        {"\n"}Fraud-prevention hashes of email addresses and phone numbers,
-        together with the original account ID, are kept up to 180 days after account deletion, then deleted.
-        The retention cutoff is 180 days from the first recorded purchase,
-        so these records may be deleted sooner after account deletion.
-        They are used to detect repeat first-purchase discounts and referral abuse.{"\n"}
-        Crash reports and usage data are kept for up to 12 months,
-        then deleted or kept only in anonymised, aggregated form.
+        Account data is kept while your account is active. Successful in-app
+        deletion erases account and linked study data and removes purchased access;
+        limited transaction, invoice and tax records may remain for up to 8 years
+        under the existing retention policy.{"\n"}
+        Fraud-prevention email/phone hashes, the original account ID and first-purchase timestamp have a retention cutoff of 180 days from the first recorded purchase, including when an account is later deleted. Deleting an account does not restart that period. We have not yet confirmed automatic cleanup of these records; deletion at that cutoff is not guaranteed while cleanup is pending.{"\n"}
+        The stated retention period for crash reports and usage data is up to
+        12 months. Enforcement in provider settings and cleanup jobs still
+        requires verification.
       </Text>
       <Text style={styles.heading}>
         Your Rights
@@ -132,8 +124,15 @@ export default function PrivacyScreen() {
         Delete Your Account
       </Text>
       <Text style={styles.body}>
-        Go to Settings → Delete Account in the app, or see the
-        steps online.
+        Sign in, open Settings → Delete Account, and confirm Delete. Wait for
+        success; if deletion fails, retry or contact support. Deletion removes
+        access to your purchases and cannot be undone.{"\n"}
+        If you cannot sign in, email {LEGAL.email} from your registered address
+        with the subject "Delete my MedVeda account" and your registered mobile
+        number. Email requests are handled within 30 days after identity checks.
+        Successful sign-out/deletion clears account-owned downloads and offline
+        study data. Some local settings/history may remain; clear app storage
+        or uninstall to remove those copies. See retained exceptions above.
       </Text>
       <WebLink label="Account & data deletion help" url={WEB.deleteAccount} />
       <Text style={styles.heading}>
@@ -187,6 +186,9 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     marginBottom: SPACING.sm,
   },
+
+  inventoryRow: { paddingVertical: SPACING.md, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  inventoryLabel: { fontWeight: "700", color: COLORS.accentLight, marginBottom: SPACING.sm },
 
   body: {
     fontSize: FONT.body,

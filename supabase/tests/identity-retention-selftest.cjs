@@ -36,8 +36,11 @@ for (const file of ['website/delete-account.html', 'website/privacy-policy.html'
   'website/_src/pages/delete-account.html', 'website/_src/pages/privacy-policy.html',
   'mobile-app/src/screens/privacy/PrivacyScreen.tsx']) {
   const text = read(file);
-  assert.match(text, /up to 180 days after account deletion, then deleted/);
-  assert.match(text, /owner\/legal review/);
+  assert.match(text, /180 days from the first recorded purchase/);
+  assert.match(text, /Deleting an account does not restart that period/);
+  assert.match(text, /not yet confirmed automatic cleanup/);
+  assert.match(text, /not guaranteed while cleanup is pending/);
+  assert.doesNotMatch(text, /up to 180 days after account deletion, then deleted/);
   assert.doesNotMatch(text, /Everything else linked to your account is deleted/);
 }
 console.log('PASS retention SQL cutoff/privileges/no scheduling/no invocation; boundary and anti-abuse model; account ID removal; disclosure consistency');
