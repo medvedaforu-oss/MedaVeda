@@ -186,8 +186,9 @@ details .ans { padding: 0 20px 18px; color: var(--text); }
 .field { margin-bottom: 16px; }
 .field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .95rem; }
 .pw-row { position: relative; }
-.pw-row input { width: 100%; padding: 12px 64px 12px 14px; font-size: 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font-family: inherit; }
-.pw-row input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(226,112,61,.25); }
+.pw-row input, #mfa-code, #mfa-factor { width: 100%; padding: 12px 64px 12px 14px; font-size: 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font-family: inherit; }
+#mfa-code, #mfa-factor { width: 100%; padding: 12px 14px; }
+.pw-row input:focus, #mfa-code:focus, #mfa-factor:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(226,112,61,.25); }
 .pw-toggle { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--primary); font-weight: 600; cursor: pointer; padding: 8px; font-family: inherit; }
 .strength { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 8px; }
 .strength > i { display: block; height: 100%; width: 0; background: #c0392b; transition: width .2s; }

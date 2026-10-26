@@ -7,6 +7,8 @@ import { FAQ } from "../_src/faq.mjs";
 import { ICONS } from "../_src/icons.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+// The mobile and website recovery flows use the same security controller.
+writeFileSync(join(root, "assets/js/recovery-flow.js"), readFileSync(join(root, "../mobile-app/src/features/auth/recoveryFlow.js")));
 const SITE = "https://www.medveda.in";
 const YEAR = new Date().getFullYear();
 const PLAY = "https://play.google.com/store/apps/details?id=in.medveda.app";

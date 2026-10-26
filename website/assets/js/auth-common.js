@@ -30,7 +30,7 @@ window.MedVedaAuth = (function () {
   }
 
   function show(id) {
-    var ids = ["state-loading", "state-success", "state-error", "state-empty", "state-form", "state-done"];
+    var ids = ["state-loading", "state-success", "state-error", "state-empty", "state-form", "state-mfa", "state-cleanup", "state-done"];
     ids.forEach(function (x) {
       var el = document.getElementById(x);
       if (el) el.classList.toggle("hidden", x !== id);

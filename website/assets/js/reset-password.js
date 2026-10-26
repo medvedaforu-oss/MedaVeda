@@ -4,6 +4,14 @@
   // Kept in memory only, to hand the session to the app on request.
   var originalFragment = f.raw;
   var client = null;
+  var recovery = null;
+  var busy = false;
+  var phase = "idle";
+  var otp = document.getElementById("mfa-code");
+  var factor = document.getElementById("mfa-factor");
+  var mfaSubmit = document.getElementById("mfa-submit");
+  var retry = document.getElementById("recovery-retry");
+  var cleanupRetry = document.getElementById("cleanup-retry");
 
   var form = document.getElementById("reset-form");
   var pw = document.getElementById("pw");
@@ -59,32 +67,91 @@
     A.show("state-error");
   }
 
-  function init() {
-    var appBtns = document.querySelectorAll("[data-open-app-with-token]");
-    appBtns.forEach(function (b) { b.addEventListener("click", openInApp); });
-
-    if (f.error || f.errorCode) { fail(A.friendlyError(f), false); return; }
-    if (f.type !== "recovery" || !f.accessToken || !f.refreshToken) { A.show("state-empty"); return; }
-
-    client = A.newClient();
-    if (!client) { fail("We couldn't load the secure password form. Check your connection and reload, or reset inside the app.", true); return; }
-
-    A.show("state-loading");
-    client.auth.setSession({ access_token: f.accessToken, refresh_token: f.refreshToken })
-      .then(function (res) {
-        if (res.error || !res.data || !res.data.session) {
-          fail("This reset link is invalid or has expired. Request a new one from the app.", false);
-          originalFragment = "";
-          return;
-        }
-        f.accessToken = f.refreshToken = null;
-        A.show("state-form");
-        pw.focus();
-      })
-      .catch(function () {
-        fail("We couldn't reach the server. Check your internet connection and reload this page, or reset inside the app.", true);
-      });
+  function forgetLink() {
+    originalFragment = f.raw = "";
+    f.accessToken = f.refreshToken = null;
   }
+
+  function render(state) {
+    phase = state.phase;
+    submit.disabled = busy || phase !== "ready";
+    if (phase === "mfa") {
+      pw.value = pw2.value = "";
+      factor.textContent = "";
+      state.factors.forEach(function (f) {
+        var option = document.createElement("option");
+        option.value = f.id; option.textContent = f.label;
+        factor.appendChild(option);
+      });
+      A.setText("mfa-error", "");
+      A.show("state-mfa"); otp.focus();
+    } else if (phase === "ready") {
+      A.show("state-form"); pw.focus();
+    } else if (phase === "cleanup") {
+      pw.value = pw2.value = ""; forgetLink(); A.show("state-cleanup");
+    } else if (phase === "done") {
+      pw.value = pw2.value = otp.value = ""; forgetLink(); A.show("state-done");
+    }
+  }
+
+  function showError(error) {
+    var state = recovery.snapshot();
+    phase = state.phase;
+    if (phase === "cleanup") { render(state); A.setText("cleanup-error", error.message); return; }
+    if (phase === "expired" || phase === "blocked") {
+      pw.value = pw2.value = otp.value = ""; forgetLink();
+      retry.classList.add("hidden"); fail(error.message, false); return;
+    }
+    if (phase === "mfa") {
+      render(state); A.setText("mfa-error", error.message); return;
+    }
+    if (phase === "ready") { errBox.textContent = error.message; return; }
+    fail(error.message, false); retry.classList.remove("hidden");
+  }
+
+  // A synchronous guard protects both UI clicks and programmatic submissions.
+  async function run(work) {
+    if (busy) return;
+    busy = true;
+    submit.disabled = mfaSubmit.disabled = retry.disabled = cleanupRetry.disabled = true;
+    try { render(await work()); }
+    catch (error) { showError(error); }
+    finally {
+      busy = false; otp.value = "";
+      submit.disabled = phase !== "ready";
+      mfaSubmit.disabled = retry.disabled = cleanupRetry.disabled = false;
+      submit.textContent = "Change password";
+    }
+  }
+
+  function start() {
+    return run(async function () {
+      A.show("state-loading"); retry.classList.add("hidden");
+      var state = await recovery.start(f);
+      f.accessToken = f.refreshToken = null; f.raw = "";
+      return state;
+    });
+  }
+
+  function init() {
+    document.querySelectorAll("[data-open-app-with-token]").forEach(function (b) { b.addEventListener("click", openInApp); });
+    if (f.error || f.errorCode) { forgetLink(); fail(A.friendlyError(f), false); return; }
+    if (f.type !== "recovery" || !f.accessToken || !f.refreshToken) { forgetLink(); A.show("state-empty"); return; }
+    client = A.newClient();
+    if (!client || !window.MedVedaRecovery) { fail("We couldn't load the secure password form. Check your connection and request a new reset link.", false); return; }
+    recovery = window.MedVedaRecovery.createRecoveryFlow(client.auth);
+    start();
+  }
+
+  document.getElementById("mfa-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (busy || phase !== "mfa") return;
+    var code = otp.value.trim();
+    A.setText("mfa-error", "");
+    run(function () { return recovery.verify(factor.value, code); });
+  });
+  retry.addEventListener("click", start);
+  cleanupRetry.addEventListener("click", function () { run(function () { return recovery.retryCleanup(); }); });
 
   wireToggles();
 
@@ -99,34 +166,15 @@
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (busy || phase !== "ready") return;
     errBox.textContent = "";
     if (!pw.value) { errBox.textContent = "New password is required"; pw.focus(); return; }
     if (!POLICY.test(pw.value)) { errBox.textContent = POLICY_MSG; pw.focus(); return; }
     if (!pw2.value) { errBox.textContent = "Confirm your new password"; pw2.focus(); return; }
     if (pw.value !== pw2.value) { errBox.textContent = "Passwords do not match"; pw2.focus(); return; }
 
-    submit.disabled = true; submit.textContent = "Saving…";
-    client.auth.updateUser({ password: pw.value })
-      .then(function (res) {
-        if (res.error) {
-          var m = (res.error.message || "").toLowerCase();
-          if (m.indexOf("same") !== -1) errBox.textContent = "Your new password must be different from your old one.";
-          else if (m.indexOf("weak") !== -1 || m.indexOf("password") !== -1) errBox.textContent = res.error.message;
-          else if (m.indexOf("session") !== -1 || m.indexOf("jwt") !== -1 || m.indexOf("expired") !== -1) { fail("Your reset session has expired. Request a new link from the app.", false); return; }
-          else errBox.textContent = "We couldn't change your password. Please try again.";
-          submit.disabled = false; submit.textContent = "Change password";
-          return;
-        }
-        pw.value = pw2.value = "";
-        return client.auth.signOut().catch(function () {}).then(function () {
-          originalFragment = "";
-          A.show("state-done");
-        });
-      })
-      .catch(function () {
-        errBox.textContent = "Network error. Check your connection and try again.";
-        submit.disabled = false; submit.textContent = "Change password";
-      });
+    submit.textContent = "Saving…";
+    run(function () { return recovery.updatePassword(pw.value); });
   });
 
   init();

@@ -1,4 +1,5 @@
 import { supabase } from "../../config/supabase";
+import { createRecoveryFlow, recoveryError } from "./recoveryFlow";
 import type { AuthIdentifier } from "./identity";
 
 // BUG FIX ("reset link opens the app but lands on whatever screen was
@@ -87,8 +88,8 @@ export function parseRecoveryTokensFromUrl(
   if (hashIndex === -1) return null;
   const params = new URLSearchParams(url.slice(hashIndex + 1));
   const errorDescription = params.get("error_description");
-  if (errorDescription) {
-    throw new Error(errorDescription.replace(/\+/g, " "));
+  if (errorDescription || params.get("error") || params.get("error_code")) {
+    throw recoveryError("recovery_expired");
   }
   if (params.get("type") !== "recovery") return null;
   const accessToken = params.get("access_token");
@@ -97,22 +98,9 @@ export function parseRecoveryTokensFromUrl(
   return { accessToken, refreshToken };
 }
 
-// Establishes the short-lived recovery session from the email link, then
-// immediately sets the new password. Throws with a user-presentable
-// message if the link is missing/malformed/expired.
-export async function completePasswordReset(url: string, newPassword: string) {
-  const tokens = parseRecoveryTokensFromUrl(url);
-  if (!tokens) {
-    throw new Error("This reset link is invalid or has expired. Please request a new one.");
-  }
-  const { error: sessionError } = await supabase.auth.setSession({
-    access_token: tokens.accessToken,
-    refresh_token: tokens.refreshToken,
-  });
-  if (sessionError) throw sessionError;
-
-  const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
-  if (updateError) throw updateError;
+// Keep one controller/client for the entire recovery, including TOTP verification.
+export function createPasswordRecovery() {
+  return createRecoveryFlow(supabase.auth);
 }
 
 // shouldCreateUser: false - OTP login is only for people who already have
