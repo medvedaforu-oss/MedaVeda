@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { supabase } from "../config/supabase";
-import { isCategoryEnabled } from "../utils/notificationPreferences";
+import { getNotificationPreferences } from "../utils/notificationPreferences";
 import { logDebug } from "../utils/logger";
 
 export type NotificationType =
@@ -45,8 +45,8 @@ export async function fetchNotifications(): Promise<AppNotification[]> {
     // NOTIFICATIONS SYSTEM - respect per-category mute preferences. A
     // student who turned off "Offers" should never see them here, in
     // the unread count, or the bell badge.
-    const enabledFlags = await Promise.all(all.map((item) => isCategoryEnabled(item.type)));
-    return all.filter((_, i) => enabledFlags[i]);
+    const preferences = await getNotificationPreferences();
+    return all.filter(item => !item.type || preferences[item.type] !== false);
   } catch (error) {
     logDebug("fetchNotifications: no notifications available yet", error);
     return [];
