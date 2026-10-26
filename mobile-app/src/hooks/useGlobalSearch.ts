@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Platform } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
@@ -7,9 +7,11 @@ import useDownloads from "./useDownloads";
 import useNetworkStatus from "./useNetworkStatus";
 import usePurchases from "./usePurchases";
 import usePurchase from "./usePurchase";
+import useCourseYear from "./useCourseYear";
 
 import {
   getSearchIndex,
+  getCachedSearchIndex,
   applyOwnership,
   searchResults,
   getDiscoverySections,
@@ -30,11 +32,14 @@ export default function useGlobalSearch() {
 
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
+  const isSearching = debouncedQuery.trim().length > 0;
+  const { ready, courseId } = useCourseYear();
+  const loadRequest = useRef({ sequence: 0 });
 
   const [filters, setFilters] = useState<SearchFilters>(DEFAULT_FILTERS);
 
   const [index, setIndex] = useState<SearchIndex | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,23 +55,42 @@ export default function useGlobalSearch() {
   const downloadedIds = useMemo(() => new Set(downloads.map((d) => d.id)), [downloads]);
 
   const loadIndex = useCallback(async (forceRefresh = false) => {
+    const request = ++loadRequest.current.sequence;
     try {
       setError(null);
       const built = await getSearchIndex(forceRefresh);
-      setIndex(built);
+      if (request === loadRequest.current.sequence) setIndex(built);
     } catch (err) {
       logError("Failed to load search index:", err);
-      setError("Couldn't load search content. Pull down to try again.");
+      if (request === loadRequest.current.sequence) setError("Couldn't load search content. Pull down to try again.");
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      if (request === loadRequest.current.sequence) { setLoading(false); setRefreshing(false); }
     }
   }, []);
 
   useEffect(() => {
-    loadIndex();
+    const requests = loadRequest.current;
+    const request = ++requests.sequence;
+    setIndex(null);
+    setLoading(false);
+    setError(null);
+    if (ready) void getCachedSearchIndex().then(cached => {
+      if (request === loadRequest.current.sequence) setIndex(cached);
+    }).catch(() => {});
+    return () => { requests.sequence++; };
+  }, [ready, courseId]);
+
+  useEffect(() => {
     getRecentSearches().then(setRecentSearches);
-  }, [loadIndex]);
+  }, []);
+
+  // Opening Search only reads a warm cache. The first non-empty query (or
+  // explicit refresh) pays for the nine-source catalog build.
+  useEffect(() => {
+    if (!ready || !isSearching || index) return;
+    setLoading(true);
+    void loadIndex();
+  }, [ready, courseId, isSearching, index, loadIndex]);
 
   // Ownership/downloads can change after a purchase or a new download
   // completes elsewhere in the app - refresh both every time Search
@@ -82,8 +106,6 @@ export default function useGlobalSearch() {
     if (!index) return [];
     return applyOwnership(index, ownedScopes, downloadedIds);
   }, [index, ownedScopes, downloadedIds]);
-
-  const isSearching = debouncedQuery.trim().length > 0;
 
   const sections: SearchSection[] = useMemo(() => {
     if (!index) return [];
@@ -114,6 +136,7 @@ export default function useGlobalSearch() {
   );
 
   async function onRefresh() {
+    if (!ready) return;
     setRefreshing(true);
     await loadIndex(true);
   }

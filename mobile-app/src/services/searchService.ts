@@ -1,17 +1,18 @@
-import { getActiveYears } from "../repositories/yearsRepository";
-import { getAllActiveSubjects } from "../repositories/subjectsRepository";
-import { getActiveChapters } from "../repositories/chaptersRepository";
-import { getAllActiveNotes } from "../repositories/notesRepository";
-import { getAllActiveVideos } from "../repositories/videosRepository";
-import { getAllActiveQuizTestsLite } from "../repositories/quizRepository";
-import { getAllActiveProducts } from "../repositories/productsRepository";
+import { getSearchCatalogRows } from "../repositories/searchCatalogRepository";
 import { fetchMyPurchases, isChapterUnlocked, isProductOwned } from "./purchasesService";
 import { fetchNotifications } from "./notificationsService";
-import { fetchWithCacheFallback } from "../utils/localCache";
+import { fetchWithCacheFallback, readCache } from "../utils/localCache";
 import { getRecentChapters } from "../utils/recentActivity";
 import { getCourseYear, onCourseChange } from "./courseState";
 import { scoreMatch, getMatchRanges, byRelevance } from "../utils/textMatch";
 import { Chapter } from "../types/chapter";
+import { Year } from "../types/year";
+import { Subject } from "../types/subject";
+import { Note } from "../types/note";
+import { Video } from "../types/video";
+import { QuizTest } from "../types/quiz";
+import { Product } from "../types/product";
+import { getCurrentUser } from "./authState";
 import { OwnedScope } from "../types/purchase";
 import {
   SearchIndex,
@@ -26,9 +27,9 @@ import {
 // Global Search System - service layer.
 //
 // Architecture: the whole catalog (years/subjects/chapters/notes/videos/
-// quizzes/products) is fetched ONCE per session into an in-memory index,
-// cached to AsyncStorage for instant cold-start + offline search (see
-// utils/localCache's fetchWithCacheFallback - same "network first, cached
+// quizzes/products) is fetched lazily on the first query into an in-memory index,
+// reused for 15 minutes and cached per account/course for offline search (see
+// utils/localCache's fetchWithCacheFallback - the same network-first, cached
 // fallback" strategy every other list screen already uses). Every
 // keystroke after that re-scores the already-loaded index in JS - zero
 // additional Supabase queries per search, which is both the "optimized
@@ -51,8 +52,10 @@ const SECTION_ORDER: SearchResultType[] = [
 ];
 
 let memoryIndex: SearchIndex | null = null;
-let memoryIndexCourseId: string | undefined;
-const MEMORY_TTL_MS = 2 * 60 * 1000; // avoid refetching 8 queries every time the Search screen remounts within the same short session
+let memoryScope: string | undefined;
+let inFlight: { scope: string; promise: Promise<SearchIndex> } | null = null;
+const MEMORY_TTL_MS = 15 * 60 * 1000;
+const indexScope = () => JSON.stringify([getCurrentUser()?.id ?? "anonymous", getCourseYear().courseId ?? "all"]);
 
 function toEpoch(value: unknown): number | undefined {
   if (!value) return undefined;
@@ -65,18 +68,21 @@ function toEpoch(value: unknown): number | undefined {
 // dropped whenever the course changes, so results never mix courses.
 onCourseChange(() => {
   memoryIndex = null;
+  memoryScope = undefined;
+  inFlight = null;
 });
 
 async function buildIndex(courseId?: string): Promise<SearchIndex> {
   const [years, subjects, chapters, notes, videos, quizzesLite, products, purchases, notifications] =
     await Promise.all([
-      getActiveYears(courseId),
-      getAllActiveSubjects(courseId),
-      getActiveChapters(2000, courseId),
-      getAllActiveNotes(courseId),
-      getAllActiveVideos(courseId),
-      getAllActiveQuizTestsLite(courseId),
-      getAllActiveProducts(courseId),
+      // Nine parallel sources; the seven catalog scans use 250-row pages.
+      getSearchCatalogRows<Year>("years", courseId),
+      getSearchCatalogRows<Subject>("subjects", courseId),
+      getSearchCatalogRows<Chapter>("chapters", courseId),
+      getSearchCatalogRows<Note>("notes", courseId),
+      getSearchCatalogRows<Video>("videos", courseId),
+      getSearchCatalogRows<Omit<QuizTest, "questions">>("quiz_tests", courseId),
+      getSearchCatalogRows<Product>("products", courseId),
       fetchMyPurchases().catch(() => []),
       fetchNotifications().catch(() => []),
     ]);
@@ -184,22 +190,34 @@ async function buildIndex(courseId?: string): Promise<SearchIndex> {
 
 /** Fetches (or reuses) the full search index. `forceRefresh` skips both
  * the in-memory and AsyncStorage cache - used by pull-to-refresh. */
+export async function getCachedSearchIndex(): Promise<SearchIndex | null> {
+  const scope = indexScope();
+  if (memoryIndex && memoryScope === scope && Date.now() - memoryIndex.builtAt < MEMORY_TTL_MS) return memoryIndex;
+  const cached = await readCache<SearchIndex>(`search:index:v2:${scope}`);
+  if (scope !== indexScope() || !cached || Date.now() - cached.builtAt >= MEMORY_TTL_MS) return null;
+  memoryIndex = cached;
+  memoryScope = scope;
+  return cached;
+}
+
 export async function getSearchIndex(forceRefresh = false): Promise<SearchIndex> {
+  const scope = indexScope();
+  if (inFlight?.scope === scope) return inFlight.promise;
   const courseId = getCourseYear().courseId;
-  if (
-    !forceRefresh &&
-    memoryIndex &&
-    memoryIndexCourseId === courseId &&
-    Date.now() - memoryIndex.builtAt < MEMORY_TTL_MS
-  ) {
-    return memoryIndex;
-  }
-  const index = await fetchWithCacheFallback(`search:index:${courseId ?? "all"}`, () =>
-    buildIndex(courseId)
-  );
-  memoryIndex = index;
-  memoryIndexCourseId = courseId;
-  return index;
+  const promise = (async () => {
+    if (!forceRefresh) {
+      const cached = await getCachedSearchIndex();
+      if (cached) return cached;
+    }
+    const index = await fetchWithCacheFallback(`search:index:v2:${scope}`, () => buildIndex(courseId));
+    if (scope !== indexScope()) throw new Error("Search account or course changed");
+    memoryIndex = index;
+    memoryScope = scope;
+    return index;
+  })();
+  inFlight = { scope, promise };
+  try { return await promise; }
+  finally { if (inFlight?.promise === promise) inFlight = null; }
 }
 
 function flatten(index: SearchIndex): SearchResult[] {
