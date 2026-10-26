@@ -1,46 +1,42 @@
 import { Linking } from "react-native";
 
-// Module-level (not React state) so it survives regardless of which
-// screen is currently mounted. Registered once, at app root
-// (AppNavigator), NOT inside ResetPasswordScreen.
-//
-// WHY THIS EXISTS: if ResetPasswordScreen registered its own
-// Linking.addEventListener, it would miss a "warm start" tap - i.e. the
-// app already running in the background when the user taps the email
-// link. In that case React Navigation's own linking config reacts to the
-// same "url" event and navigates to ResetPasswordScreen, but that
-// navigation (and the screen's mount + its own listener registration)
-// happens only AFTER the event has already fired and passed - so a
-// listener registered inside the screen itself never actually catches
-// it, and the recovery token is silently lost.
-//
-// Registering the listener once at the root instead means it's already
-// alive for the app's entire lifetime, so it always catches the event
-// (synchronously, before React re-renders/mounts the new screen) and
-// simply stores the URL for whichever screen asks for it afterward.
 let lastUrl: string | null = null;
-let initialized = false;
+let revision = 0;
 
-export function initDeepLinkListener() {
-  if (initialized) return;
-  initialized = true;
+function remember(url: string | null) {
+  revision++;
+  // Only retain recovery links; never keep unrelated URLs in the auth store.
+  lastUrl = url?.startsWith("medveda://reset-password") ? url : null;
+}
 
-  Linking.getInitialURL().then((url) => {
-    if (url) lastUrl = url;
+/** React Navigation must await storage before mounting the recovery screen. */
+export async function getInitialDeepLinkUrl(): Promise<string | null> {
+  const startedAt = revision;
+  try {
+    const url = await Linking.getInitialURL();
+    // A warm link or cleanup that arrived during the read takes precedence.
+    if (startedAt !== revision) return lastUrl;
+    remember(url);
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+/** Store each warm link synchronously before navigation handles it. */
+export function subscribeDeepLinks(listener: (url: string) => void): () => void {
+  const subscription = Linking.addEventListener("url", ({ url }) => {
+    remember(url);
+    listener(url);
   });
-
-  Linking.addEventListener("url", ({ url }) => {
-    lastUrl = url;
-  });
+  return () => subscription.remove();
 }
 
 export function getLastDeepLinkUrl(): string | null {
   return lastUrl;
 }
 
-// Called after a successful password reset so a stale (already-used)
-// recovery URL can't be picked up again if this screen is somehow
-// revisited.
 export function clearLastDeepLinkUrl() {
+  revision++;
   lastUrl = null;
 }

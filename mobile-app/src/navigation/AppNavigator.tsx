@@ -14,7 +14,7 @@ import {
 } from "../services/studyReminderService";
 import usePreventScreenshot from "../hooks/usePreventScreenshot";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { initDeepLinkListener } from "../features/auth/deepLinkStore";
+import { getInitialDeepLinkUrl, subscribeDeepLinks } from "../features/auth/deepLinkStore";
 
 import SplashScreen from "../screens/auth/SplashScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
@@ -83,6 +83,8 @@ const navigationTheme = {
 // ("medveda") or none of these deep links will open the app.
 const linking = {
   prefixes: ["medveda://"],
+  getInitialURL: getInitialDeepLinkUrl,
+  subscribe: subscribeDeepLinks,
   config: {
     screens: {
       ResetPassword: "reset-password",
@@ -96,14 +98,6 @@ export default function AppNavigator() {
   // a safety net for Android dropping exact alarms after a device
   // reboot - the OS otherwise keeps firing the schedule on its own).
   useEffect(() => {
-    // Must run first, and before any Linking.getInitialURL() call
-    // elsewhere (e.g. SplashScreen), so the "url" event listener is
-    // already registered by the time a warm-start deep link tap fires.
-    // This was defined in deepLinkStore.ts but never actually called
-    // anywhere - so lastUrl stayed null forever, and ResetPasswordScreen
-    // could never recover the recovery token.
-    initDeepLinkListener();
-
     setupNotificationChannel();
     restoreStudyReminderOnLaunch();
   }, []);
