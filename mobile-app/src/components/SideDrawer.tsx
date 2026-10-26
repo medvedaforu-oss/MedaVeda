@@ -38,13 +38,9 @@ import { logError } from "../utils/logger";
 
 const PANEL_WIDTH = Math.min(300, Dimensions.get("window").width * 0.8);
 
-// Facebook isn't live yet - kept as `null` so the icon still shows
-// (consistent row) but tapping surfaces a "Coming Soon" message instead
-// of a dead link. Fill in the real URL here once that account is
-// created.
-const SOCIAL_LINKS: Record<string, string | null> = {
+// Only configured contact channels are shown.
+const SOCIAL_LINKS: Record<string, string> = {
   instagram: "https://www.instagram.com/_ashwiniii.21?igsh=Ym02c3NlOHZlbms1",
-  facebook: null,
   youtube: "https://youtube.com/@thedisturbingmedico?si=ZKSurB8bCVvLK42U",
   telegram: "https://t.me/medveda_26",
   whatsapp: "https://wa.me/917620616068",
@@ -152,11 +148,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
     }
   }
 
-  async function openSocial(url: string | null) {
-    if (!url) {
-      Alert.alert("Coming Soon", "We'll be live here soon. Stay tuned!");
-      return;
-    }
+  async function openSocial(url: string) {
     try {
       const supported = await Linking.canOpenURL(url);
       if (supported) {
@@ -221,11 +213,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
                 color="#E1306C"
                 onPress={() => openSocial(SOCIAL_LINKS.instagram)}
               />
-              <SocialButton
-                icon="facebook"
-                color="#1877F2"
-                onPress={() => openSocial(SOCIAL_LINKS.facebook)}
-              />
+
               <SocialButton
                 icon="youtube-play"
                 color="#FF0000"

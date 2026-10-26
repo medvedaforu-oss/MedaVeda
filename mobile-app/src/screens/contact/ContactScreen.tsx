@@ -31,11 +31,9 @@ import { RADIUS } from "../../theme/radius";
 
 const SUPPORT_EMAIL = LEGAL.email;
 
-// Same accounts/links as SideDrawer's "Follow us" row - keep both in sync.
-// null = not live yet, tapping shows "Coming Soon" instead of a dead link.
-const SOCIAL_LINKS: Record<string, string | null> = {
+// Only configured contact channels are shown.
+const SOCIAL_LINKS: Record<string, string> = {
   instagram: "https://www.instagram.com/_ashwiniii.21?igsh=Ym02c3NlOHZlbms1",
-  facebook: null,
   youtube: "https://youtube.com/@thedisturbingmedico?si=ZKSurB8bCVvLK42U",
   telegram: "https://t.me/medveda_26",
   whatsapp: LEGAL.whatsappUrl,
@@ -96,11 +94,7 @@ export default function ContactScreen() {
     }
   };
 
-  const openSocial = async (url: string | null) => {
-    if (!url) {
-      Alert.alert("Coming Soon", "We'll be live here soon. Stay tuned!");
-      return;
-    }
+  const openSocial = async (url: string) => {
     try {
       const supported = await Linking.canOpenURL(url);
       if (supported) {
@@ -216,11 +210,7 @@ export default function ContactScreen() {
             color="#E1306C"
             onPress={() => openSocial(SOCIAL_LINKS.instagram)}
           />
-          <SocialButton
-            icon="facebook"
-            color="#1877F2"
-            onPress={() => openSocial(SOCIAL_LINKS.facebook)}
-          />
+
           <SocialButton
             icon="youtube-play"
             color="#FF0000"
