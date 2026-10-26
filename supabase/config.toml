@@ -37,6 +37,11 @@ verify_jwt = false
 [functions.diagnose-play-pricing]
 verify_jwt = true
 
+# Browser/proxy diagnostic: handler verifies Auth, admin membership and mandatory
+# aal2 itself; handler-level errors and OPTIONS retain CORS headers.
+[functions.diagnose-play-matrix]
+verify_jwt = false
+
 [functions.attach-external-token]
 verify_jwt = true
 

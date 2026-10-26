@@ -12,6 +12,7 @@
 //   gone the call reports success.
 import { handleOptions, jsonResponse } from "../_shared/cors.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
+import { clientIp, withinLimit } from "../_shared/rateLimit.ts";
 
 const RETAINED_NOTE =
   "Payment, order and invoice records are retained (without your personal details) for up to 8 years as required by Indian tax and accounting laws.";
@@ -33,6 +34,14 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return jsonResponse({ ok: false, error: "Please sign in and try again." }, 401);
   }
 
+  // Bound authentication/deletion work on this endpoint alone. The shared
+  // limiter hashes keys before storage; no raw IP is persisted here.
+  if (!await withinLimit(`delete-account:ip:${clientIp(req)}`, 20, 900, true)) {
+    const response = jsonResponse({ ok: false, error: "Too many deletion requests. Please try again in 15 minutes." }, 429);
+    response.headers.set("Retry-After", "900");
+    return response;
+  }
+
   const { data, error: userError } = await supabaseAdmin.auth.getUser(token);
   if (userError || !data.user) {
     // A retry after the auth user was already removed: the data is gone too
@@ -43,6 +52,14 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return jsonResponse({ ok: false, error: "Your session has expired. Please sign in again." }, 401);
   }
   const userId = data.user.id;
+
+  // Three attempts per account per 15 minutes allows partial-delete retries,
+  // while a limiter failure stops before either destructive operation.
+  if (!await withinLimit(`delete-account:user:${userId}`, 3, 900, true)) {
+    const response = jsonResponse({ ok: false, error: "Too many deletion attempts. Please try again in 15 minutes." }, 429);
+    response.headers.set("Retry-After", "900");
+    return response;
+  }
 
   const { data: erased, error: eraseError } = await supabaseAdmin.rpc("erase_user_data", { p_user_id: userId });
   if (eraseError) {
