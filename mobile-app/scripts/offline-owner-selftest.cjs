@@ -4,13 +4,13 @@ const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const ts = require('../node_modules/typescript');
 const store = new Map([['medveda:offline-owner','first']]);
-let authChanged, failPurge = true;
+let authChanged, failPurge = true, signOutError = null, registrations = 0;
 const mocks = {
   '../config/supabase':{supabase:{auth:{getSession:async()=>({data:{session:null}}),
-    onAuthStateChange:fn=>{authChanged=fn;}, signOut:async()=>{}},
+    onAuthStateChange:fn=>{authChanged=fn;}, signOut:async()=>({ error: signOutError })},
     from:()=>({select(){return this;},eq(){return this;},maybeSingle:async()=>({data:{blocked:false}})})}},
   '@react-native-async-storage/async-storage':{__esModule:true,default:{getItem:async k=>store.get(k),setItem:async(k,v)=>store.set(k,v),removeItem:async k=>store.delete(k)}},
-  './pushNotifications':{registerForPushNotifications(){},unregisterCurrentDeviceToken:async()=>{}},
+  './pushNotifications':{registerForPushNotifications(){registrations++;},unregisterCurrentDeviceToken:async()=>{}},
   '../utils/logger':{logDebug(){}},
   '../utils/downloadManager':{clearAllDownloads:async()=>{if(failPurge)throw new Error('simulated storage failure');}},
 };
@@ -21,9 +21,14 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
 (async()=>{
   await tick();authChanged('SIGNED_IN',{user:{id:'second'}});await tick();
   assert.equal(store.get('medveda:offline-owner'),'first','Failed purge must not transfer ownership');
+  signOutError = new Error('logout unavailable');
+  await assert.rejects(mod.exports.performSignOut(), /logout unavailable/);
+  assert.equal(mod.exports.getCurrentUser().id, 'second');
+  signOutError = null;
   await mod.exports.performSignOut();assert.equal(store.get('medveda:offline-owner'),'first','Failed sign-out purge must retain owner boundary');
   failPurge=false;authChanged('SIGNED_IN',{user:{id:'second'}});await tick();
   assert.equal(store.get('medveda:offline-owner'),'second');
+  assert.equal(registrations, 2, 'Same user must register pushes again after logout');
   await mod.exports.performSignOut();assert.equal(store.has('medveda:offline-owner'),false);
   // A valid timestamp for another owner must never reach the server or grant access.
   let user = { id: 'second' }, checks = 0, records = 0;

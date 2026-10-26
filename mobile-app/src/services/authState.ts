@@ -50,8 +50,10 @@ export async function performSignOut(): Promise<void> {
   } catch {
     // never block a logout on push cleanup
   }
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
   currentUser = null;
-  await supabase.auth.signOut();
+  pushRegisteredForUserId = null;
   if (await purgeOfflineContent())
     await AsyncStorage.removeItem(OFFLINE_OWNER_KEY).catch(() => {});
 }
@@ -118,7 +120,10 @@ supabase.auth
 
 supabase.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user ?? null;
-  if (event === "SIGNED_OUT") purgeOfflineContent();
+  if (event === "SIGNED_OUT") {
+    pushRegisteredForUserId = null;
+    purgeOfflineContent();
+  }
   if (currentUser) {
     claimOfflineStorage(currentUser);
     enforceNotBlocked(currentUser).catch(() => {});
