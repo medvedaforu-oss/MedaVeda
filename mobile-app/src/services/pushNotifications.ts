@@ -108,15 +108,24 @@ export async function unregisterCurrentDeviceToken(): Promise<void> {
  * Call once from App.tsx with the navigation ref.
  */
 export function setupNotificationResponseListener(
-  navigate: (screen: string, params?: Record<string, unknown>) => void
+  onResponse: (response: ExpoNotifications.NotificationResponse) => void
 ): () => void {
   if (isExpoGo || !Notifications) return () => {};
-
+  let active = true;
+  let liveResponseReceived = false;
   const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
-    const data = response.notification.request.content.data as Record<string, unknown>;
-    if (!data?.screen) return;
-    navigate(data.screen as string, data.params as Record<string, unknown> | undefined);
+    if (!active) return;
+    liveResponseReceived = true;
+    onResponse(response);
+    void Notifications?.clearLastNotificationResponseAsync().catch(() => {});
   });
+  // Subscribe first so a tap during this asynchronous read cannot be lost or
+  // replaced by an older launch response. The router also deduplicates IDs.
+  void Notifications.getLastNotificationResponseAsync().then((response) => {
+    if (!active || liveResponseReceived || !response) return;
+    onResponse(response);
+    void Notifications?.clearLastNotificationResponseAsync().catch(() => {});
+  }).catch((err) => logError("Could not read notification launch response", err));
 
-  return () => subscription.remove();
+  return () => { active = false; subscription.remove(); };
 }

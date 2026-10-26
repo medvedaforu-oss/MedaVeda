@@ -3,9 +3,10 @@
 // later import/render in this file.
 import "../config/sentry";
 
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, useNavigationContainerRef, type ParamListBase } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useNotificationRouting from "../hooks/useNotificationRouting";
 
 import { COLORS } from "../theme/colors";
 import {
@@ -93,6 +94,10 @@ const linking = {
 };
 
 export default function AppNavigator() {
+  const navigation = useNavigationContainerRef<ParamListBase>();
+  const [navigationReady, setNavigationReady] = useState(false);
+  const [route, setRoute] = useState<string>();
+  useNotificationRouting(navigation, navigationReady, route);
   // Runs once per app launch: makes sure the Android notification channel
   // exists, and re-applies the daily reminder if it was left "on" (mainly
   // a safety net for Android dropping exact alarms after a device
@@ -110,7 +115,9 @@ export default function AppNavigator() {
 
   return (
     <ErrorBoundary>
-      <NavigationContainer theme={navigationTheme} linking={linking}>
+      <NavigationContainer theme={navigationTheme} linking={linking} ref={navigation}
+        onReady={() => { setNavigationReady(true); setRoute(navigation.getCurrentRoute()?.name); }}
+        onStateChange={() => setRoute(navigation.getCurrentRoute()?.name)}>
         <Stack.Navigator
           initialRouteName="Splash"
           screenOptions={{ headerShown: false }}
