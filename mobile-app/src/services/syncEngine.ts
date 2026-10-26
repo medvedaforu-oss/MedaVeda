@@ -203,11 +203,11 @@ async function syncOne(item: SyncQueueItem): Promise<void> {
 /** Drains as much of the outbox as possible. Safe to call repeatedly/concurrently. */
 export async function drainQueue(): Promise<void> {
   if (syncInProgress) return;
-  const net = await NetInfo.fetch();
-  if (!net.isConnected || !net.isInternetReachable) return;
-
+  // Acquire before the first await: startup, NetInfo and outbox writes may overlap.
   syncInProgress = true;
   try {
+    const net = await NetInfo.fetch();
+    if (!net.isConnected || !net.isInternetReachable) return;
     const pending = getPendingItems();
     for (const item of pending) {
       try {
@@ -222,6 +222,9 @@ export async function drainQueue(): Promise<void> {
         }
       }
     }
+  } catch (error) {
+    // Background callers do not await this promise. Keep queued rows for retry.
+    logDebug("Could not drain sync queue", error);
   } finally {
     syncInProgress = false;
   }
