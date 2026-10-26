@@ -18,7 +18,7 @@
 //   against a decoy address so response time does not reveal whether a number
 //   is registered.
 // - Nothing about the request (number, password) is logged.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { handleOptions, jsonResponse } from "../_shared/cors.ts";
 import { normalizePhoneNumber } from "../_shared/phone.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";

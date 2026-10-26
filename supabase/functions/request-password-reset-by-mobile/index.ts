@@ -13,7 +13,7 @@
 // { ok: true } (a distinct 429 would let an attacker tell "known" from "unknown"
 // once the per-number budget runs out). The email is sent in the background so
 // response time does not differ between a known and an unknown number.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { handleOptions, jsonResponse } from "../_shared/cors.ts";
 import { normalizePhoneNumber } from "../_shared/phone.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";

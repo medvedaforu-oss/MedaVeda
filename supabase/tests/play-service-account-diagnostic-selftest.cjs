@@ -159,7 +159,7 @@ function fixture(options = {}) {
     return mod.exports;
   }
   const auth = load(sources.auth, {
-    "npm:@supabase/supabase-js@2": {
+    "npm:@supabase/supabase-js@2.118.0": {
       createClient: (url, key, config) => {
         assert.ok(
           url === "https://fixture.invalid" && key === "fixture-service-role",

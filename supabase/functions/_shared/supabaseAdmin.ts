@@ -1,4 +1,4 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected automatically
 // into every Edge Function's environment - no need to set them manually

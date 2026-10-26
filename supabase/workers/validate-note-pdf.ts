@@ -2,7 +2,7 @@
 // Run only after approval on an isolated worker with OS memory/CPU/deadline
 // limits (>=512 MiB, 5-minute deadline). Lease expiry makes killed jobs retryable.
 // No automatic object cleanup. Structural parsing is NOT malware scanning.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { processNotePdfJob } from "../functions/_shared/processNotePdfJob.ts";
 const url = Deno.env.get("SUPABASE_URL");
 const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
