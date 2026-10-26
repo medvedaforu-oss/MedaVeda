@@ -1,0 +1,23 @@
+{
+  "projectRef": "nsmsqsogedzohwboripd",
+  "initialFunctions": [
+    "get-note-url",
+    "get-video-url",
+    "login-with-mobile",
+    "request-password-reset-by-mobile"
+  ],
+  "excludedUntilSeparateReview": [
+    "create-order",
+    "verify-payment",
+    "razorpay-webhook",
+    "create-play-order",
+    "verify-play-purchase",
+    "sync-play-catalog",
+    "play-payment-worker",
+    "diagnose-play-pricing",
+    "diagnose-play-service-account",
+    "diagnose-play-matrix",
+    "send-push-notification",
+    "report-external-transaction"
+  ]
+}
