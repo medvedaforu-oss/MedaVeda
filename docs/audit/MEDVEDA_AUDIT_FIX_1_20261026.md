@@ -1,5 +1,7 @@
 # MedVeda audit-fix-1 — 26 October 2026
 
+**Product decision updated later on 26 October:** Videos and MCQs are free; only PDF Notes are paid. Finding C1 and the paid-MCQ proposal below are superseded, not outstanding requirements. See [the video follow-up and free-MCQ report](MEDVEDA_VIDEO_FOLLOWUP_20261026.md) for new evidence and changes.
+
 Local audit and targeted fixes on `audit-fix-1`, based on `cd554e3` plus the user's pre-existing working changes. **This is not a production certification or a claim that every bug has been found.** No real Android device, live database inspection, email delivery test, payment transaction, or deployment was performed. The reported production video failure cannot be conclusively attributed without its URL/device evidence.
 
 ## Safety and baseline
@@ -80,7 +82,7 @@ Staging mismatch: `app.config.js` changes the package to `in.medveda.staging` an
 | P1 | `services/notificationsService.ts` | Medium | One storage preferences read per notification | Yes; one per fetch |
 | A3 | `services/authState.ts` | High | Returned Supabase sign-out error ignored, local user cleared as if successful | Yes; propagate error before clearing |
 | N1 | `services/authState.ts` | Medium | Same-user logout/login retains push-registration marker after token unregister | Yes; marker reset on successful/signaled logout |
-| C1 | `screens/quiz/TestListScreen.tsx`, `services/searchService.ts`, quiz RPC migration | High | MCQs explicitly free; contradicts requested paid-per-product model | No; needs approved backend entitlement design |
+| C1 | Quiz list/search/RPC | Closed by product decision | MCQs are now explicitly fully free | Paid entitlement proposal withdrawn; free UI retained |
 | C2 | video RLS / `has_content_access` | Medium | Free video visibility is course/publication/auth scoped, not literally every user/course | No; product/access scope decision and RLS approval |
 | A4 | `app.config.js`, navigator, website config | High (staging) | Staging custom scheme differs from hardcoded production recovery scheme | No; report before any identifier change |
 | A5 | `screens/auth/ResetPasswordScreen.tsx` | Medium | New link on already-mounted reset route may keep prior recovery controller/tokens | No; needs screen lifecycle regression coverage around existing MFA edits |
@@ -126,7 +128,7 @@ Assets: `splash.png` 1,678,819 B; adaptive icon 1,459,751 B; icon 978,337 B; fav
 
 ## Backend proposals requiring approval (not applied)
 
-1. **Paid MCQs:** define explicit quiz-to-product entitlement mapping and bundle semantics; enforce ownership in quiz question-read and submit-attempt RPCs, metadata RLS as appropriate, download/revalidation policy and search/list UI. Preserve existing purchasers and define treatment of previously free downloads. A frontend lock alone is insufficient. A separate reviewed migration and rollback plan is required before implementation/deployment.
+1. **Withdrawn — paid MCQs:** Superseded by the user’s later free-MCQ decision. Do not implement the earlier entitlement proposal. Existing answer-key protection and per-user grading remain necessary independently of pricing.
 2. **Free-video scope:** decide whether published videos should be readable across courses or anonymously; review `videos_public_read_active`, restrictive ancestry policies and `has_content_access`. Avoid changing the shared helper without checking notes/quiz implications.
 3. **Outbox:** make progress updates atomic/monotonic on the server; agree how to retain failed rows and partition all entities by owner. No schema/RPC changes proposed as an unreviewed quick fix.
 4. **Recovery deployment:** verify the current bridge deployment, HTTPS redirect allowlist and email configuration. If Send Email Hook is still broken, prepare the precise dashboard change and Resend sender/domain verification for approval; do not infer that SMTP was configured from repository comments.
@@ -161,7 +163,7 @@ Use a staging/internal-test build with known test users/products; never exercise
 - [ ] Forgot password by email and mobile number from Gmail in-app browser and Chrome. Test cold/warm app, expired/used/no-token link, wrong/weak/mismatched password, existing TOTP MFA, network failure/retry and cleanup failure. Confirm old password fails and new password logs in. Test a second link while Reset Password is already mounted (remaining finding A5).
 - [ ] Confirm bridge remains usable without the app. Verify domain, allowed redirect URL, Send Email Hook/SMTP and actual inbox delivery. Check staging scheme separately.
 - [ ] Videos: unpurchased user, watch/youtu.be/shorts/live/embed, legacy scheme-less URL, invalid/missing URL, Drive/Vimeo if used. Test YouTube installed/disabled, browser available/unavailable, airplane mode then retry, browser fallback and Android Back. Switch subjects rapidly; fetch failure must not appear as empty success. Confirm no purchase prompt.
-- [ ] Notes: paid gate, free preview, purchase unlock, refund/revocation and owner-bound offline access. Record that MCQs are currently free until approved entitlement work ships.
+- [ ] Notes: paid gate, free preview, purchase unlock, refund/revocation and owner-bound offline access. Confirm MCQs are fully free and never initiate a purchase.
 - [ ] Play purchase success/cancel/pending/restore/account switch and background completion. In an authorized Razorpay build, test UPI app switch, lost callback/recovery polling, cancel, duplicate callback, wallet/referral amount, delayed capture and refund. Confirm one entitlement per payment.
 - [ ] Download, interrupt/restart, storage full, offline reopen, reconnect sync, multiple simultaneous actions; confirm no duplicate attempts. Switch accounts and confirm paid files remain owner-bound.
 - [ ] Logout success/failure; same-account re-login should register push again. Test permission denied/granted and actual push arrival; notification tap routing is an outstanding finding.

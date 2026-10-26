@@ -1,0 +1,1037 @@
+[
+  {
+    "file": "REAL_DEVICE_RELEASE_TEST_CHECKLIST.md",
+    "line": 24,
+    "text": "- [ ] Chapter details; quiz start/finish; videos open (free)"
+  },
+  {
+    "file": "index.html",
+    "line": 7,
+    "text": "<meta name=\"description\" content=\"MedVeda is a study platform built for BAMS (Ayurvedic Medicine) students in India \u2014 chapter-wise notes, free video lectures and quiz tests, organised by year and subject.\" />"
+  },
+  {
+    "file": "index.html",
+    "line": 243,
+    "text": "      <p class=\"lede\">MedVeda organises every year of the BAMS syllabus into chapter-wise notes, free video lectures and quiz tests \u2014 built by and for Ayurvedic medicine students in India.</p>"
+  },
+  {
+    "file": "index.html",
+    "line": 270,
+    "text": "      <span class=\"lbl\">MCQs per quiz test, timed and free</span>"
+  },
+  {
+    "file": "index.html",
+    "line": 305,
+    "text": "        <p>Timed, MCQ-based practice tests (20 questions per test) for self-assessment ahead of college and university exams. Free for every registered student.</p>"
+  },
+  {
+    "file": "index.html",
+    "line": 377,
+    "text": "      <div class=\"step reveal\"><span class=\"num\">02</span><h4>Browse for free</h4><p>Watch video lectures and attempt quiz tests at no cost.</p></div>"
+  },
+  {
+    "file": "index.html",
+    "line": 431,
+    "text": "        <summary>Are the video lectures and quiz tests really free?<span class=\"chevron\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M8 2V14M2 8H14\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>"
+  },
+  {
+    "file": "index.html",
+    "line": 432,
+    "text": "        <div class=\"a\">Yes. Every registered student gets full access to all video lectures and quiz tests at no cost \u2014 there's no trial period or watermark. The only thing you pay for is written notes, and only if you choose to buy them.</div>"
+  },
+  {
+    "file": "index.html",
+    "line": 464,
+    "text": "      <p><strong>Pricing:</strong> Notes are priced individually per chapter/subject/year by the MedVeda team and shown in-app before purchase. Prices are typically in the \u20b949\u2013\u20b9499 range depending on scope. Video lectures and quiz tests are free for all registered students.</p>"
+  },
+  {
+    "file": "privacy.html",
+    "line": 55,
+    "text": "  <p>You can request deletion of your account and associated data at any time from inside the app (Profile \u2192 Delete Account), or by emailing medvedaforu@gmail.com. Deleting your account removes your profile, purchase history and quiz scores from our systems.</p>"
+  },
+  {
+    "file": "terms.html",
+    "line": 34,
+    "text": "    <li><strong>Free content:</strong> video lectures and quiz tests, available to every registered student at no cost.</li>"
+  },
+  {
+    "file": "terms.html",
+    "line": 45,
+    "text": "  <p>Notes, videos and quizzes are for personal study only. Redistributing, reselling, or publicly sharing purchased content is not permitted.</p>"
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 17,
+    "text": "| Android app | `mobile-app`, Expo 57, React Native 0.86, React 19, `expo-iap` 3.4.4, Supabase JS, React Navigation, SQLite, PDF reader, notifications | `AppEntry` \u2192 `AppNavigator` \u2192 auth, catalog, notes, video, quiz, purchases, offline downloads, search, settings |"
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 20,
+    "text": "| Database | 55 SQL migrations, PostgreSQL/RLS, Storage | profiles \u2192 catalog/content \u2192 orders/payments/purchases \u2192 entitlement RPCs \u2192 signed PDF URL; quiz answers \u2192 server-scored attempts |"
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 42,
+    "text": "The mobile source type-checks and exports an Android Hermes bundle. Admin source type-checks and its selftests pass. The route guard uses the build-time payment provider, with Play as default. No source-level automatic Razorpay fallback was found after a Play error. The Play purchase service has no call site for `restorePlayPurchases()` outside its definition (MV-03). Download retry/resume reuses a signed URL that expires after 120 seconds (MV-05). The current quiz uses server-scored attempts, while the legacy score table remains client-writable (MV-07)."
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 64,
+    "text": "Source policies restrict orders/purchases to owner or admin; service-role-only Play settlement/create-order functions are explicitly revoked from anon/authenticated. Admin checks use `admins.id = auth.uid()`, optionally AAL2. `verified_quiz_attempts` is read-only to clients and inserts through a security-definer scoring RPC. `user_can_access_note` requires a nonblocked profile, active note, and free preview/admin/successful purchase; Storage `notes` is private in the snapshot. Source `notes` metadata includes `pdf_url`, but a public-style path is not a public download from a private bucket. Live anonymous/authenticated negative tests, actual grants/function definitions, current migrations, indexes, cron schedules, backup restore, and row anomalies remain **not verified**. No unauthorized SQL was executed."
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 124,
+    "text": "Admin routes/services cover content hierarchy, uploads, videos, product prices, billing status and retry, orders, users, quiz, referrals, notifications, analytics, and settings. Product writes go through admin RLS. Admin billing status reads `admin_play_billing_status`; retry calls `retry_play_price_sync`. Price propagation is: `productService.updateProduct` \u2192 product trigger \u2192 `play_price_sync` \u2192 cron worker \u2192 Google API/readback \u2192 verified tier \u2192 Play product discovery \u2192 purchase/settlement. The dated snapshot blocks this at inactive cron and missing tier. Browser rendering, actual admin AAL2 session, file upload, price edit, and live Google propagation were not tested; approved prices were untouched."
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 230,
+    "text": "For each payment fix: mock Google pending/purchased/refunded/voided/consumed, wrong SKU/option/account/order/region/quantity/time, token replay, duplicate callbacks, consumption 409, API 403/429/5xx, lease expiry, and concurrent settlement. In a disposable Supabase project, assert nonbuyer and cross-user denial for orders, purchases, prices, verified quiz scores, notes Storage, and admin RPCs. For Android, test cold launch/restart during checkout, same and different account restore, multi-device entitlement, price change propagation, and Razorpay isolation in a Play-distributed build. For content, test signed-URL expiry, offline resume, refunds, free videos, and account deletion. Use real licensed testers only after Console products and track are verified; no real-money test was authorized."
+  },
+  {
+    "file": "MEDVEDA_COMPLETE_DEEP_AUDIT.md",
+    "line": 236,
+    "text": "Manual Internal Testing matrix: splash/onboarding; register/login/logout/reset/deep link; course/year selection; home/search/catalog; paid note locked, free preview, purchase success/cancel/pending/error, interrupted checkout, restore, duplicate and refund; PDF open/download/expired URL/offline/account switch; free video playback/network loss; quiz revision/submit/retry/score; notifications/push and preferences; profile/settings/account deletion; admin login/MFA, product price/status/retry, notes upload/quarantine, video/quiz/users/orders; low-memory/background/rotation and poor network. Record device model, Android version, build hash, order/provider, server log correlation, and expected versus actual without exposing user data."
+  },
+  {
+    "file": "MEDVEDA_PRODUCTION_READINESS_AUDIT.md",
+    "line": 147,
+    "text": "- Hard-delete services exist for products/content with confirmation. Retained orders/payments use SET NULL on account deletion; purchases/profile/referrals are removed, wallet/review flags use SET NULL, verified quiz attempts cascade from Auth. The Edge operation erases app data before separately deleting Auth and supports retries; those two provider operations are not one transaction. Full cascade behavior requires fixture SQL verification, especially DB-01 and post-deletion in-flight payments."
+  },
+  {
+    "file": "MEDVEDA_PRODUCTION_READINESS_AUDIT.md",
+    "line": 310,
+    "text": "Node PASS inventory: all 13 mobile files (`checkout-html`, `offline-download`, `offline-owner`, `password-policy`, `payment-provider`, `payment-routing`, `play-lifecycle`, `play-restore`, `purchases`, `quiz-hooks`, `same-project-build`, `staging-build`, `verify-signature` self-tests); all 6 admin files (`mutation`, `pagination`, `pdf-validation`, `play-pricing-diagnostic`, `play-service-account-diagnostic`, `upload-error`); root `secret-scan-selftest.mjs`; 13 backend files (`compensation-worker`, `f10-coverage`, `google-reporting`, `play-catalog-worker`, `play-consumption`, `play-order`, `play-payment-worker`, `play-reconcile-fairness`, `play-service-account-diagnostic`, `play-verification`, `razorpay-routing`, `recovery`, `settle-timestamp`). The two remaining backend cron files are BLOCKED as above."
+  },
+  {
+    "file": "MEDVEDA_PRODUCTION_READINESS_AUDIT.md",
+    "line": 327,
+    "text": "- [ ] **Data/deletion:** Trace deletion across Auth/profile/purchases/quiz answers/analytics/referrals/wallet/queues/identity hashes/provider records/backups; reconcile DB-01 with published policy. Confirm financial-record retention, antifraud TTL and support deletion requests; do not infer those from an old checklist."
+  },
+  {
+    "file": "MEDVEDA_PRODUCTION_READINESS_AUDIT.md",
+    "line": 359,
+    "text": "| Closed testing | Internal gate evidence complete. Representative students/devices exercise notes/downloads/video/quiz/auth/updates, small screens/accessibility, offline grace/revocation and support. Review pre-launch reports, crash/ANR rates, purchase-to-entitlement delays, consumption retries and refund latency against pre-agreed thresholds. Verify final Console/legal declarations and recovery rehearsal |"
+  },
+  {
+    "file": "docs/multi-course-analysis.md",
+    "line": 199,
+    "text": "Quiz, Store, MyPurchases, Search + `SearchFiltersSheet`, Downloads, Profile,"
+  },
+  {
+    "file": "docs/multi-course-analysis.md",
+    "line": 308,
+    "text": "videos, quiz_tests`. Storage policy `notes_read_if_purchased` joins"
+  },
+  {
+    "file": "docs/multi-course-changes.md",
+    "line": 58,
+    "text": "2. Adds `course_id` to years, subjects, chapters, notes, videos, quiz_tests, products, orders, purchases, quiz_scores, profiles; `year_id` to notes and profiles; `referral_code` to profiles. All FKs `restrict` on content (no cascade can wipe a course), `set null` on profiles."
+  },
+  {
+    "file": "docs/multi-course-changes.md",
+    "line": 62,
+    "text": "6. Triggers: derive-or-reject `course_id`/`year_id` from the parent on subjects, chapters, notes, videos, quiz_tests, products (bundle years must share one course), orders; after-update propagation when a year/subject/chapter moves; a guard that refuses to move a year to another course while a bundle references it; orders may only be marked paid by the payment system or an admin."
+  },
+  {
+    "file": "docs/multi-course-changes.md",
+    "line": 162,
+    "text": "- **Policy audit** (scratch database = `schena.sql` + real migrations + new ones): orders and purchases carry **two overlapping policy sets under different names** (`orders_select_own_or_admin` / `orders_insert_own` / `orders_admin_write` / `purchases_select_own_or_admin` / `purchases_admin_write` from `schena.sql`, versus `\"Users can view own orders\"` / `\"Users can create own orders\"` / `\"Users can cancel own pending orders\"` / `\"Admins can view all \u2026\"` from the real migrations). Redundant rather than conflicting (permissive policies are ORed), except the insert gap above. None were changed or dropped. profiles, admins, payments, notifications, push_tokens, quiz_scores and storage have no duplicates. **Run the pg_policies query on the live database** \u2014 `schena.sql` is reconstructed and may never have been applied."
+  },
+  {
+    "file": "docs/multi-course-changes.md",
+    "line": 230,
+    "text": "- Storage is untouched: PDFs remain purchase-gated (`user_owns_chapter`), same as for a student who has picked a year. The fallback only affects row visibility (subjects/chapters/notes/videos/quiz_tests/products)."
+  },
+  {
+    "file": "docs/multi-course-changes.md",
+    "line": 332,
+    "text": "- `chapters.year_id`, `videos.year_id`, `quiz_tests.year_id` exist and are nullable; `purchases.product_id` exists (added by an earlier migration)."
+  },
+  {
+    "file": "docs/AUDIT_REPORT.md",
+    "line": 83,
+    "text": "| C | Videos | \u2796 by design | `VideosScreen.tsx` | \"MedVeda 2.0: Video Lectures are always free.\" Videos are YouTube links (`youtube_url`) opened via `Linking.openURL`; rows are readable by same-year students. Note this differs from the brief (\"sells notes PDFs, videos and quizzes\"): **only notes are paid.** | \u2013 |"
+  },
+  {
+    "file": "docs/AUDIT_REPORT.md",
+    "line": 84,
+    "text": "| C | Quizzes | \u2796 by design | `TestListScreen.tsx`, `QuizScreen.tsx` | Free for all. Correct answers ship to the client in `quiz_tests.questions`, acceptable only because quizzes are free. | \u2013 |"
+  },
+  {
+    "file": "docs/AUDIT_REPORT.md",
+    "line": 141,
+    "text": "| H | CRUD: courses, years, subjects, chapters, notes, videos, quizzes, products | \u2705 | `services/*Service.ts`, `pages/*.tsx` | Complete, with course filters everywhere. Course delete is blocked when years exist (`ON DELETE RESTRICT`), with a friendly message. | \u2013 |"
+  },
+  {
+    "file": "docs/PLAY_LISTING_DRAFT.md",
+    "line": 12,
+    "text": "> AYUSH study notes, free video lectures and MCQ practice in one app"
+  },
+  {
+    "file": "docs/PLAY_LISTING_DRAFT.md",
+    "line": 20,
+    "text": "> Watch available video lectures and practise with MCQ tests for free. Review"
+  },
+  {
+    "file": "docs/GOOGLE_PLAY_DATA_SAFETY_CHECKLIST.md",
+    "line": 29,
+    "text": "- **Required/optional:** registration fields are required for creating an account; purchases, quizzes, searches and notifications depend on feature use. Decide how Console defines automatic usage events within those features."
+  },
+  {
+    "file": "docs/ACCOUNT_DELETION_CHANGE_PROPOSAL.md",
+    "line": 9,
+    "text": "3. `erase_user_data` deletes analytics, quiz scores, push tokens, payment sessions, purchases, referrals and profile; it nulls `orders.user_id` and `payments.user_id` while keeping those rows and their provider/order references. It refuses admin accounts. The older `delete_my_account()` RPC remains callable by authenticated users as a compatibility path."
+  },
+  {
+    "file": "docs/ACCOUNT_DELETION_CHANGE_PROPOSAL.md",
+    "line": 34,
+    "text": "- Two isolated users with paid Play and Razorpay orders, purchases, referrals, wallet entries, reservations, quiz/analytics/push data and one admin. Erase A, assert every approved non-retained A link is gone and B/admin data is unchanged."
+  },
+  {
+    "file": "docs/ACCOUNT_DELETION_PAGE_REVIEW.md",
+    "line": 15,
+    "text": "The current server source removes the Auth account, profile, quiz scores, usage events, push tokens, payment sessions, purchases and referral relationships. It removes access to bought content. It unlinks the direct account ID from order and payment rows but retains transaction details. Newer wallet, reservation, fraud-prevention and payment audit records need separate review and may remain linked indirectly. Data stored on your phone may remain until you clear app storage or uninstall the app. [Replace with the tested production behavior after the approved cleanup.]"
+  },
+  {
+    "file": "website/delete-account.html",
+    "line": 48,
+    "text": "<ul><li>Your account and sign-in credentials</li><li>Profile details: name, email, mobile number, course and year</li><li>Quiz scores and learning/usage records linked to you</li><li>Push notification tokens</li><li>Referral records and your referral code</li><li>Your purchases and unlocked access. <strong>Deleting your account removes access to notes you bought and this can't be restored.</strong></li></ul>"
+  },
+  {
+    "file": "website/download.html",
+    "line": 40,
+    "text": "<section class=\"page-hero\"><div class=\"wrap\"><span class=\"eyebrow\">Download</span><h1>Get the MedVeda app</h1><p>Free to install. Video lectures and MCQ tests are free; PDF notes are premium.</p></div></section>"
+  },
+  {
+    "file": "website/download.html",
+    "line": 45,
+    "text": "<ul><li>An Android phone with Google Play</li><li>An internet connection to sign in, browse and buy (downloaded notes and quizzes work offline)</li><li>A valid email address and mobile number to register</li><li>Allow notifications if you want reminders and updates</li></ul></div>"
+  },
+  {
+    "file": "website/faq.html",
+    "line": 30,
+    "text": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"FAQPage\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"What is MedVeda?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"MedVeda is a mobile study app for AYUSH degree students. For your course and academic year it organises study material as subject \u2192 chapter, with PDF notes, video lectures and MCQ tests.\"}},{\"@type\":\"Question\",\"name\":\"Which courses are supported?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"BAMS study content is currently available. MedVeda plans to expand to other AYUSH degrees, but those courses do not have published study content yet. Available subjects and chapters depend on your academic year.\"}},{\"@type\":\"Question\",\"name\":\"Which phones does MedVeda run on?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"MedVeda is available on Android through Google Play. Check the Download page for the latest availability.\"}},{\"@type\":\"Question\",\"name\":\"Is MedVeda free?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Video lectures and MCQ tests are free. PDF notes are sold as paid packages (a few individual notes may be marked free). See How it works.\"}},{\"@type\":\"Question\",\"name\":\"How do I create an account?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Open the app, tap Register and enter your full name, email address, mobile number and a password. You will then pick your course and academic year.\"}},{\"@type\":\"Question\",\"name\":\"I didn't get the verification email. What should I do?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Check your spam or promotions folder first. If it is not there, open the app and request a new verification email. Verification links expire, so use the newest one. Tapping the link opens a page on this website confirming your email is verified; you can then return to the app and sign in.\"}},{\"@type\":\"Question\",\"name\":\"The verification link says it has expired.\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Links are single-use and time-limited. Open the app and request a new one. If it keeps failing, contact support from the email address you registered with.\"}},{\"@type\":\"Question\",\"name\":\"Can I sign in with my mobile number?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Yes. The sign-in screen accepts either your registered email address or your registered mobile number, together with your password.\"}},{\"@type\":\"Question\",\"name\":\"I forgot my password. How do I reset it?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"On the sign-in screen tap Forgot password and enter your email or mobile number. Open the reset email and tap the link. You can set a new password on our secure reset page, or choose \\\"Reset inside the app\\\". If the link has expired, request a new one from the app.\"}},{\"@type\":\"Question\",\"name\":\"What are the password rules?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Passwords must be 8\u201332 characters and include an uppercase letter, a lowercase letter, a number and a special character.\"}},{\"@type\":\"Question\",\"name\":\"How do I change my password while signed in?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Go to Profile and choose Change Password.\"}},{\"@type\":\"Question\",\"name\":\"How do I change my course or year?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Open Profile and tap Change Course / Year. Home, Subjects, Store and search will then show content for your new selection. Notes you bought remain linked to your account.\"}},{\"@type\":\"Question\",\"name\":\"Why can't I see a subject or chapter?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Content is shown for the course and academic year in your profile, and only what has been published by the MedVeda team. Check your selection under Profile \u2192 Change Course / Year, and pull down to refresh. If content is still missing, tell us.\"}},{\"@type\":\"Question\",\"name\":\"Can I study offline?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"You can download PDF notes you have access to and quizzes to your device from within the app and open them from the Downloads screen without a connection; downloads can be paused, resumed or removed. Video lectures open from their online link and need internet.\"}},{\"@type\":\"Question\",\"name\":\"Why can't I take screenshots of notes?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"To protect paid content, the app blocks screenshots and screen recording on supported devices.\"}},{\"@type\":\"Question\",\"name\":\"Are my quiz scores saved?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Yes. Test scores are recorded to your account. If you finish a test while offline, the score is saved on the device and synced when you're back online.\"}},{\"@type\":\"Question\",\"name\":\"How do I buy notes?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Open a chapter, subject or the Store in the Android app and choose a Notes package. The Google Play version uses Google Play Billing; separate permitted distribution builds use Razorpay. Notes unlock after payment is verified.\"}},{\"@type\":\"Question\",\"name\":\"Which payment methods can I use?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Google Play shows the payment methods available in the Play-distributed app. Separate permitted distribution builds use Razorpay. MedVeda does not see or store your card, UPI PIN or bank details.\"}},{\"@type\":\"Question\",\"name\":\"My payment failed or money was deducted but the notes are locked.\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"First reopen the app and check My Purchases \u2014 confirmation can take a short while. If the amount was debited and the notes are still locked, email us with your registered email and the payment reference from your bank or Razorpay. See the Refund & Cancellation Policy and Delivery Policy.\"}},{\"@type\":\"Question\",\"name\":\"Can I get a refund?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Please read our Refund & Cancellation Policy. It explains what is refundable, how duplicate or failed payments are handled and how to ask.\"}},{\"@type\":\"Question\",\"name\":\"Where can I see what I've bought?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Open My Purchases in the app for your order history and unlocked content.\"}},{\"@type\":\"Question\",\"name\":\"Does a purchase work for other courses?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Purchases are tied to the course of the product you bought. Notes for a different course need their own purchase.\"}},{\"@type\":\"Question\",\"name\":\"How do I control notifications?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"In the app you can choose which categories to receive: new notes, new videos, offers, payment updates, exam reminders and app updates. You can also set a daily study reminder at a time you choose; it is scheduled on your phone.\"}},{\"@type\":\"Question\",\"name\":\"How does Refer & Earn work?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"When the referral programme is switched on, the Refer screen shows your personal code to share. A friend enters it when signing up, and you can follow the status of your referrals (pending, qualified, rewarded). Reward type and conditions are set by MedVeda and shown in the app, and can change. If the programme is off, the screen says so.\"}},{\"@type\":\"Question\",\"name\":\"How do I delete my account and data?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Go to Settings \u2192 Delete Account in the app. You can also follow the steps on our Account & Data Deletion page.\"}},{\"@type\":\"Question\",\"name\":\"How do I contact support?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Email medvedaforu@gmail.com or message us on WhatsApp. Full details are on the Contact page.\"}}]}</script>"
+  },
+  {
+    "file": "website/faq.html",
+    "line": 46,
+    "text": "<details><summary>Is MedVeda free?</summary><div class=\"ans\"><p>Video lectures and MCQ tests are free. PDF notes are sold as paid packages (a few individual notes may be marked free). See <a href=\"/how-it-works\">How it works</a>.</p></div></details>"
+  },
+  {
+    "file": "website/features.html",
+    "line": 42,
+    "text": "<ul class=\"toc\" aria-label=\"Jump to a feature\"><li><a href=\"#course-year\">Course &amp; academic-year content</a></li><li><a href=\"#structure\">Subjects, chapters, notes, videos and tests</a></li><li><a href=\"#notes\">Secure PDF notes viewer</a></li><li><a href=\"#videos\">Video lectures</a></li><li><a href=\"#tests\">Chapter &amp; subject MCQ tests</a></li><li><a href=\"#search\">Global search with filters</a></li><li><a href=\"#continue\">Continue learning &amp; recently viewed</a></li><li><a href=\"#offline\">Offline downloads</a></li><li><a href=\"#streak\">Study streak</a></li><li><a href=\"#reminders\">Study reminders</a></li><li><a href=\"#quote\">Daily quote</a></li><li><a href=\"#notifications\">Push notifications &amp; preferences</a></li><li><a href=\"#store\">Store &amp; payments</a></li><li><a href=\"#purchases\">My purchases &amp; order history</a></li><li><a href=\"#referral\">Refer &amp; Earn</a></li><li><a href=\"#profile\">Profile, course/year change &amp; password</a></li><li><a href=\"#protection\">Screenshot protection</a></li><li><a href=\"#delete\">Delete your account</a></li></ul>"
+  },
+  {
+    "file": "website/features.html",
+    "line": 44,
+    "text": "<article class=\"feature-block\" id=\"structure\"><div class=\"icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z\"/><path d=\"M4 19V5M8 7h6\"/></svg></div><h2 style=\"font-size:1.4rem\">Subjects, chapters, notes, videos and tests </h2><p style=\"max-width:70ch\">Each academic year contains subjects; each subject is split into chapters; each chapter has its PDF notes, video lectures and MCQ tests, so everything for a topic sits in one place.</p></article>"
+  },
+  {
+    "file": "website/features.html",
+    "line": 47,
+    "text": "<article class=\"feature-block\" id=\"tests\"><div class=\"icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"m8 12 3 3 5-6\"/></svg></div><h2 style=\"font-size:1.4rem\">Chapter &amp; subject MCQ tests <span class=\"tag free\">Free</span></h2><p style=\"max-width:70ch\">Attempt MCQ tests with a 30-second timer per question, review earlier answers, and get a score at the end. Your attempts are saved to your account, and quiz stats show how you are doing. Tests are free.</p></article>"
+  },
+  {
+    "file": "website/features.html",
+    "line": 48,
+    "text": "<article class=\"feature-block\" id=\"search\"><div class=\"icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4-4\"/></svg></div><h2 style=\"font-size:1.4rem\">Global search with filters </h2><p style=\"max-width:70ch\">Search across academic years, subjects, chapters, PDF notes, video lectures, MCQ tests, store products, your purchases and notifications. Narrow results with filters, and pick up your recent searches with one tap.</p></article>"
+  },
+  {
+    "file": "website/features.html",
+    "line": 50,
+    "text": "<article class=\"feature-block\" id=\"offline\"><div class=\"icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 4v11M7 11l5 5 5-5M5 20h14\"/></svg></div><h2 style=\"font-size:1.4rem\">Offline downloads </h2><p style=\"max-width:70ch\">Download PDF notes and quizzes you have access to and open them from the Downloads screen with no connection. Downloads support pause, resume, retry and cancel, and you can remove them any time. Quiz scores completed offline sync when you reconnect.</p></article>"
+  },
+  {
+    "file": "website/how-it-works.html",
+    "line": 54,
+    "text": "<div class=\"card\"><span class=\"tag free\">Free</span><h3>MCQ tests</h3><p>Every test is free to attempt, with scores and stats.</p></div>"
+  },
+  {
+    "file": "website/index.html",
+    "line": 7,
+    "text": "<meta name=\"description\" content=\"MedVeda currently offers BAMS study content: subject-wise PDF notes, free video lectures and MCQ tests, organised by academic year.\">"
+  },
+  {
+    "file": "website/index.html",
+    "line": 14,
+    "text": "<meta property=\"og:description\" content=\"MedVeda currently offers BAMS study content: subject-wise PDF notes, free video lectures and MCQ tests, organised by academic year.\">"
+  },
+  {
+    "file": "website/index.html",
+    "line": 19,
+    "text": "<meta name=\"twitter:description\" content=\"MedVeda currently offers BAMS study content: subject-wise PDF notes, free video lectures and MCQ tests, organised by academic year.\">"
+  },
+  {
+    "file": "website/index.html",
+    "line": 31,
+    "text": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"MobileApplication\",\"name\":\"MedVeda\",\"operatingSystem\":\"ANDROID\",\"applicationCategory\":\"EducationalApplication\",\"url\":\"https://www.medveda.in/\",\"downloadUrl\":\"https://play.google.com/store/apps/details?id=in.medveda.app\",\"image\":\"https://www.medveda.in/assets/img/logo-512.png\",\"description\":\"MedVeda currently offers BAMS study content: subject-wise PDF notes, free video lectures and MCQ tests, organised by academic year.\"}</script>"
+  },
+  {
+    "file": "website/index.html",
+    "line": 53,
+    "text": "<div class=\"card\"><b>MCQ tests</b>30 seconds per question<br><span class=\"pill\">Free</span></div>"
+  },
+  {
+    "file": "website/index.html",
+    "line": 78,
+    "text": "<article class=\"card\"><div class=\"icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"m8 12 3 3 5-6\"/></svg></div><h3>MCQ tests</h3><p>Timed tests with scores and stats, free to attempt.</p></article>"
+  },
+  {
+    "file": "website/index.html",
+    "line": 98,
+    "text": "<div class=\"card\"><h3>Free where it matters</h3><p>Video lectures and MCQ tests are free. You only pay for the PDF notes you choose to unlock.</p></div>"
+  },
+  {
+    "file": "website/index.html",
+    "line": 108,
+    "text": "<details><summary>Is MedVeda free?</summary><div class=\"ans\"><p>Video lectures and MCQ tests are free. PDF notes are sold as paid packages (a few individual notes may be marked free). See <a href=\"/how-it-works\">How it works</a>.</p></div></details>"
+  },
+  {
+    "file": "website/privacy-policy.html",
+    "line": 52,
+    "text": "<tr><td>Learning activity</td><td>Quiz attempts and scores; usage events such as screens viewed, chapters/notes/videos opened, quizzes attempted, orders created, purchases unlocked, and search terms</td><td>Save your progress, improve the app, understand which content is used</td></tr>"
+  },
+  {
+    "file": "website/refund-policy.html",
+    "line": 43,
+    "text": "<p>MedVeda sells digital access to PDF notes (per chapter, subject, academic year or multi-year bundle). Video lectures and MCQ tests are free. There is no physical product.</p>"
+  },
+  {
+    "file": "website/terms.html",
+    "line": 52,
+    "text": "<li>Video lectures and MCQ tests are free. PDF notes are sold as paid packages, unless a note is marked free.</li>"
+  },
+  {
+    "file": "mobile-app/PLAY_STORE_SUBMISSION.md",
+    "line": 86,
+    "text": "> Free videos and MCQ quizzes, plus Notes for AYUSH exam preparation"
+  },
+  {
+    "file": "mobile-app/PLAY_STORE_SUBMISSION.md",
+    "line": 94,
+    "text": "> Video lectures and MCQ quizzes are free for every student. PDF Notes are"
+  },
+  {
+    "file": "mobile-app/DATA_SAFETY_AUDIT.md",
+    "line": 44,
+    "text": "| App interactions: opens, screens, chapters, notes, videos, quizzes, orders and unlocks | Yes on use | Supabase analytics | Product analytics, progress and release adoption | Actions optional; logging automatic | VERIFY |"
+  },
+  {
+    "file": "mobile-app/DATA_SAFETY_AUDIT.md",
+    "line": 111,
+    "text": "| Identifiers \u2014 **User IDs** (Supabase Auth UUID, user IDs in records) | Yes, to Supabase. Attached to analytics, quiz scores, purchases/orders, referrals, push-token records, sync data, and access-control queries. No advertising ID collection was found. | Required after account sign-in for account-bound features. | Account association, authorization, learning records, purchases, referrals, notifications, analytics. | Remote; some queued payloads are local until sync. | `analyticsService.ts`: `user_id: getCurrentUser()?.id ?? null`; `quizAttempts.ts`: `user_id: input.userId`; `pushNotifications.ts`: comment says token is saved \u201cagainst the signed-in user\u201d; `usersRepository.ts`: `.eq(\"id\", uid)`. |"
+  },
+  {
+    "file": "mobile-app/DATA_SAFETY_AUDIT.md",
+    "line": 145,
+    "text": "| `@supabase/supabase-js` / Supabase | Auth credentials and registration metadata; profile, user IDs, course/year, referrals; analytics including search terms; quiz scores; purchase/order records; push tokens; sync payloads; protected content requests. | Active and core backend: `config/supabase.ts` calls `createClient(...)`; services use `supabase.from`, `.rpc`, and `.functions.invoke`. Treat as a service provider unless Play Console guidance/contracts say otherwise. |"
+  },
+  {
+    "file": "mobile-app/DATA_SAFETY_AUDIT.md",
+    "line": 215,
+    "text": "  analytics, quiz scores, push tokens, payment sessions, purchases, referrals,"
+  },
+  {
+    "file": ".claude/settings.local.json",
+    "line": 9,
+    "text": "      \"Bash(/tmp/claude-1000/-home-ganeshp8545-AyurPulse/725a591e-f5ca-4921-bef5-2b290fb769d0/scratchpad/q.sh 'select tablename||'\\\\\\\\'' '\\\\\\\\''||policyname||'\\\\\\\\'' | '\\\\\\\\''||cmd||'\\\\\\\\'' | '\\\\\\\\''||coalesce\\\\(qual,'\\\\\\\\''-'\\\\\\\\''\\\\) as x from pg_policies where tablename in \\\\('\\\\\\\\''orders'\\\\\\\\'','\\\\\\\\''payments'\\\\\\\\'','\\\\\\\\''purchases'\\\\\\\\'','\\\\\\\\''push_tokens'\\\\\\\\'','\\\\\\\\''quiz_scores'\\\\\\\\''\\\\) order by 1')\","
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 7,
+    "text": "<meta name=\"description\" content=\"MedVeda is a study platform built for BAMS (Ayurvedic Medicine) students in India \u2014 chapter-wise notes, free video lectures and quiz tests, organised by year and subject.\" />"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 243,
+    "text": "      <p class=\"lede\">MedVeda organises every year of the BAMS syllabus into chapter-wise notes, free video lectures and quiz tests \u2014 built by and for Ayurvedic medicine students in India.</p>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 270,
+    "text": "      <span class=\"lbl\">MCQs per quiz test, timed and free</span>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 305,
+    "text": "        <p>Timed, MCQ-based practice tests (20 questions per test) for self-assessment ahead of college and university exams. Free for every registered student.</p>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 377,
+    "text": "      <div class=\"step reveal\"><span class=\"num\">02</span><h4>Browse for free</h4><p>Watch video lectures and attempt quiz tests at no cost.</p></div>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 431,
+    "text": "        <summary>Are the video lectures and quiz tests really free?<span class=\"chevron\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M8 2V14M2 8H14\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 432,
+    "text": "        <div class=\"a\">Yes. Every registered student gets full access to all video lectures and quiz tests at no cost \u2014 there's no trial period or watermark. The only thing you pay for is written notes, and only if you choose to buy them.</div>"
+  },
+  {
+    "file": "github-original-website/index.html",
+    "line": 464,
+    "text": "      <p><strong>Pricing:</strong> Notes are priced individually per chapter/subject/year by the MedVeda team and shown in-app before purchase. Prices are typically in the \u20b949\u2013\u20b9499 range depending on scope. Video lectures and quiz tests are free for all registered students.</p>"
+  },
+  {
+    "file": "github-original-website/privacy.html",
+    "line": 55,
+    "text": "  <p>You can request deletion of your account and associated data at any time from inside the app (Profile \u2192 Delete Account), or by emailing medvedaforu@gmail.com. Deleting your account removes your profile, purchase history and quiz scores from our systems.</p>"
+  },
+  {
+    "file": "github-original-website/terms.html",
+    "line": 34,
+    "text": "    <li><strong>Free content:</strong> video lectures and quiz tests, available to every registered student at no cost.</li>"
+  },
+  {
+    "file": "github-original-website/terms.html",
+    "line": 45,
+    "text": "  <p>Notes, videos and quizzes are for personal study only. Redistributing, reselling, or publicly sharing purchased content is not permitted.</p>"
+  },
+  {
+    "file": "mobile-app/src/components/TestCard.tsx",
+    "line": 20,
+    "text": "  // Compatibility only: MCQs are always free, regardless of legacy props."
+  },
+  {
+    "file": "mobile-app/src/components/UnlockOptionsPanel.tsx",
+    "line": 30,
+    "text": "// Shown on Notes/Videos/Quiz screens for a locked chapter, so a purchase"
+  },
+  {
+    "file": "mobile-app/src/services/searchService.ts",
+    "line": 71,
+    "text": "  const [years, subjects, chapters, notes, videos, quizzesLite, products, purchases, notifications] ="
+  },
+  {
+    "file": "mobile-app/src/services/searchService.ts",
+    "line": 221,
+    "text": " * not on every keystroke. Video/Quiz are always free (MedVeda 2.0 rule -"
+  },
+  {
+    "file": "mobile-app/src/theme/motion.ts",
+    "line": 24,
+    "text": "  // Celebration moments: quiz pass, purchase success, streak milestone."
+  },
+  {
+    "file": "mobile-app/src/types/course.ts",
+    "line": 3,
+    "text": "// every Year/Subject/Chapter/Note/Video/QuizTest/Product/Order/Purchase"
+  },
+  {
+    "file": "mobile-app/src/types/product.ts",
+    "line": 3,
+    "text": "// Product-based split (Notes = paid, Videos/Quiz = free) has landed:"
+  },
+  {
+    "file": "mobile-app/src/types/product.ts",
+    "line": 6,
+    "text": "// types/quiz.ts) - they're free and keyed only by subjectId/yearId."
+  },
+  {
+    "file": "mobile-app/src/types/quiz.ts",
+    "line": 3,
+    "text": "// Product-based split: MCQ Quiz is always free, so it no longer needs a"
+  },
+  {
+    "file": "mobile-app/src/types/search.ts",
+    "line": 5,
+    "text": "// videos/quiz_tests/products/purchases/notifications). The index is built"
+  },
+  {
+    "file": "mobile-app/src/utils/downloadManager.ts",
+    "line": 44,
+    "text": "const QUIZ_CLEANUP_KEY = \"medveda:answer-free-quiz-downloads:v1\";"
+  },
+  {
+    "file": "mobile-app/src/screens/details/ChapterDetailsScreen.tsx",
+    "line": 51,
+    "text": "  // MCQ Quiz are always free, so \"unlocked\" here only ever gates the"
+  },
+  {
+    "file": "mobile-app/src/screens/details/ChapterDetailsScreen.tsx",
+    "line": 52,
+    "text": "  // Notes purchase panel below, not access to Videos/Quiz."
+  },
+  {
+    "file": "mobile-app/src/screens/details/ChapterDetailsScreen.tsx",
+    "line": 105,
+    "text": "        \ud83c\udfa5 Videos & \ud83d\udcdd Quiz are always free \u00b7 \ud83d\udcda Notes{\" \"}"
+  },
+  {
+    "file": "mobile-app/src/screens/downloads/DownloadsScreen.tsx",
+    "line": 115,
+    "text": "            <StatBlock label=\"Quizzes\" value={formatSize(stats.quizBytes)} />"
+  },
+  {
+    "file": "mobile-app/src/screens/quiz/QuizScreen.tsx",
+    "line": 33,
+    "text": "// MedVeda 2.0: Quiz Tests are always free - plays whatever Test it's"
+  },
+  {
+    "file": "mobile-app/src/screens/quiz/TestListScreen.tsx",
+    "line": 24,
+    "text": "// MedVeda 2.0: Quiz Tests are always free for every student, for the"
+  },
+  {
+    "file": "mobile-app/src/screens/quiz/TestListScreen.tsx",
+    "line": 103,
+    "text": "      <Text style={styles.subtitle}>MCQ Tests - Free</Text>"
+  },
+  {
+    "file": "mobile-app/src/screens/subjects/SubjectsScreen.tsx",
+    "line": 81,
+    "text": "                // Video Lectures and MCQ Quiz are always free and live at"
+  },
+  {
+    "file": "mobile-app/src/screens/terms/TermsScreen.tsx",
+    "line": 56,
+    "text": "        Video lectures and MCQ tests are free. PDF notes are sold as"
+  },
+  {
+    "file": "website/_src/faq.mjs",
+    "line": 7,
+    "text": "  { group: \"Getting started\", home: true, q: \"Is MedVeda free?\", a: \"<p>Video lectures and MCQ tests are free. PDF notes are sold as paid packages (a few individual notes may be marked free). See <a href=\\\"/how-it-works\\\">How it works</a>.</p>\" },"
+  },
+  {
+    "file": "website/_src/pages/delete-account.html",
+    "line": 10,
+    "text": "<ul><li>Your account and sign-in credentials</li><li>Profile details: name, email, mobile number, course and year</li><li>Quiz scores and learning/usage records linked to you</li><li>Push notification tokens</li><li>Referral records and your referral code</li><li>Your purchases and unlocked access. <strong>Deleting your account removes access to notes you bought and this can't be restored.</strong></li></ul>"
+  },
+  {
+    "file": "website/_src/pages/download.html",
+    "line": 2,
+    "text": "<section class=\"page-hero\"><div class=\"wrap\"><span class=\"eyebrow\">Download</span><h1>Get the MedVeda app</h1><p>Free to install. Video lectures and MCQ tests are free; PDF notes are premium.</p></div></section>"
+  },
+  {
+    "file": "website/_src/pages/download.html",
+    "line": 7,
+    "text": "<ul><li>An Android phone with Google Play</li><li>An internet connection to sign in, browse and buy (downloaded notes and quizzes work offline)</li><li>A valid email address and mobile number to register</li><li>Allow notifications if you want reminders and updates</li></ul></div>"
+  },
+  {
+    "file": "website/_src/pages/features.html",
+    "line": 4,
+    "text": "<ul class=\"toc\" aria-label=\"Jump to a feature\"><li><a href=\"#course-year\">Course &amp; academic-year content</a></li><li><a href=\"#structure\">Subjects, chapters, notes, videos and tests</a></li><li><a href=\"#notes\">Secure PDF notes viewer</a></li><li><a href=\"#videos\">Video lectures</a></li><li><a href=\"#tests\">Chapter &amp; subject MCQ tests</a></li><li><a href=\"#search\">Global search with filters</a></li><li><a href=\"#continue\">Continue learning &amp; recently viewed</a></li><li><a href=\"#offline\">Offline downloads</a></li><li><a href=\"#streak\">Study streak</a></li><li><a href=\"#reminders\">Study reminders</a></li><li><a href=\"#quote\">Daily quote</a></li><li><a href=\"#notifications\">Push notifications &amp; preferences</a></li><li><a href=\"#store\">Store &amp; payments</a></li><li><a href=\"#purchases\">My purchases &amp; order history</a></li><li><a href=\"#referral\">Refer &amp; Earn</a></li><li><a href=\"#profile\">Profile, course/year change &amp; password</a></li><li><a href=\"#protection\">Screenshot protection</a></li><li><a href=\"#delete\">Delete your account</a></li></ul>"
+  },
+  {
+    "file": "website/_src/pages/features.html",
+    "line": 6,
+    "text": "<article class=\"feature-block\" id=\"structure\"><div class=\"icon\">{{icon:book}}</div><h2 style=\"font-size:1.4rem\">Subjects, chapters, notes, videos and tests </h2><p style=\"max-width:70ch\">Each academic year contains subjects; each subject is split into chapters; each chapter has its PDF notes, video lectures and MCQ tests, so everything for a topic sits in one place.</p></article>"
+  },
+  {
+    "file": "website/_src/pages/features.html",
+    "line": 9,
+    "text": "<article class=\"feature-block\" id=\"tests\"><div class=\"icon\">{{icon:quiz}}</div><h2 style=\"font-size:1.4rem\">Chapter &amp; subject MCQ tests <span class=\"tag free\">Free</span></h2><p style=\"max-width:70ch\">Attempt MCQ tests with a 30-second timer per question, review earlier answers, and get a score at the end. Your attempts are saved to your account, and quiz stats show how you are doing. Tests are free.</p></article>"
+  },
+  {
+    "file": "website/_src/pages/features.html",
+    "line": 10,
+    "text": "<article class=\"feature-block\" id=\"search\"><div class=\"icon\">{{icon:search}}</div><h2 style=\"font-size:1.4rem\">Global search with filters </h2><p style=\"max-width:70ch\">Search across academic years, subjects, chapters, PDF notes, video lectures, MCQ tests, store products, your purchases and notifications. Narrow results with filters, and pick up your recent searches with one tap.</p></article>"
+  },
+  {
+    "file": "website/_src/pages/features.html",
+    "line": 12,
+    "text": "<article class=\"feature-block\" id=\"offline\"><div class=\"icon\">{{icon:download}}</div><h2 style=\"font-size:1.4rem\">Offline downloads </h2><p style=\"max-width:70ch\">Download PDF notes and quizzes you have access to and open them from the Downloads screen with no connection. Downloads support pause, resume, retry and cancel, and you can remove them any time. Quiz scores completed offline sync when you reconnect.</p></article>"
+  },
+  {
+    "file": "website/_src/pages/how-it-works.html",
+    "line": 16,
+    "text": "<div class=\"card\"><span class=\"tag free\">Free</span><h3>MCQ tests</h3><p>Every test is free to attempt, with scores and stats.</p></div>"
+  },
+  {
+    "file": "website/_src/pages/index.html",
+    "line": 1,
+    "text": "<!--META {\"path\":\"/\",\"title\":\"MedVeda \u2013 BAMS study notes, videos and MCQ tests\",\"description\":\"MedVeda currently offers BAMS study content: subject-wise PDF notes, free video lectures and MCQ tests, organised by academic year.\"} -->"
+  },
+  {
+    "file": "website/_src/pages/index.html",
+    "line": 14,
+    "text": "<div class=\"card\"><b>MCQ tests</b>30 seconds per question<br><span class=\"pill\">Free</span></div>"
+  },
+  {
+    "file": "website/_src/pages/index.html",
+    "line": 39,
+    "text": "<article class=\"card\"><div class=\"icon\">{{icon:quiz}}</div><h3>MCQ tests</h3><p>Timed tests with scores and stats, free to attempt.</p></article>"
+  },
+  {
+    "file": "website/_src/pages/index.html",
+    "line": 59,
+    "text": "<div class=\"card\"><h3>Free where it matters</h3><p>Video lectures and MCQ tests are free. You only pay for the PDF notes you choose to unlock.</p></div>"
+  },
+  {
+    "file": "website/_src/pages/privacy-policy.html",
+    "line": 14,
+    "text": "<tr><td>Learning activity</td><td>Quiz attempts and scores; usage events such as screens viewed, chapters/notes/videos opened, quizzes attempted, orders created, purchases unlocked, and search terms</td><td>Save your progress, improve the app, understand which content is used</td></tr>"
+  },
+  {
+    "file": "website/_src/pages/refund-policy.html",
+    "line": 5,
+    "text": "<p>MedVeda sells digital access to PDF notes (per chapter, subject, academic year or multi-year bundle). Video lectures and MCQ tests are free. There is no physical product.</p>"
+  },
+  {
+    "file": "website/_src/pages/terms.html",
+    "line": 14,
+    "text": "<li>Video lectures and MCQ tests are free. PDF notes are sold as paid packages, unless a note is marked free.</li>"
+  },
+  {
+    "file": "supabase/migrations/20260919120000_multi_course_and_referrals.sql",
+    "line": 66,
+    "text": "  raise notice 'PRE-FLIGHT row counts \u2014 years:%, subjects:%, chapters:%, notes:%, videos:%, quiz_tests:%, products:%, orders:%, purchases:%, profiles:%',"
+  },
+  {
+    "file": "supabase/migrations/20260919120000_multi_course_and_referrals.sql",
+    "line": 67,
+    "text": "    v_years, v_subjects, v_chapters, v_notes, v_videos, v_quiz, v_products, v_orders, v_purchases, v_profiles;"
+  },
+  {
+    "file": "supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql",
+    "line": 133,
+    "text": "  raise notice 'PRE-FLIGHT row counts \u2014 years:%, subjects:%, chapters:%, notes:%, videos:%, quiz_tests:%, products:%, orders:%, purchases:%, profiles:%',"
+  },
+  {
+    "file": "supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql",
+    "line": 134,
+    "text": "    v_years, v_subjects, v_chapters, v_notes, v_videos, v_quiz, v_products, v_orders, v_purchases, v_profiles;"
+  },
+  {
+    "file": "supabase/migrations/20260924150000_free_preview.sql",
+    "line": 15,
+    "text": "--   * Quizzes stay free (unchanged)."
+  },
+  {
+    "file": "supabase/tests/account_deletion_checks.sql",
+    "line": 18,
+    "text": "  -- A: paid order + payment + purchase, an open checkout session, quiz, token, analytics"
+  },
+  {
+    "file": "supabase/tests/medium_db_checks.sql",
+    "line": 73,
+    "text": "     'Admins can view all purchases','Users can view own purchases','Users manage their own push tokens','user write own quiz_scores')) = 0);"
+  },
+  {
+    "file": "supabase/tests/production_preflight_readonly.sql",
+    "line": 16,
+    "text": "where n.nspname='public' and p.proname in ('am_i_admin','submit_quiz_attempt','save_note_with_upload','user_can_access_note','settle_play_purchase');"
+  },
+  {
+    "file": "supabase/tests/course_wide_browsing_checks.sql",
+    "line": 146,
+    "text": "\\echo 'PASS course_wide_browsing_checks: four registration years, catalogue RLS, course isolation, quizzes, free videos, previews, four purchase scopes, refunds, inactive content, profile and write protection'"
+  },
+  {
+    "file": "supabase/staging/MIGRATION_SAFETY_AUDIT.md",
+    "line": 86,
+    "text": "Key dependencies: the baseline assumes hosted Supabase `auth`, `storage`, `extensions`, and standard roles. The Razorpay migration supplies purchase/payment columns required by multi-course and later settlement SQL. The local `20260801_auth_verified_identities` adds profile verification columns; `20260919120000` also adds them idempotently because production historically lacked that migration. `20260922100000` folds and replays much earlier schema work; retain it, as it also contains later security changes and preflight checks. Wallet tables/functions precede order pricing, refund, and referral migrations. Play price tiers precede catalog sync; the catalog sync changes the price-tier primary key and installs queue triggers. Verified attempts and note upload request tables precede their later access/validation changes. `20261020104000` depends on earlier course, content, purchase, and verified quiz attempt objects. A fresh staging replay should apply all 62 in order; do not skip the historical Auth or folded migrations."
+  },
+  {
+    "file": "docs/security/SECURITY_FIX_NOTES.md",
+    "line": 65,
+    "text": "* `is_free_preview boolean` on `notes` and `videos`; backfill flags the first note of each chapter and the first video of each **subject** (videos have no `chapter_id` \u2013 they are scoped to a subject, like quizzes). Admin panel has a \"Free preview\" checkbox in the note and video forms."
+  },
+  {
+    "file": "docs/security/SECURITY_FIX_NOTES.md",
+    "line": 67,
+    "text": "* `get-video-url` + `user_can_access_video` implement the same model for videos. **Decision for you:** today videos are free for everyone (RLS lets any student of the course read `videos.youtube_url`, and the app text says \"Videos & Quiz are always free\"). Making them paid means hiding `youtube_url` from `select *` (column privilege) and switching the app's video screens to `get-video-url` \u2013 it would remove free access that current users have, so I did **not** flip it. The function and entitlement rule are ready; tell me when to do the rollout. Quizzes remain free."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COMPLETE_AUDIT.md",
+    "line": 7,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_ADMIN_PANEL_AUDIT.md",
+    "line": 7,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_CONTENT_UPLOAD_VERIFICATION.md",
+    "line": 11,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_CONTENT_UPLOAD_VERIFICATION.md",
+    "line": 28,
+    "text": "Videos remain YouTube links, free for eligible users; local validation PASS, availability/playback NOT VERIFIED. MCQ scoring uses answer indices/revision and idempotent IDs; server computation protects stored score integrity, but the answer key remains readable. Practice results only, no secure-exam assertion. Old client scores/offline stale results stay unverified. Real admin-to-mobile, unauthorized access, retry, older-client and licensed entitlement flows remain NOT VERIFIED."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_SECURITY_DATABASE_AUDIT.md",
+    "line": 11,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_GOOGLE_PLAY_BILLING_AUDIT.md",
+    "line": 7,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_UI_UX_PERFORMANCE_AUDIT.md",
+    "line": 7,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_BUG_FIX_CHANGELOG.md",
+    "line": 7,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_TEST_RESULTS.md",
+    "line": 28,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_READINESS.md",
+    "line": 15,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing; final business prices are a later decision. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_MANUAL_ACTIONS_REQUIRED.md",
+    "line": 11,
+    "text": "Production has 28 notes, 4 videos, 1 quiz, 10 products and 25 profiles; 53 private-note objects, with 25 lacking an exact current note reference (review candidates, never deletion authorization). The notes bucket has no per-bucket size/MIME limits and retains admin direct-write policy. `upload-note-pdf` is absent from 13 deployed functions. Play catalog/consume/reconcile/void cron jobs are all inactive; the verified price-tier table is empty; one \u20b91 catalog job is pending. All 10 active products are intentionally \u20b91 for Play testing. Planned \u20b949/\u20b9149/\u20b9499/\u20b9599 prices are not authorized deployment values. No price or cron was changed. Backup API lists no backups and PITR is false; independent backups/restorability remain unknown. Disk reports about 1.78 GB available; this is not Storage quota evidence."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_FINAL_BLOCKER_PACKET.md",
+    "line": 17,
+    "text": "| P1 | `20261018100000_verified_quiz_attempts.sql` `7c81e686` | Adds question revision/trigger, verified attempt table/RLS and authenticated scoring RPC. Legacy scores remain; old clients continue practice flow. Indexes and `quiz_tests` DDL can lock writes. | Incorrect live grants, trigger conflicts, stale clients or lock contention. Stop dependent mobile rollout; fix forward. New verified attempts cannot be recovered if lost. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_FINAL_BLOCKER_PACKET.md",
+    "line": 56,
+    "text": "Use private dedicated accounts and unpublished draft test content. `active=true` would expose content to the public catalog, so a publish-to-student test needs an approved isolated visibility mechanism. After deployments, test admin note/PDF entitlement and denial, video link/playback, verified MCQ scoring, old/new clients, session and cross-user access on the hosted service. Licensed Play testers must exercise discovery at \u20b91, purchase/cancel/pending, invalid/duplicate token, restore, consume, refund/void and revocation with real Play transactions. No forged successful purchase is acceptable."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_REMAINING_RELEASE_PACKET.md",
+    "line": 3,
+    "text": "Project `xbvenkfmesugrbjuufyw`; Android package `in.medveda.app`. P1 `20261018100000_verified_quiz_attempts.sql` is already deployed and its history, table, RLS, and grants were already checked. Do not replay P1 or repeat those checks as a routine gate. No production write was made in this continuation. All ten active database products were confirmed at \u20b91 by a fresh read-only aggregate query; Play Console product prices and buy options are still unverified."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_REMAINING_RELEASE_PACKET.md",
+    "line": 25,
+    "text": "| T2 | Execute hosted admin/mobile content and entitlement tests using controlled accounts and reviewed fixture visibility. | PDF signing, YouTube playback, browsing, quiz submission and paid/free denial require real sessions/devices. No fabricated paid orders. Retain fixture IDs for review; separately approve any cleanup. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_BROWSING_20261020.md",
+    "line": 5,
+    "text": "The root cause was `public.has_content_access(course_id, year_id)`, most recently defined by `20260922100000_phase1a_sync_and_order_security.sql` (its NULL-year fallback section). Its profile branch required the content year to equal `profiles.year_id` whenever the profile year was set. The active-row SELECT policies for `subjects`, `chapters`, `notes`, `videos`, and `quiz_tests`, and the scope-specific `products_public_read_active` policy, call that helper. Consequently students could see year cards but not another year's catalogue without a covering purchase. Profiles with a NULL year already had course-wide catalogue visibility."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_BROWSING_20261020.md",
+    "line": 9,
+    "text": "The audit also found service-role bypasses of course isolation: `user_can_access_video` allowed any active video to any nonblocked student, `submit_quiz_attempt` checked existence without course eligibility, and free note previews were available across courses through `user_can_access_note`. The migration adds explicit course/access checks there. Videos remain free across all years of the selected course, with existing purchase-based access to prior courses retained. Paid-note authorization is unchanged; only the free-preview branch is course-scoped. Existing blocked-account checks, active flags, quiz scoring, duplicate-attempt handling, rate limits, PDF quarantine, private storage restrictions, and function privileges remain in place. Quiz attempts already recorded retain their existing idempotent retry behavior."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_BROWSING_20261020.md",
+    "line": 37,
+    "text": "| Free videos and quizzes across years | PASS for video authorization and server-scored quiz submission. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_BROWSING_20261020.md",
+    "line": 46,
+    "text": "| Mobile purchases, payment-provider, payment-routing, Play restore/lifecycle, quiz-hooks self-tests | PASS. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_BROWSING_20261020.md",
+    "line": 61,
+    "text": "Remaining release work: apply/review the migration in staging with the actual pending migration order, then exercise existing student accounts from each year on a device: Home, all three Years modes, subject/chapter drill-down, search with year filters, navigation/back behavior, incoming links, refresh/restart, free video playback, quiz completion, locked/owned PDF viewing and downloads. Verify newly published materials appear in the intended year. Real device interactions, hosted RLS state, actual video playback, signed PDF delivery, native signed release build, and real billing transactions were not exercised here. Existing purchase and billing suites passed, but this is not a claim of end-to-end production billing verification."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_FINAL_VERIFICATION_20261020.md",
+    "line": 7,
+    "text": "**Migration identified:** `supabase/migrations/20261020104000_course_wide_content_browsing.sql`. It replaces `has_content_access`, `user_can_access_note`, `user_can_access_video`, and `submit_quiz_attempt` transactionally. It does not change tables, row policies, profiles, purchases, pricing, billing, or refund implementations. The exact reviewed file hash is in the evidence directory."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_FINAL_VERIFICATION_20261020.md",
+    "line": 26,
+    "text": "The admin `yearService.updateYear` updates the year row without cascading child flags, so the scenario is supported by existing management code. No implementation fix was made, as requested. The release must define and enforce inactive-parent behavior, with tests for inactive course, year, subject, and chapter across catalogue queries, direct links, previews, videos, quizzes, and paid PDF authorization where applicable. At the time of the read-only remote aggregate check there were **0** active subjects under inactive years, **0** active chapters under inactive subjects, and **0** active notes under inactive chapters. Those counts show the tested mismatch is not currently present in those remote relationships; they do not make the policy safe for future admin edits or prove other relationships are consistent."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_FINAL_VERIFICATION_20261020.md",
+    "line": 75,
+    "text": "5. Verify unrelated-course catalogue, quizzes, preview URLs, and video URLs are denied. Verify a retained prior-course purchase keeps exactly its original scope."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_FINAL_VERIFICATION_20261020.md",
+    "line": 77,
+    "text": "7. For entitled buyers in every purchase scope, verify `get-note-url`, viewer, and download succeed across allowed years, sibling unpaid content stays locked, permitted previews work, free videos play, and quizzes score correctly. Confirm signed URLs expire. Use staging fixtures/sandbox only; do not modify production purchases/pricing."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_COURSE_WIDE_FINAL_VERIFICATION_20261020.md",
+    "line": 85,
+    "text": "- Keep the new preview/video/quiz cross-course checks, private bucket, restrictive storage policy, service-only privileges, and paid-note entitlements. Do not restore insecure cross-course URL behavior or the legacy direct-storage policy. No profile, purchase, refund, or pricing data rollback is required."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_INACTIVE_PARENT_FIX_20261020.md",
+    "line": 5,
+    "text": "The exact root cause had two parts. Catalogue policies required the content row's own `active` flag and `has_content_access(course_id, year_id)`, but did not validate the whole parent chain. Removing the registration-year gate therefore exposed active children of an inactive year. Separately, the SECURITY DEFINER note/video/quiz functions bypassed catalogue RLS and omitted some parent-publication checks. A purchase or a preview flag could consequently authorize an otherwise active note under an inactive parent."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_INACTIVE_PARENT_FIX_20261020.md",
+    "line": 28,
+    "text": "- `user_can_access_note`, `user_can_access_video`, and fresh `submit_quiz_attempt` submissions apply the same ancestry predicate explicitly, since their privileged execution bypasses RLS. Notes still require a paid entitlement or an eligible free preview. Videos remain free. Videos and tests are subject-scoped in this schema and have no chapter foreign key, so unrelated chapter deactivation does not hide them."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_INACTIVE_PARENT_FIX_20261020.md",
+    "line": 40,
+    "text": "| Course/year/subject/chapter individually inactive with active descendants | PASS for catalogue/direct IDs, paid notes, previews, free videos, quiz RPCs, and applicable product scopes. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_INACTIVE_PARENT_FIX_20261020.md",
+    "line": 52,
+    "text": "| Mobile purchases, payment-provider/routing, Play restore/lifecycle, offline download/ownership, and quiz-hooks self-tests | PASS. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_INACTIVE_PARENT_FIX_20261020.md",
+    "line": 79,
+    "text": "Staging acceptance must cover all four registered years, all browsing modes/search/deep links, each inactive ancestor independently with a purchased and unpurchased account, individual inactive items, bundle member years, republishing, wrong-course requests, actual buyer PDF/viewer/download success, nonbuyer/blocked/refunded denial, client Storage signing denial, URL expiry, quiz completion, admin draft editing, cache refresh, and expected offline grace behavior. Use staging fixtures and existing sandbox entitlements; do not alter production data or prices."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_ISOLATED_STAGING_VALIDATION_20261020.md",
+    "line": 14,
+    "text": "| Hosted tests | NOT RUN: all-year browsing, inactive ancestors/items, paid locks, valid entitlements, refunds/revocation, cross-course restrictions, signed PDF delivery/expiry, videos, quizzes/tests, search/navigation/cache. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_ISOLATED_STAGING_VALIDATION_20261020.md",
+    "line": 62,
+    "text": "Execute the requested hosted matrix with real staging Auth sessions, not service-role catalogue queries. Test students across all years, unrelated courses and retained purchased scopes; each inactive ancestor and item independently; paid nonbuyer/buyer/refunded/revoked/blocked access; actual authorized PDF bytes and unauthorized refusal; direct client Storage/signing denial; URL expiry; external video playback; quiz submission; search/deep links/navigation; refresh/restart and existing offline cache behavior. Record status codes and assertions without retaining tokens or signed URLs. Republish synthetic content and verify entitlement records remain unchanged."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_READ_ONLY_MIGRATION_AUDIT_20261023.md",
+    "line": 96,
+    "text": "| `20261020104000_course_wide_content_browsing.sql` | Let signed-in students browse every active year in their course; add ancestor-publication guards to six content/product SELECT policies; replace note/video URL and quiz authorization helpers. | `courses`, `years`, `subjects`, `chapters`, `notes`, `videos`, `quiz_tests`, `products`, `profiles`, `purchases`, `admins` from baseline/multi-course; `am_i_admin`/MFA; `verified_quiz_attempts` and `rate_limit_hit`; service-only note/video grants and private notes policy. | `CREATE POLICY` names are unique in local files but are not rerunnable; live duplicate/drift unverified. Six policy additions take table locks until commit. `CREATE OR REPLACE FUNCTION` changes authorization immediately. No top-level DML/backfill, table drop, column drop, or price/purchase change. Transaction gives atomic SQL rollback on error; reverting deployed behavior needs a new forward migration, and issued signed URLs/offline copies are not revoked. Runtime and live schema checks unavailable. | **BLOCKED** for production; static source review passes core dependency/order and access checks. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_READ_ONLY_MIGRATION_AUDIT_20261023.md",
+    "line": 106,
+    "text": "- **Quizzes:** New `submit_quiz_attempt` checks profile, publication, course access and subject relationship before a fresh scored insert; it preserves same-user idempotent retry. Its grant to `authenticated` persists from `20261018100000`. **Pre-existing answer exposure:** `quiz_tests.questions` stores each question's `answer`, while authenticated catalogue SELECT permits `select(\"*\")` and mobile `getQuizTestById` fetches that JSON. Any authorized student can inspect correct answers before submission; server scoring cannot prevent that. This is quiz-integrity/data exposure, not a purchase entitlement grant, and the pending migration does not fix it."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_READ_ONLY_MIGRATION_AUDIT_20261023.md",
+    "line": 119,
+    "text": "3. Validate the exact pending SQL and application paths on the already prepared **isolated staging project or a disposable local Supabase-compatible database**, with synthetic users/content only. Test all years, inactive ancestors, cross-course isolation, paid/refunded/blocked note access, free videos, quiz submissions, admin AAL1/AAL2 behavior, and Play purchase authorization. The 2026-10-20 local suite is useful prior evidence but cannot replace current hosted acceptance."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_READ_ONLY_MIGRATION_AUDIT_20261023.md",
+    "line": 124,
+    "text": "Local migrations (all filenames and review-manifest hashes; complete pending candidate), `supabase/config.toml`, relevant mobile repositories/services, admin-panel Supabase config/year/quiz paths, `get-note-url`, `get-video-url`, `create-play-order`, `verify-play-purchase`, the 2026-10-20 history JSON and validation logs, and the 2026-10-23 staging safety audit. No `.env` value was printed or copied into this report."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_PENDING_COURSE_WIDE_MIGRATION_FOCUSED_READ_ONLY_20261023.md",
+    "line": 12,
+    "text": "| Syntax, dependencies, ordering | **PASS (static); BLOCKED (hosted compilation)** | Balanced transaction and function bodies, existing SQL/PLpgSQL forms, no dynamic identifiers. Referenced tables/columns originate in `20260701000000_baseline_live_schema.sql:235-244`, `20260919120000_multi_course_and_referrals.sql:74-98,128-160`, and `20261018100000_verified_quiz_attempts.sql:5-45`; `rate_limit_hit` predates the candidate. The candidate follows the MFA, free-video, quiz, and notes-storage migrations in version order. `CREATE OR REPLACE` keeps prior function signatures/defaults and grants. No current hosted parse/DDL execution was allowed. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_PENDING_COURSE_WIDE_MIGRATION_FOCUSED_READ_ONLY_20261023.md",
+    "line": 23,
+    "text": "| Data loss, locks, privilege escalation, broken access | **PASS for no migration-time data deletion; BLOCKED for production impact** | The file has no top-level DML, DROP, TRUNCATE, table rewrite, or backfill. Quiz INSERT at `:258-262` occurs only when users later call the RPC. Six `CREATE POLICY` statements (`:70-109`) and five function definitions (`:10-65,112-271`) take DDL locks and change reads/authorization at commit; a busy production catalogue may wait or briefly block. No lock timing or production data scan was measured. Definer functions have pinned search paths and schema-qualified objects (`:13,40,117,151,177`); service-only grants constrain explicit-user URL helpers. Broken-access risks are unpublished/malformed ancestors, missing live dependencies, conflicting policy names, unavailable helper EXECUTE, and new course-scoped video behavior. A blocked profile still has catalogue visibility via the profile branch (`:45-48`) under the pre-existing model, although URL helpers and quiz submission deny blocked accounts (`:121,153,192-193`). |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_PENDING_COURSE_WIDE_MIGRATION_FOCUSED_READ_ONLY_20261023.md",
+    "line": 31,
+    "text": "4. After a separately authorized isolated setup, run the existing `supabase/tests/course_wide_browsing_checks.sql` and `content_publication_checks.sql` only on the disposable target with synthetic users. Add explicit negative checks for quiz answer SELECT, AAL1 admin URL access when MFA is enabled, direct Storage access, and paid/refunded/blocked/wrong-course notes. Exercise actual staging Edge HTTP responses and mobile query paths, then compare read-only staging catalog definitions to the reviewed SQL. Stop if the linked target or migration plan differs."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md",
+    "line": 13,
+    "text": "| `supabase/migrations/20261020105000_quiz_answer_read_boundary.sql:5-7` | Remove PUBLIC/anon/authenticated table-level quiz SELECT and grant authenticated users only safe metadata columns. This blocks raw `questions`, `select('*')`, and relationship/API reads of the answer JSON. Admin editing retains write policies, while answer reads move to a checked RPC. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md",
+    "line": 22,
+    "text": "| `supabase/tests/quiz_answer_and_admin_mfa_checks.sql:1-140`; `supabase/tests/content-url-publication-selftest.cjs:13-125`; `supabase/tests/run-all.sh:44-50` | Add disposable SQL cases for raw-column denial, strict JSON allowlist, own/other year, other course, server grading, student/admin AAL1/admin AAL2, paid/refunded notes, free videos, and service-only grants. Extend actual handler harness with admin AAL1/AAL2 decisions. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md",
+    "line": 23,
+    "text": "| `mobile-app/src/screens/quiz/TestListScreen.tsx:28-32`; `mobile-app/src/services/quizService.ts:13-18` | Correct comments to describe answer-free playable questions. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md",
+    "line": 29,
+    "text": "- The database regression proves that an authenticated student can read quiz metadata, cannot SELECT `questions` or `*` from the raw table, receives only question/options through the RPC, cannot call the admin RPC, and cannot submit another course's quiz. It proves an AAL1 admin cannot use the answer RPC or admin-only URL path when MFA is enabled, while AAL2 can. It also checks successful purchase and refund behavior. The Edge harness verifies the AAL decision is wired through the handlers; Auth and Storage transport are mocked there."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md",
+    "line": 40,
+    "text": "4. Before any deployment, reverify linked history and confirm exactly these three pending migrations in the stated order. Inspect live `quiz_tests` grants and function/policy definitions, then test in isolated staging with student, purchaser, refunded, blocked, other-course, admin AAL1 and admin AAL2 accounts. Do not infer production readiness solely from the local suite."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 11,
+    "text": "| `20260801` same-version mismatch | **BLOCKED for provenance; no repair** | The archived remote `20260801` is named `razorpay_webhook_atomic_grant` and duplicates remote `20260801150000`; local `20260801_auth_verified_identities.sql` contains different SQL (`supabase/staging/MIGRATION_SAFETY_AUDIT.md:9-15,86`; `docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md:31-33`). `20260919120000_multi_course_and_referrals.sql:88-99` adds the needed profile fields idempotently. Thus a matching version number cannot attest to an identical database body. The mismatch does not itself prove the three pending migrations will fail, but release preflight must compare the live columns, grants, functions, and policies they depend on. Do not replay the local eight-digit file, rename a recorded version, or repair history as part of this release. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 19,
+    "text": "| New mobile before / after `1050` | **BLOCKED before; source-compatible after** | New list/detail calls `get_public_quiz_tests` (`mobile-app/src/repositories/quizRepository.ts:5-15,42-54`), which exists only after `1050` (`supabase/migrations/20261020105000_quiz_answer_read_boundary.sql:9-41`). Its search path queries only safe metadata (`mobile-app/src/repositories/quizRepository.ts:23-39`). The new UI stores selections and waits for server verification (`mobile-app/src/screens/quiz/QuizScreen.tsx:142-168,235-263`); offline results may remain pending. Hosted RPC JSON shape, filters, pagination, and device sync remain untested. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 22,
+    "text": "| Quiz server security | **PASS locally; BLOCKED hosted** | `1050:9-38` constructs questions from only `question` and `options`, enforces active/publication, nonblocked profile, and course access; `1050:43-59` gates the admin answer RPC. The local rollback SQL suite covers student, cross-course, payment, and admin AAL cases (`supabase/tests/quiz_answer_and_admin_mfa_checks.sql:1-140`; local result recorded in prior audit `:25-29`). Managed PostgREST/RLS behavior and production drift still require hosted checks. |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 26,
+    "text": "**FAIL for pre-existing copies; BLOCKED for device migration.** The older client serialized the entire quiz object directly to disk (`git show HEAD:mobile-app/src/utils/downloadManager.ts:447-471`) and parsed it unchanged (`:496-500`). The path is `documentDirectory/medveda/quizzes/<id>.json` (`mobile-app/src/utils/downloadManager.ts:12-17`). The new writer keeps only question/options and the new reader scrubs a file **when opened** (`mobile-app/src/utils/downloadManager.ts:420-456,486-495`). There is no eager scan on startup (`mobile-app/App.tsx:32-53` only recovers interrupted downloads). A failed rewrite leaves the raw file in place (`downloadManager.ts:490-495`). Course switching hides rows without deleting files (`:105-117`); marking stale does not delete them (`:380-386`). `clearAllDownloads` also removes notes (`:350-365`), so it is not a targeted remedy."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 28,
+    "text": "Before release, ship and device-test a one-time migration that scans the quiz directory and its SQLite rows for **all accounts and courses** before quiz rendering or offline export. Safest behavior is to invalidate and delete old quiz JSON plus corresponding quiz rows, then re-download answer-free questions when authenticated; make deletion idempotent and handle interrupted writes, missing files, orphan files, and account switching. If sanitized offline retention is needed, write a new file atomically, verify its allowlist, then replace the old file and update row size/version; on any error, fail closed and delete/quarantine the old quiz file. Never use a global notes wipe. Test upgrade from an actual old binary with an answer-bearing fixture, app restart, offline launch, failed write, and backup/restore. Server changes cannot recall copies already outside app-managed storage; document that residual exposure separately."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 46,
+    "text": "1. **Read-only preflight, before any staging or production operation.** Capture fresh local/production/staging migration lists and project refs, confirm exactly three production pending versions in stated order, review `20260801` live object state, and compare live grants/policies/RPC signatures to the local baseline. Confirm `content_is_published`, `has_content_access`, `am_i_admin`, `admin_mfa_required`, `quiz_tests.question_revision`, required profile columns, purchase status/scope, and private notes bucket. Inspect the exact released Android/iOS versions, admin deployment version, Edge versions, active-client distribution, and offline file format. Never trust the implicit linked ref for staging."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 54,
+    "text": "| Identity / content | Quiz metadata and answer-free RPC | Direct `questions` / `select('*')` | Admin answer RPC | Note URL | Video URL |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "line": 60,
+    "text": "| Student, refunded/failed purchase | Quiz per course access | Denied | Denied | Denied for paid note | Free if otherwise eligible |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_AUDIT_FIX_1_20261026.md",
+    "line": 83,
+    "text": "| C1 | `screens/quiz/TestListScreen.tsx`, `services/searchService.ts`, quiz RPC migration | High | MCQs explicitly free; contradicts requested paid-per-product model | No; needs approved backend entitlement design |"
+  },
+  {
+    "file": "docs/audit/MEDVEDA_AUDIT_FIX_1_20261026.md",
+    "line": 123,
+    "text": "* `grantPurchase.ts` does not exist; the actual current settlement module and RPC were reviewed instead. Current quiz client requires `get_public_quiz_tests` from the October migration; deployment parity must be checked before shipping."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_AUDIT_FIX_1_20261026.md",
+    "line": 129,
+    "text": "1. **Paid MCQs:** define explicit quiz-to-product entitlement mapping and bundle semantics; enforce ownership in quiz question-read and submit-attempt RPCs, metadata RLS as appropriate, download/revalidation policy and search/list UI. Preserve existing purchasers and define treatment of previously free downloads. A frontend lock alone is insufficient. A separate reviewed migration and rollback plan is required before implementation/deployment."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_AUDIT_FIX_1_20261026.md",
+    "line": 130,
+    "text": "2. **Free-video scope:** decide whether published videos should be readable across courses or anonymously; review `videos_public_read_active`, restrictive ancestry policies and `has_content_access`. Avoid changing the shared helper without checking notes/quiz implications."
+  },
+  {
+    "file": "docs/audit/MEDVEDA_AUDIT_FIX_1_20261026.md",
+    "line": 164,
+    "text": "- [ ] Notes: paid gate, free preview, purchase unlock, refund/revocation and owner-bound offline access. Record that MCQs are currently free until approved entitlement work ships."
+  },
+  {
+    "file": "docs/security/review-20261020/reproduce.sql",
+    "line": 10,
+    "text": "values ('audit_quiz','Synthetic paid quiz','audit_s','audit_y',"
+  },
+  {
+    "file": "docs/security/review-20261020/reproduce.sql",
+    "line": 21,
+    "text": "select 'F01 unpaid quiz question rows' as test,count(*) as observed"
+  },
+  {
+    "file": "docs/security/review-20261020/proposed-database-fixes.sql",
+    "line": 34,
+    "text": "create policy quiz_tests_paid_access on public.quiz_tests as restrictive"
+  },
+  {
+    "file": "docs/security/review-20261020/verify-proposed-fixes.sql",
+    "line": 9,
+    "text": "values ('audit_quiz','Synthetic paid quiz','audit_s','audit_y',"
+  },
+  {
+    "file": "docs/security/review-20261020/verify-proposed-fixes.sql",
+    "line": 23,
+    "text": " if exists(select 1 from public.quiz_tests where id='audit_quiz') then raise exception 'unpaid quiz exposed'; end if;"
+  },
+  {
+    "file": "docs/security/review-20261020/verify-proposed-fixes.sql",
+    "line": 35,
+    "text": " if not exists(select 1 from public.quiz_tests where id='audit_quiz') then raise exception 'buyer cannot read quiz'; end if;"
+  },
+  {
+    "file": "docs/security/review-20261020/verify-proposed-fixes.sql",
+    "line": 36,
+    "text": " if (public.submit_quiz_attempt('audit_attempt_002','audit_quiz',1,'[0]')->>'score')::int<>1 then raise exception 'buyer submission failed'; end if;"
+  },
+  {
+    "file": "docs/security/review-20261020/verify-proposed-fixes.sql",
+    "line": 64,
+    "text": "select 'PASS: proposed quiz access, submission, notification audience, audit and password lockout SQL' as result;"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 3,
+    "text": "**Verdict: NO-GO for launching this source with real payments under the requested content model.** A student with **zero purchases** can query MCQ questions and correct answers and submit a server-verified quiz attempt. Targeted notification text is also readable anonymously. Both were reproduced against the current migration chain in an isolated PostgreSQL database."
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 10,
+    "text": "- Independently reproduced unpaid MCQ access, public targeted-message visibility, and retained identity data after account deletion. These are gaps in the existing test expectations. [Reproduction SQL](reproduce.sql), [results](reproduction-results.txt)."
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 25,
+    "text": "| 3 | Server enforcement of price/roles/access | FAIL | Critical | Prices and settlement are server-controlled, but paid MCQs use course membership as authorization (F01). |"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 31,
+    "text": "| 9 | IDOR / ownership | FAIL | High | Orders, purchases, wallet and quiz attempts have ownership checks; targeted notification text escapes its audience (F02). |"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 50,
+    "text": "| E4 Content protection | FAIL | Critical | Unpaid quizzes are readable (F01); offline quizzes have no entitlement/grace gate and downloaded content is plaintext (F04). |"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 59,
+    "text": "| 1 | F01 Paid MCQ entitlement bypass | Critical | Direct unpaid access to the entire question/answer content for the selected course. |"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 62,
+    "text": "| 4 | F04 Offline storage/access/isolation | High | Paid content extraction, unbounded quiz offline use, retained personal activity after logout. |"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 70,
+    "text": "**F01 \u2014 Unpaid MCQ reads and submissions**"
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 76,
+    "text": "Reproduction: the synthetic account had **0 purchase rows**, could read **1 answer-bearing quiz row**, and got `{\"status\":\"verified\",\"score\":1,\"total\":1,\"percentage\":100}` from the submission RPC. This is independent of whether the UI displays a lock."
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 78,
+    "text": "Correction: apply the F01 block in [proposed-database-fixes.sql](proposed-database-fixes.sql), followed by the complete replacement [proposed-quiz-submission.sql](proposed-quiz-submission.sql). This introduces an explicit product/quiz entitlement mapping, a restrictive read policy and an identical RPC gate. It is deliberately fail-closed until mappings are supplied."
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 80,
+    "text": "**Missing business data:** the repository has no explicit quiz-to-product map, and `products.product_type` has no dedicated quiz value. Supply a reviewed `quiz_id,product_id` inventory; do not guess that every notes purchase unlocks every quiz in a year. Existing question-list queries will return only entitled quizzes under this correction. If locked quiz titles should remain browseable, add a metadata-only RPC/view that never returns `questions`; do not restore broad base-table reads."
+  },
+  {
+    "file": "docs/security/review-20261020/REPORT.md",
+    "line": 267,
+    "text": "**Final verdict: NO-GO.** Resolve the paid-quiz bypass, targeted-message disclosure, recovery-token handoff and offline protection gaps first. Then close the other listed failures, provide the missing deployment evidence and retest real payment/refund lifecycles in provider test environments. Passing the current regression suite alone is insufficient: it passed while the unpaid-quiz and notification disclosures were reproducible."
+  },
+  {
+    "file": "admin-panel/src/types/quiz.ts",
+    "line": 4,
+    "text": "// MedVeda 2.0: MCQ Quiz is always free, so a Test is scoped to a"
+  },
+  {
+    "file": "admin-panel/src/types/product.ts",
+    "line": 8,
+    "text": "// Note: MCQ Quiz Tests are NOT gated by any Product - they're always free"
+  }
+]
