@@ -1,3 +1,4 @@
+import useRequestGuard from "./useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
@@ -12,23 +13,28 @@ import type { Product, ProductInput } from "../types/product";
 
 export default function useProducts(filters: ContentFilters = {}) {
   const { courseId, yearId } = filters;
+  const beginRequest = useRequestGuard(JSON.stringify([courseId, yearId]));
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadProducts = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const data = await getProducts({ courseId, yearId });
+      if (!current()) return;
       setProducts(data);
       setError(null);
     } catch (err) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load products. Please try again.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [courseId, yearId]);
+  }, [courseId, yearId, beginRequest]);
 
   useEffect(() => {
     void loadProducts();

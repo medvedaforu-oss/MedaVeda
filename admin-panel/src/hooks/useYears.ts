@@ -1,3 +1,4 @@
+import useRequestGuard from "./useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
@@ -12,23 +13,28 @@ import type { Year, YearInput } from "../types/year";
 
 export default function useYears(filters: ContentFilters = {}) {
   const { courseId, yearId } = filters;
+  const beginRequest = useRequestGuard(JSON.stringify([courseId, yearId]));
   const [years, setYears] = useState<Year[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadYears = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const data = await getYears({ courseId, yearId });
+      if (!current()) return;
       setYears(data);
       setError(null);
     } catch (err) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load years. Please try again.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [courseId, yearId]);
+  }, [courseId, yearId, beginRequest]);
 
   useEffect(() => {
     void loadYears();

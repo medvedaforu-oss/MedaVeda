@@ -1,3 +1,4 @@
+import useRequestGuard from "./useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
@@ -12,23 +13,28 @@ import type { Note, NoteInput } from "../types/note";
 
 export default function useNotes(filters: ContentFilters = {}) {
   const { courseId, yearId } = filters;
+  const beginRequest = useRequestGuard(JSON.stringify([courseId, yearId]));
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadNotes = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const data = await getNotes({ courseId, yearId });
+      if (!current()) return;
       setNotes(data);
       setError(null);
     } catch (err) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load notes. Please try again.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [courseId, yearId]);
+  }, [courseId, yearId, beginRequest]);
 
   useEffect(() => {
     void loadNotes();
@@ -50,11 +56,15 @@ export default function useNotes(filters: ContentFilters = {}) {
   }
 
   async function refreshAfterMutation() {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       const data = await getNotes(filters);
+      if (!current()) return;
       setNotes(data);
       setError(null);
     } catch {
+      if (!current()) return;
       setError("The note change succeeded, but the list could not refresh. Reload this page before retrying.");
     }
   }
