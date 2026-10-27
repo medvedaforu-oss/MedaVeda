@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -32,6 +32,7 @@ export default function EditProfileScreen() {
   const [originalMobile, setOriginalMobile] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const submitting = useRef(false);
 
   useEffect(() => {
     if (!user) {
@@ -54,7 +55,12 @@ export default function EditProfileScreen() {
   }, [user]);
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || submitting.current || getCurrentUser()?.id !== user.id) return;
+    const cleanName = name.trim();
+    if (cleanName.length < 2) {
+      Alert.alert("Invalid name", "Enter your full name.");
+      return;
+    }
 
     let normalizedMobile: string | undefined;
     if (mobile.trim()) {
@@ -66,14 +72,14 @@ export default function EditProfileScreen() {
       normalizedMobile = candidate;
     }
 
+    submitting.current = true;
     try {
       setSaving(true);
-
-      await supabase.auth.updateUser({
-        data: { name },
-      });
-
-      await updateUserProfile(user.id, { name });
+      const { error } = await supabase.auth.updateUser({ data: { name: cleanName } });
+      if (error) throw error;
+      if (getCurrentUser()?.id !== user.id) return;
+      await updateUserProfile(user.id, { name: cleanName });
+      if (getCurrentUser()?.id !== user.id) return;
 
       // The number goes through its own rate-limited server call, and only when it changed.
       if (normalizedMobile && normalizedMobile !== originalMobile) {
@@ -96,6 +102,7 @@ export default function EditProfileScreen() {
     } catch (error) {
       Alert.alert("Error", "Unable to update profile.");
     } finally {
+      submitting.current = false;
       setSaving(false);
     }
   };
