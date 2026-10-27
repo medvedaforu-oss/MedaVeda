@@ -56,6 +56,12 @@ Owner procedure in Supabase SQL Editor, first in an isolated staging project:
    job without printing command text (which can contain unrelated secrets):
 
    ```sql
+   select
+     has_function_privilege('anon', 'public.purge_expired_first_purchase_identities()', 'EXECUTE') as anon_can_execute,
+     has_function_privilege('authenticated', 'public.purge_expired_first_purchase_identities()', 'EXECUTE') as authenticated_can_execute,
+     has_function_privilege('service_role', 'public.purge_expired_first_purchase_identities()', 'EXECUTE') as service_can_execute;
+   -- Expected: false, false, true. Stop and review grants if different.
+
    select jobid, jobname, schedule, active, username
    from cron.job where jobname = 'first-purchase-identity-retention';
    ```

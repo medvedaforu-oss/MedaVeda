@@ -87,7 +87,7 @@ export default function PrivacyScreen() {
       <Text style={styles.body}>
         We use encrypted connections, per-user access rules, secure
         device storage for your session and time-limited links for
-        paid notes.
+        paid notes. This does not encrypt downloaded PDFs.
       </Text>
       <Text style={styles.heading}>
         Children
@@ -130,9 +130,10 @@ export default function PrivacyScreen() {
         If you cannot sign in, email {LEGAL.email} from your registered address
         with the subject "Delete my MedVeda account" and your registered mobile
         number. Email requests are handled within 30 days after identity checks.
-        Successful sign-out/deletion clears account-owned downloads and offline
-        study data. Some local settings/history may remain; clear app storage
-        or uninstall to remove those copies. See retained exceptions above.
+        Sign-out/deletion ends the app session and requests removal of
+        account-owned downloaded files and download records. Other local study
+        history, queued activity, settings and caches may remain; clear app
+        storage or uninstall to remove those copies. See retained exceptions above.
       </Text>
       <WebLink label="Account & data deletion help" url={WEB.deleteAccount} />
       <Text style={styles.heading}>
