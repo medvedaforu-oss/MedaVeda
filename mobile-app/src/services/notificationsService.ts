@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { supabase } from "../config/supabase";
 import { getNotificationPreferences } from "../utils/notificationPreferences";
 import { logDebug } from "../utils/logger";
+import { getCurrentUser } from "./authState";
 
 export type NotificationType =
   | "new_notes"
@@ -20,19 +21,37 @@ export interface AppNotification {
   createdAt?: number;
 }
 
+// The Home section and its mount/focus unread badges ask for the same rows.
+// Share only an outstanding server read for the same account. Preferences,
+// read IDs and archived IDs stay per-call, and nothing is cached after settlement.
+const pendingNotifications = new Map<string, Promise<any[]>>();
+
+function readNotificationRows(): Promise<any[]> {
+  const account = getCurrentUser()?.id ?? "anonymous";
+  const pending = pendingNotifications.get(account);
+  if (pending) return pending;
+  const request = (async () => {
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("active", true)
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  })().finally(() => {
+    if (pendingNotifications.get(account) === request) pendingNotifications.delete(account);
+  });
+  pendingNotifications.set(account, request);
+  return request;
+}
+
 // Reads the "notifications" table (rows with { title, body, active,
 // created_at }) if the admin panel has created any. Fails soft - the
 // Notifications section on the dashboard should never block the rest of
 // the screen from loading.
 export async function fetchNotifications(): Promise<AppNotification[]> {
   try {
-    const { data, error } = await supabase
-      .from("notifications")
-      .select("*")
-      .eq("active", true)
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
+    const data = await readNotificationRows();
 
     const all = (data ?? []).map((row: any) => ({
       id: row.id,

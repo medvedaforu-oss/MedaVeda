@@ -8,6 +8,7 @@ const prefs = { offer:false, new_video:true };
 const mod = { exports: {} };
 const mocks = {
  '@react-native-async-storage/async-storage': {},
+ './authState': { getCurrentUser: () => ({ id: 'fixture' }) },
  '../config/supabase': { supabase: { from: () => ({ select: () => ({ eq: () => ({ order: async () => ({ data }) }) }) }) } },
  '../utils/notificationPreferences': {
   isCategoryEnabled: async type => { reads++; return prefs[type] !== false; },
