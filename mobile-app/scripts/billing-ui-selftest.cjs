@@ -48,5 +48,6 @@ async function fixture(options = {}) {
   f=await fixture();f.setUser('other');f.button().props.onPress();await tick();
   assert.equal(f.calls,0);assert.match(f.text(),/Account changed/);f.h.unmount();
   f=await fixture({quote:async()=>{throw Error('offline');}});assert.match(f.text(),/offline/);assert.match(f.text(),/Try again/);f.h.unmount();
+  f=await fixture({quote:async()=>({ok:false,code:'already_owned'})});assert.match(f.text(),/already own/);assert.equal(f.orders,0);f.button().props.onPress();assert.equal(f.nav.at(-1)[0],'MyPurchases');f.h.unmount();
   console.log('PASS checkout stalls, late result, double tap, pending/cancel/error/already-owned recovery, offline and account switch');
 })().catch(e=>{console.error(e);process.exitCode=1;});

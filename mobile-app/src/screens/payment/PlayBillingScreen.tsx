@@ -131,6 +131,11 @@ export default function PlayBillingScreen() {
       // The quote's list price is compared with Play's live INR price.
       const quote = await fetchOrderQuote(productId, false);
       if (!current()) return;
+      if (!quote.ok && quote.code === "already_owned") {
+        setRecovery(true);
+        setMessage("You already own this item. Open My Purchases to access it or check Google Play purchases.");
+        return;
+      }
       if (!quote.ok || !Number.isFinite(quote.listPrice)) {
         throw new Error("This product is no longer available.");
       }
