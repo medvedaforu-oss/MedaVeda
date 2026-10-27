@@ -1,7 +1,7 @@
 import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Alert,
 } from "react-native";
 
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import NoteCard from "../../components/NoteCard";
 import EmptyState from "../../components/EmptyState";
@@ -23,7 +23,8 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 
 import { fetchNotesByChapter, Note } from "../../services/notesService";
-import { getSecureNoteUrl } from "../../services/secureNotesService";
+import { getCurrentUser } from "../../services/authState";
+import { getSecureNoteUrl, NoteAccessError } from "../../services/secureNotesService";
 import useDownloads from "../../hooks/useDownloads";
 import { logError } from "../../utils/logger";
 
@@ -47,6 +48,12 @@ function NotesScreen() {
   // can show a brief spinner instead of a UI that looks unresponsive
   // while createSignedUrl() round-trips to Supabase.
   const [resolvingNoteId, setResolvingNoteId] = useState<string | null>(null);
+  const opening = useRef(false);
+  const focused = useRef(false);
+  useFocusEffect(useCallback(() => {
+    focused.current = true;
+    return () => { focused.current = false; };
+  }, []));
 
   // OFFLINE MODE - new SQLite-backed hook. isDownloaded/isDownloading and
   // per-item progress are now derived from getItem(id) instead of the
@@ -108,18 +115,26 @@ function NotesScreen() {
     // Not downloaded - resolve a fresh, short-lived signed URL rather
     // than using item.pdfUrl directly (that stored URL only worked while
     // the "notes" bucket was public - see secureNotesService.ts).
+    if (opening.current) return;
+    opening.current = true;
+    const owner = getCurrentUser()?.id;
     setResolvingNoteId(item.id);
     try {
       const signedUrl = await getSecureNoteUrl(item.id);
+      if (!focused.current || getCurrentUser()?.id !== owner) return;
       navigation.navigate("PdfViewer", { pdfUrl: signedUrl });
     } catch (err) {
+      if (!focused.current || getCurrentUser()?.id !== owner) return;
       logError("Failed to resolve note URL:", err);
       Alert.alert(
         "Couldn't open note",
-        "This note isn't available right now. Please try again, or contact support if this continues."
+        err instanceof NoteAccessError && (err.status === 401 || err.status === 403)
+          ? "Access is unavailable. Sign in again and check My Purchases; refunded or revoked notes require an active purchase."
+          : "Check your connection and reopen this note. If its file was removed, contact support."
       );
     } finally {
-      setResolvingNoteId(null);
+      opening.current = false;
+      if (focused.current) setResolvingNoteId(null);
     }
   }, [freeNoteIds, unlocked, getItem, navigation]);
 

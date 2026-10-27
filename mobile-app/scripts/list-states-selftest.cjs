@@ -16,7 +16,7 @@ for(const [name,service] of specs) for(const state of ['loading','error','empty'
   '../../hooks/useCourseYear':{__esModule:true,default:()=>({ready:true,courseId:'course'})},
   '../../hooks/usePurchases':{__esModule:true,default:()=>({isChapterOwned:()=>false,refresh(){}})},
   '../../hooks/useDownloads':{__esModule:true,default:()=>({isDownloaded:()=>false,getItem:()=>null,refresh(){}})},
-  '../../services/secureNotesService':{},'../../utils/videoLink':{},'../../utils/videoDiagnostics':{traceVideo(){}},'../../utils/logger':{logError(){}},
+  '../../services/authState':{getCurrentUser:()=>null},'../../services/secureNotesService':{},'../../utils/videoLink':{},'../../utils/videoDiagnostics':{traceVideo(){}},'../../utils/logger':{logError(){}},
   ['../../services/'+service]:{},
  };
  for(const component of ['LoadError','YearCard','SubjectCard','ChapterCard','NoteCard','TestCard','VideoCard','EmptyState','ErrorState','SearchBar','UnlockOptionsPanel'])mocks['../../components/'+component]={__esModule:true,default:component};
