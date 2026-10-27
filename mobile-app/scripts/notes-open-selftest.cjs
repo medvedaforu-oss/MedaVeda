@@ -10,5 +10,10 @@ const assert=require('node:assert/strict');const {harness,load,jsx,nodes,tick}=r
  let press=render();blur=focus();press();press();assert.equal(reads,1);blur();resolve('https://fixture.invalid');await tick();assert.equal(opens,0);
  press=render();blur=focus();press();user='other';resolve('https://fixture.invalid');await tick();assert.equal(opens,0);
  press=render();press();resolve('https://fixture.invalid');await tick();assert.equal(opens,1);blur();
- console.log('PASS note double tap, navigation blur and account switch cannot launch stale signed PDF');
+ press=render();blur=focus();press();const stale=resolve;blur();
+ press=render();blur=focus();press();const latest=resolve;const before=reads;
+ stale('https://stale.invalid');await tick();assert.equal(opens,1);
+ press();assert.equal(reads,before,'old finally must not release the new request guard');
+ latest('https://latest.invalid');await tick();assert.equal(opens,2);blur();
+ console.log('PASS note double tap, blur/refocus and account switch cannot launch stale signed PDF');
 })().catch(e=>{console.error(e);process.exitCode=1;});

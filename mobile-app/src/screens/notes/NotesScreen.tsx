@@ -50,9 +50,15 @@ function NotesScreen() {
   const [resolvingNoteId, setResolvingNoteId] = useState<string | null>(null);
   const opening = useRef(false);
   const focused = useRef(false);
+  const openGeneration = useRef(0);
   useFocusEffect(useCallback(() => {
     focused.current = true;
-    return () => { focused.current = false; };
+    setResolvingNoteId(null);
+    return () => {
+      focused.current = false;
+      openGeneration.current++;
+      opening.current = false;
+    };
   }, []));
 
   // OFFLINE MODE - new SQLite-backed hook. isDownloaded/isDownloading and
@@ -117,14 +123,15 @@ function NotesScreen() {
     // the "notes" bucket was public - see secureNotesService.ts).
     if (opening.current) return;
     opening.current = true;
+    const run = openGeneration.current;
     const owner = getCurrentUser()?.id;
     setResolvingNoteId(item.id);
     try {
       const signedUrl = await getSecureNoteUrl(item.id);
-      if (!focused.current || getCurrentUser()?.id !== owner) return;
+      if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
       navigation.navigate("PdfViewer", { pdfUrl: signedUrl });
     } catch (err) {
-      if (!focused.current || getCurrentUser()?.id !== owner) return;
+      if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
       logError("Failed to resolve note URL:", err);
       Alert.alert(
         "Couldn't open note",
@@ -133,8 +140,10 @@ function NotesScreen() {
           : "Check your connection and reopen this note. If its file was removed, contact support."
       );
     } finally {
-      opening.current = false;
-      if (focused.current) setResolvingNoteId(null);
+      if (run === openGeneration.current) {
+        opening.current = false;
+        if (focused.current) setResolvingNoteId(null);
+      }
     }
   }, [freeNoteIds, unlocked, getItem, navigation]);
 
