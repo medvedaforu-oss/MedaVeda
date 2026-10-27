@@ -25,42 +25,51 @@ import ResetPasswordScreen from "../screens/auth/ResetPasswordScreen";
 
 import HomeScreen from "../screens/home/HomeScreen";
 import SelectCourseYearScreen from "../screens/onboarding/SelectCourseYearScreen";
-import YearsScreen from "../screens/years/YearsScreen";
-import SubjectsScreen from "../screens/subjects/SubjectsScreen";
-import ChaptersScreen from "../screens/chapters/ChaptersScreen";
-import ChapterDetailsScreen from "../screens/details/ChapterDetailsScreen";
-import StoreScreen from "../screens/store/StoreScreen";
 
-import NotesScreen from "../screens/notes/NotesScreen";
-import VideosScreen from "../screens/videos/VideosScreen";
-import TestListScreen from "../screens/quiz/TestListScreen";
-import QuizScreen from "../screens/quiz/QuizScreen";
 
-import ProfileScreen from "../screens/profile/ProfileScreen";
-import EditProfileScreen from "../screens/profile/EditProfileScreen";
-import ReferralScreen from "../screens/referral/ReferralScreen";
-import ReferralTermsScreen from "../screens/referral/ReferralTermsScreen";
-import OrderSummaryScreen from "../screens/payment/OrderSummaryScreen";
-import ChangePasswordScreen from "../screens/profile/ChangePasswordScreen";
-import MyPurchasesScreen from "../screens/purchases/MyPurchasesScreen";
-import DownloadsScreen from "../screens/downloads/DownloadsScreen";
 
-import PdfViewerScreen from "../screens/pdf/PdfViewerScreen";
-import SearchScreen from "../screens/search/SearchScreen";
 
-import SettingsScreen from "../screens/settings/SettingsScreen";
-import StudyReminderScreen from "../screens/reminder/StudyReminderScreen";
-import NotificationsScreen from "../screens/notifications/NotificationsScreen";
-import PaymentSuccessScreen from "../screens/payment/PaymentSuccessScreen";
-import PaymentFailedScreen from "../screens/payment/PaymentFailedScreen";
-import PaymentCheckoutScreen from "../screens/payment/PaymentCheckoutScreen";
-import PlayBillingScreen from "../screens/payment/PlayBillingScreen";
 import { paymentProvider } from "../config/paymentProvider";
-import AboutScreen from "../screens/about/AboutScreen";
-import ContactScreen from "../screens/contact/ContactScreen";
 
-import PrivacyScreen from "../screens/privacy/PrivacyScreen";
-import TermsScreen from "../screens/terms/TermsScreen";
+
+// Metro includes every literal module in the installed bundle. React Navigation
+// evaluates these synchronous loaders only when a route is rendered, so native
+// viewers and non-visible screens do not initialize during startup. Keeping the
+// same component export preserves screen identity and the existing ErrorBoundary.
+// Auth, recovery, Home, onboarding and Sentry retain their eager ordering.
+declare const require: (path: string) => { default: import("react").ComponentType<any> };
+const deferredScreens = {
+  YearsScreen: () => require("../screens/years/YearsScreen").default,
+  SubjectsScreen: () => require("../screens/subjects/SubjectsScreen").default,
+  ChaptersScreen: () => require("../screens/chapters/ChaptersScreen").default,
+  ChapterDetailsScreen: () => require("../screens/details/ChapterDetailsScreen").default,
+  StoreScreen: () => require("../screens/store/StoreScreen").default,
+  NotesScreen: () => require("../screens/notes/NotesScreen").default,
+  VideosScreen: () => require("../screens/videos/VideosScreen").default,
+  TestListScreen: () => require("../screens/quiz/TestListScreen").default,
+  QuizScreen: () => require("../screens/quiz/QuizScreen").default,
+  ProfileScreen: () => require("../screens/profile/ProfileScreen").default,
+  EditProfileScreen: () => require("../screens/profile/EditProfileScreen").default,
+  ReferralScreen: () => require("../screens/referral/ReferralScreen").default,
+  ReferralTermsScreen: () => require("../screens/referral/ReferralTermsScreen").default,
+  OrderSummaryScreen: () => require("../screens/payment/OrderSummaryScreen").default,
+  ChangePasswordScreen: () => require("../screens/profile/ChangePasswordScreen").default,
+  MyPurchasesScreen: () => require("../screens/purchases/MyPurchasesScreen").default,
+  DownloadsScreen: () => require("../screens/downloads/DownloadsScreen").default,
+  PdfViewerScreen: () => require("../screens/pdf/PdfViewerScreen").default,
+  SearchScreen: () => require("../screens/search/SearchScreen").default,
+  SettingsScreen: () => require("../screens/settings/SettingsScreen").default,
+  StudyReminderScreen: () => require("../screens/reminder/StudyReminderScreen").default,
+  NotificationsScreen: () => require("../screens/notifications/NotificationsScreen").default,
+  PaymentSuccessScreen: () => require("../screens/payment/PaymentSuccessScreen").default,
+  PaymentFailedScreen: () => require("../screens/payment/PaymentFailedScreen").default,
+  PaymentCheckoutScreen: () => require("../screens/payment/PaymentCheckoutScreen").default,
+  PlayBillingScreen: () => require("../screens/payment/PlayBillingScreen").default,
+  AboutScreen: () => require("../screens/about/AboutScreen").default,
+  ContactScreen: () => require("../screens/contact/ContactScreen").default,
+  PrivacyScreen: () => require("../screens/privacy/PrivacyScreen").default,
+  TermsScreen: () => require("../screens/terms/TermsScreen").default,
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -130,43 +139,43 @@ export default function AppNavigator() {
           component={SelectCourseYearScreen}
           options={{ gestureEnabled: false }}
         />
-        <Stack.Screen name="Years" component={YearsScreen} />
+        <Stack.Screen name="Years" getComponent={deferredScreens.YearsScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Subjects" component={SubjectsScreen} />
-        <Stack.Screen name="Chapters" component={ChaptersScreen} />
-        <Stack.Screen name="ChapterDetails" component={ChapterDetailsScreen} />
-        <Stack.Screen name="Store" component={StoreScreen} />
-        <Stack.Screen name="Notes" component={NotesScreen} />
-        <Stack.Screen name="Videos" component={VideosScreen} />
-        <Stack.Screen name="QuizTests" component={TestListScreen} />
-        <Stack.Screen name="Quiz" component={QuizScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-        <Stack.Screen name="Referral" component={ReferralScreen} />
-        <Stack.Screen name="ReferralTerms" component={ReferralTermsScreen} />
-        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-        <Stack.Screen name="MyPurchases" component={MyPurchasesScreen} />
-        <Stack.Screen name="Downloads" component={DownloadsScreen} />
-        <Stack.Screen name="PdfViewer" component={PdfViewerScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="StudyReminder" component={StudyReminderScreen} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
-        <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
-        <Stack.Screen name="PaymentFailed" component={PaymentFailedScreen} />
+        <Stack.Screen name="Subjects" getComponent={deferredScreens.SubjectsScreen} />
+        <Stack.Screen name="Chapters" getComponent={deferredScreens.ChaptersScreen} />
+        <Stack.Screen name="ChapterDetails" getComponent={deferredScreens.ChapterDetailsScreen} />
+        <Stack.Screen name="Store" getComponent={deferredScreens.StoreScreen} />
+        <Stack.Screen name="Notes" getComponent={deferredScreens.NotesScreen} />
+        <Stack.Screen name="Videos" getComponent={deferredScreens.VideosScreen} />
+        <Stack.Screen name="QuizTests" getComponent={deferredScreens.TestListScreen} />
+        <Stack.Screen name="Quiz" getComponent={deferredScreens.QuizScreen} />
+        <Stack.Screen name="Profile" getComponent={deferredScreens.ProfileScreen} />
+        <Stack.Screen name="EditProfile" getComponent={deferredScreens.EditProfileScreen} />
+        <Stack.Screen name="Referral" getComponent={deferredScreens.ReferralScreen} />
+        <Stack.Screen name="ReferralTerms" getComponent={deferredScreens.ReferralTermsScreen} />
+        <Stack.Screen name="ChangePassword" getComponent={deferredScreens.ChangePasswordScreen} />
+        <Stack.Screen name="MyPurchases" getComponent={deferredScreens.MyPurchasesScreen} />
+        <Stack.Screen name="Downloads" getComponent={deferredScreens.DownloadsScreen} />
+        <Stack.Screen name="PdfViewer" getComponent={deferredScreens.PdfViewerScreen} />
+        <Stack.Screen name="Search" getComponent={deferredScreens.SearchScreen} />
+        <Stack.Screen name="Settings" getComponent={deferredScreens.SettingsScreen} />
+        <Stack.Screen name="StudyReminder" getComponent={deferredScreens.StudyReminderScreen} />
+        <Stack.Screen name="Notifications" getComponent={deferredScreens.NotificationsScreen} />
+        <Stack.Screen name="PaymentSuccess" getComponent={deferredScreens.PaymentSuccessScreen} />
+        <Stack.Screen name="PaymentFailed" getComponent={deferredScreens.PaymentFailedScreen} />
         {paymentProvider === "razorpay" && (
-          <Stack.Screen name="OrderSummary" component={OrderSummaryScreen} />
+          <Stack.Screen name="OrderSummary" getComponent={deferredScreens.OrderSummaryScreen} />
         )}
         {paymentProvider === "play" && (
-          <Stack.Screen name="PlayBilling" component={PlayBillingScreen} />
+          <Stack.Screen name="PlayBilling" getComponent={deferredScreens.PlayBillingScreen} />
         )}
         {paymentProvider === "razorpay" && (
-          <Stack.Screen name="PaymentCheckout" component={PaymentCheckoutScreen} />
+          <Stack.Screen name="PaymentCheckout" getComponent={deferredScreens.PaymentCheckoutScreen} />
         )}
-        <Stack.Screen name="About" component={AboutScreen} />
-        <Stack.Screen name="Contact" component={ContactScreen} />
-        <Stack.Screen name="Privacy" component={PrivacyScreen} />
-        <Stack.Screen name="Terms" component={TermsScreen} />
+        <Stack.Screen name="About" getComponent={deferredScreens.AboutScreen} />
+        <Stack.Screen name="Contact" getComponent={deferredScreens.ContactScreen} />
+        <Stack.Screen name="Privacy" getComponent={deferredScreens.PrivacyScreen} />
+        <Stack.Screen name="Terms" getComponent={deferredScreens.TermsScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       </Stack.Navigator>
