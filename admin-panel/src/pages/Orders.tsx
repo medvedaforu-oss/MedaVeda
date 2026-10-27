@@ -15,7 +15,7 @@ export default function Orders() {
   const { courses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { orders, loading, error, changeStatus } = useOrders({ courseId: courseFilter || undefined });
+  const { orders, loading, error, reload, changeStatus } = useOrders({ courseId: courseFilter || undefined });
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -89,7 +89,7 @@ export default function Orders() {
         <OrderFilter value={status} onChange={setStatus} />
       </div>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {filteredOrders.length === 0 ? (
         <div className="bg-white rounded-xl p-10 text-center shadow">

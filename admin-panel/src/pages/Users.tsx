@@ -14,7 +14,7 @@ export default function Users() {
   const { courses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { users, loading, error, toggleBlocked } = useUsers({ courseId: courseFilter || undefined });
+  const { users, loading, error, reload, toggleBlocked } = useUsers({ courseId: courseFilter || undefined });
 
   const [search, setSearch] = useState("");
 
@@ -76,7 +76,7 @@ export default function Users() {
         <SearchBar value={search} onChange={setSearch} />
       </div>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {filteredUsers.length === 0 ? (
         <div className="bg-white rounded-xl p-10 text-center shadow">

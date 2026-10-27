@@ -18,7 +18,7 @@ export default function Videos() {
   const { courses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { videos, loading, error, createVideo, editVideo, removeVideo } =
+  const { videos, loading, error, reload, createVideo, editVideo, removeVideo } =
     useVideos({ courseId: courseFilter || undefined });
 
   const { years } = useYears();
@@ -131,7 +131,7 @@ export default function Videos() {
         </select>
       </div>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
       {deleteError && <p className="text-red-500 mb-4" role="alert">{deleteError}</p>}
 
       {filteredVideos.length === 0 ? (

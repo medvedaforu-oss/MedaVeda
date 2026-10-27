@@ -139,7 +139,7 @@ export default function Notes() {
         </select>
       </div>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
       {deleteError && <p className="text-red-500 mb-4" role="alert">{deleteError}</p>}
 
       {filteredNotes.length === 0 ? (

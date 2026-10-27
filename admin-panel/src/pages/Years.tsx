@@ -16,7 +16,7 @@ export default function Years() {
   const { courses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { years, loading, error, createYear, editYear, removeYear } =
+  const { years, loading, error, reload, createYear, editYear, removeYear } =
     useYears({ courseId: courseFilter || undefined });
 
   const [formOpen, setFormOpen] = useState(false);
@@ -87,7 +87,7 @@ export default function Years() {
 
       {loading && <p className="text-gray-400">Loading...</p>}
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <div role="alert" className="text-red-500"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {!loading && !error && (
         <YearTable

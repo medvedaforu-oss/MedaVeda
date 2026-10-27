@@ -16,7 +16,7 @@ export default function Subjects() {
   const { courses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { subjects, loading, error, createSubject, editSubject, removeSubject } =
+  const { subjects, loading, error, reload, createSubject, editSubject, removeSubject } =
     useSubjects({ courseId: courseFilter || undefined });
 
   const { years, loading: yearsLoading } = useYears();
@@ -123,7 +123,7 @@ export default function Subjects() {
 
       {loading && <p className="text-gray-400">Loading...</p>}
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <div role="alert" className="text-red-500"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {!loading && !error && (
         <SubjectTable

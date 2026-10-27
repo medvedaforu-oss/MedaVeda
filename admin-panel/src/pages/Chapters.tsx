@@ -21,6 +21,7 @@ export default function Chapters() {
     chapters,
     loading,
     error,
+    reload,
     createChapter,
     editChapter,
     removeChapter,
@@ -171,7 +172,7 @@ export default function Chapters() {
 
       {loading && <p className="text-gray-400">Loading...</p>}
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <div role="alert" className="text-red-500"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {!loading && !error && (
         <ChapterTable
