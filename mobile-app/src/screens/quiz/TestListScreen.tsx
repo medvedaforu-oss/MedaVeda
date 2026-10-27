@@ -89,7 +89,7 @@ function TestListScreen() {
       ) : error ? (
         <LoadError content="tests" retry={retry} />
       ) : (
-        <FlatList
+        <FlatList refreshing={loading} onRefresh={retry}
           data={tests}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}

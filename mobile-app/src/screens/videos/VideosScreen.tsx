@@ -100,7 +100,7 @@ function VideosScreen() {
       ) : error ? (
         <ErrorState message={error} onRetry={() => setAttempt(value => value + 1)} />
       ) : (
-        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
+        <FlatList refreshing={loading} onRefresh={() => setAttempt(value => value + 1)} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           keyboardShouldPersistTaps="handled"
           data={filteredData}
           keyExtractor={(item) => item.id}

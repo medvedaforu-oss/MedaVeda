@@ -56,7 +56,7 @@ function YearsScreen() {
       ) : (
         <>
           {error && <LoadError content="years" retry={retry} />}
-          <FlatList
+          <FlatList refreshing={loading} onRefresh={retry}
             data={years}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}

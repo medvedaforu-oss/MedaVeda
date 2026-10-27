@@ -114,7 +114,7 @@ function ChaptersScreen() {
       ) : (
         <>
           {error && <LoadError content="chapters" retry={retry} />}
-          <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
+          <FlatList refreshing={loading} onRefresh={retry} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
             data={filteredData}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}

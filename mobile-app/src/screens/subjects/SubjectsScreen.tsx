@@ -65,7 +65,7 @@ function SubjectsScreen() {
       ) : (
         <>
           {error && <LoadError content="subjects" retry={retry} />}
-          <FlatList
+          <FlatList refreshing={loading} onRefresh={retry}
             data={filteredData}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}

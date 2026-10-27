@@ -186,7 +186,7 @@ function NotesScreen() {
       ) : error ? (
         <LoadError content="notes" retry={retry} />
       ) : (
-        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
+        <FlatList refreshing={loading} onRefresh={retry} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           data={filteredData}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
