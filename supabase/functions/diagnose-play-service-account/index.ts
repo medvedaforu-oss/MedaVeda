@@ -1,3 +1,5 @@
+// REMOVE_AFTER_INVESTIGATION: retire with admin callers once Play 403 is resolved.
+// Keep verified admin + AAL2 authorization until the retirement is approved.
 import { corsHeaders } from "../_shared/cors.ts";
 import {
   aalFromAuthHeader,
