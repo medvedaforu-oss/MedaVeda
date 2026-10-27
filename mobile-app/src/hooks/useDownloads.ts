@@ -67,32 +67,20 @@ export default function useDownloads() {
     }
   }
 
-  async function pause(id: string) {
-    await downloadManager.pauseDownload(id);
+  async function runAction(action: () => Promise<void>): Promise<void> {
+    try {
+      await action();
+      refresh();
+    } catch {
+      Alert.alert("Download action unavailable", "Check available storage and try again. The action could not be completed.");
+    }
   }
-
-  async function resume(id: string) {
-    await downloadManager.resumeDownload(id);
-  }
-
-  async function retry(id: string) {
-    await downloadManager.retryDownload(id);
-  }
-
-  async function cancel(id: string) {
-    await downloadManager.cancelDownload(id);
-    refresh();
-  }
-
-  async function remove(id: string) {
-    await downloadManager.removeDownload(id);
-    refresh();
-  }
-
-  async function clearAll() {
-    await downloadManager.clearAllDownloads();
-    refresh();
-  }
+  const pause = (id: string) => runAction(() => downloadManager.pauseDownload(id));
+  const resume = (id: string) => runAction(() => downloadManager.resumeDownload(id));
+  const retry = (id: string) => runAction(() => downloadManager.retryDownload(id));
+  const cancel = (id: string) => runAction(() => downloadManager.cancelDownload(id));
+  const remove = (id: string) => runAction(() => downloadManager.removeDownload(id));
+  const clearAll = () => runAction(() => downloadManager.clearAllDownloads());
 
   function getItem(id: string): DownloadItem | null {
     return downloads.find((d) => d.id === id) ?? null;
