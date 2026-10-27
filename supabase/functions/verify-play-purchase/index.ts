@@ -10,7 +10,10 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
   const user = await getUserFromAuthHeader(req);
   if (!user) return jsonResponse({ error: "Please log in before purchasing." }, 401);
-  const body = await req.json().catch(() => ({})) as { purchaseToken?: unknown; productId?: unknown; internalOrderId?: unknown };
+  const input: unknown = await req.json().catch(() => null);
+  if (!input || typeof input !== "object" || Array.isArray(input))
+    return jsonResponse({ error: "Invalid request body." }, 400);
+  const body = input as { purchaseToken?: unknown; productId?: unknown; internalOrderId?: unknown };
   const token = typeof body.purchaseToken === "string" ? body.purchaseToken : "";
   const productId = typeof body.productId === "string" ? body.productId : "";
   const orderId = typeof body.internalOrderId === "string" ? body.internalOrderId : "";

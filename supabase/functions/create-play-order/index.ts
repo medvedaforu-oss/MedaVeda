@@ -7,7 +7,10 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
   const user = await getUserFromAuthHeader(req);
   if (!user) return jsonResponse({ error: "Please log in before purchasing." }, 401);
-  const body = await req.json().catch(() => ({})) as { productId?: unknown };
+  const input: unknown = await req.json().catch(() => null);
+  if (!input || typeof input !== "object" || Array.isArray(input))
+    return jsonResponse({ error: "Invalid request body." }, 400);
+  const body = input as { productId?: unknown };
   const productId = typeof body.productId === "string" ? body.productId : "";
   if (!productId || productId.length > 100) return jsonResponse({ error: "Invalid productId." }, 400);
   if (!(await withinLimit(`create-play-order:${user.id}`, 10, 600))) return jsonResponse({ error: "Too many attempts." }, 429);
