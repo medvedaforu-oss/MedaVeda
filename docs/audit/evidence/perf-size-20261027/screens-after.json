@@ -1,0 +1,721 @@
+{
+  "App": {
+    "requests": [
+      {
+        "table": "app_config",
+        "operation": "select",
+        "filters": [
+          [
+            "in",
+            "key",
+            [
+              "min_app_version",
+              "store_url"
+            ]
+          ]
+        ]
+      },
+      {
+        "table": "get_maintenance_mode",
+        "operation": "select",
+        "filters": []
+      }
+    ],
+    "sqlite": [
+      {
+        "method": "execSync",
+        "statement": "PRAGMA journal_mode = WAL;"
+      },
+      {
+        "method": "execSync",
+        "statement": "PRAGMA foreign_keys = ON;"
+      },
+      {
+        "method": "execSync",
+        "statement": "-- Every downloaded asset (PDF note or quiz bundle), one row per item. -- 'status' drives the whole DownloadManager state machine. CREATE TABLE IF NOT EXISTS downloads ( id TEXT PRIMARY KEY, -- content id (note id / quiz id) content_type TEXT NOT NULL, -- 'note' | 'quiz' title TEXT NOT NULL, chapter_id TEXT NOT NULL, chapter_title TEXT NOT NULL, subject_id TEXT NOT NULL, subject_title TEXT NOT NULL, year_id TEXT NOT NULL, year_title TEXT NOT NULL, source_url TEXT NOT NULL, local_uri TEXT, -- null until status = 'completed' file_size_bytes INTEGER DEFAULT 0, bytes_written INTEGER DEFAULT 0, -- enables resume + progress restore after app kill status TEXT NOT NULL DEFAULT 'queued', -- queued|downloading|paused|completed|failed retry_count INTEGER DEFAULT 0, error_message TEXT, content_version INTEGER DEFAULT 1, -- bumped server-side when source content changes downloaded_at INTEGER, updated_at INTEGER NOT NULL ); CREATE INDEX IF NOT EXISTS idx_downloads_status ON downloads(status); CREATE INDEX IF NOT EXISTS idx_downloads_chapter ON downloads(chapter_id); -- Outbox pattern: every offline user action queues here first, then -- SyncEngine drains it to Supabase once connectivity returns. This is -- what makes quiz attempts / bookmarks / progress work with zero -- internet and never lose data. CREATE TABLE IF NOT EXISTS sync_queue ( queue_id TEXT PRIMARY KEY, -- client-generated UUID (dedupe key) entity_type TEXT NOT NULL, -- 'quiz_attempt' | 'bookmark' | 'reading_progress' | 'watch_history' operation TEXT NOT NULL, -- 'upsert' | 'delete' payload TEXT NOT NULL, -- JSON blob matching the target Supabase table created_at INTEGER NOT NULL, attempt_count INTEGER DEFAULT 0, last_error TEXT, synced_at INTEGER -- null until confirmed written to server ); CREATE INDEX IF NOT EXISTS idx_sync_queue_pending ON sync_queue(synced_at); -- Local mirror of quiz attempts so results screen works offline -- immediately; SyncEngine reconciles this with the server copy. CREATE TABLE IF NOT EXISTS quiz_attempts_local ( attempt_id TEXT PRIMARY KEY, quiz_id TEXT NOT NULL, chapter_id TEXT NOT NULL, score INTEGER NOT NULL, total_questions INTEGER NOT NULL, answers_json TEXT NOT NULL, taken_at INTEGER NOT NULL, synced INTEGER DEFAULT 0 ); CREATE TABLE IF NOT EXISTS bookmarks_local ( id TEXT PRIMARY KEY, content_type TEXT NOT NULL, content_id TEXT NOT NULL, created_at INTEGER NOT NULL, deleted INTEGER DEFAULT 0, synced INTEGER DEFAULT 0 ); CREATE TABLE IF NOT EXISTS reading_progress_local ( content_id TEXT PRIMARY KEY, content_type TEXT NOT NULL, progress_percent REAL NOT NULL, last_page INTEGER, updated_at INTEGER NOT NULL, synced INTEGER DEFAULT 0 );"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "PRAGMA table_info(downloads);"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "PRAGMA table_info(quiz_attempts_local);"
+      },
+      {
+        "method": "runSync",
+        "statement": "UPDATE downloads SET status = 'paused' WHERE status = 'downloading';"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM sync_queue WHERE synced_at IS NULL AND (entity_type <> 'quiz_attempt' OR NOT json_valid(payload) OR json_extract(payload, '$.user_id') IS NULL OR json_extract(payload, '$.user_id') = ?) ORDER BY created_at ASC LIMIT 50;"
+      }
+    ],
+    "storageReads": 1,
+    "storageWrites": 0,
+    "renders": 2,
+    "opaque": [
+      "play-restore",
+      "push-registration"
+    ],
+    "openingRequests": 2,
+    "requestCount": 2,
+    "sqliteCalls": 7
+  },
+  "Home": {
+    "requests": [
+      {
+        "table": "verified_quiz_attempts",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ]
+        ]
+      },
+      {
+        "table": "quiz_scores",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "notifications",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "analytics_events",
+        "operation": "insert",
+        "filters": []
+      },
+      {
+        "table": "years",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "chapters",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "products",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "scope",
+            "year"
+          ],
+          [
+            "eq",
+            "year_id",
+            "y1"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "products",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "scope",
+            "year"
+          ],
+          [
+            "eq",
+            "year_id",
+            "y2"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "products",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "scope",
+            "year"
+          ],
+          [
+            "eq",
+            "year_id",
+            "y3"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "products",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "scope",
+            "year"
+          ],
+          [
+            "eq",
+            "year_id",
+            "y4"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "chapters",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      }
+    ],
+    "sqlite": [],
+    "storageReads": 9,
+    "storageWrites": 2,
+    "renders": 3,
+    "opaque": [
+      "referral"
+    ],
+    "openingRequests": 14,
+    "requestCount": 14,
+    "sqliteCalls": 0
+  },
+  "Notes": {
+    "requests": [
+      {
+        "table": "notes",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "chapter_id",
+            "c1"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      }
+    ],
+    "sqlite": [
+      {
+        "method": "execSync",
+        "statement": "PRAGMA journal_mode = WAL;"
+      },
+      {
+        "method": "execSync",
+        "statement": "PRAGMA foreign_keys = ON;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads WHERE course_id = ? OR course_id = '' ORDER BY updated_at DESC;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads ORDER BY updated_at DESC;"
+      }
+    ],
+    "storageReads": 0,
+    "storageWrites": 0,
+    "renders": 2,
+    "opaque": [],
+    "openingRequests": 1,
+    "requestCount": 1,
+    "sqliteCalls": 4
+  },
+  "Videos": {
+    "requests": [
+      {
+        "table": "videos",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "subject_id",
+            "s1"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      }
+    ],
+    "sqlite": [],
+    "storageReads": 0,
+    "storageWrites": 0,
+    "renders": 2,
+    "opaque": [],
+    "openingRequests": 1,
+    "requestCount": 1,
+    "sqliteCalls": 0
+  },
+  "Chapters": {
+    "requests": [
+      {
+        "table": "chapters",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "subject_id",
+            "s1"
+          ],
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      }
+    ],
+    "sqlite": [],
+    "storageReads": 0,
+    "storageWrites": 1,
+    "renders": 2,
+    "opaque": [],
+    "openingRequests": 3,
+    "requestCount": 3,
+    "sqliteCalls": 0
+  },
+  "Search": {
+    "requests": [
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "years",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "subjects",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "chapters",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "notes",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "videos",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "quiz_tests",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "products",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ],
+          [
+            "eq",
+            "course_id",
+            "bams"
+          ]
+        ]
+      },
+      {
+        "table": "purchases",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "user_id",
+            "fixture"
+          ],
+          [
+            "eq",
+            "status",
+            "success"
+          ]
+        ]
+      },
+      {
+        "table": "notifications",
+        "operation": "select",
+        "filters": [
+          [
+            "eq",
+            "active",
+            true
+          ]
+        ]
+      }
+    ],
+    "sqlite": [
+      {
+        "method": "execSync",
+        "statement": "PRAGMA journal_mode = WAL;"
+      },
+      {
+        "method": "execSync",
+        "statement": "PRAGMA foreign_keys = ON;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads WHERE course_id = ? OR course_id = '' ORDER BY updated_at DESC;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads ORDER BY updated_at DESC;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads WHERE course_id = ? OR course_id = '' ORDER BY updated_at DESC;"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM downloads ORDER BY updated_at DESC;"
+      }
+    ],
+    "storageReads": 5,
+    "storageWrites": 1,
+    "renders": 6,
+    "opaque": [],
+    "openingRequests": 2,
+    "requestCount": 11,
+    "sqliteCalls": 6
+  },
+  "firstInstall": {
+    "requests": [
+      {
+        "table": "app_config",
+        "operation": "select",
+        "filters": [
+          [
+            "in",
+            "key",
+            [
+              "min_app_version",
+              "store_url"
+            ]
+          ]
+        ]
+      },
+      {
+        "table": "get_maintenance_mode",
+        "operation": "select",
+        "filters": []
+      }
+    ],
+    "sqlite": [
+      {
+        "method": "execSync",
+        "statement": "PRAGMA journal_mode = WAL;"
+      },
+      {
+        "method": "execSync",
+        "statement": "PRAGMA foreign_keys = ON;"
+      },
+      {
+        "method": "execSync",
+        "statement": "-- Every downloaded asset (PDF note or quiz bundle), one row per item. -- 'status' drives the whole DownloadManager state machine. CREATE TABLE IF NOT EXISTS downloads ( id TEXT PRIMARY KEY, -- content id (note id / quiz id) content_type TEXT NOT NULL, -- 'note' | 'quiz' title TEXT NOT NULL, chapter_id TEXT NOT NULL, chapter_title TEXT NOT NULL, subject_id TEXT NOT NULL, subject_title TEXT NOT NULL, year_id TEXT NOT NULL, year_title TEXT NOT NULL, source_url TEXT NOT NULL, local_uri TEXT, -- null until status = 'completed' file_size_bytes INTEGER DEFAULT 0, bytes_written INTEGER DEFAULT 0, -- enables resume + progress restore after app kill status TEXT NOT NULL DEFAULT 'queued', -- queued|downloading|paused|completed|failed retry_count INTEGER DEFAULT 0, error_message TEXT, content_version INTEGER DEFAULT 1, -- bumped server-side when source content changes downloaded_at INTEGER, updated_at INTEGER NOT NULL ); CREATE INDEX IF NOT EXISTS idx_downloads_status ON downloads(status); CREATE INDEX IF NOT EXISTS idx_downloads_chapter ON downloads(chapter_id); -- Outbox pattern: every offline user action queues here first, then -- SyncEngine drains it to Supabase once connectivity returns. This is -- what makes quiz attempts / bookmarks / progress work with zero -- internet and never lose data. CREATE TABLE IF NOT EXISTS sync_queue ( queue_id TEXT PRIMARY KEY, -- client-generated UUID (dedupe key) entity_type TEXT NOT NULL, -- 'quiz_attempt' | 'bookmark' | 'reading_progress' | 'watch_history' operation TEXT NOT NULL, -- 'upsert' | 'delete' payload TEXT NOT NULL, -- JSON blob matching the target Supabase table created_at INTEGER NOT NULL, attempt_count INTEGER DEFAULT 0, last_error TEXT, synced_at INTEGER -- null until confirmed written to server ); CREATE INDEX IF NOT EXISTS idx_sync_queue_pending ON sync_queue(synced_at); -- Local mirror of quiz attempts so results screen works offline -- immediately; SyncEngine reconciles this with the server copy. CREATE TABLE IF NOT EXISTS quiz_attempts_local ( attempt_id TEXT PRIMARY KEY, quiz_id TEXT NOT NULL, chapter_id TEXT NOT NULL, score INTEGER NOT NULL, total_questions INTEGER NOT NULL, answers_json TEXT NOT NULL, taken_at INTEGER NOT NULL, synced INTEGER DEFAULT 0 ); CREATE TABLE IF NOT EXISTS bookmarks_local ( id TEXT PRIMARY KEY, content_type TEXT NOT NULL, content_id TEXT NOT NULL, created_at INTEGER NOT NULL, deleted INTEGER DEFAULT 0, synced INTEGER DEFAULT 0 ); CREATE TABLE IF NOT EXISTS reading_progress_local ( content_id TEXT PRIMARY KEY, content_type TEXT NOT NULL, progress_percent REAL NOT NULL, last_page INTEGER, updated_at INTEGER NOT NULL, synced INTEGER DEFAULT 0 );"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "PRAGMA table_info(downloads);"
+      },
+      {
+        "method": "execSync",
+        "statement": "ALTER TABLE downloads ADD COLUMN course_id TEXT NOT NULL DEFAULT '';"
+      },
+      {
+        "method": "execSync",
+        "statement": "UPDATE downloads SET course_id = 'bams' WHERE course_id = '';"
+      },
+      {
+        "method": "execSync",
+        "statement": "CREATE INDEX IF NOT EXISTS idx_downloads_course ON downloads(course_id);"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "PRAGMA table_info(quiz_attempts_local);"
+      },
+      {
+        "method": "execSync",
+        "statement": "ALTER TABLE quiz_attempts_local ADD COLUMN verification_status TEXT NOT NULL DEFAULT 'legacy';"
+      },
+      {
+        "method": "runSync",
+        "statement": "DELETE FROM downloads WHERE content_type = 'quiz';"
+      },
+      {
+        "method": "runSync",
+        "statement": "UPDATE downloads SET status = 'paused' WHERE status = 'downloading';"
+      },
+      {
+        "method": "getAllSync",
+        "statement": "SELECT * FROM sync_queue WHERE synced_at IS NULL AND (entity_type <> 'quiz_attempt' OR NOT json_valid(payload) OR json_extract(payload, '$.user_id') IS NULL OR json_extract(payload, '$.user_id') = ?) ORDER BY created_at ASC LIMIT 50;"
+      }
+    ],
+    "storageReads": 1,
+    "storageWrites": 1,
+    "renders": 2,
+    "opaque": [
+      "play-restore",
+      "push-registration"
+    ],
+    "openingRequests": 2,
+    "requestCount": 2,
+    "sqliteCalls": 12
+  }
+}
