@@ -393,11 +393,11 @@ export async function restorePlayPurchases(): Promise<PlayRestoreSummary> {
 }
 
 export async function recheckPlayOrder(internalOrderId: string): Promise<PlayVerifyResult> {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await withBillingDeadline(supabase.auth.getSession());
   const userId = data.session?.user.id;
   if (!userId) return { success: false, pending: true };
-  const orders = await getOrdersByUser(userId);
-  if ((await supabase.auth.getSession()).data.session?.user.id !== userId)
+  const orders = await withBillingDeadline(getOrdersByUser(userId));
+  if ((await withBillingDeadline(supabase.auth.getSession())).data.session?.user.id !== userId)
     return { success: false, pending: true };
   const order = orders.find((candidate) => candidate.id === internalOrderId && candidate.provider === "play");
   if (!order) return { success: false, pending: true };
@@ -411,7 +411,7 @@ export async function recheckPlayOrder(internalOrderId: string): Promise<PlayVer
     return { success: false, pending: false, message: "Payment was not completed." };
   }
   const iap = await ensurePlayBilling();
-  const purchases = await iap.getAvailablePurchases();
+  const purchases = await withBillingDeadline(iap.getAvailablePurchases());
   const purchase = purchases.find((candidate): candidate is PurchaseAndroid => isAndroidPurchase(candidate) &&
     candidate.obfuscatedAccountIdAndroid === obfuscatedPlayId(userId) &&
     candidate.obfuscatedProfileIdAndroid === obfuscatedPlayId(internalOrderId));

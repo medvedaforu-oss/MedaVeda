@@ -39,19 +39,19 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   console.log('PASS App launch, sign-in, initial session and resume invoke restore; unrelated events do not; listeners cleaned up');
 
   let user = 'buyer', orderStatus = 'created', available = [], update, errorListener, requests = 0, queries = 0, network;
-  let deadline, requestSignal, timersCleared = 0, fetchProducts = async () => [];
+  let stallRead = "", deadline, requestSignal, timersCleared = 0, fetchProducts = async () => [];
   const store = new Map(); const events = [];
   const session = () => ({ data: { session: user ? { user: { id: user }, access_token: 'fixture' } : null } });
   const service = load('src/services/playBillingService.ts', {
     '@react-native-async-storage/async-storage': { __esModule: true, default: { getItem: async k => store.get(k), setItem: async (k,v) => store.set(k,v), removeItem: async k => store.delete(k) } },
     'react-native': { Platform: { OS: 'android' } }, 'js-sha256': { sha256: x => `hash-${x}` },
-    '../config/supabase': { supabase: { auth: { getSession: async () => session() } } },
-    '../repositories/ordersRepository': { getOrdersByUser: async () => [{ id: 'order', status: orderStatus, provider: 'play', playSku: 'sku', productId: 'product' }] },
+    '../config/supabase': { supabase: { auth: { getSession: async () => stallRead === "session" ? new Promise(() => {}) : session() } } },
+    '../repositories/ordersRepository': { getOrdersByUser: async () => stallRead === 'orders' ? new Promise(() => {}) : [{ id: 'order', status: orderStatus, provider: 'play', playSku: 'sku', productId: 'product' }] },
     './playOfferSelection': { selectStandardPlayOffer: () => ({ offerToken: 'offer', formattedPrice: '₹49' }) }, 'expo-iap': {
       fetchProducts: (...args) => fetchProducts(...args),
       purchaseUpdatedListener: fn => { update = fn; return { remove: noop }; },
       purchaseErrorListener: fn => { errorListener = fn; return { remove: noop }; },
-      initConnection: async () => true, getAvailablePurchases: async () => { queries++; return available; }, requestPurchase: async () => {},
+      initConnection: async () => true, getAvailablePurchases: async () => { queries++; return stallRead === "native" ? new Promise(() => {}) : available; }, requestPurchase: async () => {},
     },
   }, { setTimeout: (fn, ms) => { assert.equal(ms, 15000); deadline = fn; return 1; },
     clearTimeout: () => { timersCleared++; },
@@ -98,6 +98,14 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   available = []; assert.equal((await service.recheckPlayOrder('order')).pending, false);
   orderStatus = 'refunded'; assert.match((await service.recheckPlayOrder('order')).message, /refunded/);
   orderStatus = 'created'; available = [purchase];
+  for (const read of ['session', 'orders', 'native']) {
+    stallRead = read;
+    const checking = service.recheckPlayOrder('order'); await tick(); deadline();
+    await assert.rejects(checking, /timed out/);
+  }
+  stallRead = '';
+  assert.equal((await service.recheckPlayOrder('order')).success, true);
+  console.log('PASS pending-order session, order and native reads are bounded and retryable');
   const attempt = { userId: 'buyer', internalOrderId: 'order', playSku: 'sku', productId: 'product', productTitle: 'Notes' };
   await service.startPlayPurchase(attempt, 'offer');
   for (const stallBody of [false, true]) {
