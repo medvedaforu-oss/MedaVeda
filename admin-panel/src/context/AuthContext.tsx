@@ -23,8 +23,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+    let generation = 0;
+    let receivedAuthEvent = false;
     async function checkAdmin(currentUser: User | null) {
+      if (!active) return;
+      const run = ++generation;
+      const current = () => active && generation === run;
       setUser(currentUser);
+      setIsAdmin(false);
+      setLoading(true);
 
       if (!currentUser) {
         setIsAdmin(false);
@@ -40,24 +48,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const { data, error } = await supabase.rpc("am_i_admin");
         if (error) throw error;
-        setIsAdmin(!!data);
+        if (current()) setIsAdmin(!!data);
       } catch (err) {
         console.error("Failed to check admin status:", err);
-        setIsAdmin(false);
+        if (current()) setIsAdmin(false);
       } finally {
-        setLoading(false);
+        if (current()) setLoading(false);
       }
     }
 
     supabase.auth.getSession().then(({ data }) => {
-      checkAdmin(data.session?.user ?? null);
-    });
+      if (!receivedAuthEvent) void checkAdmin(data.session?.user ?? null);
+    }).catch(() => { if (!receivedAuthEvent) void checkAdmin(null); });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      checkAdmin(session?.user ?? null);
+      receivedAuthEvent = true;
+      void checkAdmin(session?.user ?? null);
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => { active = false; generation++; listener.subscription.unsubscribe(); };
   }, []);
 
   async function signOut() {
