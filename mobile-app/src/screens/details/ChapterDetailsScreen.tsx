@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useEffect, useCallback } from "react";
@@ -29,7 +30,7 @@ import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
 
-export default function ChapterDetailsScreen() {
+function ChapterDetailsScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
@@ -253,3 +254,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default withRouteValidation(ChapterDetailsScreen, ["chapterId", "subjectId", "yearId"], [], false);

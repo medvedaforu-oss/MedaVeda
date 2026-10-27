@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useCallback, useMemo, useState } from "react";
@@ -31,7 +32,7 @@ import { logError } from "../../utils/logger";
 // (or its subject/year/bundle) to be purchased.
 const FREE_PDF_COUNT = 1;
 
-export default function NotesScreen() {
+function NotesScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -226,3 +227,5 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
 });
+
+export default withRouteValidation(NotesScreen, ["chapterId", "subjectId", "yearId"], [], false);

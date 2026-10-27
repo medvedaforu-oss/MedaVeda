@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useState, useCallback } from "react";
@@ -21,7 +22,7 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 
-export default function ChaptersScreen() {
+function ChaptersScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -160,3 +161,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default withRouteValidation(ChaptersScreen, ["subjectId", "yearId"], ["notes"], false);

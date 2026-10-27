@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useCallback, useState } from "react";
@@ -30,7 +31,7 @@ import useDownloads from "../../hooks/useDownloads";
 // test is just persisting that JSON locally - see saveQuiz in
 // useDownloads. This also means the list itself still renders from the
 // last successful fetch even if a later refresh fails offline.
-export default function TestListScreen() {
+function TestListScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -132,3 +133,5 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
 });
+
+export default withRouteValidation(TestListScreen, ["subjectId"], [], false);

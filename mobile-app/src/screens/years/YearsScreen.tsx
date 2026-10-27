@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useCallback } from "react";
@@ -26,7 +27,7 @@ const MODE_SUBTITLE: Record<string, string> = {
   quiz: "Select a year to take an MCQ test",
 };
 
-export default function YearsScreen() {
+function YearsScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -128,3 +129,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default withRouteValidation(YearsScreen, [], ["notes", "videos", "quiz"], true);

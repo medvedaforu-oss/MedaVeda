@@ -12,6 +12,7 @@ function load(relative){
  const file=path.resolve(__dirname,'..',relative),mod={exports:{}};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.React}}).outputText,{exports:mod.exports,require:name=>{
   if(name==='react')return react;
+  if(name.endsWith('/withRouteValidation'))return {withRouteValidation:screen=>screen};
   if(name==='react-native')return native;
   if(name==='@react-navigation/native')return {useRoute:()=>({params:{subjectId:'s',subjectTitle:'Subject'}})};
   if(name.endsWith('/VideoCard'))return {__esModule:true,default:load('src/components/VideoCard.tsx').default};

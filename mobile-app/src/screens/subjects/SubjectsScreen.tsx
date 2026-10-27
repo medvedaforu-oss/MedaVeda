@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
 import React, { useCallback, useState } from "react";
@@ -19,7 +20,7 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 
-export default function SubjectsScreen() {
+function SubjectsScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -136,3 +137,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default withRouteValidation(SubjectsScreen, ["yearId"], ["notes", "videos", "quiz"], false);

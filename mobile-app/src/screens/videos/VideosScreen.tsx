@@ -1,3 +1,4 @@
+import { withRouteValidation } from "../../navigation/withRouteValidation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   View,
@@ -27,7 +28,7 @@ import { logError } from "../../utils/logger";
 // MedVeda 2.0: Video Lectures are always free for every student, for
 // the whole Subject - only PDF Notes are paid (and chapter-scoped)
 // content. No purchase check, no lock icons, no Unlock panel here.
-export default function VideosScreen() {
+function VideosScreen() {
   const route = useRoute<RouteProp<RootStackParamList, "Videos">>();
   const { subjectId, subjectTitle } = route.params;
 
@@ -132,3 +133,5 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
 });
+
+export default withRouteValidation(VideosScreen, ["subjectId"], [], false);
