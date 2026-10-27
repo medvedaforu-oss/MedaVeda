@@ -42,6 +42,10 @@ export default function PaymentFailedScreen() {
   const [stillConfirming, setStillConfirming] = useState(!!pending);
   const resolvedRef = useRef(false);
   const pollCountRef = useRef(0);
+  const focused = useRef(false);
+  const focusGeneration = useRef(0);
+  const checking = useRef(false);
+  const [statusReason, setStatusReason] = useState<string | undefined>(reason);
 
   function goTo(screenName: string) {
     navigation.dispatch(
@@ -53,18 +57,21 @@ export default function PaymentFailedScreen() {
   }
 
   const checkStatus = useCallback(async () => {
-    if (resolvedRef.current || !pending || !internalOrderId ||
+    if (!focused.current || checking.current || resolvedRef.current || !pending || !internalOrderId ||
         (provider !== "play" && !verifyUrl)) return;
     // Give up quietly after MAX_POLL_MINUTES - the student can still see
     // it unlock on its own via My Purchases, or reach out to support with
     // the Payment ID shown below.
     if (pollCountRef.current * (POLL_INTERVAL_MS / 1000) > MAX_POLL_MINUTES * 60) return;
     pollCountRef.current += 1;
+    checking.current = true;
+    const run = focusGeneration.current;
     try {
       const result = provider === "play"
         ? await recheckPlayOrder(internalOrderId)
         : await recoverPayment(verifyUrl, internalOrderId);
-      if (result.success && !resolvedRef.current) {
+      if (!focused.current || resolvedRef.current || run !== focusGeneration.current) return;
+      if (result.success) {
         resolvedRef.current = true;
         navigation.dispatch(
           CommonActions.reset({
@@ -81,19 +88,21 @@ export default function PaymentFailedScreen() {
       } else if (provider === "play" && "pending" in result && result.pending === false) {
         resolvedRef.current = true;
         setStillConfirming(false);
+        setStatusReason(result.message ?? "Payment was not completed. Check My Purchases before paying again.");
       }
     } catch {
       // Transient - the next interval tick or app-resume will try again.
-    }
+    } finally { checking.current = false; }
   }, [pending, provider, verifyUrl, internalOrderId, title, navigation]);
 
   // Poll on an interval while this screen is focused.
   useFocusEffect(
     useCallback(() => {
-      if (!pending) return;
-      checkStatus();
+      focused.current = true;
+      if (!pending) return () => { focused.current = false; };
+      void checkStatus();
       const interval = setInterval(checkStatus, POLL_INTERVAL_MS);
-      return () => clearInterval(interval);
+      return () => { focused.current = false; focusGeneration.current++; clearInterval(interval); };
     }, [pending, checkStatus])
   );
 
@@ -176,10 +185,10 @@ export default function PaymentFailedScreen() {
           : "Your payment could not be completed."}
       </Text>
 
-      {reason && (
+      {statusReason && (
         <View style={styles.reasonCard}>
           <Text style={styles.reasonLabel}>Reason</Text>
-          <Text style={styles.reasonText}>{reason}</Text>
+          <Text style={styles.reasonText}>{statusReason}</Text>
         </View>
       )}
 
