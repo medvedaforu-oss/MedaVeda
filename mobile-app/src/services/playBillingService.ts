@@ -16,12 +16,12 @@ class BillingTimeoutError extends Error {}
 
 // Native billing calls cannot be cancelled. Stop awaiting them so a later
 // restore can retry; no continuation after a timed-out read processes receipts.
-async function withBillingDeadline<T>(operation: PromiseLike<T>): Promise<T> {
+async function withBillingDeadline<T>(operation: PromiseLike<T>, message = "Purchase recovery timed out. Please retry."): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([operation, new Promise<never>((_resolve, reject) => {
       timer = setTimeout(() => reject(new BillingTimeoutError(
-        "Purchase recovery timed out. Please retry."
+        message
       )), BILLING_HTTP_TIMEOUT_MS);
     })]);
   } finally {
@@ -342,7 +342,8 @@ export async function startPlayPurchase(attempt: PlayAttempt, offerToken: string
 
 export async function fetchMatchingPlayProduct(sku: string, priceInr: number): Promise<{ offerToken: string; formattedPrice: string }> {
   const iap = await ensurePlayBilling();
-  const products = await iap.fetchProducts({ skus: [sku], type: "in-app" });
+  const products = await withBillingDeadline(iap.fetchProducts({ skus: [sku], type: "in-app" }),
+    "Google Play prices took too long to load. Check your connection and tap Try again.");
   const item = products?.find((product) => product.id === sku && product.platform === "android");
   if (!item || item.platform !== "android" ||
       !("oneTimePurchaseOfferDetailsAndroid" in item) || item.currency !== "INR") {

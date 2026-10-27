@@ -39,7 +39,7 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   console.log('PASS App launch, sign-in, initial session and resume invoke restore; unrelated events do not; listeners cleaned up');
 
   let user = 'buyer', orderStatus = 'created', available = [], update, errorListener, requests = 0, queries = 0, network;
-  let deadline, requestSignal, timersCleared = 0;
+  let deadline, requestSignal, timersCleared = 0, fetchProducts = async () => [];
   const store = new Map(); const events = [];
   const session = () => ({ data: { session: user ? { user: { id: user }, access_token: 'fixture' } : null } });
   const service = load('src/services/playBillingService.ts', {
@@ -47,7 +47,8 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
     'react-native': { Platform: { OS: 'android' } }, 'js-sha256': { sha256: x => `hash-${x}` },
     '../config/supabase': { supabase: { auth: { getSession: async () => session() } } },
     '../repositories/ordersRepository': { getOrdersByUser: async () => [{ id: 'order', status: orderStatus, provider: 'play', playSku: 'sku', productId: 'product' }] },
-    './playOfferSelection': {}, 'expo-iap': {
+    './playOfferSelection': { selectStandardPlayOffer: () => ({ offerToken: 'offer', formattedPrice: '₹49' }) }, 'expo-iap': {
+      fetchProducts: (...args) => fetchProducts(...args),
       purchaseUpdatedListener: fn => { update = fn; return { remove: noop }; },
       purchaseErrorListener: fn => { errorListener = fn; return { remove: noop }; },
       initConnection: async () => true, getAvailablePurchases: async () => { queries++; return available; }, requestPurchase: async () => {},
@@ -56,6 +57,18 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
     clearTimeout: () => { timersCleared++; },
     fetch: async (_url, options) => { requestSignal = options.signal; requests++; return network ? network() : { ok: true, json: async () => ({ success: true }) }; } });
   service.subscribePlayBilling(event => events.push(event));
+  let finishPrices;
+  fetchProducts = () => new Promise(resolve => { finishPrices = resolve; });
+  const stalledPrices = service.fetchMatchingPlayProduct('sku', 49);
+  await tick(); deadline();
+  await assert.rejects(stalledPrices, /prices took too long.*Try again/);
+  const product = { id: 'sku', platform: 'android', currency: 'INR', oneTimePurchaseOfferDetailsAndroid: [] };
+  fetchProducts = async () => [product];
+  assert.equal((await service.fetchMatchingPlayProduct('sku', 49)).offerToken, 'offer');
+  finishPrices([product]); await tick();
+  assert.equal(events.length, 0, 'late price response cannot trigger a purchase event');
+  assert.equal(requests, 0, 'price retry cannot verify or grant anything');
+  console.log('PASS stalled product fetch expires, retry succeeds, late response has no payment side effects');
   const purchase = { platform: 'android', productId: 'sku', purchaseToken: 'synthetic-token', purchaseState: 'purchased',
     obfuscatedAccountIdAndroid: 'hash-buyer', obfuscatedProfileIdAndroid: 'hash-order' };
   available = [purchase];
