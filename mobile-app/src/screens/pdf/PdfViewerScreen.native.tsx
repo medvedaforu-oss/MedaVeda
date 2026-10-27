@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import * as FileSystem from "expo-file-system/legacy";
 import Pdf from "react-native-pdf";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -33,37 +34,50 @@ export default function PdfViewerScreen() {
   // sense for a remote fetch, so skip it here.
   const isLocalFile = typeof pdfUrl === "string" && pdfUrl.startsWith("file://");
 
-  const [access, setAccess] = useState<{ uri: string; allowed: boolean } | null>(null);
+  const [access, setAccess] = useState<{ uri: string; allowed: boolean; message?: string } | null>(null);
   useEffect(() => {
     if (!isLocalFile) return;
     let alive = true;
-    let checking = false;
+    let generation = 0;
+    let checking: number | null = null;
     const check = async () => {
-      if (checking) return;
-      checking = true;
+      if (checking !== null || AppState.currentState !== "active") return;
+      const run = generation;
+      checking = run;
+      const current = () => alive && generation === run && AppState.currentState === "active";
       try {
         const item = getAllDownloads().find((entry) => entry.contentType === "note" && entry.localUri === pdfUrl);
         const allowed = !!item && await mayOpenOfflineNote(item.id);
-        if (alive) setAccess({ uri: pdfUrl, allowed });
-      } catch { if (alive) setAccess({ uri: pdfUrl, allowed: false }); }
-      finally { checking = false; }
+        if (!current()) return;
+        if (!allowed) {
+          setAccess({ uri: pdfUrl, allowed: false,
+            message: "Connect to verify access. Offline access lasts 7 days; refunded or revoked notes require an active purchase." });
+          return;
+        }
+        const info = await FileSystem.getInfoAsync(pdfUrl);
+        if (!current()) return;
+        setAccess({ uri: pdfUrl, allowed: info.exists && info.size > 0,
+          message: "This downloaded file is missing or empty. Remove it from Downloads and download it again while online." });
+      } catch { if (current()) setAccess({ uri: pdfUrl, allowed: false,
+        message: "This download could not be opened. Check access online, then download it again." }); }
+      finally { if (checking === run) checking = null; }
     };
+    const invalidate = () => { generation++; checking = null; setAccess(null); };
     void check();
     const app = AppState.addEventListener("change", (state) => {
-      // Hide the previous account's document as soon as the app leaves foreground.
-      setAccess(null);
+      invalidate();
       if (state === "active") void check();
     });
-    const { data } = supabase.auth.onAuthStateChange(() => { setAccess(null); void check(); });
+    const { data } = supabase.auth.onAuthStateChange(() => { invalidate(); void check(); });
     const timer = setInterval(() => { if (AppState.currentState === "active") void check(); }, 60_000);
-    return () => { alive = false; clearInterval(timer); app.remove(); data.subscription.unsubscribe(); };
+    return () => { alive = false; generation++; clearInterval(timer); app.remove(); data.subscription.unsubscribe(); };
   }, [isLocalFile, pdfUrl]);
 
   const [page, setPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [loadError, setLoadError] = useState(false);
 
-  if (!pdfUrl) {
+  if (typeof pdfUrl !== "string" || !/^(https:\/\/|file:\/\/)/i.test(pdfUrl)) {
     return (
       <View style={styles.container}>
         <ErrorState
@@ -77,7 +91,7 @@ export default function PdfViewerScreen() {
   if (isLocalFile && (access?.uri !== pdfUrl || !access.allowed)) {
     return <View style={styles.container}>{access?.uri !== pdfUrl
       ? <ActivityIndicator size="large" />
-      : <ErrorState message="Connect to the internet to verify your access. If access was removed, check your purchases."
+      : <ErrorState message={access.message ?? "Connect to verify your access, then try again."}
           onRetry={() => navigation.goBack()} />}</View>;
   }
 
@@ -85,8 +99,10 @@ export default function PdfViewerScreen() {
     return (
       <View style={styles.container}>
         <ErrorState
-          message="This PDF couldn't be loaded. Please check your connection and try again."
-          onRetry={() => setLoadError(false)}
+          message={isLocalFile
+            ? "This PDF may be damaged. Remove it from Downloads and download it again while online."
+            : "This PDF could not load. Check your connection and available storage, then reopen the note for a fresh link."}
+          onRetry={() => navigation.goBack()}
         />
       </View>
     );
