@@ -31,6 +31,7 @@ export default function CustomInput({
       <TextInput
         style={styles.input}
         placeholder={placeholder}
+        accessibilityLabel={placeholder}
         placeholderTextColor={COLORS.subtitle}
         value={value}
         onChangeText={onChangeText}
@@ -39,7 +40,7 @@ export default function CustomInput({
       />
 
       {error ? (
-        <Text style={styles.error}>
+        <Text accessibilityLiveRegion="polite" style={styles.error}>
           {error}
         </Text>
       ) : null}
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     borderRadius: 12,
     paddingHorizontal: SPACING.md,
-    height: 55,
+    minHeight: 55,
     backgroundColor: COLORS.card,
     color: COLORS.text,
     fontSize: 16,

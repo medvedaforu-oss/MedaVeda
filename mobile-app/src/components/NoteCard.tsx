@@ -52,8 +52,12 @@ export default function NoteCard({
   const progressPct = Math.round(downloadProgress * 100);
 
   return (
+    <View style={[styles.card, locked && styles.cardLocked]}>
     <TouchableOpacity
-      style={[styles.card, locked && styles.cardLocked]}
+      style={styles.openButton}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}. ${locked ? "Purchase required" : free ? "Free preview" : "Open PDF"}`}
+      accessibilityState={{ disabled: opening, busy: opening }}
       onPress={onPress}
       activeOpacity={0.85}
       disabled={opening}
@@ -96,12 +100,17 @@ export default function NoteCard({
         </Text>
       </View>
 
+    </TouchableOpacity>
       {showDownloadAction && (
         <TouchableOpacity
           style={[
             styles.downloadButton,
             downloaded && styles.downloadButtonDone,
           ]}
+          accessibilityRole="button"
+          accessibilityLabel={`${downloaded ? "Remove download" : "Download"}: ${title}`}
+          accessibilityState={{ disabled: downloading, busy: downloading }}
+          disabled={downloading}
           activeOpacity={0.7}
           hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
           onPress={(e) => {
@@ -131,11 +140,12 @@ export default function NoteCard({
           )}
         </TouchableOpacity>
       )}
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  openButton: { flex: 1, flexDirection: "row", alignItems: "center", minHeight: 48 },
 
   card: {
     flexDirection: "row",

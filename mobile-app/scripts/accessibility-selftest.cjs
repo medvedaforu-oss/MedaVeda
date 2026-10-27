@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict');
+const {load,jsx,nodes}=require('./ui-harness.cjs');
+const base={react:{},'react/jsx-runtime':jsx,'react-native':{View:'View',Text:'Text',TextInput:'Input',TouchableOpacity:'Button',ActivityIndicator:'Spinner',StyleSheet:{create:x=>x}}};
+for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS'],['shadows','SHADOW']])base['../theme/'+file]={[key]:{}};
+const Button=load('mobile-app/src/components/CustomButton.tsx',base).default;assert.equal(Button({title:'Save',onPress(){},disabled:true}).props.accessibilityState.disabled,true);assert.equal(Button({title:'Save',onPress(){}}).props.accessibilityRole,'button');
+const Input=load('mobile-app/src/components/CustomInput.tsx',base).default;assert.equal(nodes(Input({placeholder:'Email',value:'',onChangeText(){}})).find(n=>n.type==='Input').props.accessibilityLabel,'Email');
+const Note=load('mobile-app/src/components/NoteCard.tsx',base).default;let opens=0,downloads=0;
+const card=Note({title:'Anatomy',free:true,onPress:()=>opens++,onDownloadPress:()=>downloads++});const buttons=nodes(card).filter(n=>n.type==='Button');assert.equal(buttons.length,2);
+assert.ok(!nodes(buttons[0]).slice(1).some(n=>n.type==='Button'),'download is a sibling, not nested inside accessible open button');
+assert.match(buttons[0].props.accessibilityLabel,/Free preview/);assert.match(buttons[1].props.accessibilityLabel,/Download: Anatomy/);
+buttons[0].props.onPress();buttons[1].props.onPress({stopPropagation(){}});assert.equal(opens,1);assert.equal(downloads,1);
+console.log('PASS primary button/input names, disabled semantics and separately focusable note open/download actions');

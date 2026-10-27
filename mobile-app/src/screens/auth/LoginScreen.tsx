@@ -222,6 +222,7 @@ export default function LoginScreen() {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             placeholder="Email or mobile number"
+            accessibilityLabel="Email or mobile number"
             placeholderTextColor={COLORS.subtitle}
             style={styles.input}
             value={value}
@@ -249,6 +250,7 @@ export default function LoginScreen() {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               placeholder="Password"
+              accessibilityLabel="Password"
               placeholderTextColor={COLORS.subtitle}
               style={styles.passwordInput}
               secureTextEntry={hidePassword}
@@ -260,8 +262,9 @@ export default function LoginScreen() {
           )}
         />
 
-        <TouchableOpacity
-          onPress={() => setHidePassword(!hidePassword)}
+        <TouchableOpacity accessibilityRole="button"
+            accessibilityLabel={hidePassword ? "Show password" : "Hide password"}
+            onPress={() => setHidePassword(!hidePassword)}
           disabled={loading}
         >
           <Ionicons
@@ -294,7 +297,7 @@ export default function LoginScreen() {
 
       {/* Forgot Password */}
 
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         onPress={() => navigation.navigate("ForgotPassword")}
         disabled={loading}
       >
@@ -305,7 +308,7 @@ export default function LoginScreen() {
 
       {/* Login Button */}
 
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
         onPress={handleSubmit(onLogin)}
         disabled={isButtonDisabled}
@@ -321,7 +324,7 @@ export default function LoginScreen() {
 
       {/* Register */}
 
-      <TouchableOpacity
+      <TouchableOpacity accessibilityRole="button"
         onPress={() => navigation.navigate("Register")}
         disabled={loading}
       >

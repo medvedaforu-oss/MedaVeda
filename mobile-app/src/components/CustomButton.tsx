@@ -24,6 +24,8 @@ export default function CustomButton({
       style={[styles.button, disabled && styles.buttonDisabled]}
       onPress={onPress}
       disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={title}
       accessibilityState={{ disabled }}
       activeOpacity={0.8}
     >
@@ -37,7 +39,8 @@ export default function CustomButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.primary,
-    height: 55,
+    minHeight: 55,
+    paddingVertical: 12,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
