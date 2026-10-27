@@ -23,12 +23,16 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   assert.equal(navigated.length, 2, 'same launch/live response only navigates once');
   for (const data of [null, [], { screen: 'Missing' }, { screen: 'PdfViewer', params: { pdfUrl: 'file:///etc/passwd' } },
     { screen: 'Chapters', params: {} }, { screen: 'Subjects', params: { yearId: 4, yearTitle: 'x' } },
-    { screen: 'Years', params: { mode: 'bad' } }, { screen: '__proto__' }]) {
+    { screen: 'Years' }, { screen: 'Years', params: { mode: 'bad' } },
+    { screen: 'Years', params: { mode: ['notes'] } },
+    { screen: 'Chapters', params: { subjectId: 's', subjectTitle: 'S', yearId: 'y', yearTitle: 'Y', mode: 'videos' } },
+    { screen: '__proto__' }]) {
     assert.equal(notificationTarget(data).screen, 'Notifications');
   }
   const validated = notificationTarget({ screen: 'Subjects', params: { yearId: 'a', yearTitle: 'First', mode: 'quiz', unlocked: true, screen: 'Quiz' } });
   assert.equal(validated.params.mode, 'quiz');
   assert.equal(validated.params.unlocked, undefined);
+  assert.equal(notificationTarget({ screen: 'Years', params: { mode: 'quiz' } }).params.mode, 'quiz');
   router.setReady(false, 'Login');
   router.receive(response('logged-out', { screen: 'Store' }));
   assert.equal(navigated.length, 2);

@@ -33,8 +33,10 @@ export function notificationTarget(data: unknown): Target {
     if (typeof value !== "string" || !value.trim() || value.length > 200) return fallback();
     params[key] = value;
   }
+  if (screen === "Years" && p.mode === undefined) return fallback();
   if (["Years", "Subjects", "Chapters"].includes(screen) && p.mode !== undefined) {
-    if (!["notes", "videos", "quiz"].includes(String(p.mode))) return fallback();
+    const allowedModes = screen === "Chapters" ? ["notes"] : ["notes", "videos", "quiz"];
+    if (typeof p.mode !== "string" || !allowedModes.includes(p.mode)) return fallback();
     params.mode = p.mode;
   }
   return { screen, params };
