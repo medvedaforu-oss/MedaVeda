@@ -1,5 +1,9 @@
 # MedVeda production readiness — 26 October 2026
 
+Code follow-up completed on 27 October:
+[changes, commits, local validation and remaining owner actions](MEDVEDA_READINESS_CODE_FIXES_20261027.md).
+The audit below records its original reviewed snapshot and release gates.
+
 ## A. Overall verdict: NO-GO
 
 **Do not release paid Android notes to production yet.** The latest retained production evidence still has no verified active Play price tiers, unsuccessful catalog jobs, and disabled Play workers. The underlying Google 403 is unresolved. Current source contains substantial security fixes, but their coordinated production deployment, the final 1.2.1 binary, complete recovery capability, and actual purchase/deletion/device behavior are not established.

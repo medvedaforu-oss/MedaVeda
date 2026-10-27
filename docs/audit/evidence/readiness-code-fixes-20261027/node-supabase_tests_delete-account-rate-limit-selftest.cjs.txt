@@ -1,0 +1,1 @@
+PASS deletion-only IP/account limits, fail-closed flags, no mutation on denial, caller binding and partial failure retry

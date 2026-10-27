@@ -1,0 +1,1 @@
+PASS Sentry supported plugin, token-free no-op, upload configuration and secret exclusion

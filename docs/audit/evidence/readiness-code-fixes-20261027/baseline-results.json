@@ -1,0 +1,81 @@
+[
+  {
+    "name": "mobile-tsc",
+    "exit": 0,
+    "seconds": 16.06
+  },
+  {
+    "name": "admin-app-tsc",
+    "exit": 0,
+    "seconds": 8.59
+  },
+  {
+    "name": "admin-node-tsc",
+    "exit": 0,
+    "seconds": 2.24
+  },
+  {
+    "name": "lint",
+    "exit": 0,
+    "seconds": 9.38
+  },
+  {
+    "name": "deno-check",
+    "exit": 0,
+    "seconds": 5.41
+  },
+  {
+    "name": "website-links",
+    "exit": 0,
+    "seconds": 0.13
+  },
+  {
+    "name": "deno-unit-final",
+    "exit": 0,
+    "seconds": 6.13
+  },
+  {
+    "name": "payment-backlog-load-selftest",
+    "exit": 0,
+    "seconds": 0.05
+  },
+  {
+    "name": "payment-gate-selftest",
+    "exit": 0,
+    "seconds": 0.16
+  },
+  {
+    "name": "play-offer-selftest",
+    "exit": 0,
+    "seconds": 0.21
+  },
+  {
+    "name": "razorpay-env-selftest",
+    "exit": 0,
+    "seconds": 0.06
+  },
+  {
+    "name": "razorpay-refund-selftest",
+    "exit": 0,
+    "seconds": 0.03
+  },
+  {
+    "name": "android-export",
+    "exit": 0,
+    "seconds": 39.96
+  },
+  {
+    "name": "admin-build",
+    "exit": 0,
+    "seconds": 5.36
+  },
+  {
+    "name": "node-tests",
+    "exit": 0,
+    "files": 45
+  },
+  {
+    "name": "secret-scan",
+    "exit": 0
+  }
+]

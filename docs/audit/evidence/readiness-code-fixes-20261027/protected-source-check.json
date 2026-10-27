@@ -1,0 +1,21 @@
+{
+  "implementationBase": "2b8819b",
+  "validatedSourceCommit": "73283845eab16b53ca9b67378bb26eb5269ec413",
+  "protectedPaths": [
+    "supabase/migrations",
+    "supabase/functions/create-play-order",
+    "supabase/functions/verify-play-purchase",
+    "supabase/functions/play-payment-worker",
+    "supabase/functions/sync-play-catalog",
+    "supabase/functions/create-order",
+    "supabase/functions/verify-payment",
+    "supabase/functions/razorpay-webhook",
+    "supabase/functions/report-external-transaction",
+    "mobile-app/src/services/playBillingService.ts",
+    "mobile-app/src/services/paymentService.ts",
+    "mobile-app/src/utils/downloadManager.ts",
+    "mobile-app/src/services/offlineNoteVerification.ts",
+    "mobile-app/src/services/referralsService.ts"
+  ],
+  "changedProtectedPaths": []
+}
