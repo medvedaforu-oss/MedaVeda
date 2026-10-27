@@ -78,7 +78,10 @@ export default function QuizScreen() {
     );
   }
 
-  if (!test || test.questions.length === 0) {
+  if (!test || typeof test.id !== "string" || !Array.isArray(test.questions) || test.questions.length === 0 ||
+      test.questions.some(question => !question || typeof question.question !== "string" ||
+        !Array.isArray(question.options) || question.options.length === 0 ||
+        question.options.some(option => typeof option !== "string"))) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{subjectTitle ?? "Quiz"}</Text>
