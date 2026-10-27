@@ -54,7 +54,7 @@ export default function ChaptersScreen() {
   // Video/MCQ shortcuts never reach this screen anymore (they branch off
   // at Subjects, straight to Videos/QuizTests) - this only ever handles
   // the "notes" shortcut or general browsing (mode undefined).
-  function openChapter(item: Chapter) {
+  const openChapter = useCallback((item: Chapter) => {
     if (mode === "notes") {
       navigation.navigate("Notes", {
         chapterId: item.id,
@@ -76,7 +76,19 @@ export default function ChaptersScreen() {
       yearId,
       yearTitle,
     });
-  }
+  }, [mode, navigation, subjectId, subjectTitle, yearId, yearTitle, isChapterOwned]);
+
+  const renderChapter = useCallback(({ item }: { item: Chapter; index: number }) => (
+    <ChapterCard
+      title={item.title}
+      unlocked={isChapterOwned({
+        id: item.id,
+        subjectId,
+        yearId,
+      })}
+      onPress={() => openChapter(item)}
+    />
+  ), [isChapterOwned, subjectId, yearId, openChapter]);
 
   return (
     <View style={styles.container}>
@@ -99,22 +111,12 @@ export default function ChaptersScreen() {
       ) : error ? (
         <LoadError content="chapters" retry={retry} />
       ) : (
-        <FlatList
+        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           data={filteredData}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <ChapterCard
-              title={item.title}
-              unlocked={isChapterOwned({
-                id: item.id,
-                subjectId,
-                yearId,
-              })}
-              onPress={() => openChapter(item)}
-            />
-          )}
+          renderItem={renderChapter}
           ListEmptyComponent={
             <Text style={styles.empty}>🔍 No Chapters Found</Text>
           }

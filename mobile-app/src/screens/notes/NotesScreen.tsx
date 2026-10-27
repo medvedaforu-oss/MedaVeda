@@ -1,6 +1,6 @@
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -53,36 +53,38 @@ export default function NotesScreen() {
   // row already carries status + bytesWritten/fileSizeBytes.
   const { isDownloaded, getItem, start, remove: removeDownload } = useDownloads();
 
-  function isDownloading(noteId: string): boolean {
+  const isDownloading = useCallback((noteId: string): boolean => {
     const item = getItem(noteId);
     return item?.status === "downloading" || item?.status === "paused";
-  }
+  }, [getItem]);
 
-  function downloadProgressFor(noteId: string): number {
+  const downloadProgressFor = useCallback((noteId: string): number => {
     const item = getItem(noteId);
     if (!item || item.fileSizeBytes <= 0) return 0;
     return Math.min(1, item.bytesWritten / item.fileSizeBytes);
-  }
+  }, [getItem]);
 
   // Computed from the full, order-sorted list (not the filtered/searched
   // one) so which PDFs are "free" never shifts while the user searches.
   // The server flag (notes.is_free_preview) decides; the first-N fallback only
   // applies to a database that predates the flag. Display hint only - the
   // get-note-url Edge Function is what actually enforces access.
-  const hasPreviewFlag = notes.some((note) => note.isFreePreview !== undefined);
-  const freeNoteIds = new Set(
-    hasPreviewFlag
-      ? notes.filter((note) => note.isFreePreview).map((note) => note.id)
-      : notes.slice(0, FREE_PDF_COUNT).map((note) => note.id)
-  );
+  const freeNoteIds = useMemo(() => {
+    const hasPreviewFlag = notes.some((note) => note.isFreePreview !== undefined);
+    return new Set(
+      hasPreviewFlag
+        ? notes.filter((note) => note.isFreePreview).map((note) => note.id)
+        : notes.slice(0, FREE_PDF_COUNT).map((note) => note.id)
+    );
+  }, [notes]);
 
 
 
-  const filteredData = notes.filter((item) =>
+  const filteredData = useMemo(() => notes.filter((item) =>
     `${item.title} ${item.description ?? ""}`.toLowerCase().includes(search.toLowerCase())
-  );
+  ), [notes, search]);
 
-  async function handleNotePress(item: Note) {
+  const handleNotePress = useCallback(async (item: Note) => {
     const isFree = freeNoteIds.has(item.id);
 
     if (!unlocked && !isFree) {
@@ -118,9 +120,9 @@ export default function NotesScreen() {
     } finally {
       setResolvingNoteId(null);
     }
-  }
+  }, [freeNoteIds, unlocked, getItem, navigation]);
 
-  async function handleDownloadPress(item: Note) {
+  const handleDownloadPress = useCallback(async (item: Note) => {
     setResolvingNoteId(item.id);
     try {
       await start({
@@ -144,7 +146,28 @@ export default function NotesScreen() {
     } finally {
       setResolvingNoteId(null);
     }
-  }
+  }, [start, chapterId, chapterTitle, subjectId, subjectTitle, yearId, yearTitle]);
+
+  const renderNote = useCallback(({ item }: { item: Note; index: number }) => {
+    const isFree = freeNoteIds.has(item.id);
+    const accessible = unlocked || isFree;
+
+    return (
+      <NoteCard
+        title={item.title}
+        description={item.description}
+        locked={!unlocked && !isFree}
+        free={isFree && !unlocked}
+        onPress={() => handleNotePress(item)}
+        opening={resolvingNoteId === item.id}
+        downloaded={accessible && isDownloaded(item.id)}
+        downloading={accessible && isDownloading(item.id)}
+        downloadProgress={downloadProgressFor(item.id)}
+        onDownloadPress={accessible ? () => handleDownloadPress(item) : undefined}
+        onRemoveDownloadPress={accessible ? () => removeDownload(item.id) : undefined}
+      />
+    );
+  }, [freeNoteIds, unlocked, handleNotePress, resolvingNoteId, isDownloaded, isDownloading, downloadProgressFor, handleDownloadPress, removeDownload]);
 
   return (
     <View style={styles.container}>
@@ -162,31 +185,12 @@ export default function NotesScreen() {
       ) : error ? (
         <LoadError content="notes" retry={retry} />
       ) : (
-        <FlatList
+        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           data={filteredData}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingTop: SPACING.sm, paddingBottom: SPACING.xl }}
-          renderItem={({ item }) => {
-            const isFree = freeNoteIds.has(item.id);
-            const accessible = unlocked || isFree;
-
-            return (
-              <NoteCard
-                title={item.title}
-                description={item.description}
-                locked={!unlocked && !isFree}
-                free={isFree && !unlocked}
-                onPress={() => handleNotePress(item)}
-                opening={resolvingNoteId === item.id}
-                downloaded={accessible && isDownloaded(item.id)}
-                downloading={accessible && isDownloading(item.id)}
-                downloadProgress={downloadProgressFor(item.id)}
-                onDownloadPress={accessible ? () => handleDownloadPress(item) : undefined}
-                onRemoveDownloadPress={accessible ? () => removeDownload(item.id) : undefined}
-              />
-            );
-          }}
+          renderItem={renderNote}
           ListEmptyComponent={<EmptyState title="🔍 No Notes Found" />}
           ListFooterComponent={
             !unlocked ? (

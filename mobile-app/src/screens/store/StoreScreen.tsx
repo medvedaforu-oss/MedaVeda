@@ -98,19 +98,55 @@ export default function StoreScreen() {
     }, [refreshPurchases])
   );
 
-  function handleBuy(product: Product | null) {
+  const handleBuy = useCallback((product: Product | null) => {
     if (!product || isOwned(product)) return;
     buy(product);
-  }
+  }, [buy, isOwned]);
 
-  function openSubject(subject: Subject, year: Year) {
+  const openSubject = useCallback((subject: Subject, year: Year) => {
     navigation.navigate("Chapters", {
       subjectId: subject.id,
       subjectTitle: subject.title,
       yearId: year.id,
       yearTitle: year.title,
     });
-  }
+  }, [navigation]);
+
+  const renderYearBlock = useCallback(({ item: block, index: yearIndex }: { item: YearBlock; index: number }) => {
+    const yearOwned = block.yearProduct ? isOwned(block.yearProduct) : false;
+
+    return (
+      <View style={styles.yearBlock}>
+        <SectionHeader title={block.year.title} />
+
+        {block.yearProduct && (
+          <TouchableOpacity
+            style={[
+              styles.fullYearPill,
+              yearOwned && styles.fullYearPillOwned,
+            ]}
+            activeOpacity={0.85}
+            onPress={() => handleBuy(block.yearProduct)}
+            disabled={yearOwned}
+          >
+            <Text style={styles.fullYearPillText}>
+              {yearOwned
+                ? "✓ Full Year Notes Owned"
+                : `Buy Full Year Notes · ₹${block.yearProduct.price}`}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {block.subjects.length === 0 ? (
+          <Text style={styles.nestedEmptyText}>
+            No subjects in this year yet.
+          </Text>
+        ) : (
+          <SubjectPosters block={block} yearIndex={yearIndex} isOwned={isOwned} handleBuy={handleBuy} openSubject={openSubject} purchasing={purchasing} />
+        )}
+      </View>
+    );
+  }, [isOwned, handleBuy, openSubject, purchasing]);
 
   return (
     <View style={styles.screen}>
@@ -121,73 +157,12 @@ export default function StoreScreen() {
         {loading ? (
           <ActivityIndicator size="large" color={COLORS.accent} />
         ) : (
-          <FlatList
+          <FlatList initialNumToRender={3} windowSize={7} maxToRenderPerBatch={3}
             data={blocks}
             keyExtractor={(block) => block.year.id}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: SPACING.xl }}
-            renderItem={({ item: block, index: yearIndex }) => {
-              const yearOwned = block.yearProduct ? isOwned(block.yearProduct) : false;
-
-              return (
-                <View style={styles.yearBlock}>
-                  <SectionHeader title={block.year.title} />
-
-                  {block.yearProduct && (
-                    <TouchableOpacity
-                      style={[
-                        styles.fullYearPill,
-                        yearOwned && styles.fullYearPillOwned,
-                      ]}
-                      activeOpacity={0.85}
-                      onPress={() => handleBuy(block.yearProduct)}
-                      disabled={yearOwned}
-                    >
-                      <Text style={styles.fullYearPillText}>
-                        {yearOwned
-                          ? "✓ Full Year Notes Owned"
-                          : `Buy Full Year Notes · ₹${block.yearProduct.price}`}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-
-                  {block.subjects.length === 0 ? (
-                    <Text style={styles.nestedEmptyText}>
-                      No subjects in this year yet.
-                    </Text>
-                  ) : (
-                    <FlatList
-                      data={block.subjects}
-                      keyExtractor={(s) => s.id}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      contentContainerStyle={{ paddingBottom: SPACING.sm }}
-                      renderItem={({ item: subject, index }) => {
-                        const subjectProduct = block.subjectProducts[subject.id] ?? null;
-                        const owned = subjectProduct ? isOwned(subjectProduct) : false;
-
-                        return (
-                          <ProductPosterCard
-                            title={subject.title}
-                            caption="Full Subject Notes"
-                            price={subjectProduct?.price ?? 0}
-                            originalPrice={subjectProduct?.originalPrice}
-                            owned={owned}
-                            colorIndex={yearIndex + index}
-                            icon="📖"
-                            onPress={() => openSubject(subject, block.year)}
-                            onBuyPress={
-                              subjectProduct && Platform.OS === "android" ? () => handleBuy(subjectProduct) : undefined
-                            }
-                            buying={purchasing}
-                          />
-                        );
-                      }}
-                    />
-                  )}
-                </View>
-              );
-            }}
+            renderItem={renderYearBlock}
             ListEmptyComponent={<EmptyState title="🔍 No Academic Years Found" />}
           />
         )}
@@ -202,6 +177,42 @@ export default function StoreScreen() {
       )}
     </View>
   );
+}
+
+
+function SubjectPosters({ block, yearIndex, isOwned, handleBuy, openSubject, purchasing }: {
+  block: YearBlock; yearIndex: number; isOwned: (product: Product) => boolean;
+  handleBuy: (product: Product | null) => void; openSubject: (subject: Subject, year: Year) => void; purchasing: boolean;
+}) {
+  const renderSubject = useCallback(({ item: subject, index }: { item: Subject; index: number }) => {
+    const subjectProduct = block.subjectProducts[subject.id] ?? null;
+    const owned = subjectProduct ? isOwned(subjectProduct) : false;
+
+    return (
+      <ProductPosterCard
+        title={subject.title}
+        caption="Full Subject Notes"
+        price={subjectProduct?.price ?? 0}
+        originalPrice={subjectProduct?.originalPrice}
+        owned={owned}
+        colorIndex={yearIndex + index}
+        icon="📖"
+        onPress={() => openSubject(subject, block.year)}
+        onBuyPress={
+          subjectProduct && Platform.OS === "android" ? () => handleBuy(subjectProduct) : undefined
+        }
+        buying={purchasing}
+      />
+    );
+  }, [block, yearIndex, isOwned, handleBuy, openSubject, purchasing]);
+  return (<FlatList initialNumToRender={3} windowSize={5} maxToRenderPerBatch={3}
+    data={block.subjects}
+    keyExtractor={(s) => s.id}
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={{ paddingBottom: SPACING.sm }}
+    renderItem={renderSubject}
+  />);
 }
 
 const styles = StyleSheet.create({

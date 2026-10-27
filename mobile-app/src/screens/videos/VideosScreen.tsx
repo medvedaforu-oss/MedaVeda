@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -71,6 +71,18 @@ export default function VideosScreen() {
     return videos.filter((item) => (item.title ?? "").toLowerCase().includes(query));
   }, [videos, search]);
 
+  const renderVideo = useCallback(({ item }: { item: Video; index: number }) => (
+    <VideoCard
+      title={item.title}
+      locked={false}
+      onPressIn={() => traceVideo("card.press-in")}
+      onPress={() => {
+        traceVideo("card.press", { raw: item.youtubeUrl });
+        void openVideo(item.youtubeUrl);
+      }}
+    />
+  ), []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{subjectTitle}</Text>
@@ -87,23 +99,13 @@ export default function VideosScreen() {
       ) : error ? (
         <ErrorState message={error} onRetry={() => setAttempt(value => value + 1)} />
       ) : (
-        <FlatList
+        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           keyboardShouldPersistTaps="handled"
           data={filteredData}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingTop: SPACING.sm, paddingBottom: SPACING.xl }}
-          renderItem={({ item }) => (
-            <VideoCard
-              title={item.title}
-              locked={false}
-              onPressIn={() => traceVideo("card.press-in")}
-              onPress={() => {
-                traceVideo("card.press", { raw: item.youtubeUrl });
-                void openVideo(item.youtubeUrl);
-              }}
-            />
-          )}
+          renderItem={renderVideo}
           ListEmptyComponent={<EmptyState title="🔍 No Videos Found" />}
         />
       )}

@@ -6,7 +6,7 @@ const ts = require('../node_modules/typescript');
 let received=[],stages=[];
 const url='https://youtu.be/dQw4w9WgXcQ?si=fixture';
 const state=['',[{id:'fixture',title:'Free video',youtubeUrl:url}],false,null,0];
-const react={__esModule:true,default:{createElement:(type,props,...children)=>({type,props:{...props,children}})},useState:()=>[state.shift(),()=>{}],useEffect:()=>{},useMemo:fn=>fn()};
+const react={__esModule:true,default:{createElement:(type,props,...children)=>({type,props:{...props,children}})},useState:()=>[state.shift(),()=>{}],useEffect:()=>{},useMemo:fn=>fn(),useCallback:fn=>fn};
 const native={StyleSheet:{create:x=>x},View:'View',Text:'Text',TouchableOpacity:'TouchableOpacity',FlatList:'FlatList',ActivityIndicator:'ActivityIndicator'};
 function load(relative){
  const file=path.resolve(__dirname,'..',relative),mod={exports:{}};

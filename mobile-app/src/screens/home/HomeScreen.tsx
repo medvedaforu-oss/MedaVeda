@@ -242,7 +242,7 @@ export default function HomeScreen() {
     ]).finally(() => setRefreshing(false));
   }, [loadYears, loadYearProducts, loadPurchases, loadNotifications, loadUnreadNotificationCount, loadLatest, loadRecommended, loadRecentActivity]);
 
-  const goToChapter = (c: { id: string; title: string; subjectId: string; subjectTitle: string; yearId: string; yearTitle: string }) => {
+  const goToChapter = useCallback((c: { id: string; title: string; subjectId: string; subjectTitle: string; yearId: string; yearTitle: string }) => {
     navigation.navigate("ChapterDetails", {
       chapterId: c.id,
       chapterTitle: c.title,
@@ -251,9 +251,70 @@ export default function HomeScreen() {
       yearId: c.yearId,
       yearTitle: c.yearTitle,
     });
-  };
+  }, [navigation]);
 
   const overallProgress = totalAttempts > 0 ? averagePercentage : 0;
+
+  const renderYearProduct = useCallback(({ item: yp, index }: { item: { year: Year; product: Product | null }; index: number }) => {
+    const product = yp.product as Product;
+    const owned = isOwned(product);
+
+    return (
+      <StaggerItem index={index}>
+        <ProductPosterCard
+          title={yp.year.title}
+          caption="Full Year Notes"
+          price={product.price}
+          originalPrice={product.originalPrice}
+          owned={owned}
+          colorIndex={index}
+          icon="📚"
+          onPress={() => {
+            if (owned) navigation.navigate("MyPurchases");
+            else navigation.navigate("Subjects", { yearId: yp.year.id, yearTitle: yp.year.title });
+          }}
+          onBuyPress={!owned && Platform.OS === "android" ? () => buy(product) : undefined}
+          buying={purchasing}
+        />
+      </StaggerItem>
+    );
+  }, [buy, isOwned, navigation, purchasing]);
+
+  const renderLatest = useCallback(({ item }: { item: Chapter; index: number }) => (
+    <MiniChapterCard
+      title={item.title}
+      subtitle={item.subjectTitle}
+      emoji="🆕"
+      onPress={() => goToChapter(item as any)}
+    />
+  ), [goToChapter]);
+
+  const renderRecommended = useCallback(({ item }: { item: Chapter; index: number }) => (
+    <MiniChapterCard
+      title={item.title}
+      subtitle={item.subjectTitle}
+      emoji="✨"
+      onPress={() => goToChapter(item as any)}
+    />
+  ), [goToChapter]);
+
+  const renderRecent = useCallback(({ item }: { item: RecentChapterEntry; index: number }) => (
+    <MiniChapterCard
+      title={item.chapterTitle}
+      subtitle={item.subjectTitle}
+      emoji="🕘"
+      onPress={() =>
+        goToChapter({
+          id: item.chapterId,
+          title: item.chapterTitle,
+          subjectId: item.subjectId,
+          subjectTitle: item.subjectTitle,
+          yearId: item.yearId,
+          yearTitle: item.yearTitle,
+        })
+      }
+    />
+  ), [goToChapter]);
 
   return (
     <View style={styles.screen}>
@@ -352,36 +413,13 @@ export default function HomeScreen() {
             No year-wise Notes packages available yet.
           </Text>
         ) : (
-          <FlatList
+          <FlatList initialNumToRender={3} windowSize={5} maxToRenderPerBatch={3}
             data={yearProducts.filter((yp) => yp.product !== null)}
             keyExtractor={(yp) => yp.year.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ marginBottom: SPACING.lg }}
-            renderItem={({ item: yp, index }) => {
-              const product = yp.product as Product;
-              const owned = isOwned(product);
-
-              return (
-                <StaggerItem index={index}>
-                  <ProductPosterCard
-                    title={yp.year.title}
-                    caption="Full Year Notes"
-                    price={product.price}
-                    originalPrice={product.originalPrice}
-                    owned={owned}
-                    colorIndex={index}
-                    icon="📚"
-                    onPress={() => {
-                      if (owned) navigation.navigate("MyPurchases");
-                      else navigation.navigate("Subjects", { yearId: yp.year.id, yearTitle: yp.year.title });
-                    }}
-                    onBuyPress={!owned && Platform.OS === "android" ? () => buy(product) : undefined}
-                    buying={purchasing}
-                  />
-                </StaggerItem>
-              );
-            }}
+            renderItem={renderYearProduct}
           />
         )}
 
@@ -391,20 +429,13 @@ export default function HomeScreen() {
         ) : latestChapters.length === 0 ? (
           <Text style={styles.emptyText}>No new updates right now.</Text>
         ) : (
-          <FlatList
+          <FlatList initialNumToRender={3} windowSize={5} maxToRenderPerBatch={3}
             data={latestChapters}
             keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ marginBottom: SPACING.lg }}
-            renderItem={({ item }) => (
-              <MiniChapterCard
-                title={item.title}
-                subtitle={item.subjectTitle}
-                emoji="🆕"
-                onPress={() => goToChapter(item as any)}
-              />
-            )}
+            renderItem={renderLatest}
           />
         )}
 
@@ -414,20 +445,13 @@ export default function HomeScreen() {
         ) : recommended.length === 0 ? (
           <Text style={styles.emptyText}>Explore a few chapters and we'll tailor picks for you.</Text>
         ) : (
-          <FlatList
+          <FlatList initialNumToRender={3} windowSize={5} maxToRenderPerBatch={3}
             data={recommended}
             keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ marginBottom: SPACING.lg }}
-            renderItem={({ item }) => (
-              <MiniChapterCard
-                title={item.title}
-                subtitle={item.subjectTitle}
-                emoji="✨"
-                onPress={() => goToChapter(item as any)}
-              />
-            )}
+            renderItem={renderRecommended}
           />
         )}
 
@@ -437,29 +461,13 @@ export default function HomeScreen() {
             {recentLoading ? (
               <SkeletonStrip count={3} />
             ) : (
-              <FlatList
+              <FlatList initialNumToRender={3} windowSize={5} maxToRenderPerBatch={3}
                 data={recentChapters}
                 keyExtractor={(item) => item.chapterId}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ marginBottom: SPACING.lg }}
-                renderItem={({ item }) => (
-                  <MiniChapterCard
-                    title={item.chapterTitle}
-                    subtitle={item.subjectTitle}
-                    emoji="🕘"
-                    onPress={() =>
-                      goToChapter({
-                        id: item.chapterId,
-                        title: item.chapterTitle,
-                        subjectId: item.subjectId,
-                        subjectTitle: item.subjectTitle,
-                        yearId: item.yearId,
-                        yearTitle: item.yearTitle,
-                      })
-                    }
-                  />
-                )}
+                renderItem={renderRecent}
               />
             )}
           </>
