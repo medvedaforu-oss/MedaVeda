@@ -1,5 +1,12 @@
 **MedVeda application security review — 20 October 2026**
 
+**Product-model correction, 27 October 2026:** MCQs and videos are free. This
+historical review's paid-MCQ entitlement proposal and unpaid-access finding are
+superseded. Do not apply the paid-quiz proposals in this directory. Answer-key
+confidentiality and server grading are separate requirements; see the later
+[quiz/admin MFA report](../../audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md).
+The original evidence below is retained as historical context.
+
 **Verdict: NO-GO for launching this source with real payments under the requested content model.** A student with **zero purchases** can query MCQ questions and correct answers and submit a server-verified quiz attempt. Targeted notification text is also readable anonymously. Both were reproduced against the current migration chain in an isolated PostgreSQL database.
 
 This reviews the **working tree, including existing uncommitted changes**, not just HEAD. Application code and deployment state were not changed. Proposed corrections are review artifacts in this directory; none has been deployed. File/line references below refer to the reviewed source. [source-manifest.json](source-manifest.json) records hashes for 554 source/config/test files. Older audit documents were not treated as proof that this version is safe.

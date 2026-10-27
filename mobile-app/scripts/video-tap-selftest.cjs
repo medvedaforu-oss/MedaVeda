@@ -32,4 +32,13 @@ assert.equal(element.props.locked,false);
 const card=element.type(element.props);assert.equal(card.type,'TouchableOpacity');assert.equal(card.props.disabled,undefined);
 card.props.onPressIn();card.props.onPress();
 assert.deepEqual(stages,['card.press-in','card.press']);assert.deepEqual(received,[url]);
+// Even an old caller carrying a locked flag cannot show a paid-video message.
+let legacyOpens=0;
+const legacyCard=element.type({...element.props,locked:true,onPress:()=>legacyOpens++});
+assert.ok(!JSON.stringify(legacyCard).includes('Purchase required'));
+assert.ok(!JSON.stringify(legacyCard).includes('🔒'));
+legacyCard.props.onPress();assert.equal(legacyOpens,1);
+const testCard=load('src/components/TestCard.tsx').default({title:'Free MCQ',questionCount:2,locked:true,free:false,onPress:()=>{}});
+assert.ok(JSON.stringify(testCard).includes('FREE'));
+assert.ok(!JSON.stringify(testCard).includes('Purchase required'));
 console.log('PASS: actual screen → card TouchableOpacity → onPress → opener; free card and keyboard tap forwarding (not a device gesture test)');

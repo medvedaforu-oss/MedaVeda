@@ -16,6 +16,7 @@ type Props = {
   title: string;
   onPress: () => void;
   onPressIn?: () => void;
+  // Legacy caller compatibility: videos stay free even when this is supplied.
   locked?: boolean;
 };
 
@@ -23,28 +24,27 @@ export default function VideoCard({
   title,
   onPress,
   onPressIn,
-  locked = false,
 }: Props) {
   return (
     <TouchableOpacity
-      style={[styles.card, locked && styles.cardLocked]}
+      style={styles.card}
       accessibilityRole="button"
       accessibilityLabel={`Watch ${title}`}
       onPressIn={onPressIn}
       onPress={onPress}
       activeOpacity={0.85}
     >
-      <View style={[styles.iconBadge, locked && styles.iconBadgeLocked]}>
-        <Text style={styles.icon}>{locked ? "🔒" : "🎥"}</Text>
+      <View style={styles.iconBadge}>
+        <Text style={styles.icon}>🎥</Text>
       </View>
 
       <View style={styles.content}>
-        <Text style={[styles.title, locked && styles.titleLocked]}>
+        <Text style={styles.title}>
           {title}
         </Text>
 
         <Text style={styles.subtitle}>
-          {locked ? "Purchase required to unlock" : "Tap to Watch Video"}
+          Tap to Watch Video
         </Text>
       </View>
     </TouchableOpacity>
@@ -64,10 +64,6 @@ const styles = StyleSheet.create({
     ...SHADOW.card,
   },
 
-  cardLocked: {
-    backgroundColor: COLORS.surfaceMuted,
-    opacity: 0.85,
-  },
 
   iconBadge: {
     width: 48,
@@ -79,9 +75,6 @@ const styles = StyleSheet.create({
     marginRight: SPACING.md,
   },
 
-  iconBadgeLocked: {
-    backgroundColor: COLORS.surfaceMuted,
-  },
 
   icon: {
     fontSize: 22,
@@ -97,9 +90,6 @@ const styles = StyleSheet.create({
     color: COLORS.text,
   },
 
-  titleLocked: {
-    color: COLORS.subtitle,
-  },
 
   subtitle: {
     marginTop: SPACING.xs,
