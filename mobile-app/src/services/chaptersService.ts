@@ -8,14 +8,14 @@ import { logDebug } from "../utils/logger";
 
 export type { Chapter } from "../types/chapter";
 
-export async function fetchChaptersBySubject(subjectId: string) {
+export async function fetchChaptersBySubject(subjectId: string, onFallback?: () => void) {
   return fetchWithCacheFallback(`chapters:${subjectId}`, async () => {
     const chapters = await getChaptersBySubject(subjectId);
 
     // Sorted client-side (instead of Firestore orderBy) so this query
     // never needs a manual composite index to be created in the console.
     return chapters.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  });
+  }, onFallback);
 }
 
 // Cross-subject "Latest Updates" for the dashboard. Tries to order by a

@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
 let slots = [], cursor = 0, effects = [];
 const react = {
+  useRef(value) { return react.useState({ current: value })[0]; },
   useState(value) {
     const index = cursor++;
     if (!slots[index]) slots[index] = { value };
@@ -20,12 +21,12 @@ const react = {
   },
 };
 const mocks = { react, '../utils/logger': { logError() {} } };
-function load(file, extra = {}) {
+function load(file, extra = {}, member = 'default') {
   const exports = {};
   vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/' + file, 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
   }).outputText, { exports, require: name => ({ ...mocks, ...extra })[name] });
-  return exports.default;
+  return exports[member];
 }
 const hook = load('hooks/useLoadResource.ts');
 const render = (fetch, enabled = true) => { cursor = 0; const result = hook(fetch, [], enabled); effects.splice(0).forEach(fn => fn()); return result; };
@@ -40,6 +41,9 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   shouldFail = false; state.retry(); render(fetch); await tick(); state = render(fetch);
   assert.equal(state.error, false, 'successful retry clears error even for an empty result');
   assert.equal(state.value.length, 0);
+  const fallback = async notify => { notify(); return []; };
+  render(fallback); await tick(); state = render(fallback);
+  assert.equal(state.error, true, 'cached empty fallback must remain an error, not genuine empty content');
   let finishOld, finishNew;
   render(() => new Promise(resolve => { finishOld = resolve; }));
   const newFetch = () => new Promise(resolve => { finishNew = resolve; });
@@ -51,6 +55,24 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   let requested = 0;
   render(async () => { requested++; return []; }, false); await tick();
   assert.equal(requested, 0, 'waits for course readiness');
+  let cached = [], fallbackSignals = 0;
+  const fetchCached = load('utils/localCache.ts', {
+    '@react-native-async-storage/async-storage': { __esModule: true, default: {
+      getItem: async () => cached === null ? null : JSON.stringify(cached),
+      setItem: async () => {},
+    } },
+    './logger': { logDebug() {} },
+  }, 'fetchWithCacheFallback');
+  const offline = async () => { throw Error('offline'); };
+  const notify = () => fallbackSignals++;
+  assert.equal((await fetchCached('fixture', offline, notify)).length, 0);
+  assert.equal(fallbackSignals, 1, 'even an empty cached result reports the failed fetch');
+  cached = ['saved'];
+  assert.equal((await fetchCached('fixture', offline, notify))[0], 'saved');
+  assert.equal(fallbackSignals, 2, 'nonempty saved data remains usable with an error banner');
+  await fetchCached('fixture', async () => [], notify);
+  assert.equal(fallbackSignals, 2, 'a genuinely empty successful read is not an error');
+  cached = null; await assert.rejects(fetchCached('fixture', offline, notify), /offline/);
   let online = false;
   const errorView = load('components/LoadError.tsx', {
     '../hooks/useNetworkStatus': { default: () => online, __esModule: true },

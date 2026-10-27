@@ -27,7 +27,7 @@ export default function ChaptersScreen() {
 
   const { subjectId, subjectTitle, yearId, yearTitle, mode } = route.params;
 
-  const load = useCallback(() => fetchChaptersBySubject(subjectId), [subjectId]);
+  const load = useCallback((onFallback: () => void) => fetchChaptersBySubject(subjectId, onFallback), [subjectId]);
   const { value: chapters, loading, error, retry } = useLoadResource<Chapter[]>(load, []);
 
   const [search, setSearch] = useState("");
@@ -108,19 +108,22 @@ export default function ChaptersScreen() {
           color={COLORS.accent}
           style={{ marginTop: SPACING.xl }}
         />
-      ) : error ? (
+      ) : error && chapters.length === 0 ? (
         <LoadError content="chapters" retry={retry} />
       ) : (
-        <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
-          data={filteredData}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
-          showsVerticalScrollIndicator={false}
-          renderItem={renderChapter}
-          ListEmptyComponent={
-            <Text style={styles.empty}>🔍 No Chapters Found</Text>
-          }
-        />
+        <>
+          {error && <LoadError content="chapters" retry={retry} />}
+          <FlatList initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
+            data={filteredData}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
+            showsVerticalScrollIndicator={false}
+            renderItem={renderChapter}
+            ListEmptyComponent={
+              <Text style={styles.empty}>🔍 No Chapters Found</Text>
+            }
+          />
+        </>
       )}
     </View>
   );

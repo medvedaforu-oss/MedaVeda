@@ -25,7 +25,7 @@ export default function SubjectsScreen() {
 
   const { yearId, yearTitle, mode } = route.params;
 
-  const load = useCallback(() => fetchSubjectsByYear(yearId), [yearId]);
+  const load = useCallback((onFallback: () => void) => fetchSubjectsByYear(yearId, onFallback), [yearId]);
   const { value: subjects, loading, error, retry } = useLoadResource<Subject[]>(load, []);
 
   const [search, setSearch] = useState("");
@@ -59,49 +59,52 @@ export default function SubjectsScreen() {
           color={COLORS.accent}
           style={{ marginTop: SPACING.xl }}
         />
-      ) : error ? (
+      ) : error && subjects.length === 0 ? (
         <LoadError content="subjects" retry={retry} />
       ) : (
-        <FlatList
-          data={filteredData}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
-          renderItem={({ item }) => (
-            <SubjectCard
-              title={item.title}
-              onPress={() => {
-                const params = {
-                  subjectId: item.id,
-                  subjectTitle: item.title,
-                  yearId: item.yearId,
-                  yearTitle: item.yearTitle,
-                };
+        <>
+          {error && <LoadError content="subjects" retry={retry} />}
+          <FlatList
+            data={filteredData}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
+            renderItem={({ item }) => (
+              <SubjectCard
+                title={item.title}
+                onPress={() => {
+                  const params = {
+                    subjectId: item.id,
+                    subjectTitle: item.title,
+                    yearId: item.yearId,
+                    yearTitle: item.yearTitle,
+                  };
 
-                // Video Lectures and MCQ Quiz are always free and live at
-                // the Subject level - skip the Chapters screen entirely
-                // for those two and go straight to the content. Notes
-                // (and general browsing with no mode) still need a
-                // Chapter picked first, since Notes purchase/unlock is
-                // chapter-scoped.
-                if (mode === "videos") {
-                  navigation.navigate("Videos", params);
-                  return;
-                }
+                  // Video Lectures and MCQ Quiz are always free and live at
+                  // the Subject level - skip the Chapters screen entirely
+                  // for those two and go straight to the content. Notes
+                  // (and general browsing with no mode) still need a
+                  // Chapter picked first, since Notes purchase/unlock is
+                  // chapter-scoped.
+                  if (mode === "videos") {
+                    navigation.navigate("Videos", params);
+                    return;
+                  }
 
-                if (mode === "quiz") {
-                  navigation.navigate("QuizTests", params);
-                  return;
-                }
+                  if (mode === "quiz") {
+                    navigation.navigate("QuizTests", params);
+                    return;
+                  }
 
-                navigation.navigate("Chapters", { ...params, mode });
-              }}
-            />
-          )}
-          ListEmptyComponent={
-            <Text style={styles.empty}>🔍 No Subject Found</Text>
-          }
-          showsVerticalScrollIndicator={false}
-        />
+                  navigation.navigate("Chapters", { ...params, mode });
+                }}
+              />
+            )}
+            ListEmptyComponent={
+              <Text style={styles.empty}>🔍 No Subject Found</Text>
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        </>
       )}
     </View>
   );

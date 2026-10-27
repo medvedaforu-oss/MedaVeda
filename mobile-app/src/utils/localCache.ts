@@ -39,7 +39,8 @@ export async function writeCache<T>(key: string, value: T): Promise<void> {
 // so existing .catch() error handling in screens keeps working unchanged.
 export async function fetchWithCacheFallback<T>(
   key: string,
-  fetchLive: () => Promise<T>
+  fetchLive: () => Promise<T>,
+  onFallback?: () => void,
 ): Promise<T> {
   try {
     const fresh = await fetchLive();
@@ -49,6 +50,7 @@ export async function fetchWithCacheFallback<T>(
     const cached = await readCache<T>(key);
     if (cached !== null) {
       logDebug(`fetchWithCacheFallback(${key}): offline, using cached copy`);
+      onFallback?.();
       return cached;
     }
     throw error;

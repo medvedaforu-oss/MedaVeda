@@ -3,12 +3,12 @@ import { getSubjectsByYear as getSubjectsByYearFromRepo } from "../repositories/
 
 export type { Subject } from "../types/subject";
 
-export async function fetchSubjectsByYear(yearId: string) {
+export async function fetchSubjectsByYear(yearId: string, onFallback?: () => void) {
   return fetchWithCacheFallback(`subjects:${yearId}`, async () => {
     const subjects = await getSubjectsByYearFromRepo(yearId);
 
     // Sorted client-side (instead of Firestore orderBy) so this query
     // never needs a manual composite index to be created in the console.
     return subjects.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  });
+  }, onFallback);
 }

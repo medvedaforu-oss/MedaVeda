@@ -35,7 +35,7 @@ export default function YearsScreen() {
 
   const { ready, courseId } = useCourseYear();
 
-  const load = useCallback(() => fetchYears(courseId), [courseId]);
+  const load = useCallback((onFallback: () => void) => fetchYears(courseId, onFallback), [courseId]);
   const { value: years, loading, error, retry } = useLoadResource<Year[]>(load, [], ready);
 
   // Browsing a year does not change the registered year in the profile.
@@ -50,40 +50,43 @@ export default function YearsScreen() {
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.accent} style={{ marginTop: SPACING.xl }} />
-      ) : error ? (
+      ) : error && years.length === 0 ? (
         <LoadError content="years" retry={retry} />
       ) : (
-        <FlatList
-          data={years}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <YearCard
-              title={item.title}
-              icon={item.icon}
-              color={item.color}
-              onPress={() =>
-                navigation.navigate("Subjects", {
-                  yearId: item.id,
-                  yearTitle: item.title,
-                  mode,
-                })
-              }
-            />
-          )}
-          ListEmptyComponent={
-            <Text style={styles.empty}>No academic years added yet.</Text>
-          }
-          ListFooterComponent={
-            years.length > 1 ? (
-              <Text style={styles.hint}>
-                Browse any year in your course. Paid notes require a purchase.
-                Your profile year stays unchanged.
-              </Text>
-            ) : null
-          }
-        />
+        <>
+          {error && <LoadError content="years" retry={retry} />}
+          <FlatList
+            data={years}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <YearCard
+                title={item.title}
+                icon={item.icon}
+                color={item.color}
+                onPress={() =>
+                  navigation.navigate("Subjects", {
+                    yearId: item.id,
+                    yearTitle: item.title,
+                    mode,
+                  })
+                }
+              />
+            )}
+            ListEmptyComponent={
+              <Text style={styles.empty}>No academic years added yet.</Text>
+            }
+            ListFooterComponent={
+              years.length > 1 ? (
+                <Text style={styles.hint}>
+                  Browse any year in your course. Paid notes require a purchase.
+                  Your profile year stays unchanged.
+                </Text>
+              ) : null
+            }
+          />
+        </>
       )}
     </View>
   );
