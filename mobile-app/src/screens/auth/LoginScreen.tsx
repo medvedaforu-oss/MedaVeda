@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -47,6 +47,7 @@ export default function LoginScreen() {
 
   const [hidePassword, setHidePassword] = useState(true);
   const [loading, setLoading] = useState(false);
+  const submitting = useRef(false);
   const [lockStatus, setLockStatus] = useState<LockStatus>(NOT_LOCKED);
   // Set on EVERY failed sign-in attempt (any cause, email or mobile) so the
   // neutral hint below never reveals whether an account exists.
@@ -82,8 +83,12 @@ export default function LoginScreen() {
       return;
     }
     const timer = setTimeout(async () => {
-      const status = await getLockStatus(parsed.value);
-      if (!cancelled) setLockStatus(status);
+      try {
+        const status = await getLockStatus(parsed.value);
+        if (!cancelled) setLockStatus(status);
+      } catch {
+        // Submission retries the secure read and reports a recoverable failure.
+      }
     }, 300);
     return () => {
       cancelled = true;
@@ -108,7 +113,7 @@ export default function LoginScreen() {
   const onLogin = async (data: FormData) => {
     // Guard against double-submits (double-tap, slow network + repeat
     // tap) in addition to the button's own `disabled` state.
-    if (loading) return;
+    if (submitting.current) return;
     setLoginFailed(false);
 
     const identifier = data.identifier.trim();
@@ -123,19 +128,17 @@ export default function LoginScreen() {
     // Re-verify against persisted state right before attempting the
     // request - closes the gap where the debounced check above hasn't
     // run yet but the account is already locked.
-    const freshLock = await getLockStatus(lockKey);
-    if (freshLock.locked) {
-      setLockStatus(freshLock);
-      setLoginFailed(true);
-      Alert.alert(
-        "Account Temporarily Locked",
-        `Too many failed attempts. Please try again in ${formatRemainingTime(freshLock.remainingMs)}.`
-      );
-      return;
-    }
-
+    submitting.current = true;
     setLoading(true);
     try {
+      const freshLock = await getLockStatus(lockKey);
+      if (freshLock.locked) {
+        setLockStatus(freshLock);
+        setLoginFailed(true);
+        Alert.alert("Account Temporarily Locked",
+          `Too many failed attempts. Please try again in ${formatRemainingTime(freshLock.remainingMs)}.`);
+        return;
+      }
       const { data: authData, error } = await signInWithIdentifier(parsedIdentifier, data.password);
       const user = authData?.user;
 
@@ -185,6 +188,7 @@ export default function LoginScreen() {
       setLoginFailed(true);
       Alert.alert("Something Went Wrong", "Please check your connection and try again.");
     } finally {
+      submitting.current = false;
       setLoading(false);
     }
   };
