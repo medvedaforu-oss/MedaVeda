@@ -10,6 +10,7 @@ import { registerForPushNotifications, unregisterCurrentDeviceToken } from "./pu
 import { logDebug } from "../utils/logger";
 
 let currentUser: User | null = null;
+let receivedAuthEvent = false;
 
 // Paid notes are saved on the device for offline reading. They belong to whoever downloaded
 // them: they are wiped on every sign-out (Logout, blocked, session ended, account deletion),
@@ -100,7 +101,7 @@ async function enforceNotBlocked(user: User): Promise<void> {
   // Fail open on a network/lookup error - a transient failure here
   // should not lock a legitimate student out of the app. A genuinely
   // blocked user will be caught again on their next session refresh.
-  if (error || !profile?.blocked) return;
+  if (error || !profile?.blocked || currentUser?.id !== user.id) return;
 
   await performSignOut();
   blockedListeners.forEach((fn) => fn());
@@ -109,6 +110,7 @@ async function enforceNotBlocked(user: User): Promise<void> {
 supabase.auth
   .getSession()
   .then(({ data }) => {
+    if (receivedAuthEvent) return;
     currentUser = data.session?.user ?? null;
     if (currentUser) {
       claimOfflineStorage(currentUser);
@@ -119,6 +121,7 @@ supabase.auth
   .catch((err) => logDebug("getSession failed:", err));
 
 supabase.auth.onAuthStateChange((event, session) => {
+  receivedAuthEvent = true;
   currentUser = session?.user ?? null;
   if (event === "SIGNED_OUT") {
     pushRegisteredForUserId = null;
