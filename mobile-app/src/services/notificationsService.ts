@@ -24,6 +24,7 @@ export interface AppNotification {
 // The Home section and its mount/focus unread badges ask for the same rows.
 // Share only an outstanding server read for the same account. Preferences,
 // read IDs and archived IDs stay per-call, and nothing is cached after settlement.
+// Stop sharing after one second even if a read stalls, so retries remain usable.
 const pendingNotifications = new Map<string, Promise<any[]>>();
 
 function readNotificationRows(): Promise<any[]> {
@@ -39,8 +40,12 @@ function readNotificationRows(): Promise<any[]> {
     if (error) throw error;
     return data ?? [];
   })().finally(() => {
+    clearTimeout(expiry);
     if (pendingNotifications.get(account) === request) pendingNotifications.delete(account);
   });
+  const expiry = setTimeout(() => {
+    if (pendingNotifications.get(account) === request) pendingNotifications.delete(account);
+  }, 1000);
   pendingNotifications.set(account, request);
   return request;
 }

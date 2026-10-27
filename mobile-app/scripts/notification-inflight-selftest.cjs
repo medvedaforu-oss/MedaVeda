@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const timers = new Map(); let timerId = 0;
 let user = 'a', preferenceReads = 0;
 const reads = [], storage = new Map();
 const prefs = { offer: false };
@@ -16,7 +17,10 @@ const mocks = {
 const mod = { exports: {} };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/services/notificationsService.ts', 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
-}).outputText, { exports: mod.exports, require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
+}).outputText, { exports: mod.exports,
+  setTimeout: (fn, ms) => { assert.equal(ms, 1000); const id = ++timerId; timers.set(id, fn); return id; },
+  clearTimeout: id => timers.delete(id),
+  require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
 const service = mod.exports;
 (async () => {
   storage.set('medveda:notifications:readIds', JSON.stringify(['read']));
@@ -44,5 +48,13 @@ const service = mod.exports;
   const retry = service.fetchNotifications(); assert.equal(reads.length, 6); reads[5].reject(Error('offline'));
   assert.equal((await retry).length, 0, 'Thrown failures retain soft-empty behavior and release pending state');
   const recovered = service.fetchNotifications(); reads[6].resolve({ data: rows }); assert.equal((await recovered).length, 3);
+  assert.equal(timers.size, 0);
+  const stalled = service.fetchNotifications(); timers.forEach(fn => fn()); timers.clear();
+  const retried = service.fetchNotifications(); assert.equal(reads.length, 9, 'Stalled request does not prevent retry');
+  reads[7].resolve({ data: [{ id: 'old' }] }); await stalled;
+  const concurrentRetry = service.fetchNotifications(); assert.equal(reads.length, 9, 'Old response cannot clear a newer request');
+  reads[8].resolve({ data: [{ id: 'new' }] });
+  assert.equal((await retried)[0].id, 'new'); assert.equal((await concurrentRetry)[0].id, 'new');
+  assert.equal(timers.size, 0);
   console.log('PASS concurrent notification reads, fresh subsequent state, account isolation, errors/retry, mute/read/archive semantics');
 })().catch(error => { console.error(error); process.exitCode = 1; });

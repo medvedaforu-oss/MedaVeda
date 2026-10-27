@@ -17,7 +17,7 @@ const mocks = {
 };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/services/notificationsService.ts','utf8'), {
  compilerOptions: { module: ts.ModuleKind.CommonJS }
-}).outputText, { exports:mod.exports, require:name => { assert.ok(name in mocks,name);return mocks[name]; } });
+}).outputText, { exports:mod.exports, setTimeout, clearTimeout, require:name => { assert.ok(name in mocks,name);return mocks[name]; } });
 (async () => {
  const result = await mod.exports.fetchNotifications();
  assert.equal(result.length,50); assert.ok(result.every(n => n.type === 'new_video'));

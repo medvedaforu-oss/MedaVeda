@@ -3,11 +3,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const timers = new Map(); let timerId = 0;
 function load(file, mocks) {
   const mod = { exports: {} };
   vm.runInNewContext(ts.transpileModule(fs.readFileSync(path.join(__dirname, '../src', file), 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
-  }).outputText, { exports: mod.exports, module: mod, require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
+  }).outputText, { exports: mod.exports, module: mod,
+    setTimeout: (fn, ms) => { assert.equal(ms, 1000); const id = ++timerId; timers.set(id, fn); return id; },
+    clearTimeout: id => timers.delete(id),
+    require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
   return mod.exports;
 }
 let user = 'a'; const reads = [], cache = new Map();
@@ -44,5 +48,16 @@ const service = load('services/yearsService.ts', {
   reads[6].reject(failure);
   assert.equal((await cachedA)[0].id, 'saved'); assert.equal((await cachedB)[0].id, 'saved');
   assert.equal(fallbacks, 2, 'Every caller retains its offline/error banner signal');
+  assert.equal(timers.size, 0, 'Settled requests cancel the sharing timer');
+  const stalled = service.fetchYears('bhms');
+  timers.forEach(fn => fn()); timers.clear();
+  const retried = service.fetchYears('bhms');
+  assert.equal(reads.length, 9, 'A stalled read does not block a later retry');
+  reads[7].resolve([{ id: 'old' }]); await stalled;
+  const overlappingRetry = service.fetchYears('bhms');
+  assert.equal(reads.length, 9, 'Old settlement cannot evict the newer pending request');
+  reads[8].resolve([{ id: 'new' }]);
+  assert.equal((await retried)[0].id, 'new'); assert.equal((await overlappingRetry)[0].id, 'new');
+  assert.equal(timers.size, 0);
   console.log('PASS shared pending years read, fresh subsequent reads, account/course separation and independent error/offline fallback');
 })().catch(error => { console.error(error); process.exitCode = 1; });

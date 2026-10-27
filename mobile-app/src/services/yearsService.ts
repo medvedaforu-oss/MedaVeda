@@ -8,7 +8,8 @@ export type { Year } from "../types/year";
 // Home requests years for two independent sections at the same time. Share only
 // the live read while it is pending; each caller retains its own offline fallback
 // notification, and a later call still goes to the server. Account/course keys
-// keep a request started in another session from being reused.
+// keep a request started in another session from being reused. A stalled read
+// stops being shared after one second so reopening/retrying can start a new one.
 const pendingYears = new Map<string, Promise<Year[]>>();
 
 function readYears(courseId?: string): Promise<Year[]> {
@@ -16,8 +17,12 @@ function readYears(courseId?: string): Promise<Year[]> {
   const pending = pendingYears.get(scope);
   if (pending) return pending;
   const request = getActiveYears(courseId).finally(() => {
+    clearTimeout(expiry);
     if (pendingYears.get(scope) === request) pendingYears.delete(scope);
   });
+  const expiry = setTimeout(() => {
+    if (pendingYears.get(scope) === request) pendingYears.delete(scope);
+  }, 1000);
   pendingYears.set(scope, request);
   return request;
 }
