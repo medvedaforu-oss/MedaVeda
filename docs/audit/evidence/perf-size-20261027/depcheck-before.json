@@ -1,0 +1,19 @@
+{
+  "dependencies": [
+    "expo-build-properties",
+    "expo-splash-screen",
+    "expo-system-ui",
+    "expo-updates",
+    "react-native-screens",
+    "react-native-worklets"
+  ],
+  "devDependencies": [
+    "@babel/core",
+    "typescript"
+  ],
+  "missing": {
+    "@expo/config-plugins": [
+      "mobile-app/plugins/withAndroidQueries.js"
+    ]
+  }
+}
