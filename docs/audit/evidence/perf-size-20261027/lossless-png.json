@@ -1,0 +1,50 @@
+[
+  {
+    "path": "mobile-app/assets/adaptive-icon.png",
+    "beforeBytes": 1459751,
+    "afterBytes": 1348665,
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "pixelSha256": "e0420e31ad01aa426c5f9bc542b97227b569b50f07d23ae70ed4dc7649d7f2d0",
+    "identicalPixels": true,
+    "identicalMetadata": true
+  },
+  {
+    "path": "mobile-app/assets/favicon.png",
+    "beforeBytes": 813005,
+    "afterBytes": 731411,
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "pixelSha256": "5775cef150740ff2637888e842db67797110ec0777c0e22db8e14777bf30e584",
+    "identicalPixels": true,
+    "identicalMetadata": true
+  },
+  {
+    "path": "mobile-app/assets/icon.png",
+    "beforeBytes": 978337,
+    "afterBytes": 884914,
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "pixelSha256": "1031bea95b13ca22b6c753bedc6d9a423b1157c12ac325bdecec87a6e918b2ec",
+    "identicalPixels": true,
+    "identicalMetadata": true
+  },
+  {
+    "path": "mobile-app/assets/splash.png",
+    "beforeBytes": 1678819,
+    "afterBytes": 1584329,
+    "dimensions": [
+      941,
+      1672
+    ],
+    "pixelSha256": "b37a970d333753a112d32bb7957f73e6863079f7eaf8d3b8f4d3107b20d79897",
+    "identicalPixels": true,
+    "identicalMetadata": true
+  }
+]
