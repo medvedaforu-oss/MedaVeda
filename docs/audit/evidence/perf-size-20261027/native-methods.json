@@ -1,0 +1,23 @@
+{
+  "bundletoolVersion": "1.18.3",
+  "bundletoolSha256": "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29",
+  "deviceSpec": {
+    "supportedLocales": [
+      "en"
+    ],
+    "screenDensity": 420,
+    "sdkVersion": 36,
+    "supportedAbis": "one of arm64-v8a / armeabi-v7a / x86 / x86_64"
+  },
+  "analysisApks": "Universal and split APKs generated from each production AAB using the same disposable RSA-2048 key; cloud test APKs retain EAS-managed signing.",
+  "r8Control": "Identical shrink-test profile on isolated candidate checkout, except ANDROID_SHRINK=0 rather than 1 in temporary eas.json; repository profile unchanged.",
+  "canonicalExportEvidence": "Original pre-change and post-change export sizes remain separate from the embedded native Hermes sizes.",
+  "deviceResults": "No adb devices connected; installed size, real cold start/TTI and native flow smoke tests unavailable.",
+  "easCliVersion": "24.14.0",
+  "nativeImageSavingsBytes": 1325,
+  "nativeImagePixelMatches": 243,
+  "aabJarSignatureIntegrity": {
+    "before": "jar verified (jarsigner -verify)",
+    "after": "jar verified (jarsigner -verify)"
+  }
+}

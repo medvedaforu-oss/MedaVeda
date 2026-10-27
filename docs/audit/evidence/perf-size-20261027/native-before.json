@@ -1,0 +1,4446 @@
+{
+  "build": {
+    "id": "d9756efb-968a-408a-8f44-004bf6302e34",
+    "status": "FINISHED",
+    "buildProfile": "production",
+    "distribution": "STORE",
+    "sdkVersion": "57.0.0",
+    "appVersion": "1.2.1",
+    "appBuildVersion": "6",
+    "gitCommitHash": "99c91a44441ce12d907fb8e4a69fb8a5343d6fde",
+    "createdAt": "2026-10-27T03:55:10.962Z",
+    "completedAt": "2026-10-27T04:09:51.550Z",
+    "runtimeVersion": null,
+    "metrics": {
+      "buildWaitTime": 2215,
+      "buildQueueTime": 5342,
+      "buildDuration": 873031
+    },
+    "artifact": {
+      "file": "before.aab",
+      "bytes": 90914706,
+      "sha256": "ead1810de3401bc62087123b85fb2eb6e11684c4f8364f245709e1d4d4c705c7"
+    }
+  },
+  "artifact": {
+    "file": "before.aab",
+    "bytes": 90914706,
+    "sha256": "ead1810de3401bc62087123b85fb2eb6e11684c4f8364f245709e1d4d4c705c7",
+    "uncompressedCategories": {
+      "other": 95720130,
+      "assets": 16012,
+      "bundle": 6600124,
+      "dex": 40486340,
+      "native": 106389060,
+      "resources": 9653956
+    },
+    "byExtension": {
+      ".sym": {
+        "bytes": 93540668,
+        "zipBytes": 24432526,
+        "count": 52
+      },
+      ".properties": {
+        "bytes": 1314935,
+        "zipBytes": 1228579,
+        "count": 23
+      },
+      ".pb": {
+        "bytes": 1973374,
+        "zipBytes": 493870,
+        "count": 5
+      },
+      ".prof": {
+        "bytes": 8317,
+        "zipBytes": 7957,
+        "count": 1
+      },
+      ".profm": {
+        "bytes": 356,
+        "zipBytes": 361,
+        "count": 1
+      },
+      ".json": {
+        "bytes": 705,
+        "zipBytes": 363,
+        "count": 2
+      },
+      ".config": {
+        "bytes": 1425,
+        "zipBytes": 743,
+        "count": 1
+      },
+      ".manifest": {
+        "bytes": 13277,
+        "zipBytes": 1632,
+        "count": 1
+      },
+      ".pem": {
+        "bytes": 1310,
+        "zipBytes": 971,
+        "count": 1
+      },
+      ".bundle": {
+        "bytes": 6600124,
+        "zipBytes": 2583816,
+        "count": 1
+      },
+      ".dex": {
+        "bytes": 40486340,
+        "zipBytes": 14775731,
+        "count": 5
+      },
+      ".so": {
+        "bytes": 106389060,
+        "zipBytes": 41818958,
+        "count": 108
+      },
+      ".xml": {
+        "bytes": 1009508,
+        "zipBytes": 307352,
+        "count": 768
+      },
+      ".png": {
+        "bytes": 2368295,
+        "zipBytes": 2344752,
+        "count": 228
+      },
+      ".webp": {
+        "bytes": 280729,
+        "zipBytes": 278636,
+        "count": 15
+      },
+      "(none)": {
+        "bytes": 264,
+        "zipBytes": 198,
+        "count": 2
+      },
+      ".binarypb": {
+        "bytes": 56,
+        "zipBytes": 58,
+        "count": 1
+      },
+      ".ttf": {
+        "bytes": 4076840,
+        "zipBytes": 2040824,
+        "count": 19
+      },
+      ".bin": {
+        "bytes": 1733,
+        "zipBytes": 780,
+        "count": 1
+      },
+      ".version": {
+        "bytes": 533,
+        "zipBytes": 681,
+        "count": 78
+      },
+      ".txt": {
+        "bytes": 265162,
+        "zipBytes": 110088,
+        "count": 131
+      },
+      ".Provider": {
+        "bytes": 112,
+        "zipBytes": 57,
+        "count": 1
+      },
+      ".BuiltInsLoader": {
+        "bytes": 90,
+        "zipBytes": 72,
+        "count": 1
+      },
+      ".ExternalOverridabilityCondition": {
+        "bytes": 235,
+        "zipBytes": 99,
+        "count": 1
+      },
+      ".CoroutineExceptionHandler": {
+        "bytes": 54,
+        "zipBytes": 50,
+        "count": 1
+      },
+      ".MainDispatcherFactory": {
+        "bytes": 52,
+        "zipBytes": 49,
+        "count": 1
+      },
+      ".textproto": {
+        "bytes": 46,
+        "zipBytes": 48,
+        "count": 1
+      },
+      ".proto": {
+        "bytes": 64400,
+        "zipBytes": 26887,
+        "count": 14
+      },
+      ".kotlin_builtins": {
+        "bytes": 51125,
+        "zipBytes": 12053,
+        "count": 8
+      },
+      ".gz": {
+        "bytes": 37730,
+        "zipBytes": 37745,
+        "count": 1
+      },
+      ".SF": {
+        "bytes": 188778,
+        "zipBytes": 68284,
+        "count": 1
+      },
+      ".RSA": {
+        "bytes": 1260,
+        "zipBytes": 1068,
+        "count": 1
+      },
+      ".MF": {
+        "bytes": 188729,
+        "zipBytes": 64274,
+        "count": 1
+      }
+    },
+    "nativeLibraries": [
+      {
+        "path": "base/lib/arm64-v8a/libappmodules.so",
+        "bytes": 1362864,
+        "zipBytes": 308830,
+        "sha256": "414efbea50ebd47a48699bc3f2d164039aef8aa7e6c0096ddb72cd4d2510243b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 41824252,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libc++_shared.so",
+        "bytes": 1292904,
+        "zipBytes": 406557,
+        "sha256": "3e852764502d06e0cf1080d532ae7c608b7649d946a3a9d7e84e3d4b7d683214",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 42133147,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7112,
+        "zipBytes": 2630,
+        "sha256": "d3e48717c9aa147e0ab21063ba0e8e0211cabf8bf40b222640829519edbf58e1",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 42539783,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libexpo-modules-core.so",
+        "bytes": 1496064,
+        "zipBytes": 368980,
+        "sha256": "7bc06ecd69c8136484b8c58cf2ba6bb486bcebf9d2f5411c7e269f8fcc77d955",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 42542485,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libexpo-sqlite.so",
+        "bytes": 1830224,
+        "zipBytes": 884124,
+        "sha256": "4f97bf102fa2863145ac5011c6f614f2caea38b78d4cf19a5650c87ef24eee3b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 42911531,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libexpo-updates.so",
+        "bytes": 101912,
+        "zipBytes": 50418,
+        "sha256": "902e0f851cba2c87815780d3c1bdb2bc2b68a057ad2e55997ca0dcd41b69c19f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 43795722,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libfbjni.so",
+        "bytes": 177000,
+        "zipBytes": 62764,
+        "sha256": "a9e35ba55d3f956920281f519385f8a72475ee24819799cb08375fdd4cce2b22",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 43846200,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libgesturehandler.so",
+        "bytes": 38456,
+        "zipBytes": 17226,
+        "sha256": "1f60cc3918524612615bfa4271f0764686cf7ab4edd497f470b2f132ccc6c20b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 43909033,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libgifimage.so",
+        "bytes": 318992,
+        "zipBytes": 106613,
+        "sha256": "9f605249728da7091569772a38a4dde298ed48e1e73fed3da0e4b662ef38715c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 43926322,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libhermestooling.so",
+        "bytes": 141432,
+        "zipBytes": 47040,
+        "sha256": "1db061bbbb050105fee9b208b861adc0cc02cc359551be6ba9562798a81f6cca",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 44033003,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libhermesvm.so",
+        "bytes": 2477320,
+        "zipBytes": 1041761,
+        "sha256": "bf38be45bf5d6ad8ba961eaf9deda5fa7e032f3ff7d3929ba2a624567093bffa",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 44080106,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libimagepipeline.so",
+        "bytes": 8760,
+        "zipBytes": 3175,
+        "sha256": "1b377992e4256fa9398ec057722f84a359c7d588e570c8a41f51d930c19ece7d",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45121935,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libjsi.so",
+        "bytes": 412696,
+        "zipBytes": 177077,
+        "sha256": "5acb80d7eb93b2114a419c9e42b44476969299e806ad7eafe1b293e221b9a682",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45125168,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libnative-filters.so",
+        "bytes": 23712,
+        "zipBytes": 12767,
+        "sha256": "4294b57460e70a6351ce7ae2733a79c088c907dfa54673a657227ec5bb669594",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45302314,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libnative-imagetranscoder.so",
+        "bytes": 585376,
+        "zipBytes": 224841,
+        "sha256": "2aed28298a25afd52ac670cf9682398c6c7ba42a57195c01efd565e7ddfe17ca",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45315158,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libpdfium.so",
+        "bytes": 4771352,
+        "zipBytes": 2476794,
+        "sha256": "e3ad7644b9dd203f27e0650d5a1af0a2a73548fad9fe608c209fbd55888d3643",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45540060,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libpdfiumandroid.so",
+        "bytes": 432200,
+        "zipBytes": 135721,
+        "sha256": "be53f7f812f9ab94b09c694db79b30170c9af9937387be945733424e654b776c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 48016922,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libreact_codegen_rnscreens.so",
+        "bytes": 1200424,
+        "zipBytes": 296958,
+        "sha256": "ae95ec812c1278d5c3365cdf480b994afdc2332de1a3daaf2e2b9326ded7ea44",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 48152721,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libreact_codegen_safeareacontext.so",
+        "bytes": 159208,
+        "zipBytes": 54506,
+        "sha256": "f508032707d848e6ebccd4fd2601951975c597dcba78c596139c2a078a111a0a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 48449763,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libreactnative.so",
+        "bytes": 6985168,
+        "zipBytes": 2324631,
+        "sha256": "14bb860cebebb0e29eb2c96a52d70da9b73e60253916694af955f6e3ef1e6b64",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 48504335,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libreanimated.so",
+        "bytes": 1500888,
+        "zipBytes": 500194,
+        "sha256": "1fe7e00a4ed4f50af8869f8939398523f3f2126e207894f2ebfa8654938b505f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 50829031,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/librnscreens.so",
+        "bytes": 100904,
+        "zipBytes": 34867,
+        "sha256": "8be73816374f9be6f48a620e5d5d0429473e91511ae4c60760abe7df572d7003",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 51329289,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libsentry-android.so",
+        "bytes": 16832,
+        "zipBytes": 5530,
+        "sha256": "a4eaa6bb917cfee5c5753e5511a4bc1f0d6311768f4c4c977d6e8bc4be579e66",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 51364225,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libsentry.so",
+        "bytes": 723712,
+        "zipBytes": 249160,
+        "sha256": "056e46a6de4121e9a4f9cfc947eaf0e3cbe7ea8b8c6fcab7ef396b95dee1f9dc",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 51369816,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libstatic-webp.so",
+        "bytes": 501856,
+        "zipBytes": 206899,
+        "sha256": "f3e5f9ab4f93f2a0a057285a2de9c93ba0ab59c76c22874d0356493ce283c4c7",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 51619042,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libworklets.so",
+        "bytes": 1101120,
+        "zipBytes": 288230,
+        "sha256": "2aada5c31144cadcc0094f94ecefd70cd9dcfea142ae9cefdc33fb4e748a829c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 51826004,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libzstd-kmp.so",
+        "bytes": 731872,
+        "zipBytes": 276362,
+        "sha256": "10ec47f13bee884450b0911066019ba7aa6b4164a4c1f8c33c9d30dd3fd8868a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 52114297,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libappmodules.so",
+        "bytes": 1005948,
+        "zipBytes": 269529,
+        "sha256": "3a081274293395e76f997bb44e6d51db1091af5b6127553a3d74c6da17140da1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 52390726,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libc++_shared.so",
+        "bytes": 872872,
+        "zipBytes": 349040,
+        "sha256": "84e7d99b7b6df960b37c28e43808cc5c2c62d1bb9449e27683fc53309dea5b6c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 52660322,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libdatastore_shared_counter.so",
+        "bytes": 4416,
+        "zipBytes": 2033,
+        "sha256": "716c5d8d2cac8ca0edf65da8f139c7886b726ac79d542a14edeb94994ba6d3dc",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 53009443,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libexpo-modules-core.so",
+        "bytes": 1062296,
+        "zipBytes": 323185,
+        "sha256": "6710db794fdcc05603845f143b12145d7cd1ed4f58a997c41087fa82c3b98ce8",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 53011550,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libexpo-sqlite.so",
+        "bytes": 1267940,
+        "zipBytes": 787030,
+        "sha256": "fe87c7c9f51bc6c48de577ba1e6fc21530b6220d22e5a61acfbba2789e0b6d71",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 53334803,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libexpo-updates.so",
+        "bytes": 60824,
+        "zipBytes": 34454,
+        "sha256": "a4a56d29fd57785351e865197f7744b0acffa2a5d05e6eef70c5236e1bcef50b",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 54121902,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libfbjni.so",
+        "bytes": 119456,
+        "zipBytes": 49885,
+        "sha256": "6739b4db111283fe0a86a3a5fdd80efe5d963355dd161b95ec179f01cc9685d5",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 54156418,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libgesturehandler.so",
+        "bytes": 8420,
+        "zipBytes": 4023,
+        "sha256": "1de0277aa50b91584c76f7046466ce6f2cd6e8bbe5fe3aafd987f3261dfe7ca6",
+        "elfLoadAlignments": [
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 54206374,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libgifimage.so",
+        "bytes": 184380,
+        "zipBytes": 82644,
+        "sha256": "0a10e184300cfbc64a770f872ddbd9c5185fa10f26d960ddc809f2fdb39dedc3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 54210462,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libhermestooling.so",
+        "bytes": 76548,
+        "zipBytes": 28622,
+        "sha256": "c3aa71d90fcf993b0ddc9da0bc7a154444663901515c61b7cb20fa599d870fd2",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 54293176,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libhermesvm.so",
+        "bytes": 1700248,
+        "zipBytes": 943888,
+        "sha256": "180d4113ebea599b2cbb44fe2d2634a7599a8d7afabbcb43670e0fe2839b006a",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 54321863,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libimagepipeline.so",
+        "bytes": 5876,
+        "zipBytes": 2737,
+        "sha256": "0fb5021bcf1cbb6c10630732560bb80bad7187c8b8391e6c001b3f892fa613d5",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 55265821,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libjsi.so",
+        "bytes": 289716,
+        "zipBytes": 160327,
+        "sha256": "a3f55942fb1d183818decb426a0126e871fc0c6c025f02367c5f38642ca01e2e",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 55268618,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libnative-filters.so",
+        "bytes": 12588,
+        "zipBytes": 7022,
+        "sha256": "fb3d55facc8dfdc856441015c2a8d803b10b6c3cf09524c4f04562cec186a62e",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 55429016,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libnative-imagetranscoder.so",
+        "bytes": 341072,
+        "zipBytes": 165916,
+        "sha256": "40905f1c50315f66362a8e10e2ac19d1df62c3f1800bc2ee639047d09c9f1bd9",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 55436117,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libpdfium.so",
+        "bytes": 3194528,
+        "zipBytes": 2064418,
+        "sha256": "d5cd7760f7c3873039a5e82c5121d82559b4eee0aa5afa2315e8246a00ed0203",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 55602096,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libpdfiumandroid.so",
+        "bytes": 269808,
+        "zipBytes": 118889,
+        "sha256": "c8c104dfc6c1fc7bd04d5cb280c3414443a8259602590f21279937752be6e470",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 57666584,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libreact_codegen_rnscreens.so",
+        "bytes": 853692,
+        "zipBytes": 258828,
+        "sha256": "97bbe868b5032c054d93751a5ca8e788cfdc1afbaf02504dc6dd7629c23e3244",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 57785553,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libreact_codegen_safeareacontext.so",
+        "bytes": 97972,
+        "zipBytes": 36930,
+        "sha256": "b6b7cbdc326044fd1b5c00718728d56abaeda24c18d5192f41f2f140ccda6db4",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 58044467,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libreactnative.so",
+        "bytes": 4859120,
+        "zipBytes": 2037340,
+        "sha256": "38a637ec7f32ee8df322074323fc6b1ae23377c8f144e0850d6c5097974552cb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 58081465,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libreanimated.so",
+        "bytes": 965552,
+        "zipBytes": 437837,
+        "sha256": "834dbbe7946e0b0c42df64270bc2678513ef0a6b96a20d579934b09f0def169c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 60118872,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/librnscreens.so",
+        "bytes": 51704,
+        "zipBytes": 18869,
+        "sha256": "efa9e52f58a2ea45dff4204bc18b72e1318af053abd2a24756f55373c27dce48",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 60556775,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libsentry-android.so",
+        "bytes": 12080,
+        "zipBytes": 4979,
+        "sha256": "bd32f9076ca79da5427906cecd4c49db0a320346ab4adbf24ec3100abc8237e2",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 60575715,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libsentry.so",
+        "bytes": 470964,
+        "zipBytes": 220480,
+        "sha256": "aecaa53017de0db5ef5f4b468051d3f32d4327c80c94b22e24afd6c9d3d2a210",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 60580757,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libstatic-webp.so",
+        "bytes": 367592,
+        "zipBytes": 179082,
+        "sha256": "2f2293b5ff51c39de312cd44ded89a116b3908c9fa0f3cb405727957c6a5992f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 60801305,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libworklets.so",
+        "bytes": 730468,
+        "zipBytes": 241846,
+        "sha256": "9c99610842d485e043308b5115965510b6e114a608547f88dab0688cfeb828c3",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 60980452,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libzstd-kmp.so",
+        "bytes": 566996,
+        "zipBytes": 291913,
+        "sha256": "4b30671d21e9c6953dc84e4b4602e33b88740d61417af96dbc4ddf44b22a8e15",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 61222363,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libappmodules.so",
+        "bytes": 1403336,
+        "zipBytes": 333193,
+        "sha256": "e8cd6d7a31f28000e5d6f554fdd5e7369ef9254263f10c9aabf48b2f19632bbd",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 61514335,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libc++_shared.so",
+        "bytes": 1254988,
+        "zipBytes": 437370,
+        "sha256": "3bd6a3c5d1baa1fac3bdd8452ccc403fd1b464b3f80eb9fa207df5ec2d565129",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 61847587,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libdatastore_shared_counter.so",
+        "bytes": 5148,
+        "zipBytes": 2330,
+        "sha256": "cd4a1649e2c8350703146f94a6ee2bf4c3c8c9f172159f805b61a4a2abdf0659",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 62285030,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libexpo-modules-core.so",
+        "bytes": 1408200,
+        "zipBytes": 390258,
+        "sha256": "d2c1fdd6fae7cfd2eef4042ba9bfb1b50da3c0daa18d585961fd1aff87f77238",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 62287426,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libexpo-sqlite.so",
+        "bytes": 1982760,
+        "zipBytes": 960559,
+        "sha256": "379f7ac6a6568d1ae110b7cfec712a5caea58d7e8c65d9ca61abe3d00a3f281a",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 62677744,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libexpo-updates.so",
+        "bytes": 107716,
+        "zipBytes": 50537,
+        "sha256": "488bddc5d248b96026065a5a0779b7ef06e432230fd13defdffc801a21aefdba",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 63638364,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libfbjni.so",
+        "bytes": 166480,
+        "zipBytes": 64101,
+        "sha256": "735533ea082fe331b293a947f5ac32556ea433c7db1d2fe76e4ac9a440917c65",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 63688955,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libgesturehandler.so",
+        "bytes": 34680,
+        "zipBytes": 15945,
+        "sha256": "d05bf085ff74758fd5e6e7284fbbf7d0721e85a4d38424a56b12863f5d0752dd",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 63753119,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libgifimage.so",
+        "bytes": 281448,
+        "zipBytes": 107422,
+        "sha256": "a3b5f8f2266597e0d5e3c39edad357cbd0d45ce52c60e41eaaa915b290549ce4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 63769121,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libhermestooling.so",
+        "bytes": 136716,
+        "zipBytes": 47580,
+        "sha256": "9def06c3271a443050c0a3915464159b9596bdac9525a5f021caeee162b80ecc",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 63876605,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libhermesvm.so",
+        "bytes": 3019744,
+        "zipBytes": 1251458,
+        "sha256": "5a16c3f6370190033ae6cfb42b4c7d334eb120e706ad10232f5ea72b3d83d85d",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 63924242,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libimagepipeline.so",
+        "bytes": 7040,
+        "zipBytes": 3111,
+        "sha256": "afd22bf7e62e5d08c0ec17ff6c0a273bfc580052c89363c0cb5d72e98d3b4cf4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 65175762,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libjsi.so",
+        "bytes": 437228,
+        "zipBytes": 199012,
+        "sha256": "87b504363a35fdc07a6fb2bd5788347123d22c110f9ba476d400c9f32fe50c3c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 65178925,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libnative-filters.so",
+        "bytes": 22040,
+        "zipBytes": 10832,
+        "sha256": "6947adfed7f745e52408b11d83a3cf25072749c3336aa35c634928c6dcfa5da0",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 65378000,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libnative-imagetranscoder.so",
+        "bytes": 664736,
+        "zipBytes": 216889,
+        "sha256": "943c8757e57f59556027d460c0e86738d5969794db905febbe4926fd1d3fa663",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 65388903,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libpdfium.so",
+        "bytes": 4526852,
+        "zipBytes": 2404906,
+        "sha256": "a58aaf06105c7228bef104a9b9cc9ae766bfd6965d987f08e9e7760c776af26c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 65605847,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libpdfiumandroid.so",
+        "bytes": 374444,
+        "zipBytes": 142698,
+        "sha256": "89d4aa7cfb96f93416ce29cdd4bb458b9c936643d22370a80daf418ce93146ed",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 68010815,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libreact_codegen_rnscreens.so",
+        "bytes": 1244856,
+        "zipBytes": 322317,
+        "sha256": "e63f29ac3776bed3ae3bfc00ded63f6d0757039ffb390cdb1b4a4a2936479b08",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 68153585,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libreact_codegen_safeareacontext.so",
+        "bytes": 153476,
+        "zipBytes": 55374,
+        "sha256": "f89390bb517632119327fcf29bf7c0fb853f4bb2d6a9e0b0509f51ea5436d54b",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 68475980,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libreactnative.so",
+        "bytes": 7362736,
+        "zipBytes": 2495871,
+        "sha256": "23b2a618cd791452d99bdde1fa508ea9d4f6333957c5f8021cd6fb21f028ecd1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 68531414,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libreanimated.so",
+        "bytes": 1428124,
+        "zipBytes": 525488,
+        "sha256": "c22863b7b756f965104b876d9e77f28da68d2062f43a7fcb4b055a21654bbe91",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 71027344,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/librnscreens.so",
+        "bytes": 93560,
+        "zipBytes": 34401,
+        "sha256": "fc0b701dfd2e38642545b24572e08a07b652ccc233e7cd6e2cd7f4a0ade22bcb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 71552890,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libsentry-android.so",
+        "bytes": 14760,
+        "zipBytes": 5827,
+        "sha256": "7bb8e14f8e033d909e66f269d30590ec76d5f36421c11dc22dea82a4bcc7efae",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 71587354,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libsentry.so",
+        "bytes": 742304,
+        "zipBytes": 274823,
+        "sha256": "c986e062be501e3e957e2722cb029a8b04e09a294a4b79f7d86d55099dd93f5b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 71593236,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libstatic-webp.so",
+        "bytes": 550092,
+        "zipBytes": 228150,
+        "sha256": "13d57c0c1992ed870e4830bf932ae472f61adf23ff44540d60e68a5c458abfe1",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 71868119,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libworklets.so",
+        "bytes": 968828,
+        "zipBytes": 291907,
+        "sha256": "d819a1a148d0ef5e513c65b0d7e96f28e79d0f3676d9598518289fddf5367c35",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 72096326,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86/libzstd-kmp.so",
+        "bytes": 857780,
+        "zipBytes": 350750,
+        "sha256": "2daf9a5f2984289b93568a96bc4234a9e405aa4905c990b85ef887c5de7fb010",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 72388290,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libappmodules.so",
+        "bytes": 1390760,
+        "zipBytes": 318153,
+        "sha256": "fd93708d2438f505525607cfb93183cb48af88c04dae9503f562c4089f00ba1e",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 72739102,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libc++_shared.so",
+        "bytes": 1252080,
+        "zipBytes": 416043,
+        "sha256": "0a2c7afa35b183fdd5a3cb20e2080ad54cbea06c2a4f0bc8f122cb7d1e9e0b9f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 73057317,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libdatastore_shared_counter.so",
+        "bytes": 6224,
+        "zipBytes": 2320,
+        "sha256": "fb6c9208988c49ae94943bc3236fa763ba584722e044fa4ea9a12d2941027105",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 73473436,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libexpo-modules-core.so",
+        "bytes": 1457448,
+        "zipBytes": 383249,
+        "sha256": "f2bed2206ab26efb8bb474213a5b356dfda157a8c82db270dc1363cbc4276bf9",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 73475825,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libexpo-sqlite.so",
+        "bytes": 1880848,
+        "zipBytes": 927692,
+        "sha256": "dcbb32f23873084d9617aa697bf3dbc0ba634c8a920f9aae0a7d2e720132ceee",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 73859137,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libexpo-updates.so",
+        "bytes": 113552,
+        "zipBytes": 52209,
+        "sha256": "3e0bee44fa0e0e708bc49b95693e44683cb94d719ef999f290f06a70b5afa2eb",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 74786893,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libfbjni.so",
+        "bytes": 172952,
+        "zipBytes": 64848,
+        "sha256": "a51410366a0394e05bc04052cfb237c70dcf7d4d53a56e1d00a041436cb0b653",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 74839159,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libgesturehandler.so",
+        "bytes": 35608,
+        "zipBytes": 15746,
+        "sha256": "02104343eb2580e3540f6f5a97393ca1488e7ae8d10cb5cad4080e8957756c38",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 74904073,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libgifimage.so",
+        "bytes": 302952,
+        "zipBytes": 104650,
+        "sha256": "20768d822119deee9beeccfd4340987976381587b519b630f5393fee4d731c1f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 74919879,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libhermestooling.so",
+        "bytes": 138128,
+        "zipBytes": 46094,
+        "sha256": "6a8ef7ef7bb5bd277a915fc0070fa1285c6969da2d7faf4fbff86ab6468c8458",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 75024594,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libhermesvm.so",
+        "bytes": 2591976,
+        "zipBytes": 1075206,
+        "sha256": "3c5f7f3740b6511b55f3f8ba43c24eb1b38ab2fb9dc1ca5618287c3ca6221e13",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 75070748,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libimagepipeline.so",
+        "bytes": 8464,
+        "zipBytes": 3135,
+        "sha256": "2e596f4955f65abaa93c891b49eb58b5416581806a04bde0097cc369ae4dbfb3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76146019,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libjsi.so",
+        "bytes": 418872,
+        "zipBytes": 181452,
+        "sha256": "f3927514e215b9fe14bc6d5a1937c62b20ed55057ede7205fac198ec763d4349",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76149209,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libnative-filters.so",
+        "bytes": 30528,
+        "zipBytes": 15659,
+        "sha256": "1a5270f007dd4b2f0fc52ceac82e05143648ba9be59c2213a21cf61c84f1f5e5",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76330727,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libnative-imagetranscoder.so",
+        "bytes": 720432,
+        "zipBytes": 222364,
+        "sha256": "f6b92ad7f1c30973f40704c46987504757c3d079c7f4ace6efc8b318dd9c22f3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76346460,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libpdfium.so",
+        "bytes": 4966672,
+        "zipBytes": 2553060,
+        "sha256": "4f48d1c92fd74a2e5758c98034036393d5b5f12f5eab39175979894976725869",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76568882,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libpdfiumandroid.so",
+        "bytes": 418720,
+        "zipBytes": 139067,
+        "sha256": "ab5666f50f7fab63a0981fc977fc11e1738399540a950a69482261b4c1f80a49",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 79122007,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libreact_codegen_rnscreens.so",
+        "bytes": 1225728,
+        "zipBytes": 306220,
+        "sha256": "7aabf0755b16d57280cca544d6163dae93d205436f358c2101855d0691916087",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 79261149,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libreact_codegen_safeareacontext.so",
+        "bytes": 159728,
+        "zipBytes": 55231,
+        "sha256": "7cefd47cb22563574c72c5c831f5bde6ab6f5b19ae625a9b41b0628b9c17e9da",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 79567450,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libreactnative.so",
+        "bytes": 7098048,
+        "zipBytes": 2390824,
+        "sha256": "f80d63ba3df4cd85764c330c6af56ca5995fdaacbdcff107657b8c63918f1d8b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 79622744,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libreanimated.so",
+        "bytes": 1538464,
+        "zipBytes": 517292,
+        "sha256": "0fa828f42305cc04fe9613e4927e1ada7651cc19e2906bbb68815ffd641659b4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 82013630,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/librnscreens.so",
+        "bytes": 97696,
+        "zipBytes": 33916,
+        "sha256": "6d43beeee92e37829b69d8c594d55647dcf37d2cd89ea3300a930b3903fe006b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 82530983,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libsentry-android.so",
+        "bytes": 16384,
+        "zipBytes": 5681,
+        "sha256": "5f018592a5b22fcf448972d3d1f52a3b0c6751004c57756a6cf8e8ec7190aab3",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 82564965,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libsentry.so",
+        "bytes": 710280,
+        "zipBytes": 253483,
+        "sha256": "f1320b0828f0cdfb89e8792cbdaeaa17764d7501fa46d2fc803280a595cb830a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 82570704,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libstatic-webp.so",
+        "bytes": 560968,
+        "zipBytes": 219947,
+        "sha256": "e7884cd18761b5ee54de98b9a3f4b9e4b0dea364c186e24ff9b740b29742562b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 82824250,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libworklets.so",
+        "bytes": 1055472,
+        "zipBytes": 286689,
+        "sha256": "cea0189f1ce751343615b7d8ee2ec091b952f850db96fd275c4751ef1479f060",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 83044257,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libzstd-kmp.so",
+        "bytes": 816568,
+        "zipBytes": 319218,
+        "sha256": "fefcbdcd59580a3043c62380a83d92f13c031c278481e22591a2c75112296e28",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 83331006,
+        "zip16KBAligned": null
+      }
+    ],
+    "fontFiles": [
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf",
+        "bytes": 130484,
+        "zipBytes": 74734,
+        "sha256": "08a9d5b513cf947e22ede81e9a843bd8d7763a63444cd21484bfde7662cc6543"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf",
+        "bytes": 66200,
+        "zipBytes": 40681,
+        "sha256": "16f92298587bab2b469bc13c0dfc6d5d171bca10bad0c9053ad16bc023bf717d"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf",
+        "bytes": 13456,
+        "zipBytes": 7982,
+        "sha256": "a5caeb4d395c5e32f1d5a30acb382aebc664f1badfd149319907f2215e4e3e26"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf",
+        "bytes": 55596,
+        "zipBytes": 24206,
+        "sha256": "02b88ead91ade5710d7ca18edb43a6965a71d93732c06f290cc07a6dd249e987"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf",
+        "bytes": 165548,
+        "zipBytes": 98167,
+        "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf",
+        "bytes": 134040,
+        "zipBytes": 90583,
+        "sha256": "06f4d00923ea24697df5df0b92984175991d8bd25776a02d531bb401e393ec42"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf",
+        "bytes": 33736,
+        "zipBytes": 16251,
+        "sha256": "c651b8a67d3193206f622c3c3b0fbca4a2f2727108c4212b52c1e2a2e84c9b31"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf",
+        "bytes": 202744,
+        "zipBytes": 102584,
+        "sha256": "3d06af1f31cd83ace7a265a014b8fb5dee15770ecac8f7a55555190e627e03c2"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_brands.ttf",
+        "bytes": 209376,
+        "zipBytes": 122242,
+        "sha256": "bc844b5b02d3f3adabb514de4e0c0208252d3123413bd03f6287fa446acee859"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_regular.ttf",
+        "bytes": 67976,
+        "zipBytes": 26721,
+        "sha256": "64f9fb623681f112261e9a2f97826782439f3925dea8f44a57d1e4db95ba6cfd"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_solid.ttf",
+        "bytes": 423676,
+        "zipBytes": 172411,
+        "sha256": "31f099c13f6e4ba05f1b471bf170cb5493249474222917372de3ca5cf29e6a1a"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf",
+        "bytes": 313528,
+        "zipBytes": 169152,
+        "sha256": "94dab9f1d5b13ea0769d124a2da0d02433f3b99d6dea5a07c0446a77158100c0"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf",
+        "bytes": 56976,
+        "zipBytes": 33660,
+        "sha256": "7e1dd03dd4ce90b658052554cd7459df16716717389a552fa4c6d56a5f8933e6"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf",
+        "bytes": 389724,
+        "zipBytes": 211027,
+        "sha256": "fa2ab7d2557819b2bfe5009e46844efa7170cf177be7735d43aa2ac1295f1d54"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf",
+        "bytes": 1307660,
+        "zipBytes": 589521,
+        "sha256": "61e8aba5a4e981fe22cf7c8e8bcdbea00476e75c62c37f01bf7ee33361d68428"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf",
+        "bytes": 356840,
+        "zipBytes": 173019,
+        "sha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf",
+        "bytes": 69436,
+        "zipBytes": 34100,
+        "sha256": "9bc4d9f5e994e774bdc3ef9a9a87da749af5f50b861473ef7d1cc3d6f8229267"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf",
+        "bytes": 54056,
+        "zipBytes": 36033,
+        "sha256": "3f501ddb05c70829bbb51cfe9ca9fff57f39e060457c257b3ccf25df767f0870"
+      },
+      {
+        "path": "base/res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf",
+        "bytes": 25788,
+        "zipBytes": 17750,
+        "sha256": "dd8ee403bbcbf5e58b77dca4ac03ebafa13a284a3d87d8ea9ca490435a86fa48"
+      }
+    ],
+    "bundleFiles": [
+      {
+        "path": "base/assets/index.android.bundle",
+        "bytes": 6600124,
+        "zipBytes": 2583816,
+        "matchesExportHermesMagic": true,
+        "sha256": "813cf95740869e2a709c695ab0b4a1e90a8fef014c24d8619267574e56d62ebb"
+      }
+    ],
+    "largest15": [
+      {
+        "path": "BUNDLE-METADATA/com.android.tools.build.debugsymbols/arm64-v8a/libreactnative.so.sym",
+        "bytes": 11353552,
+        "zipBytes": 3000235
+      },
+      {
+        "path": "BUNDLE-METADATA/com.android.tools.build.debugsymbols/x86/libreactnative.so.sym",
+        "bytes": 10844052,
+        "zipBytes": 3006470
+      },
+      {
+        "path": "BUNDLE-METADATA/com.android.tools.build.debugsymbols/x86_64/libreactnative.so.sym",
+        "bytes": 10756120,
+        "zipBytes": 2903304
+      },
+      {
+        "path": "base/dex/classes4.dex",
+        "bytes": 10279260,
+        "zipBytes": 3684746
+      },
+      {
+        "path": "base/dex/classes.dex",
+        "bytes": 9546616,
+        "zipBytes": 3467537
+      },
+      {
+        "path": "base/dex/classes3.dex",
+        "bytes": 9324324,
+        "zipBytes": 3217654
+      },
+      {
+        "path": "base/dex/classes2.dex",
+        "bytes": 8968540,
+        "zipBytes": 3452662
+      },
+      {
+        "path": "BUNDLE-METADATA/com.android.tools.build.debugsymbols/armeabi-v7a/libreactnative.so.sym",
+        "bytes": 8810804,
+        "zipBytes": 2688845
+      },
+      {
+        "path": "base/lib/x86/libreactnative.so",
+        "bytes": 7362736,
+        "zipBytes": 2495871,
+        "sha256": "23b2a618cd791452d99bdde1fa508ea9d4f6333957c5f8021cd6fb21f028ecd1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 68531414,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/x86_64/libreactnative.so",
+        "bytes": 7098048,
+        "zipBytes": 2390824,
+        "sha256": "f80d63ba3df4cd85764c330c6af56ca5995fdaacbdcff107657b8c63918f1d8b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 79622744,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libreactnative.so",
+        "bytes": 6985168,
+        "zipBytes": 2324631,
+        "sha256": "14bb860cebebb0e29eb2c96a52d70da9b73e60253916694af955f6e3ef1e6b64",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 48504335,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/assets/index.android.bundle",
+        "bytes": 6600124,
+        "zipBytes": 2583816,
+        "matchesExportHermesMagic": true,
+        "sha256": "813cf95740869e2a709c695ab0b4a1e90a8fef014c24d8619267574e56d62ebb"
+      },
+      {
+        "path": "base/lib/x86_64/libpdfium.so",
+        "bytes": 4966672,
+        "zipBytes": 2553060,
+        "sha256": "4f48d1c92fd74a2e5758c98034036393d5b5f12f5eab39175979894976725869",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 76568882,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/armeabi-v7a/libreactnative.so",
+        "bytes": 4859120,
+        "zipBytes": 2037340,
+        "sha256": "38a637ec7f32ee8df322074323fc6b1ae23377c8f144e0850d6c5097974552cb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 8,
+        "zipDataOffset": 58081465,
+        "zip16KBAligned": null
+      },
+      {
+        "path": "base/lib/arm64-v8a/libpdfium.so",
+        "bytes": 4771352,
+        "zipBytes": 2476794,
+        "sha256": "e3ad7644b9dd203f27e0650d5a1af0a2a73548fad9fe608c209fbd55888d3643",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 8,
+        "zipDataOffset": 45540060,
+        "zip16KBAligned": null
+      }
+    ]
+  },
+  "manifest": {
+    "package": "in.medveda.app",
+    "versionCode": "6",
+    "versionName": "1.2.1",
+    "minSdkVersion": "24",
+    "targetSdkVersion": "36",
+    "debuggable": "false",
+    "allowBackup": "false",
+    "usesCleartextTraffic": "false",
+    "extractNativeLibs": "false",
+    "permissions": [
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.ACCESS_WIFI_STATE",
+      "android.permission.DETECT_SCREEN_CAPTURE",
+      "android.permission.INTERNET",
+      "android.permission.POST_NOTIFICATIONS",
+      "android.permission.READ_APP_BADGE",
+      "android.permission.RECEIVE_BOOT_COMPLETED",
+      "android.permission.USE_BIOMETRIC",
+      "android.permission.USE_FINGERPRINT",
+      "android.permission.VIBRATE",
+      "android.permission.WAKE_LOCK",
+      "com.anddoes.launcher.permission.UPDATE_COUNT",
+      "com.android.vending.BILLING",
+      "com.google.android.c2dm.permission.RECEIVE",
+      "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
+      "com.htc.launcher.permission.READ_SETTINGS",
+      "com.htc.launcher.permission.UPDATE_SHORTCUT",
+      "com.huawei.android.launcher.permission.CHANGE_BADGE",
+      "com.huawei.android.launcher.permission.READ_SETTINGS",
+      "com.huawei.android.launcher.permission.WRITE_SETTINGS",
+      "com.majeur.launcher.permission.UPDATE_BADGE",
+      "com.oppo.launcher.permission.READ_SETTINGS",
+      "com.oppo.launcher.permission.WRITE_SETTINGS",
+      "com.sec.android.provider.badge.permission.READ",
+      "com.sec.android.provider.badge.permission.WRITE",
+      "com.sonyericsson.home.permission.BROADCAST_BADGE",
+      "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE",
+      "in.medveda.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+      "me.everything.badger.permission.BADGE_COUNT_READ",
+      "me.everything.badger.permission.BADGE_COUNT_WRITE"
+    ]
+  },
+  "bundleConfig": {
+    "bundletool": {
+      "version": "1.18.1"
+    },
+    "optimizations": {
+      "splitsConfig": {},
+      "uncompressNativeLibraries": {
+        "enabled": true,
+        "alignment": "PAGE_ALIGNMENT_16K"
+      },
+      "storeArchive": {
+        "enabled": true
+      }
+    },
+    "compression": {
+      "uncompressedGlob": [
+        "**.3[gG]2",
+        "**.3[gG][pP]",
+        "**.3[gG][pP][pP]",
+        "**.3[gG][pP][pP]2",
+        "**.[aA][aA][cC]",
+        "**.[aA][mM][rR]",
+        "**.[aA][wW][bB]",
+        "**.[gG][iI][fF]",
+        "**.[iI][mM][yY]",
+        "**.[jJ][eE][tT]",
+        "**.[jJ][pP][eE][gG]",
+        "**.[jJ][pP][gG]",
+        "**.[mM]4[aA]",
+        "**.[mM]4[vV]",
+        "**.[mM][iI][dD]",
+        "**.[mM][iI][dD][iI]",
+        "**.[mM][kK][vV]",
+        "**.[mM][pP]2",
+        "**.[mM][pP]3",
+        "**.[mM][pP]4",
+        "**.[mM][pP][eE][gG]",
+        "**.[mM][pP][gG]",
+        "**.[oO][gG][gG]",
+        "**.[oO][pP][uU][sS]",
+        "**.[pP][nN][gG]",
+        "**.[rR][tT][tT][tT][lL]",
+        "**.[sS][mM][fF]",
+        "**.[tT][fF][lL][iI][tT][eE]",
+        "**.[wW][aA][vV]",
+        "**.[wW][eE][bB][mM]",
+        "**.[wW][eE][bB][pP]",
+        "**.[wW][mM][aA]",
+        "**.[wW][mM][vV]",
+        "**.[xX][mM][fF]",
+        "**[bB][uU][nN][dD][lL][eE]"
+      ]
+    }
+  },
+  "universal": {
+    "file": "before-universal.apk",
+    "bytes": 136878504,
+    "sha256": "157f640048835c99b0f5ebdaf7da0d9629689ac13c378f533163faca002dd4c2",
+    "uncompressedCategories": {
+      "other": 1765590,
+      "assets": 24685,
+      "bundle": 6600124,
+      "dex": 40486340,
+      "native": 106389060,
+      "resources": 8945116
+    },
+    "byExtension": {
+      ".xml": {
+        "bytes": 640690,
+        "zipBytes": 262127,
+        "count": 769
+      },
+      ".bin": {
+        "bytes": 1733,
+        "zipBytes": 780,
+        "count": 1
+      },
+      ".txt": {
+        "bytes": 265162,
+        "zipBytes": 110088,
+        "count": 131
+      },
+      ".version": {
+        "bytes": 533,
+        "zipBytes": 527,
+        "count": 78
+      },
+      ".properties": {
+        "bytes": 1314878,
+        "zipBytes": 1228524,
+        "count": 22
+      },
+      ".Provider": {
+        "bytes": 112,
+        "zipBytes": 57,
+        "count": 1
+      },
+      ".BuiltInsLoader": {
+        "bytes": 90,
+        "zipBytes": 72,
+        "count": 1
+      },
+      ".ExternalOverridabilityCondition": {
+        "bytes": 235,
+        "zipBytes": 99,
+        "count": 1
+      },
+      ".CoroutineExceptionHandler": {
+        "bytes": 54,
+        "zipBytes": 50,
+        "count": 1
+      },
+      ".MainDispatcherFactory": {
+        "bytes": 52,
+        "zipBytes": 49,
+        "count": 1
+      },
+      ".textproto": {
+        "bytes": 46,
+        "zipBytes": 46,
+        "count": 1
+      },
+      ".config": {
+        "bytes": 1425,
+        "zipBytes": 743,
+        "count": 1
+      },
+      ".manifest": {
+        "bytes": 13277,
+        "zipBytes": 1632,
+        "count": 1
+      },
+      ".prof": {
+        "bytes": 8317,
+        "zipBytes": 8317,
+        "count": 1
+      },
+      ".profm": {
+        "bytes": 356,
+        "zipBytes": 356,
+        "count": 1
+      },
+      ".pem": {
+        "bytes": 1310,
+        "zipBytes": 971,
+        "count": 1
+      },
+      ".bundle": {
+        "bytes": 6600124,
+        "zipBytes": 6600124,
+        "count": 1
+      },
+      ".dex": {
+        "bytes": 40486340,
+        "zipBytes": 14775731,
+        "count": 5
+      },
+      ".proto": {
+        "bytes": 64400,
+        "zipBytes": 26887,
+        "count": 14
+      },
+      ".kotlin_builtins": {
+        "bytes": 51125,
+        "zipBytes": 12053,
+        "count": 8
+      },
+      ".json": {
+        "bytes": 626,
+        "zipBytes": 284,
+        "count": 1
+      },
+      ".so": {
+        "bytes": 106389060,
+        "zipBytes": 106389060,
+        "count": 108
+      },
+      "(none)": {
+        "bytes": 264,
+        "zipBytes": 195,
+        "count": 2
+      },
+      ".gz": {
+        "bytes": 37730,
+        "zipBytes": 37730,
+        "count": 1
+      },
+      ".png": {
+        "bytes": 2368295,
+        "zipBytes": 2368295,
+        "count": 228
+      },
+      ".webp": {
+        "bytes": 280729,
+        "zipBytes": 280729,
+        "count": 15
+      },
+      ".binarypb": {
+        "bytes": 56,
+        "zipBytes": 56,
+        "count": 1
+      },
+      ".ttf": {
+        "bytes": 4076840,
+        "zipBytes": 2037644,
+        "count": 19
+      },
+      ".arsc": {
+        "bytes": 1607056,
+        "zipBytes": 1607056,
+        "count": 1
+      }
+    },
+    "nativeLibraries": [
+      {
+        "path": "lib/arm64-v8a/libappmodules.so",
+        "bytes": 1362864,
+        "zipBytes": 1362864,
+        "sha256": "414efbea50ebd47a48699bc3f2d164039aef8aa7e6c0096ddb72cd4d2510243b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 21463040,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libc++_shared.so",
+        "bytes": 1292904,
+        "zipBytes": 1292904,
+        "sha256": "3e852764502d06e0cf1080d532ae7c608b7649d946a3a9d7e84e3d4b7d683214",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 22839296,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7112,
+        "zipBytes": 7112,
+        "sha256": "d3e48717c9aa147e0ab21063ba0e8e0211cabf8bf40b222640829519edbf58e1",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 24133632,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libexpo-modules-core.so",
+        "bytes": 1496064,
+        "zipBytes": 1496064,
+        "sha256": "7bc06ecd69c8136484b8c58cf2ba6bb486bcebf9d2f5411c7e269f8fcc77d955",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 24150016,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libexpo-sqlite.so",
+        "bytes": 1830224,
+        "zipBytes": 1830224,
+        "sha256": "4f97bf102fa2863145ac5011c6f614f2caea38b78d4cf19a5650c87ef24eee3b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 25657344,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libexpo-updates.so",
+        "bytes": 101912,
+        "zipBytes": 101912,
+        "sha256": "902e0f851cba2c87815780d3c1bdb2bc2b68a057ad2e55997ca0dcd41b69c19f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 27492352,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libfbjni.so",
+        "bytes": 177000,
+        "zipBytes": 177000,
+        "sha256": "a9e35ba55d3f956920281f519385f8a72475ee24819799cb08375fdd4cce2b22",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 27607040,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libgesturehandler.so",
+        "bytes": 38456,
+        "zipBytes": 38456,
+        "sha256": "1f60cc3918524612615bfa4271f0764686cf7ab4edd497f470b2f132ccc6c20b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 27787264,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libgifimage.so",
+        "bytes": 318992,
+        "zipBytes": 318992,
+        "sha256": "9f605249728da7091569772a38a4dde298ed48e1e73fed3da0e4b662ef38715c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 27836416,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libhermestooling.so",
+        "bytes": 141432,
+        "zipBytes": 141432,
+        "sha256": "1db061bbbb050105fee9b208b861adc0cc02cc359551be6ba9562798a81f6cca",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 28164096,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libhermesvm.so",
+        "bytes": 2477320,
+        "zipBytes": 2477320,
+        "sha256": "bf38be45bf5d6ad8ba961eaf9deda5fa7e032f3ff7d3929ba2a624567093bffa",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 28311552,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libimagepipeline.so",
+        "bytes": 8760,
+        "zipBytes": 8760,
+        "sha256": "1b377992e4256fa9398ec057722f84a359c7d588e570c8a41f51d930c19ece7d",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 30801920,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libjsi.so",
+        "bytes": 412696,
+        "zipBytes": 412696,
+        "sha256": "5acb80d7eb93b2114a419c9e42b44476969299e806ad7eafe1b293e221b9a682",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 30818304,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libnative-filters.so",
+        "bytes": 23712,
+        "zipBytes": 23712,
+        "sha256": "4294b57460e70a6351ce7ae2733a79c088c907dfa54673a657227ec5bb669594",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 31244288,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libnative-imagetranscoder.so",
+        "bytes": 585376,
+        "zipBytes": 585376,
+        "sha256": "2aed28298a25afd52ac670cf9682398c6c7ba42a57195c01efd565e7ddfe17ca",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 31277056,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libpdfium.so",
+        "bytes": 4771352,
+        "zipBytes": 4771352,
+        "sha256": "e3ad7644b9dd203f27e0650d5a1af0a2a73548fad9fe608c209fbd55888d3643",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 31866880,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libpdfiumandroid.so",
+        "bytes": 432200,
+        "zipBytes": 432200,
+        "sha256": "be53f7f812f9ab94b09c694db79b30170c9af9937387be945733424e654b776c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 36651008,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libreact_codegen_rnscreens.so",
+        "bytes": 1200424,
+        "zipBytes": 1200424,
+        "sha256": "ae95ec812c1278d5c3365cdf480b994afdc2332de1a3daaf2e2b9326ded7ea44",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 37093376,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libreact_codegen_safeareacontext.so",
+        "bytes": 159208,
+        "zipBytes": 159208,
+        "sha256": "f508032707d848e6ebccd4fd2601951975c597dcba78c596139c2a078a111a0a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 38305792,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libreactnative.so",
+        "bytes": 6985168,
+        "zipBytes": 6985168,
+        "sha256": "14bb860cebebb0e29eb2c96a52d70da9b73e60253916694af955f6e3ef1e6b64",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 38469632,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libreanimated.so",
+        "bytes": 1500888,
+        "zipBytes": 1500888,
+        "sha256": "1fe7e00a4ed4f50af8869f8939398523f3f2126e207894f2ebfa8654938b505f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 45465600,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/librnscreens.so",
+        "bytes": 100904,
+        "zipBytes": 100904,
+        "sha256": "8be73816374f9be6f48a620e5d5d0429473e91511ae4c60760abe7df572d7003",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 46972928,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libsentry-android.so",
+        "bytes": 16832,
+        "zipBytes": 16832,
+        "sha256": "a4eaa6bb917cfee5c5753e5511a4bc1f0d6311768f4c4c977d6e8bc4be579e66",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 47087616,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libsentry.so",
+        "bytes": 723712,
+        "zipBytes": 723712,
+        "sha256": "056e46a6de4121e9a4f9cfc947eaf0e3cbe7ea8b8c6fcab7ef396b95dee1f9dc",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 47120384,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libstatic-webp.so",
+        "bytes": 501856,
+        "zipBytes": 501856,
+        "sha256": "f3e5f9ab4f93f2a0a057285a2de9c93ba0ab59c76c22874d0356493ce283c4c7",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 47857664,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libworklets.so",
+        "bytes": 1101120,
+        "zipBytes": 1101120,
+        "sha256": "2aada5c31144cadcc0094f94ecefd70cd9dcfea142ae9cefdc33fb4e748a829c",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 48365568,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libzstd-kmp.so",
+        "bytes": 731872,
+        "zipBytes": 731872,
+        "sha256": "10ec47f13bee884450b0911066019ba7aa6b4164a4c1f8c33c9d30dd3fd8868a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 49479680,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libappmodules.so",
+        "bytes": 1005948,
+        "zipBytes": 1005948,
+        "sha256": "3a081274293395e76f997bb44e6d51db1091af5b6127553a3d74c6da17140da1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 50216960,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libc++_shared.so",
+        "bytes": 872872,
+        "zipBytes": 872872,
+        "sha256": "84e7d99b7b6df960b37c28e43808cc5c2c62d1bb9449e27683fc53309dea5b6c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 51232768,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libdatastore_shared_counter.so",
+        "bytes": 4416,
+        "zipBytes": 4416,
+        "sha256": "716c5d8d2cac8ca0edf65da8f139c7886b726ac79d542a14edeb94994ba6d3dc",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 52117504,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libexpo-modules-core.so",
+        "bytes": 1062296,
+        "zipBytes": 1062296,
+        "sha256": "6710db794fdcc05603845f143b12145d7cd1ed4f58a997c41087fa82c3b98ce8",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 52133888,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libexpo-sqlite.so",
+        "bytes": 1267940,
+        "zipBytes": 1267940,
+        "sha256": "fe87c7c9f51bc6c48de577ba1e6fc21530b6220d22e5a61acfbba2789e0b6d71",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 53198848,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libexpo-updates.so",
+        "bytes": 60824,
+        "zipBytes": 60824,
+        "sha256": "a4a56d29fd57785351e865197f7744b0acffa2a5d05e6eef70c5236e1bcef50b",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 54476800,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libfbjni.so",
+        "bytes": 119456,
+        "zipBytes": 119456,
+        "sha256": "6739b4db111283fe0a86a3a5fdd80efe5d963355dd161b95ec179f01cc9685d5",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 54542336,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libgesturehandler.so",
+        "bytes": 8420,
+        "zipBytes": 8420,
+        "sha256": "1de0277aa50b91584c76f7046466ce6f2cd6e8bbe5fe3aafd987f3261dfe7ca6",
+        "elfLoadAlignments": [
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 54673408,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libgifimage.so",
+        "bytes": 184380,
+        "zipBytes": 184380,
+        "sha256": "0a10e184300cfbc64a770f872ddbd9c5185fa10f26d960ddc809f2fdb39dedc3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 54689792,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libhermestooling.so",
+        "bytes": 76548,
+        "zipBytes": 76548,
+        "sha256": "c3aa71d90fcf993b0ddc9da0bc7a154444663901515c61b7cb20fa599d870fd2",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 54886400,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libhermesvm.so",
+        "bytes": 1700248,
+        "zipBytes": 1700248,
+        "sha256": "180d4113ebea599b2cbb44fe2d2634a7599a8d7afabbcb43670e0fe2839b006a",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 54968320,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libimagepipeline.so",
+        "bytes": 5876,
+        "zipBytes": 5876,
+        "sha256": "0fb5021bcf1cbb6c10630732560bb80bad7187c8b8391e6c001b3f892fa613d5",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 56672256,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libjsi.so",
+        "bytes": 289716,
+        "zipBytes": 289716,
+        "sha256": "a3f55942fb1d183818decb426a0126e871fc0c6c025f02367c5f38642ca01e2e",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 56688640,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libnative-filters.so",
+        "bytes": 12588,
+        "zipBytes": 12588,
+        "sha256": "fb3d55facc8dfdc856441015c2a8d803b10b6c3cf09524c4f04562cec186a62e",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 56983552,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libnative-imagetranscoder.so",
+        "bytes": 341072,
+        "zipBytes": 341072,
+        "sha256": "40905f1c50315f66362a8e10e2ac19d1df62c3f1800bc2ee639047d09c9f1bd9",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 56999936,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libpdfium.so",
+        "bytes": 3194528,
+        "zipBytes": 3194528,
+        "sha256": "d5cd7760f7c3873039a5e82c5121d82559b4eee0aa5afa2315e8246a00ed0203",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 57344000,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libpdfiumandroid.so",
+        "bytes": 269808,
+        "zipBytes": 269808,
+        "sha256": "c8c104dfc6c1fc7bd04d5cb280c3414443a8259602590f21279937752be6e470",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 60538880,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libreact_codegen_rnscreens.so",
+        "bytes": 853692,
+        "zipBytes": 853692,
+        "sha256": "97bbe868b5032c054d93751a5ca8e788cfdc1afbaf02504dc6dd7629c23e3244",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 60817408,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libreact_codegen_safeareacontext.so",
+        "bytes": 97972,
+        "zipBytes": 97972,
+        "sha256": "b6b7cbdc326044fd1b5c00718728d56abaeda24c18d5192f41f2f140ccda6db4",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 61685760,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libreactnative.so",
+        "bytes": 4859120,
+        "zipBytes": 4859120,
+        "sha256": "38a637ec7f32ee8df322074323fc6b1ae23377c8f144e0850d6c5097974552cb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 61784064,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libreanimated.so",
+        "bytes": 965552,
+        "zipBytes": 965552,
+        "sha256": "834dbbe7946e0b0c42df64270bc2678513ef0a6b96a20d579934b09f0def169c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 66650112,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/librnscreens.so",
+        "bytes": 51704,
+        "zipBytes": 51704,
+        "sha256": "efa9e52f58a2ea45dff4204bc18b72e1318af053abd2a24756f55373c27dce48",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 67616768,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libsentry-android.so",
+        "bytes": 12080,
+        "zipBytes": 12080,
+        "sha256": "bd32f9076ca79da5427906cecd4c49db0a320346ab4adbf24ec3100abc8237e2",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 67682304,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libsentry.so",
+        "bytes": 470964,
+        "zipBytes": 470964,
+        "sha256": "aecaa53017de0db5ef5f4b468051d3f32d4327c80c94b22e24afd6c9d3d2a210",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 67698688,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libstatic-webp.so",
+        "bytes": 367592,
+        "zipBytes": 367592,
+        "sha256": "2f2293b5ff51c39de312cd44ded89a116b3908c9fa0f3cb405727957c6a5992f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 68173824,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libworklets.so",
+        "bytes": 730468,
+        "zipBytes": 730468,
+        "sha256": "9c99610842d485e043308b5115965510b6e114a608547f88dab0688cfeb828c3",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 68550656,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libzstd-kmp.so",
+        "bytes": 566996,
+        "zipBytes": 566996,
+        "sha256": "4b30671d21e9c6953dc84e4b4602e33b88740d61417af96dbc4ddf44b22a8e15",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 69287936,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libappmodules.so",
+        "bytes": 1403336,
+        "zipBytes": 1403336,
+        "sha256": "e8cd6d7a31f28000e5d6f554fdd5e7369ef9254263f10c9aabf48b2f19632bbd",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 69861376,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libc++_shared.so",
+        "bytes": 1254988,
+        "zipBytes": 1254988,
+        "sha256": "3bd6a3c5d1baa1fac3bdd8452ccc403fd1b464b3f80eb9fa207df5ec2d565129",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 71270400,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libdatastore_shared_counter.so",
+        "bytes": 5148,
+        "zipBytes": 5148,
+        "sha256": "cd4a1649e2c8350703146f94a6ee2bf4c3c8c9f172159f805b61a4a2abdf0659",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 72531968,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libexpo-modules-core.so",
+        "bytes": 1408200,
+        "zipBytes": 1408200,
+        "sha256": "d2c1fdd6fae7cfd2eef4042ba9bfb1b50da3c0daa18d585961fd1aff87f77238",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 72548352,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libexpo-sqlite.so",
+        "bytes": 1982760,
+        "zipBytes": 1982760,
+        "sha256": "379f7ac6a6568d1ae110b7cfec712a5caea58d7e8c65d9ca61abe3d00a3f281a",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 73957376,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libexpo-updates.so",
+        "bytes": 107716,
+        "zipBytes": 107716,
+        "sha256": "488bddc5d248b96026065a5a0779b7ef06e432230fd13defdffc801a21aefdba",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 75956224,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libfbjni.so",
+        "bytes": 166480,
+        "zipBytes": 166480,
+        "sha256": "735533ea082fe331b293a947f5ac32556ea433c7db1d2fe76e4ac9a440917c65",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 76070912,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libgesturehandler.so",
+        "bytes": 34680,
+        "zipBytes": 34680,
+        "sha256": "d05bf085ff74758fd5e6e7284fbbf7d0721e85a4d38424a56b12863f5d0752dd",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 76251136,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libgifimage.so",
+        "bytes": 281448,
+        "zipBytes": 281448,
+        "sha256": "a3b5f8f2266597e0d5e3c39edad357cbd0d45ce52c60e41eaaa915b290549ce4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 76300288,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libhermestooling.so",
+        "bytes": 136716,
+        "zipBytes": 136716,
+        "sha256": "9def06c3271a443050c0a3915464159b9596bdac9525a5f021caeee162b80ecc",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 76595200,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libhermesvm.so",
+        "bytes": 3019744,
+        "zipBytes": 3019744,
+        "sha256": "5a16c3f6370190033ae6cfb42b4c7d334eb120e706ad10232f5ea72b3d83d85d",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 76742656,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libimagepipeline.so",
+        "bytes": 7040,
+        "zipBytes": 7040,
+        "sha256": "afd22bf7e62e5d08c0ec17ff6c0a273bfc580052c89363c0cb5d72e98d3b4cf4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 79773696,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libjsi.so",
+        "bytes": 437228,
+        "zipBytes": 437228,
+        "sha256": "87b504363a35fdc07a6fb2bd5788347123d22c110f9ba476d400c9f32fe50c3c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 79790080,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libnative-filters.so",
+        "bytes": 22040,
+        "zipBytes": 22040,
+        "sha256": "6947adfed7f745e52408b11d83a3cf25072749c3336aa35c634928c6dcfa5da0",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 80232448,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libnative-imagetranscoder.so",
+        "bytes": 664736,
+        "zipBytes": 664736,
+        "sha256": "943c8757e57f59556027d460c0e86738d5969794db905febbe4926fd1d3fa663",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 80265216,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libpdfium.so",
+        "bytes": 4526852,
+        "zipBytes": 4526852,
+        "sha256": "a58aaf06105c7228bef104a9b9cc9ae766bfd6965d987f08e9e7760c776af26c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 80936960,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libpdfiumandroid.so",
+        "bytes": 374444,
+        "zipBytes": 374444,
+        "sha256": "89d4aa7cfb96f93416ce29cdd4bb458b9c936643d22370a80daf418ce93146ed",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 85475328,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libreact_codegen_rnscreens.so",
+        "bytes": 1244856,
+        "zipBytes": 1244856,
+        "sha256": "e63f29ac3776bed3ae3bfc00ded63f6d0757039ffb390cdb1b4a4a2936479b08",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 85852160,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libreact_codegen_safeareacontext.so",
+        "bytes": 153476,
+        "zipBytes": 153476,
+        "sha256": "f89390bb517632119327fcf29bf7c0fb853f4bb2d6a9e0b0509f51ea5436d54b",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 87097344,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libreactnative.so",
+        "bytes": 7362736,
+        "zipBytes": 7362736,
+        "sha256": "23b2a618cd791452d99bdde1fa508ea9d4f6333957c5f8021cd6fb21f028ecd1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 87261184,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libreanimated.so",
+        "bytes": 1428124,
+        "zipBytes": 1428124,
+        "sha256": "c22863b7b756f965104b876d9e77f28da68d2062f43a7fcb4b055a21654bbe91",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 94633984,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/librnscreens.so",
+        "bytes": 93560,
+        "zipBytes": 93560,
+        "sha256": "fc0b701dfd2e38642545b24572e08a07b652ccc233e7cd6e2cd7f4a0ade22bcb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 96075776,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libsentry-android.so",
+        "bytes": 14760,
+        "zipBytes": 14760,
+        "sha256": "7bb8e14f8e033d909e66f269d30590ec76d5f36421c11dc22dea82a4bcc7efae",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 96174080,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libsentry.so",
+        "bytes": 742304,
+        "zipBytes": 742304,
+        "sha256": "c986e062be501e3e957e2722cb029a8b04e09a294a4b79f7d86d55099dd93f5b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 96190464,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libstatic-webp.so",
+        "bytes": 550092,
+        "zipBytes": 550092,
+        "sha256": "13d57c0c1992ed870e4830bf932ae472f61adf23ff44540d60e68a5c458abfe1",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 96944128,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libworklets.so",
+        "bytes": 968828,
+        "zipBytes": 968828,
+        "sha256": "d819a1a148d0ef5e513c65b0d7e96f28e79d0f3676d9598518289fddf5367c35",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 97501184,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libzstd-kmp.so",
+        "bytes": 857780,
+        "zipBytes": 857780,
+        "sha256": "2daf9a5f2984289b93568a96bc4234a9e405aa4905c990b85ef887c5de7fb010",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 98484224,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libappmodules.so",
+        "bytes": 1390760,
+        "zipBytes": 1390760,
+        "sha256": "fd93708d2438f505525607cfb93183cb48af88c04dae9503f562c4089f00ba1e",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 99352576,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libc++_shared.so",
+        "bytes": 1252080,
+        "zipBytes": 1252080,
+        "sha256": "0a2c7afa35b183fdd5a3cb20e2080ad54cbea06c2a4f0bc8f122cb7d1e9e0b9f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 100745216,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libdatastore_shared_counter.so",
+        "bytes": 6224,
+        "zipBytes": 6224,
+        "sha256": "fb6c9208988c49ae94943bc3236fa763ba584722e044fa4ea9a12d2941027105",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 102006784,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libexpo-modules-core.so",
+        "bytes": 1457448,
+        "zipBytes": 1457448,
+        "sha256": "f2bed2206ab26efb8bb474213a5b356dfda157a8c82db270dc1363cbc4276bf9",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 102023168,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libexpo-sqlite.so",
+        "bytes": 1880848,
+        "zipBytes": 1880848,
+        "sha256": "dcbb32f23873084d9617aa697bf3dbc0ba634c8a920f9aae0a7d2e720132ceee",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 103481344,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libexpo-updates.so",
+        "bytes": 113552,
+        "zipBytes": 113552,
+        "sha256": "3e0bee44fa0e0e708bc49b95693e44683cb94d719ef999f290f06a70b5afa2eb",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 105365504,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libfbjni.so",
+        "bytes": 172952,
+        "zipBytes": 172952,
+        "sha256": "a51410366a0394e05bc04052cfb237c70dcf7d4d53a56e1d00a041436cb0b653",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 105480192,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libgesturehandler.so",
+        "bytes": 35608,
+        "zipBytes": 35608,
+        "sha256": "02104343eb2580e3540f6f5a97393ca1488e7ae8d10cb5cad4080e8957756c38",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 105660416,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libgifimage.so",
+        "bytes": 302952,
+        "zipBytes": 302952,
+        "sha256": "20768d822119deee9beeccfd4340987976381587b519b630f5393fee4d731c1f",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 105709568,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libhermestooling.so",
+        "bytes": 138128,
+        "zipBytes": 138128,
+        "sha256": "6a8ef7ef7bb5bd277a915fc0070fa1285c6969da2d7faf4fbff86ab6468c8458",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 106020864,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libhermesvm.so",
+        "bytes": 2591976,
+        "zipBytes": 2591976,
+        "sha256": "3c5f7f3740b6511b55f3f8ba43c24eb1b38ab2fb9dc1ca5618287c3ca6221e13",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 106168320,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libimagepipeline.so",
+        "bytes": 8464,
+        "zipBytes": 8464,
+        "sha256": "2e596f4955f65abaa93c891b49eb58b5416581806a04bde0097cc369ae4dbfb3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 108773376,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libjsi.so",
+        "bytes": 418872,
+        "zipBytes": 418872,
+        "sha256": "f3927514e215b9fe14bc6d5a1937c62b20ed55057ede7205fac198ec763d4349",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 108789760,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libnative-filters.so",
+        "bytes": 30528,
+        "zipBytes": 30528,
+        "sha256": "1a5270f007dd4b2f0fc52ceac82e05143648ba9be59c2213a21cf61c84f1f5e5",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 109215744,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libnative-imagetranscoder.so",
+        "bytes": 720432,
+        "zipBytes": 720432,
+        "sha256": "f6b92ad7f1c30973f40704c46987504757c3d079c7f4ace6efc8b318dd9c22f3",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 109248512,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libpdfium.so",
+        "bytes": 4966672,
+        "zipBytes": 4966672,
+        "sha256": "4f48d1c92fd74a2e5758c98034036393d5b5f12f5eab39175979894976725869",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 109969408,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libpdfiumandroid.so",
+        "bytes": 418720,
+        "zipBytes": 418720,
+        "sha256": "ab5666f50f7fab63a0981fc977fc11e1738399540a950a69482261b4c1f80a49",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 114950144,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libreact_codegen_rnscreens.so",
+        "bytes": 1225728,
+        "zipBytes": 1225728,
+        "sha256": "7aabf0755b16d57280cca544d6163dae93d205436f358c2101855d0691916087",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 115376128,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libreact_codegen_safeareacontext.so",
+        "bytes": 159728,
+        "zipBytes": 159728,
+        "sha256": "7cefd47cb22563574c72c5c831f5bde6ab6f5b19ae625a9b41b0628b9c17e9da",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 116604928,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libreactnative.so",
+        "bytes": 7098048,
+        "zipBytes": 7098048,
+        "sha256": "f80d63ba3df4cd85764c330c6af56ca5995fdaacbdcff107657b8c63918f1d8b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 116768768,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libreanimated.so",
+        "bytes": 1538464,
+        "zipBytes": 1538464,
+        "sha256": "0fa828f42305cc04fe9613e4927e1ada7651cc19e2906bbb68815ffd641659b4",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 123879424,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/librnscreens.so",
+        "bytes": 97696,
+        "zipBytes": 97696,
+        "sha256": "6d43beeee92e37829b69d8c594d55647dcf37d2cd89ea3300a930b3903fe006b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 125419520,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libsentry-android.so",
+        "bytes": 16384,
+        "zipBytes": 16384,
+        "sha256": "5f018592a5b22fcf448972d3d1f52a3b0c6751004c57756a6cf8e8ec7190aab3",
+        "elfLoadAlignments": [
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 125517824,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libsentry.so",
+        "bytes": 710280,
+        "zipBytes": 710280,
+        "sha256": "f1320b0828f0cdfb89e8792cbdaeaa17764d7501fa46d2fc803280a595cb830a",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 125550592,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libstatic-webp.so",
+        "bytes": 560968,
+        "zipBytes": 560968,
+        "sha256": "e7884cd18761b5ee54de98b9a3f4b9e4b0dea364c186e24ff9b740b29742562b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 126271488,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libworklets.so",
+        "bytes": 1055472,
+        "zipBytes": 1055472,
+        "sha256": "cea0189f1ce751343615b7d8ee2ec091b952f850db96fd275c4751ef1479f060",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 126844928,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libzstd-kmp.so",
+        "bytes": 816568,
+        "zipBytes": 816568,
+        "sha256": "fefcbdcd59580a3043c62380a83d92f13c031c278481e22591a2c75112296e28",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 127909888,
+        "zip16KBAligned": true
+      }
+    ],
+    "fontFiles": [
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf",
+        "bytes": 130484,
+        "zipBytes": 74661,
+        "sha256": "08a9d5b513cf947e22ede81e9a843bd8d7763a63444cd21484bfde7662cc6543"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf",
+        "bytes": 66200,
+        "zipBytes": 40670,
+        "sha256": "16f92298587bab2b469bc13c0dfc6d5d171bca10bad0c9053ad16bc023bf717d"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf",
+        "bytes": 13456,
+        "zipBytes": 7979,
+        "sha256": "a5caeb4d395c5e32f1d5a30acb382aebc664f1badfd149319907f2215e4e3e26"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf",
+        "bytes": 55596,
+        "zipBytes": 24150,
+        "sha256": "02b88ead91ade5710d7ca18edb43a6965a71d93732c06f290cc07a6dd249e987"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf",
+        "bytes": 165548,
+        "zipBytes": 98088,
+        "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf",
+        "bytes": 134040,
+        "zipBytes": 90560,
+        "sha256": "06f4d00923ea24697df5df0b92984175991d8bd25776a02d531bb401e393ec42"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf",
+        "bytes": 33736,
+        "zipBytes": 16236,
+        "sha256": "c651b8a67d3193206f622c3c3b0fbca4a2f2727108c4212b52c1e2a2e84c9b31"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf",
+        "bytes": 202744,
+        "zipBytes": 102453,
+        "sha256": "3d06af1f31cd83ace7a265a014b8fb5dee15770ecac8f7a55555190e627e03c2"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_brands.ttf",
+        "bytes": 209376,
+        "zipBytes": 121987,
+        "sha256": "bc844b5b02d3f3adabb514de4e0c0208252d3123413bd03f6287fa446acee859"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_regular.ttf",
+        "bytes": 67976,
+        "zipBytes": 26673,
+        "sha256": "64f9fb623681f112261e9a2f97826782439f3925dea8f44a57d1e4db95ba6cfd"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome6_solid.ttf",
+        "bytes": 423676,
+        "zipBytes": 171685,
+        "sha256": "31f099c13f6e4ba05f1b471bf170cb5493249474222917372de3ca5cf29e6a1a"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf",
+        "bytes": 313528,
+        "zipBytes": 168995,
+        "sha256": "94dab9f1d5b13ea0769d124a2da0d02433f3b99d6dea5a07c0446a77158100c0"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf",
+        "bytes": 56976,
+        "zipBytes": 33650,
+        "sha256": "7e1dd03dd4ce90b658052554cd7459df16716717389a552fa4c6d56a5f8933e6"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf",
+        "bytes": 389724,
+        "zipBytes": 210672,
+        "sha256": "fa2ab7d2557819b2bfe5009e46844efa7170cf177be7735d43aa2ac1295f1d54"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf",
+        "bytes": 1307660,
+        "zipBytes": 588547,
+        "sha256": "61e8aba5a4e981fe22cf7c8e8bcdbea00476e75c62c37f01bf7ee33361d68428"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf",
+        "bytes": 356840,
+        "zipBytes": 172825,
+        "sha256": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf",
+        "bytes": 69436,
+        "zipBytes": 34046,
+        "sha256": "9bc4d9f5e994e774bdc3ef9a9a87da749af5f50b861473ef7d1cc3d6f8229267"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf",
+        "bytes": 54056,
+        "zipBytes": 36014,
+        "sha256": "3f501ddb05c70829bbb51cfe9ca9fff57f39e060457c257b3ccf25df767f0870"
+      },
+      {
+        "path": "res/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf",
+        "bytes": 25788,
+        "zipBytes": 17753,
+        "sha256": "dd8ee403bbcbf5e58b77dca4ac03ebafa13a284a3d87d8ea9ca490435a86fa48"
+      }
+    ],
+    "bundleFiles": [
+      {
+        "path": "assets/index.android.bundle",
+        "bytes": 6600124,
+        "zipBytes": 6600124,
+        "matchesExportHermesMagic": true,
+        "sha256": "813cf95740869e2a709c695ab0b4a1e90a8fef014c24d8619267574e56d62ebb"
+      }
+    ],
+    "largest15": [
+      {
+        "path": "classes4.dex",
+        "bytes": 10279260,
+        "zipBytes": 3684746
+      },
+      {
+        "path": "classes.dex",
+        "bytes": 9546616,
+        "zipBytes": 3467537
+      },
+      {
+        "path": "classes3.dex",
+        "bytes": 9324324,
+        "zipBytes": 3217654
+      },
+      {
+        "path": "classes2.dex",
+        "bytes": 8968540,
+        "zipBytes": 3452662
+      },
+      {
+        "path": "lib/x86/libreactnative.so",
+        "bytes": 7362736,
+        "zipBytes": 7362736,
+        "sha256": "23b2a618cd791452d99bdde1fa508ea9d4f6333957c5f8021cd6fb21f028ecd1",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 87261184,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libreactnative.so",
+        "bytes": 7098048,
+        "zipBytes": 7098048,
+        "sha256": "f80d63ba3df4cd85764c330c6af56ca5995fdaacbdcff107657b8c63918f1d8b",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 116768768,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libreactnative.so",
+        "bytes": 6985168,
+        "zipBytes": 6985168,
+        "sha256": "14bb860cebebb0e29eb2c96a52d70da9b73e60253916694af955f6e3ef1e6b64",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 38469632,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "assets/index.android.bundle",
+        "bytes": 6600124,
+        "zipBytes": 6600124,
+        "matchesExportHermesMagic": true,
+        "sha256": "813cf95740869e2a709c695ab0b4a1e90a8fef014c24d8619267574e56d62ebb"
+      },
+      {
+        "path": "lib/x86_64/libpdfium.so",
+        "bytes": 4966672,
+        "zipBytes": 4966672,
+        "sha256": "4f48d1c92fd74a2e5758c98034036393d5b5f12f5eab39175979894976725869",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 109969408,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libreactnative.so",
+        "bytes": 4859120,
+        "zipBytes": 4859120,
+        "sha256": "38a637ec7f32ee8df322074323fc6b1ae23377c8f144e0850d6c5097974552cb",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 61784064,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/arm64-v8a/libpdfium.so",
+        "bytes": 4771352,
+        "zipBytes": 4771352,
+        "sha256": "e3ad7644b9dd203f27e0650d5a1af0a2a73548fad9fe608c209fbd55888d3643",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 31866880,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libpdfium.so",
+        "bytes": 4526852,
+        "zipBytes": 4526852,
+        "sha256": "a58aaf06105c7228bef104a9b9cc9ae766bfd6965d987f08e9e7760c776af26c",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 80936960,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/armeabi-v7a/libpdfium.so",
+        "bytes": 3194528,
+        "zipBytes": 3194528,
+        "sha256": "d5cd7760f7c3873039a5e82c5121d82559b4eee0aa5afa2315e8246a00ed0203",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 57344000,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86/libhermesvm.so",
+        "bytes": 3019744,
+        "zipBytes": 3019744,
+        "sha256": "5a16c3f6370190033ae6cfb42b4c7d334eb120e706ad10232f5ea72b3d83d85d",
+        "elfLoadAlignments": [
+          4096,
+          4096,
+          4096
+        ],
+        "elf16KBLoadAlignment": false,
+        "zipCompression": 0,
+        "zipDataOffset": 76742656,
+        "zip16KBAligned": true
+      },
+      {
+        "path": "lib/x86_64/libhermesvm.so",
+        "bytes": 2591976,
+        "zipBytes": 2591976,
+        "sha256": "3c5f7f3740b6511b55f3f8ba43c24eb1b38ab2fb9dc1ca5618287c3ca6221e13",
+        "elfLoadAlignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "elf16KBLoadAlignment": true,
+        "zipCompression": 0,
+        "zipDataOffset": 106168320,
+        "zip16KBAligned": true
+      }
+    ]
+  },
+  "playDownloadRange": [
+    {
+      "MIN": 31816859,
+      "MAX": 34508679
+    }
+  ],
+  "playDownloadByAbi": [
+    {
+      "ABI": "x86",
+      "MIN": 33926838,
+      "MAX": 34508679
+    },
+    {
+      "ABI": "x86_64",
+      "MIN": 33610007,
+      "MAX": 34191848
+    },
+    {
+      "ABI": "arm64-v8a",
+      "MIN": 33263238,
+      "MAX": 33845079
+    },
+    {
+      "ABI": "armeabi-v7a",
+      "MIN": 31816859,
+      "MAX": 32398700
+    }
+  ],
+  "devices": {
+    "arm64-v8a": {
+      "status": "extracted",
+      "apkFiles": [
+        {
+          "file": "base-arm64_v8a.apk",
+          "bytes": 28776800
+        },
+        {
+          "file": "base-en.apk",
+          "bytes": 57690
+        },
+        {
+          "file": "base-master_2.apk",
+          "bytes": 53242881
+        },
+        {
+          "file": "base-xxhdpi.apk",
+          "bytes": 358324
+        }
+      ],
+      "apkSetBytes": 82435695,
+      "playDownloadRange": [
+        {
+          "MIN": 33652295,
+          "MAX": 33652295
+        }
+      ]
+    },
+    "armeabi-v7a": {
+      "status": "extracted",
+      "apkFiles": [
+        {
+          "file": "base-armeabi_v7a.apk",
+          "bytes": 19667350
+        },
+        {
+          "file": "base-en.apk",
+          "bytes": 57690
+        },
+        {
+          "file": "base-master_2.apk",
+          "bytes": 53242881
+        },
+        {
+          "file": "base-xxhdpi.apk",
+          "bytes": 358324
+        }
+      ],
+      "apkSetBytes": 73326245,
+      "playDownloadRange": [
+        {
+          "MIN": 32205916,
+          "MAX": 32205916
+        }
+      ]
+    },
+    "x86": {
+      "status": "extracted",
+      "apkFiles": [
+        {
+          "file": "base-x86.apk",
+          "bytes": 29509822
+        },
+        {
+          "file": "base-en.apk",
+          "bytes": 57690
+        },
+        {
+          "file": "base-master_2.apk",
+          "bytes": 53242881
+        },
+        {
+          "file": "base-xxhdpi.apk",
+          "bytes": 358324
+        }
+      ],
+      "apkSetBytes": 83168717,
+      "playDownloadRange": [
+        {
+          "MIN": 34315895,
+          "MAX": 34315895
+        }
+      ]
+    },
+    "x86_64": {
+      "status": "extracted",
+      "apkFiles": [
+        {
+          "file": "base-x86_64.apk",
+          "bytes": 29403407
+        },
+        {
+          "file": "base-en.apk",
+          "bytes": 57690
+        },
+        {
+          "file": "base-master_2.apk",
+          "bytes": 53242881
+        },
+        {
+          "file": "base-xxhdpi.apk",
+          "bytes": 358324
+        }
+      ],
+      "apkSetBytes": 83062302,
+      "playDownloadRange": [
+        {
+          "MIN": 33999064,
+          "MAX": 33999064
+        }
+      ]
+    }
+  },
+  "readelfCrossChecks": [
+    {
+      "file": "lib/arm64-v8a/libhermestooling.so",
+      "alignments": [
+        16384,
+        16384,
+        16384
+      ],
+      "matches": true
+    },
+    {
+      "file": "lib/arm64-v8a/libhermesvm.so",
+      "alignments": [
+        16384,
+        16384,
+        16384
+      ],
+      "matches": true
+    },
+    {
+      "file": "lib/arm64-v8a/libpdfium.so",
+      "alignments": [
+        16384,
+        16384,
+        16384
+      ],
+      "matches": true
+    },
+    {
+      "file": "lib/arm64-v8a/libreactnative.so",
+      "alignments": [
+        16384,
+        16384,
+        16384
+      ],
+      "matches": true
+    }
+  ]
+}

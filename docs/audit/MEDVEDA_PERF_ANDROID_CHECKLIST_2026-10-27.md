@@ -1,7 +1,11 @@
 # Android regression and performance checklist — 27 October 2026
 
 For `perf-size-1`; [measurements and build/size procedure](MEDVEDA_PERF_SIZE_2026-10-27.md).
-**All device checkboxes are pending.** Local mocks/export are not a native pass.
+**All device checkboxes are pending.** Native runtime acceptance is still pending.
+Cloud production before/after builds and matching shrink/control builds completed;
+sizes, API 36, signatures and static 16 KB checks pass in the
+[native artifact report](MEDVEDA_NATIVE_SIZE_2026-10-27.md). Device checks below
+remain separate from those completed static checks.
 Record revision, AAB SHA-256, versionCode, signing fingerprint, device model/ABI,
 Android version/page size, network, clean/upgrade install and account type.
 Compare with a build of `99c91a4` using the same dependencies/profile/toolchain.
@@ -94,14 +98,16 @@ Compare with a build of `99c91a4` using the same dependencies/profile/toolchain.
 
 ## Extra gate for any R8 trial
 
-- [ ] Run the existing `shrink-test` profile before any production shrink flag.
-  Keep the unshrunk comparison build and mapping/native symbols.
+- [x] Run the existing `shrink-test` profile and matching unshrunk control.
+  Both builds passed; APK reduction is 9,806,464 B (7.3%). Production stays off.
+  Build IDs/checksums/native symbols are retained in the native report.
 - [ ] Inspect merged consumer keep rules and missing-class warnings for
   Billing/OpenIAP, Sentry, PDF/pdfium/blob-util, SQLite/Expo modules, FCM/
   notifications, WebView JavaScript interfaces and Hermes/JNI.
 - [ ] Repeat all behavior checks above on the shrunk binary, including real
   native PDF, licensed Play restore, push tap cold start, SQLite migrations,
   offline quiz/outbox, logout/account switch and symbolicated crash handling.
-- [ ] Run ELF/ZIP 16 KB checks and launch on a 16 KB device/emulator; retain API
-  36. Record measured shrink gain. Enable production shrinking only after this
-  evidence and owner approval; current production shrinking remains off.
+- [x] Static ELF/ZIP 16 KB, API 36 and APK signing checks pass; measured shrink
+  gain recorded. These checks do not establish runtime behavior.
+- [ ] Launch on a 16 KB device/emulator and complete all shrunk-binary flows.
+  Enable production shrinking only after that evidence and owner approval.

@@ -6,17 +6,33 @@ Evidence: [before size/dependencies/asset inventory](evidence/perf-size-20261027
 [before screen probe](evidence/perf-size-20261027/screens-before.json),
 [baseline regressions](evidence/perf-size-20261027/checks-before.json).
 
+Native follow-up is complete: matching production AABs were built from isolated
+checkouts of `99c91a4` (versionCode 6) and `4a4416b` (versionCode 7), plus the
+existing shrink-test APK and a matching unshrunk control. **AAB −1,935,161 B
+(2.1%); universal APK −2,050,437 B (1.5%); fixed arm64 estimated Play download
+−1,927,619 B (5.7%).** [Build links, native inventories, sizes and static checks](MEDVEDA_NATIVE_SIZE_2026-10-27.md).
+No Play submission or OTA publication occurred. Production shrinking remains off.
+
 ## Measurement boundary
 
-There is no production AAB/APK in the workspace, home artifact inventory or `/tmp`.
-The installed Android SDK has platform-tools only: no platforms/build-tools,
-NDK or emulator. `adb devices -l` succeeded outside the socket-restricted sandbox
-and returned no devices. Java and cached Gradle components alone cannot build
-this native release. No cloud build, production upload, signing credential access
-or provider operation was performed. AAB, universal/per-ABI APK, Play download,
-DEX/resources/native `.so` and installed-size results are **unavailable**; historical
-artifact reports are not measurements of this revision. Native shrink-test size,
-16 KB qualification, startup/TTI, frame rate and memory need the release/device pass.
+The initial local baseline had no supplied native artifact and no complete local
+Android SDK/NDK. A saved EAS session subsequently enabled four cloud builds using
+existing profiles and managed credentials. The native baseline was built later
+from the unchanged original `99c91a4` checkout; both production builds use the same
+locked dependencies/profile. Local bundletool 1.18.3 generated both universal and
+split APK sets with one disposable analysis signer. The matching shrink-test
+control changed only ANDROID_SHRINK=1 → 0 in a temporary checkout; the repository's
+profiles and production defaults were not changed. EAS's existing production
+auto-increment advanced the remote version counter from 5 to 7. No credentials
+were committed, Play/OTA release published, database changed or provider
+transaction performed.
+
+`adb devices -l` was checked again after the artifacts completed and still found
+no device/emulator. **Installed size, real cold start/TTI, React Profiler/FPS/memory
+and native flow smoke tests remain unavailable.** Static ELF/ZIP 16 KB checks and
+API 36 manifest validation pass; a 16 KB device launch is still required. The
+native artifact methods/checksums and the separate canonical-export methods below
+must not be mixed into a single byte count.
 
 Canonical measurement: existing `check-readiness-local.py --full` Android
 production Hermes export, dotenv disabled, same installed dependencies, without
@@ -69,8 +85,10 @@ rows, a 15-minute scoped cache, concurrent builds, refresh and account changes.
 
 ### Top 15 items available to inspect
 
-Full native ZIP ranking is unavailable. These are the largest canonical export
-items (HBC plus assets); detailed paths/hashes are in `size-before.json`:
+These are the largest canonical export items (HBC plus assets); detailed
+paths/hashes are in `size-before.json`. The separate native AAB top-15 ranking,
+DEX/resources breakdown and all 108 `.so` entries are in the
+[native artifact report](MEDVEDA_NATIVE_SIZE_2026-10-27.md).
 
 | Item | Bytes |
 | --- | ---: |
@@ -174,6 +192,8 @@ results are recorded below as each isolated optimization is validated.
 | `15c9888` | `src/services/yearsService.ts`, `scripts/years-inflight-selftest.cjs` | Share overlapping live catalog reads by account/course. No completed-response cache or stale-time policy. Each caller retains its own existing offline fallback callback. Tests cover ordering, fresh subsequent reads, account/course isolation, rejection cleanup and per-caller fallback banners. |
 | `abe405c` | `src/services/notificationsService.ts`, new `scripts/notification-inflight-selftest.cjs`, existing `notification-reads-selftest.cjs` | Share overlapping raw notification-row reads by account. Preferences/read IDs/archive IDs remain per-call; no entitlement or payment query is cached. Tests cover all of those filters, fresh later reads, account switch, backend errors, thrown network errors and retry. Existing preference test only gains the new auth mock/timer globals. |
 | `6dd8a37` | Both read services and their three tests | Limit sharing to one second; settle clears the timer. A permanently stalled read cannot prevent reopening/retrying with a fresh request. Late settlement of an older request cannot delete a newer pending entry. No request cancellation, new UI deadline, or changed failure result. Deterministic timer/race tests pass. |
+| `4a4416b` | Final local-export report/checklist/evidence | Retain the measured source results and exact regression commands. This is the application revision used by the native candidate builds. |
+| Native evidence follow-up | `scripts/measure-mobile-size.py`, native report/JSON and updated audit/checklist | Read-only ZIP component/font/Hermes inventory, ELF PT_LOAD and APK ZIP-offset inspection; checked against real artifacts and GNU readelf. No `mobile-app` code/config changes after `4a4416b`. |
 
 All application paths in this table are under `mobile-app/`. No billing,
 checkout, settlement/grant, referral/wallet, auth/OTP/lockout, sync/outbox,
@@ -193,9 +213,10 @@ their screen implementations are untouched. New account reads use the existing
 | header logo | 91,027 | 91,027 | 0 | Yes |
 
 Source savings: **380,593 B**; active exported PNG savings: **204,509 B**.
-Native resource processing may recompress icon/splash resources, so this is not
-a claim of an equal APK-size gain. Unreferenced splash/favicon were not falsely
-counted as removed Android payload.
+Native processing reduces this to only **1,325 B** of raster-image savings in
+the actual AAB. All 243 shared native raster resources retain identical pixels;
+242 remain byte-identical. Source/export savings are not claimed as equal APK
+savings. Unreferenced splash/favicon were not counted as removed Android payload.
 
 ## After measurements using the same methods
 
@@ -206,15 +227,19 @@ counted as removed Android payload.
 
 | Metric | Before | After | Result |
 | --- | ---: | ---: | --- |
-| AAB | Unavailable | Unavailable | No release artifact/toolchain |
-| Universal APK | Unavailable | Unavailable | Same limitation |
-| arm64-v8a APK / split set | Unavailable | Unavailable | Same limitation |
-| armeabi-v7a APK / split set | Unavailable | Unavailable | ABI support must be verified from final artifact |
-| x86 APK / split set | Unavailable | Unavailable | ABI support must be verified from final artifact |
-| x86_64 APK / split set | Unavailable | Unavailable | Same limitation |
-| Estimated Play compressed download | Unavailable | Unavailable | Requires AAB → APK set → `get-size total` |
+| Production AAB | 90,914,706 B | 88,979,545 B | **−1,935,161 B (2.1%)** |
+| Universal APK, common analysis signer | 136,878,504 B | 134,828,067 B | **−2,050,437 B (1.5%)** |
+| arm64-v8a APK split set | 82,435,695 B | 80,385,258 B | −2,050,437 B |
+| armeabi-v7a APK split set | 73,326,245 B | 71,275,808 B | −2,050,437 B |
+| x86 APK split set | 83,168,717 B | 81,118,280 B | −2,050,437 B |
+| x86_64 APK split set | 83,062,302 B | 81,011,865 B | −2,050,437 B |
+| Estimated Play download, fixed arm64 | 33,652,295 B | 31,724,676 B | **−1,927,619 B (5.7%)**; API 36 / en / 420 dpi |
+| Estimated Play download, all-config range | 31,816,859–34,508,679 B | 29,890,412–32,581,061 B | Compare identical devices; native report has all ABI estimates |
 | Installed app/code/data/cache size | Unavailable | Unavailable | Requires matching release installs on device |
-| Native `.so`, DEX, resources | Unavailable | Unavailable | Cannot infer from JS export |
+| Native `.so` (all ABIs, raw) | 106,389,060 B | 106,389,060 B | 108 libraries, identical paths and SHA-256 values |
+| Native AAB DEX (raw) | 40,486,340 B | 40,484,528 B | −1,812 B |
+| Native AAB resources including fonts (raw) | 9,653,956 B | 6,126,013 B | −3,527,943 B |
+| Embedded native Hermes bundle | 6,600,124 B | 6,290,352 B | −309,772 B; distinct from no-map export below |
 | Hermes HBC, no source maps | 8,218,571 B | 7,904,292 B | **−314,279 B (3.8%)** |
 | Exported assets | 6,612,254 B | 2,886,177 B | **−3,726,077 B (56.4%)** |
 | Exported icon fonts | 4,076,840 B / 19 | 555,272 B / 2 | −3,521,568 B; same two used families retained |
@@ -237,7 +262,10 @@ adds a small amount of code; those commits optimize evaluation/network work,
 not total bytecode size. Both analysis exports retain all deferred screen source
 modules. Source attribution still identifies Sentry/RN/Reanimated as large; none
 was removed. Every exported asset is ranked with source names/hashes in the
-before/after JSON. No native largest-15 list is claimed without a native ZIP.
+before/after JSON. The native report separately accounts for 93.5 MB of raw debug
+symbols (24.4 MB ZIP bytes) present in each AAB but absent from delivered APKs.
+Per-device APK sets above include base + ABI + language + density APKs for API 36,
+English, density 420. These APK byte sums are not OS installed-size measurements.
 
 ## Evaluated and intentionally unchanged
 
@@ -284,8 +312,10 @@ before/after JSON. No native largest-15 list is claimed without a native ZIP.
   queries, fonts; build-properties and optional Sentry are injected dynamically).
 - **API/16 KB/ABI:** SDK/RN/native package versions, Android build configuration,
   page-size handling, permissions and all build profiles are unchanged. Expo 57
-  targets API 36; this is source/toolchain continuity, not a current signed
-  manifest/ELF certification. Production and internal-testing profiles already
+  targets API 36, confirmed in both fresh AAB manifests. All 108 native library
+  hashes match; all 54 64-bit ELF/load and generated-APK ZIP alignments pass 16 KB
+  checks, independently sampled with readelf. Device launch remains unverified.
+  Production and internal-testing profiles already
   build AABs. Play optimizes APK delivery per device; removing x86 libraries from
   a universal APK would not represent the same saving for arm64 Play users.
   [Expo SDK version reference](https://docs.expo.dev/versions/v57.0.0/),
@@ -303,8 +333,12 @@ before/after JSON. No native largest-15 list is claimed without a native ZIP.
 ### R8 shrink-test evaluation (off in production)
 
 `ANDROID_SHRINK=1` is still opt-in, used by the existing `shrink-test` APK profile.
-Production stays off. Native `shrink-test` could not be built in this environment,
-so **size gain is unmeasured** and no shrunk release is approved. `extraProguardRules`
+Production stays off. The existing native shrink-test build and a matching
+unshrunk control both passed: **134,750,072 → 124,943,608 B**, saving
+**9,806,464 B (7.3%)**. The two APKs have the same signer, versionCode 7, embedded
+Hermes hash and all 108 native-library hashes; only the temporary control's shrink
+flag differs. DEX drops from 40,484,528 to 12,942,600 raw bytes. No device flow
+has been qualified, so no shrunk production release is approved. `extraProguardRules`
 currently keeps Sentry, barteksc/pdfium's old package and blob-util. The installed
 PDF viewer also uses `org.wonday.pdf` and **`io.legere.pdfiumandroid`**; the old
 `com.shockwave.pdfium` rule alone does not certify the current viewer.
@@ -335,7 +369,8 @@ some shrinking gain for reflection/JNI safety.
 Expo modules/ReactAndroid/Reanimated/worklets ship additional annotation/module/
 JNI rules; retain their generated consumer rules. ReactAndroid's existing rules
 keep `com.facebook.jni` for Hermes. Inspect the actual OpenIAP/Billing/FCM/Sentry
-AAR consumer rules too; Maven AARs are not available here. Supabase is JavaScript,
+AAR consumer rules too; cloud compilation succeeded but merged R8/runtime keep
+completeness has not been certified locally. Supabase is JavaScript,
 so R8 has no Supabase Java classes to keep; its Hermes code/session logic stays
 outside R8. Shrink-test must exercise Play restore/purchase callbacks, Sentry
 symbolication, PDF/blob access, SQLite migrations, notifications/FCM cold taps,
@@ -346,22 +381,23 @@ WebView bridge, Hermes startup and every critical flow in the linked checklist.
 
 | Candidate | Expected gain | Reason held |
 | --- | --- | --- |
-| Production R8/resource shrinking | Unknown until same-config shrunk/unshrunk native builds | No shrink-test build/device pass; keep-rule/reflection/JNI/native bridge risk |
-| arm64 + armeabi-v7a only for direct APK distribution | Unknown until per-ABI native `.so`/APK totals exist; no equivalent arm64 Play saving | Drops x86/x86_64 support; verify 32-bit support in actual RN/dependency artifacts first |
+| Production R8/resource shrinking | Matching test APK saves 9,806,464 B (7.3%); Play gain not measured for R8 | Both builds pass, but device/JNI/reflection/billing/push smoke gates remain |
+| arm64 + armeabi-v7a only for direct APK distribution | x86/x86_64 native components are 58,435,624 B; final restricted APK saving unbuilt; no equivalent arm64 Play saving | Drops x86/x86_64 support; all four ABIs are confirmed in the actual artifacts; no shipping ABI changed |
 | Resample 1254px app icon to recommended 1024px; resize header to rendered density | Exact lossless compression gain exhausted; resized byte saving unmeasured; lower decoded pixel memory possible | Changes source pixels; needs visual/native icon approval |
 | Shorten/remove 1,200ms branding dwell | At most 1,200ms of the intentional dwell; total gain overlaps session work | Visible timing/auth-recovery behavior would change |
 | Defer protected sync/push/auth/Play/referral work; combine config checks | Device gain unknown | Lifecycle/session ordering risks cannot be ruled out by local mocks; protected logic and server changes excluded |
 | Global inlineRequires, more list clipping/memo/animation changes, persistent browse cache | Gain unknown without profiling | Side effects, stale data, clipping and UX behavior risks |
 | Patch upgrades flagged by Doctor | No size/speed gain established | Separate dependency/native regression qualification; not silently included |
-| Remove `DETECT_SCREEN_CAPTURE` or other manifest-derived permissions | Negligible byte gain | No JS screenshot-listener caller found, but merged native manifest/device capture behavior unverified |
+| Remove `DETECT_SCREEN_CAPTURE` or other manifest-derived permissions | Negligible byte gain | Merged manifests verified; screenshot listener/biometric/badge/SDK behavior still needs native checks before removal |
 
-Permissions reviewed in dependency source: INTERNET, POST_NOTIFICATIONS,
-ACCESS_NETWORK_STATE/ACCESS_WIFI_STATE (NetInfo/updates/blob), BILLING,
-RECEIVE_BOOT_COMPLETED (reminders), WAKE_LOCK (blob/native downloads), and
-DETECT_SCREEN_CAPTURE (screen-capture). Existing blocklist already excludes old
-external-storage/media reads/writes and DOWNLOAD_WITHOUT_NOTIFICATION. The merged
-artifact may add other transitive permissions. None was removed speculatively;
-native manifest inspection is required before calling this the final permission list.
+The two actual production manifests have the same **30 permissions**; the
+[complete manifest list](MEDVEDA_NATIVE_SIZE_2026-10-27.md#permissions) includes
+INTERNET/notifications, NetInfo/Wi-Fi, BILLING, boot/wake, capture detection,
+FCM/install-referrer, SecureStore biometric/fingerprint and launcher badge
+permissions. The signature-level AndroidX receiver permission protects internal
+receivers. Existing blocked external-storage/media/download-without-notification
+permissions are absent. None was removed speculatively; permission removal needs
+its own native-feature check and has negligible size gain.
 
 ## Regression protection
 
@@ -376,6 +412,13 @@ checks and the bounded secret scan (including decompressed tracked archives).
 No new failures were accepted. Expo Doctor remains **20/21**, with exactly the
 two baseline patch mismatches; depcheck findings are unchanged. These external
 audits are reported separately rather than hidden in the passing local suite.
+
+The native follow-up also passed four cloud builds, AAB validation, APK signature
+checks, all four ABI extractions, bundletool size estimation, readelf cross-checks,
+243 shared native image comparisons and retained-font/native-library hash checks.
+A fresh resumed full local suite passed before the final native evidence commit;
+the required suite is repeated after that commit. These are separate build/static
+checks and do not mark the pending device checklist complete.
 
 Required hosted SQL/RLS/concurrency/provider tests were not executed: the local
 runner explicitly excludes DB-writing harnesses, hosted upload/quiz scripts,
@@ -436,8 +479,8 @@ owner's existing EAS configuration/credentials, run in `mobile-app`:
 
 ```sh
 npm ci
-npx eas-cli --version
-npx eas-cli build --platform android --profile production
+npx --yes eas-cli@24.14.0 --version
+npx --yes eas-cli@24.14.0 build --platform android --profile production
 ```
 
 Download that exact completed build's AAB to `artifacts/medveda-after.aab`
@@ -445,7 +488,7 @@ outside the repository. To use the same EAS build pipeline on an equipped local
 Linux/macOS builder instead, append `--local --output /absolute/path/medveda-after.aab`.
 Local builds still need Expo authentication and local equivalents of secret
 build variables. For a **separate trial only**, use
-`npx eas-cli build --platform android --profile shrink-test`. It produces an APK;
+`npx --yes eas-cli@24.14.0 build --platform android --profile shrink-test`. It produces an APK;
 production config remains unshrunk. [Expo local-build prerequisites](https://docs.expo.dev/build-reference/local-builds/),
 [APK profiles](https://docs.expo.dev/build-reference/apk/).
 

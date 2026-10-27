@@ -9,7 +9,6 @@ from collections import defaultdict
 import hashlib
 import json
 from pathlib import Path
-import re
 import struct
 import zipfile
 
@@ -24,6 +23,21 @@ args = parser.parse_args()
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+def elf_load_alignments(data):
+    if data[:4] != b"\x7fELF":
+        return []
+    endian = "<" if data[5] == 1 else ">"
+    if data[4] == 2:
+        offset = struct.unpack_from(endian + "Q", data, 32)[0]
+        size, count = struct.unpack_from(endian + "HH", data, 54)
+        layout = endian + "IIQQQQQQ"
+    else:
+        offset = struct.unpack_from(endian + "I", data, 28)[0]
+        size, count = struct.unpack_from(endian + "HH", data, 42)
+        layout = endian + "IIIIIIII"
+    return [header[-1] for i in range(count)
+            if (header := struct.unpack_from(layout, data, offset + i * size))[0] == 1]
 
 def package_name(source):
     source = source.replace("\\", "/")
@@ -99,8 +113,11 @@ if args.source_map:
                                              key=lambda x: -x["sourceBytes"])}
 if args.artifact:
     categories = defaultdict(int)
+    extensions = defaultdict(lambda: {"bytes": 0, "zipBytes": 0, "count": 0})
     libraries = []
-    with zipfile.ZipFile(args.artifact) as archive:
+    fonts = []
+    bundles = []
+    with zipfile.ZipFile(args.artifact) as archive, args.artifact.open("rb") as raw:
         items = []
         for entry in archive.infolist():
             if entry.is_dir():
@@ -108,15 +125,40 @@ if args.artifact:
             name = entry.filename
             category = ("native" if name.endswith(".so") else "dex" if name.endswith(".dex") else
                         "bundle" if name.endswith((".hbc", ".bundle")) else
-                        "assets" if "/assets/" in "/" + name else "resources/metadata")
+                        "assets" if "/assets/" in "/" + name else
+                        "resources" if "/res/" in "/" + name or name.endswith(("resources.arsc", "resources.pb")) else "other")
             categories[category] += entry.file_size
+            extension = Path(name).suffix or "(none)"
+            extensions[extension]["bytes"] += entry.file_size
+            extensions[extension]["zipBytes"] += entry.compress_size
+            extensions[extension]["count"] += 1
             item = {"path": name, "bytes": entry.file_size, "zipBytes": entry.compress_size}
             items.append(item)
+            if category == "bundle":
+                data = archive.read(entry)
+                with bundle.open("rb") as canonical:
+                    item["matchesExportHermesMagic"] = data[:8] == canonical.read(8)
+                item["sha256"] = digest(data)
+                bundles.append(item)
+            if name.endswith((".ttf", ".otf")):
+                item["sha256"] = digest(archive.read(entry))
+                fonts.append(item)
             if name.endswith(".so"):
+                data = archive.read(entry)
+                alignments = elf_load_alignments(data)
+                raw.seek(entry.header_offset + 26)
+                filename_size, extra_size = struct.unpack("<HH", raw.read(4))
+                data_offset = entry.header_offset + 30 + filename_size + extra_size
+                item.update(sha256=digest(data), elfLoadAlignments=alignments,
+                            elf16KBLoadAlignment=bool(alignments) and all(value >= 16384 for value in alignments),
+                            zipCompression=entry.compress_type, zipDataOffset=data_offset,
+                            zip16KBAligned=(data_offset % 16384 == 0) if entry.compress_type == zipfile.ZIP_STORED else None)
                 libraries.append(item)
     result["nativeArtifact"] = {"file": args.artifact.name, "bytes": args.artifact.stat().st_size,
                                 "sha256": digest(args.artifact.read_bytes()), "uncompressedCategories": dict(categories),
-                                "nativeLibraries": libraries, "largest15": sorted(items, key=lambda x: -x["bytes"])[:15]}
+                                "byExtension": dict(extensions), "nativeLibraries": libraries,
+                                "fontFiles": fonts, "bundleFiles": bundles,
+                                "largest15": sorted(items, key=lambda x: -x["bytes"])[:15]}
 args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(json.dumps(result, indent=2) + "\n")
 print(json.dumps({key: result[key] for key in ["bundleBytes", "assetBytes", "assetBytesByExtension", "assetCount"]}))
