@@ -22,7 +22,7 @@ import { getCurrentUser, getCurrentUserDisplayName, performSignOut } from "../se
 // Telegram/WhatsApp icons, not emoji lookalikes). `@expo/vector-icons`
 // ships bundled with every Expo project already - no extra install
 // needed.
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import ConfirmationDialog from "./ConfirmationDialog";
 

@@ -14,7 +14,7 @@ import {
 
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
