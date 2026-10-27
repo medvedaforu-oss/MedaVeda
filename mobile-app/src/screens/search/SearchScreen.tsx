@@ -28,7 +28,7 @@ import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 
 // GLOBAL SEARCH SYSTEM - full-screen search entry point (see
-// FloatingSearchBar on Home for how students reach this screen). All of
+// HomeHeader on Home for how students reach this screen). All of
 // the actual matching/indexing/business-rule logic lives in
 // useGlobalSearch + services/searchService.ts - this file is purely
 // presentation: header chrome, section list, and the loading/empty/error
