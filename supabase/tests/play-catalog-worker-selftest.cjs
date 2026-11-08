@@ -15,7 +15,7 @@ const shared = {exports:{}};
 vm.runInNewContext(transpile(fs.readFileSync('supabase/functions/_shared/googlePlay.ts','utf8')),
   {module:shared,exports:shared.exports,TextEncoder,crypto});
 const {GoogleApiError} = shared.exports;
-function fixture(status,operation='catalog.patch',old=false,finish='ok') {
+function fixture(status,operation='catalog.patch',old=false,finish='ok',raw) {
   let handler; const calls=[], logs=[]; const secret='s'.repeat(40);
   const mocks={
     '../_shared/cors.ts':{jsonResponse:(body,status=200)=>new Response(JSON.stringify(body),{status})},
@@ -29,7 +29,7 @@ function fixture(status,operation='catalog.patch',old=false,finish='ok') {
       throw new GoogleApiError(status,operation,'PERMISSION_DENIED',undefined,[{
         '@type':'type.googleapis.com/google.rpc.ErrorInfo',reason:'SERVICE_DISABLED',domain:'googleapis.com',
         metadata:{service:'androidpublisher.googleapis.com',consumer:'projects/123456789012',token:'TOKEN_SENTINEL'},
-      }]);
+      }],raw);
     }},
   };
   const mod={exports:{}};
@@ -61,4 +61,17 @@ function fixture(status,operation='catalog.patch',old=false,finish='ok') {
     assert.equal((await f.run(true)).status,503);
   }
   console.log('PASS catalog failure persistence errors and expired leases return 503');
+  const f=fixture(403,'catalog.patch',false,'ok',{error:{code:403,status:'PERMISSION_DENIED',
+    message:'The caller does not have permission',errors:[{reason:'TOKEN_SENTINEL',message:'Alice Example'}]}});
+  assert.equal((await (await f.run(true)).json()).status,'failed');
+  const log=JSON.parse(f.logs[0][1]);
+  assert.equal(log.requestIdSource,'application');
+  assert.equal(log.catalogPatchDiagnostic.googleStatus,'PERMISSION_DENIED');
+  assert.equal(log.catalogPatchDiagnostic.message.text,'The caller does not have permission');
+  assert.equal(log.catalogPatchDiagnostic.legacyErrors[0].message.state,'omitted');
+  for(const secret of ['TOKEN_SENTINEL','Alice Example']) assert.ok(!JSON.stringify(f.logs).includes(secret));
+  const persisted=f.calls.find(c=>c.name==='fail_play_price_sync').args;
+  assert.equal(persisted.p_retry,false);
+  assert.ok(!persisted.p_reason.includes('The caller'));
+  console.log('PASS PATCH diagnostic reaches structured log; persisted error and retry behavior remain unchanged');
 })().catch(error=>{console.error(error);process.exitCode=1;});

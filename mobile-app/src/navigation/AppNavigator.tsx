@@ -61,10 +61,10 @@ const deferredScreens = {
   SettingsScreen: () => require("../screens/settings/SettingsScreen").default,
   StudyReminderScreen: () => require("../screens/reminder/StudyReminderScreen").default,
   NotificationsScreen: () => require("../screens/notifications/NotificationsScreen").default,
+  NotificationPreferencesScreen: () => require("../screens/notifications/NotificationPreferencesScreen").default,
   PaymentSuccessScreen: () => require("../screens/payment/PaymentSuccessScreen").default,
   PaymentFailedScreen: () => require("../screens/payment/PaymentFailedScreen").default,
   PaymentCheckoutScreen: () => require("../screens/payment/PaymentCheckoutScreen").default,
-  PlayBillingScreen: () => require("../screens/payment/PlayBillingScreen").default,
   AboutScreen: () => require("../screens/about/AboutScreen").default,
   ContactScreen: () => require("../screens/contact/ContactScreen").default,
   PrivacyScreen: () => require("../screens/privacy/PrivacyScreen").default,
@@ -161,13 +161,11 @@ export default function AppNavigator() {
         <Stack.Screen name="Settings" getComponent={deferredScreens.SettingsScreen} />
         <Stack.Screen name="StudyReminder" getComponent={deferredScreens.StudyReminderScreen} />
         <Stack.Screen name="Notifications" getComponent={deferredScreens.NotificationsScreen} />
+        <Stack.Screen name="NotificationPreferences" getComponent={deferredScreens.NotificationPreferencesScreen} />
         <Stack.Screen name="PaymentSuccess" getComponent={deferredScreens.PaymentSuccessScreen} />
         <Stack.Screen name="PaymentFailed" getComponent={deferredScreens.PaymentFailedScreen} />
         {paymentProvider === "razorpay" && (
           <Stack.Screen name="OrderSummary" getComponent={deferredScreens.OrderSummaryScreen} />
-        )}
-        {paymentProvider === "play" && (
-          <Stack.Screen name="PlayBilling" getComponent={deferredScreens.PlayBillingScreen} />
         )}
         {paymentProvider === "razorpay" && (
           <Stack.Screen name="PaymentCheckout" getComponent={deferredScreens.PaymentCheckoutScreen} />

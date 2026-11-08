@@ -24,11 +24,11 @@ assert.equal(app.android.package, "in.medveda.app");
 assert.equal(app.ios.bundleIdentifier, "com.medveda.app");
 assert.equal(app.scheme, "medveda");
 assert.equal(app.slug, "ayurpulse");
-assert.equal(configFor("production").extra.medvedaPaymentProvider, "play");
-assert.equal(configFor("internal-testing").extra.medvedaPaymentProvider, "play");
+assert.equal(configFor("production").extra.medvedaPaymentProvider, "disabled");
+assert.equal(configFor("internal-testing").extra.medvedaPaymentProvider, "disabled");
 assert.equal(configFor("razorpay-distribution", "razorpay").extra.medvedaPaymentProvider, "razorpay");
-assert.equal(configFor("production").android.runtimeVersion, `${app.version}-play`);
-assert.equal(configFor("internal-testing").android.runtimeVersion, `${app.version}-play`);
+assert.equal(configFor("production").android.runtimeVersion, `${app.version}-disabled`);
+assert.equal(configFor("internal-testing").android.runtimeVersion, `${app.version}-disabled`);
 assert.equal(configFor("razorpay-distribution", "razorpay").android.runtimeVersion,
   `${app.version}-razorpay`);
 assert.equal(configFor(undefined, "razorpay").android.runtimeVersion,
@@ -37,16 +37,17 @@ assert.notEqual(configFor(undefined, "razorpay").android.runtimeVersion,
   configFor("production").android.runtimeVersion);
 assert.throws(
   () => configFor("production", "razorpay"),
-  /Google Play builds must use Google Play Billing/
+  /Android release builds must keep new purchases disabled/
 );
 assert.throws(
   () => configFor("preview", "unexpected"),
-  /MEDVEDA_PAYMENT_PROVIDER must be play, razorpay or disabled/
+  /MEDVEDA_PAYMENT_PROVIDER must be/
 );
-assert.equal(eas.production.env.MEDVEDA_PAYMENT_PROVIDER, "play");
-assert.equal(eas["internal-testing"].env.MEDVEDA_PAYMENT_PROVIDER, "play");
+assert.equal(eas.production.env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
+assert.equal(eas["internal-testing"].env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
 assert.equal(eas["razorpay-distribution"], undefined);
-assert.throws(() => configFor("custom", "razorpay", "android"), /Google Play builds must use Google Play Billing/);
-assert.throws(() => configFor("custom", "disabled"), /Disabled payments are reserved for isolated staging/);
+assert.throws(() => configFor("custom", "razorpay", "android"), /Android release builds must keep new purchases disabled/);
+assert.equal(configFor("custom", "disabled").extra.medvedaPaymentProvider, "disabled");
+assert.equal(configFor("production", "play").extra.medvedaPaymentProvider, "disabled");
 
 console.log("Payment provider and package configuration checks passed.");

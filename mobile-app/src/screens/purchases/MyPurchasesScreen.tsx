@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react";
 import {
-  Platform,
-  TouchableOpacity,
   View,
   Text,
   StyleSheet,
@@ -11,15 +9,13 @@ import {
 
 import { useFocusEffect } from "@react-navigation/native";
 
-import { paymentProvider } from "../../config/paymentProvider";
-import { restorePlayPurchases } from "../../services/playBillingService";
-
 import EmptyState from "../../components/EmptyState";
 import ErrorState from "../../components/ErrorState";
 import BottomNav from "../../components/BottomNav";
 
 import { fetchMyPurchases, MyPurchase } from "../../services/purchasesService";
 import { ProductScope } from "../../services/productsService";
+import { recoverMyPendingPayments } from "../../services/paymentService";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
@@ -62,8 +58,6 @@ function formatDate(ms?: number) {
 }
 
 export default function MyPurchasesScreen() {
-  const [restoring, setRestoring] = useState(false);
-  const [restoreMessage, setRestoreMessage] = useState("");
   const [purchases, setPurchases] = useState<MyPurchase[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,25 +75,18 @@ export default function MyPurchasesScreen() {
       .finally(() => setLoading(false));
   }, []);
 
-  const checkPlayPurchases = async () => {
-    setRestoring(true);
-    setRestoreMessage("Checking Google Play purchases…");
-    try {
-      const result = await restorePlayPurchases();
-      setRestoreMessage(result.failed || result.pending
-        ? "Some purchases are still unconfirmed. Check again when connected, or contact support."
-        : "Play check complete. Your confirmed purchases appear below.");
-      load();
-    } catch {
-      setRestoreMessage("Could not check Google Play. Please check your connection and try again.");
-    } finally { setRestoring(false); }
-  };
-
   // Refresh every time the screen is focused, so a purchase made just now
   // (via the external Razorpay checkout page) shows up on return.
   useFocusEffect(
     useCallback(() => {
+      let active = true;
       load();
+      // History renders immediately; bounded recovery refreshes it if a recent
+      // provider-captured attempt was lost when the app process ended.
+      void recoverMyPendingPayments().then((recovered) => {
+        if (active && recovered) load();
+      }).catch(() => {});
+      return () => { active = false; };
     }, [load])
   );
 
@@ -108,12 +95,6 @@ export default function MyPurchasesScreen() {
       <View style={styles.container}>
         <Text style={styles.title}>My Purchases</Text>
         <Text style={styles.subtitle}>Your order & payment history</Text>
-
-        {Platform.OS === "android" && paymentProvider === "play" && <TouchableOpacity disabled={restoring} onPress={checkPlayPurchases}
-          accessibilityRole="button" style={{ paddingVertical: 12 }}>
-          <Text>{restoring ? "Checking…" : "Check Google Play purchases"}</Text>
-        </TouchableOpacity>}
-        {!!restoreMessage && <Text accessibilityLiveRegion="polite">{restoreMessage}</Text>}
 
         {loading ? (
           <ActivityIndicator
@@ -162,7 +143,7 @@ export default function MyPurchasesScreen() {
               );
             }}
             ListEmptyComponent={
-              <EmptyState title="🧾 No purchases yet. Buy a chapter, subject, or year pack from the Store to see it here." />
+              <EmptyState title="🧾 No purchases yet. Your confirmed purchases will appear here." />
             }
           />
         )}

@@ -20,32 +20,38 @@ const path = require("path");
 
 module.exports = ({ config }) => {
   require("./scripts/check-staging-build.cjs").checkStagingBuild(process.env);
-  const paymentProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "play";
-  if (!["play", "razorpay", "disabled"].includes(paymentProvider)) {
-    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be play, razorpay or disabled.");
+  // Legacy build environments may still specify Play; they now disable purchases.
+  const configuredProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "disabled";
+  if (!["play", "razorpay", "disabled"].includes(configuredProvider)) {
+    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be play (legacy/disabled), razorpay or disabled.");
   }
-  if (paymentProvider === "disabled" && process.env.MEDVEDA_BUILD_TARGET !== "staging") {
-    throw new Error("Disabled payments are reserved for isolated staging.");
-  }
-  if (process.env.MEDVEDA_BUILD_TARGET !== "staging" &&
-      (process.env.EAS_BUILD_PLATFORM === "android" ||
-      ["production", "internal-testing"].includes(process.env.EAS_BUILD_PROFILE)) &&
-      paymentProvider !== "play") {
-    throw new Error("Google Play builds must use Google Play Billing.");
+  const paymentProvider = configuredProvider === "play" ? "disabled" : configuredProvider;
+  const razorpayTest = process.env.MEDVEDA_DISTRIBUTION === "non-play-internal-test";
+  if (paymentProvider !== "disabled" &&
+      (["production", "internal-testing"].includes(process.env.EAS_BUILD_PROFILE) ||
+       (process.env.EAS_BUILD_PLATFORM === "android" && !razorpayTest))) {
+    throw new Error("Android release builds must keep new purchases disabled.");
   }
   const next = { ...config };
-  next.extra = { ...next.extra, medvedaPaymentProvider: paymentProvider };
+  next.extra = { ...next.extra, medvedaPaymentProvider: paymentProvider,
+    medvedaDistribution: razorpayTest ? "non-play-internal-test" : "standard",
+    medvedaBuildTarget: process.env.MEDVEDA_BUILD_TARGET || "production" };
   if (process.env.MEDVEDA_BUILD_TARGET === "staging") {
     next.name = "MedVeda Staging";
     next.scheme = "medveda-staging";
   }
-  // A Razorpay OTA update must never match the runtime of a Play-installed app.
+  if (razorpayTest) {
+    next.name = "MedVeda Razorpay Test";
+    next.scheme = "medveda-razorpay-test";
+  }
+  // Keep this native build separate from earlier Play Billing and Razorpay runtimes.
   // EAS Update does not supply EAS_BUILD_PROFILE, so the profile check above
   // cannot protect an update published to the wrong channel by itself.
   next.android = {
     ...next.android,
     ...(process.env.MEDVEDA_BUILD_TARGET === "staging" ? { package: "in.medveda.staging" } : {}),
-    runtimeVersion: `${next.version}-${paymentProvider}`,
+    ...(razorpayTest ? { package: "in.medveda.razorpaytest" } : {}),
+    runtimeVersion: razorpayTest ? `${next.version}-razorpay-internal-test` : `${next.version}-${paymentProvider}`,
   };
 
   const local = path.join(__dirname, "google-services.json");

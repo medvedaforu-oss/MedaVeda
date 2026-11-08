@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, AppState, Platform, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -19,9 +19,6 @@ import {
 
 import { registerForPushNotifications } from "./src/services/pushNotifications";
 import { getCurrentUser } from "./src/services/authState";
-import { supabase } from "./src/config/supabase";
-import { restorePlayPurchases } from "./src/services/playBillingService";
-import { paymentProvider } from "./src/config/paymentProvider";
 import { logError } from "./src/utils/logger";
 
 export default function App() {
@@ -59,24 +56,6 @@ export default function App() {
       stopSyncEngine();
     };
   }, [initializeApp]);
-
-  useEffect(() => {
-    if (Platform.OS !== "android" || paymentProvider !== "play") return;
-    // Play can complete a pending purchase after this screen or process is
-    // gone. Restore unconsumed purchases on login, launch and app resume.
-    const restore = () => { void restorePlayPurchases().catch(() => {}); };
-    restore();
-    const { data: auth } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") restore();
-    });
-    const app = AppState.addEventListener("change", (state) => {
-      if (state === "active") restore();
-    });
-    return () => {
-      auth.subscription.unsubscribe();
-      app.remove();
-    };
-  }, []);
 
   return (
     <SafeAreaProvider>

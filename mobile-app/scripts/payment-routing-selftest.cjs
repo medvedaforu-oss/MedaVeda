@@ -8,7 +8,7 @@ function load(file, mocks, extra = {}) {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
   }).outputText;
   const mod = { exports: {} };
-  vm.runInNewContext(code, { exports: mod.exports, module: mod, console,
+  vm.runInNewContext(code, { exports: mod.exports, module: mod, console, AbortController, setTimeout, clearTimeout,
     process: { env: { EXPO_PUBLIC_SUPABASE_URL: 'https://fixture.invalid' } },
     require: name => { assert.ok(name in mocks, `Unexpected dependency ${name}`); return mocks[name]; }, ...extra });
   return mod.exports;
@@ -18,9 +18,9 @@ function load(file, mocks, extra = {}) {
     const actual = load('src/config/paymentProvider.ts', {
       'expo-constants': { __esModule: true, default: { expoConfig: { extra: { medvedaPaymentProvider: configured } } } },
       'react-native': { Platform: { OS: os } },
+      'expo-application': { applicationId: 'in.medveda.app' },
     }).paymentProvider;
-    assert.equal(actual, configured === 'disabled' ? 'disabled' :
-      os === 'android' ? 'play' : configured === 'razorpay' ? 'razorpay' : 'play');
+    assert.equal(actual, os !== 'android' && configured === 'razorpay' ? 'razorpay' : 'disabled');
   }
   let navigations = 0, notices = 0;
   const disabledPurchase = load('src/hooks/usePurchase.ts', {
@@ -32,7 +32,7 @@ function load(file, mocks, extra = {}) {
   assert.equal(navigations, 0);
   assert.equal(notices, 1);
   let sessions = 0, requests = 0;
-  for (const provider of ['play', 'razorpay']) {
+  for (const provider of ['disabled', 'razorpay']) {
     const service = load('src/services/paymentService.ts', {
       '../config/supabase': { supabase: { auth: { getSession: async () => {
         sessions++; return { data: { session: { access_token: 'synthetic' } } };
@@ -40,9 +40,10 @@ function load(file, mocks, extra = {}) {
       'react-native': { Platform: { OS: 'android' } },
       'expo-application': { nativeApplicationVersion: '1.2.0' },
       '../config/paymentProvider': { paymentProvider: provider },
+      './authState': { getCurrentUser: () => null },
     }, { fetch: async () => { requests++; return { ok: true, json: async () => ({ internalOrderId: 'fixture' }) }; } });
-    if (provider === 'play') {
-      await assert.rejects(service.purchaseProduct('notes'), /Google Play Billing/);
+    if (provider === 'disabled') {
+      await assert.rejects(service.purchaseProduct('notes'), /New purchases are unavailable/);
       assert.equal(sessions, 0); assert.equal(requests, 0);
     } else {
       assert.equal((await service.purchaseProduct('notes')).internalOrderId, 'fixture');
@@ -57,10 +58,10 @@ function load(file, mocks, extra = {}) {
       './checkoutHtmlTemplate': {}, '../../services/paymentService': {}, '../../services/ordersService': {},
       './checkoutNavigation': {}, '../../config/paymentProvider': { paymentProvider: provider },
     }).default();
-    if (provider === 'play') {
+    if (provider === 'disabled') {
       assert.equal(screen.type, 'View');
-      assert.match(screen.props.children.props.children, /Google Play Billing/);
+      assert.match(screen.props.children.props.children, /New purchases are unavailable/);
     } else assert.equal(screen.type.name, 'RazorpayCheckoutScreen');
   }
-  console.log('PASS staging disables payment navigation; Play and Razorpay routing guards preserved');
+  console.log('PASS disabled payments block navigation and requests; existing Razorpay guards preserved');
 })().catch(error => { console.error(error); process.exitCode = 1; });

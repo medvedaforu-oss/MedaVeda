@@ -1,0 +1,18 @@
+{
+  "payment-provider-selftest.cjs": 0,
+  "payment-routing-selftest.cjs": 0,
+  "release-payments-disabled-selftest.cjs": 0,
+  "purchases-unavailable-ui-selftest.cjs": 0,
+  "payment-poll-selftest.cjs": 0,
+  "payment-request-selftest.cjs": 0,
+  "payment-verdict-selftest.cjs": 0,
+  "payment-summary-selftest.cjs": 0,
+  "purchases-selftest.cjs": 0,
+  "staging-build-selftest.cjs": 0,
+  "same-project-build-selftest.cjs": 0,
+  "navigation-lazy-selftest.cjs": 0,
+  "offline-owner-selftest.cjs": 0,
+  "offline-download-selftest.cjs": 0,
+  "checkout-html-selftest.mjs": 0,
+  "verify-signature-selftest.js": 0
+}

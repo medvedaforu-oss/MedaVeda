@@ -1,11 +1,9 @@
 # Android regression and performance checklist — 27 October 2026
 
-For `perf-size-1`; [measurements and build/size procedure](MEDVEDA_PERF_SIZE_2026-10-27.md).
-**All device checkboxes are pending.** Native runtime acceptance is still pending.
-Cloud production before/after builds and matching shrink/control builds completed;
-sizes, API 36, signatures and static 16 KB checks pass in the
-[native artifact report](MEDVEDA_NATIVE_SIZE_2026-10-27.md). Device checks below
-remain separate from those completed static checks.
+Use the [current release gates](../RELEASE_GATES.md) and
+[production build/submission guide](../../mobile-app/PLAY_STORE_SUBMISSION.md).
+Device acceptance must use the new candidate; historical static checks and
+size reductions do not certify the current binary. All device boxes are pending.
 Record revision, AAB SHA-256, versionCode, signing fingerprint, device model/ABI,
 Android version/page size, network, clean/upgrade install and account type.
 Compare with a build of `99c91a4` using the same dependencies/profile/toolchain.
@@ -35,10 +33,10 @@ Compare with a build of `99c91a4` using the same dependencies/profile/toolchain.
   page controls/zoom, offline expiry/rollback, refund/block/revocation and screenshot
   protection. Test native viewer separately on 16 KB Android.
 - [ ] Store/checkout/referral/settings: first navigation, repeated navigation,
-  Android back, existing state, prices, all normal buttons. Use Play internal-track
-  license testers for success/cancel/failure/pending/restore/duplicate callback;
-  compare server verification/grants exactly. This patch changes only navigator
-  import timing for these screens; their business logic is unchanged.
+  Android back, existing state, prices, all normal buttons. Production/internal
+  testing must show purchases unavailable without checkout or external payment
+  links. Verify existing owned Notes and history. A permitted non-Play test APK
+  has separate hosted payment acceptance gates; see the current release gates.
 - [ ] Search: empty cold open, first query, typing/debounce, filters, every result
   type, opening/failed opening, saved offline index, explicit refresh, 15-minute
   reuse, more than one catalog page, course change and account switch.
@@ -98,16 +96,15 @@ Compare with a build of `99c91a4` using the same dependencies/profile/toolchain.
 
 ## Extra gate for any R8 trial
 
-- [x] Run the existing `shrink-test` profile and matching unshrunk control.
-  Both builds passed; APK reduction is 9,806,464 B (7.3%). Production stays off.
-  Build IDs/checksums/native symbols are retained in the native report.
+- [ ] Build the current `shrink-test` profile and matching unshrunk control.
+  Measure both exact artifacts and retain checksums/native symbols. Historical
+  7.3% reduction does not establish current size or runtime behavior.
 - [ ] Inspect merged consumer keep rules and missing-class warnings for
-  Billing/OpenIAP, Sentry, PDF/pdfium/blob-util, SQLite/Expo modules, FCM/
+  Sentry, PDF/pdfium/blob-util, SQLite/Expo modules, FCM/
   notifications, WebView JavaScript interfaces and Hermes/JNI.
 - [ ] Repeat all behavior checks above on the shrunk binary, including real
-  native PDF, licensed Play restore, push tap cold start, SQLite migrations,
+  native PDF, disabled Play purchase controls, push tap cold start, SQLite migrations,
   offline quiz/outbox, logout/account switch and symbolicated crash handling.
-- [x] Static ELF/ZIP 16 KB, API 36 and APK signing checks pass; measured shrink
-  gain recorded. These checks do not establish runtime behavior.
+- [ ] Recheck static ELF/ZIP 16 KB, target API and APK signing on the new binary.
 - [ ] Launch on a 16 KB device/emulator and complete all shrunk-binary flows.
   Enable production shrinking only after that evidence and owner approval.

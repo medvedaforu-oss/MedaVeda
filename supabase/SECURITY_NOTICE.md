@@ -4,8 +4,8 @@
   `supabase/functions/.env.example` as the template.
 * Production Razorpay and webhook secrets exist only as Supabase function secrets
   (`supabase secrets set ...`). The three values must all be different (API key id, API key
-  secret, webhook secret), the key id must start with `rzp_live_`, and `ALLOW_TEST_MODE` must be
-  unset in production (the functions refuse to run with a `rzp_test_` key without it).
+  secret, webhook secret). The validator requires `APP_ENV=production` with an `rzp_live_` key,
+  or `APP_ENV=staging` with an `rzp_test_` key; mismatches fail closed. `ALLOW_TEST_MODE` is ignored.
 * Check what is deployed without revealing it: `supabase secrets list` shows a digest per secret;
   two secrets that should differ showing the same digest means one was set wrongly.
 * An earlier revision of this repo contained a committed test key. Treat that key as burned: it must

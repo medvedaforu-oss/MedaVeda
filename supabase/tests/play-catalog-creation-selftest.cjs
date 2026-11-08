@@ -18,7 +18,8 @@ let account;
 function setup() {
   let handler;
   const state = { product: null, calls: [], rpc: [], error: null, overrides: {}, created: false, activated: false,
-    version: '2022/02', ready: 0, eligible: true, leaseValid: true, knownTier: false, candidate: sku };
+    version: '2022/02', ready: 0, eligible: true, leaseValid: true, knownTier: false, candidate: sku,
+    price: '137.25' };
   const env = { GOOGLE_PLAY_PACKAGE_NAME: 'in.medveda.app', GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: account,
     PLAY_CATALOG_CRON_SECRET: secret };
   const deno = { env: { get: name => name === 'PLAY_CATALOG_REGIONS_VERSION' ? state.version : env[name] },
@@ -47,8 +48,12 @@ function setup() {
       const body = JSON.parse(init.body);
       assert.equal(body.productId, state.candidate);
       assert.equal(body.purchaseOptions.length, 1);
+      assert.equal(body.purchaseOptions[0].purchaseOptionId, 'buy');
+      assert.deepEqual(body.purchaseOptions[0].buyOption, { legacyCompatible: true, multiQuantityEnabled: false });
+      const [whole, fraction = ''] = state.price.split('.');
       assert.deepEqual(body.purchaseOptions[0].regionalPricingAndAvailabilityConfigs,
-        [{ regionCode: 'IN', availability: 'AVAILABLE', price: { currencyCode: 'INR', units: '137', nanos: 250000000 } }]);
+        [{ regionCode: 'IN', availability: 'AVAILABLE', price: { currencyCode: 'INR', units: whole,
+          nanos: Number(fraction.padEnd(2, '0')) * 10000000 } }]);
       assert.equal(body.purchaseOptions[0].newRegionsConfig, undefined);
       assert.equal(body.purchaseOptions[0].state, undefined); // output-only
       assert.equal(body.regionsVersion, undefined); // query parameter, output-only in resource
@@ -87,7 +92,7 @@ function setup() {
       rpc: async (name, args) => {
         state.rpc.push({ name, args });
         let data = true;
-        if (name === 'claim_play_price_sync') data = [{ price_inr: '137.25', candidate_sku: state.candidate,
+        if (name === 'claim_play_price_sync') data = [{ price_inr: state.price, candidate_sku: state.candidate,
           purchase_option_id: 'buy', lease_id: 'fixture-lease' }];
         if (name === 'play_price_has_eligible_product') data = state.eligible;
         if (name === 'rotate_play_price_sku') { state.candidate = rotatedSku; state.product = null; data = rotatedSku; }
@@ -114,6 +119,25 @@ function setup() {
   account = JSON.stringify({ client_email: 'fixture@example.invalid',
     private_key: `-----BEGIN PRIVATE KEY-----\n${btoa(String.fromCharCode(...bytes))}\n-----END PRIVATE KEY-----` });
   let cases = 0;
+  // Exercise the confirmed failing prices through the real creation worker,
+  // including both independent read-backs and an idempotent replay.
+  for (const price of ['1', '2', '1.01', '137.25']) {
+    const f = setup(); f.state.price = price;
+    f.state.candidate = `notes_${price.replace('.', '_')}_v_fixture`;
+    assert.equal((await f.invoke()).body.status, 'ready');
+    assert.deepEqual(f.state.calls.map(c => c.stage), ['oauth', 'get', 'patch', 'created', 'activate', 'activated']);
+    assert.equal((await f.invoke()).body.status, 'ready');
+    assert.equal(f.state.calls.filter(c => c.stage === 'patch').length, 1);
+    assert.equal(f.state.calls.filter(c => c.stage === 'activate').length, 1);
+    const finished = f.state.rpc.filter(c => c.name === 'finish_play_price_sync');
+    assert.equal(finished.length, 2);
+    for (const call of finished) {
+      assert.equal(call.args.p_price, price);
+      assert.equal(call.args.p_sku, f.state.candidate);
+      assert.equal(call.args.p_option, 'buy');
+    }
+    cases++;
+  }
   const success = setup();
   assert.equal((await success.invoke(false)).status, 401);
   assert.equal(success.state.calls.length + success.state.rpc.length, 0);

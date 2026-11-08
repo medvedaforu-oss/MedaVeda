@@ -1,0 +1,10 @@
+{
+  "preservation": "PASS: exact expected source delta; backend/admin/website/CI and original user edits preserved",
+  "lockfile": "PASS: js-sha256 is the only removed package; only root entry otherwise changed",
+  "activeAnalytics": "PASS: original source prefix unchanged; native payload/web skip/fail-soft mocked fixture passed",
+  "checkoutNoOp": "PASS: exact implementation comment/signature/body unchanged",
+  "authImplementation": "PASS: authService and canonical ResetPasswordScreen byte-identical",
+  "routeRegression": "PASS: new assertion fails on saved original navigator and passes after registration",
+  "native": "UNVERIFIED: Gradle network restriction and absent Android SDK",
+  "backend": "UNVERIFIED: missing Deno npm cache / DNS; runtime and hosted integration not run"
+}

@@ -2,12 +2,34 @@ import { supabase } from "../config/supabase";
 import { Platform } from "react-native";
 import * as Application from "expo-application";
 import { paymentProvider } from "../config/paymentProvider";
+import { getCurrentUser } from "./authState";
 
 // Supabase Edge Functions that back the payment flow (see
 // supabase/functions/{create-order,verify-payment}).
 // Deployed with e.g. `supabase functions deploy create-order`.
 const projectUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const CREATE_ORDER_URL = `${projectUrl}/functions/v1/create-order`;
+const VERIFY_PAYMENT_URL = `${projectUrl}/functions/v1/verify-payment`;
+const PAYMENT_REQUEST_TIMEOUT_MS = 35_000;
+
+// Bound both the request and response-body read. Resume/poll callers can retry
+// after a dropped connection instead of waiting indefinitely.
+async function paymentRequest(url: string, init: RequestInit) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), PAYMENT_REQUEST_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { ...init, signal: controller.signal });
+    const body = await res.json();
+    return { res, body };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function assertVerifyUrl(url: string) {
+  // Recovery sends a bearer token: route parameters may never choose its host.
+  if (url !== VERIFY_PAYMENT_URL) throw new Error("Invalid payment verification endpoint.");
+}
 
 export interface CheckoutData {
   keyId: string;
@@ -31,6 +53,7 @@ export interface CheckoutData {
 
 export interface VerifyResult {
   success: boolean;
+  pending?: boolean;
   title?: string;
   message?: string;
   productTitle?: string;
@@ -73,7 +96,7 @@ export async function purchaseProduct(
   buyerState?: string
 ): Promise<CheckoutData> {
   if (Platform.OS !== "android") throw new Error("Purchases are available in the Android app.");
-  if (paymentProvider !== "razorpay") throw new Error("Use Google Play Billing to purchase this item.");
+  if (paymentProvider !== "razorpay") throw new Error("New purchases are unavailable in this app version.");
   const { data } = await supabase.auth.getSession();
   const accessToken = data.session?.access_token;
 
@@ -85,7 +108,7 @@ export async function purchaseProduct(
   // an amount. The server reads the price from the products table, applies the
   // friend discount and wallet rules, creates the order and the Razorpay order
   // together, and returns the checkout data. The client cannot write to `orders`.
-  const res = await fetch(CREATE_ORDER_URL, {
+  const { res, body } = await paymentRequest(CREATE_ORDER_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -99,7 +122,6 @@ export async function purchaseProduct(
     }),
   });
 
-  const body = await res.json().catch(() => ({}));
   if (!res.ok) {
     throw new Error(body.error || "Could not start payment. Please try again.");
   }
@@ -126,14 +148,14 @@ async function verifyPaymentOnce(
     razorpay_signature: string;
   }
 ): Promise<VerifyResult> {
-  const res = await fetch(verifyUrl, {
+  assertVerifyUrl(verifyUrl);
+  const { res, body } = await paymentRequest(verifyUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json",
       "x-medveda-app-version": Application.nativeApplicationVersion ?? "" },
     body: JSON.stringify(payload),
   });
 
-  const body = await res.json().catch(() => ({}));
 
   if (!res.ok && body.success === undefined) {
     // Transport-level/unexpected error shape (missing fields, 500, etc).
@@ -198,14 +220,14 @@ export async function recoverPayment(
   const { data } = await supabase.auth.getSession();
   const accessToken = data.session?.access_token;
   if (!accessToken) throw new Error("Please log in before checking payment status.");
-  const res = await fetch(verifyUrl, {
+  assertVerifyUrl(verifyUrl);
+  const { res, body } = await paymentRequest(verifyUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`,
       "x-medveda-app-version": Application.nativeApplicationVersion ?? "" },
     body: JSON.stringify({ internalOrderId, recover: true }),
   });
 
-  const body = await res.json().catch(() => ({}));
 
   if (!res.ok && body.success === undefined) {
     throw new Error(body.error || "Could not check payment status.");
@@ -251,4 +273,41 @@ export async function recoverPaymentWithRetry(
   }
 
   return lastResult;
+}
+
+
+const recoveryByUser = new Map<string, Promise<boolean>>();
+
+// My Purchases can recover recent attempts even when Android lost the checkout
+// route during process death. This remains available when NEW purchases are off.
+export async function recoverMyPendingPayments(): Promise<boolean> {
+  const uid = getCurrentUser()?.id;
+  if (!uid) return false;
+  const existing = recoveryByUser.get(uid);
+  if (existing) return existing;
+  const work = (async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), PAYMENT_REQUEST_TIMEOUT_MS);
+    try {
+      const { data, error } = await supabase.from("orders")
+        .select("id,purchases(status)")
+        .eq("user_id", uid).eq("provider", "razorpay")
+        .in("status", ["created", "paid", "failed", "cancelled"])
+        .not("razorpay_order_id", "is", null)
+        .gte("created_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        .order("created_at", { ascending: false }).limit(10).abortSignal(controller.signal);
+      clearTimeout(timer);
+      if (error) return false;
+      const candidates = (data ?? []).filter((row) => !row.purchases?.length).slice(0, 3);
+      const results = await Promise.allSettled(candidates.map(async (row) => {
+        if (getCurrentUser()?.id !== uid) return false;
+        const result = await recoverPayment(VERIFY_PAYMENT_URL, row.id);
+        return getCurrentUser()?.id === uid && result.success;
+      }));
+      return results.some((result) => result.status === "fulfilled" && result.value);
+    } finally { clearTimeout(timer); }
+  })();
+  recoveryByUser.set(uid, work);
+  try { return await work; }
+  finally { recoveryByUser.delete(uid); }
 }

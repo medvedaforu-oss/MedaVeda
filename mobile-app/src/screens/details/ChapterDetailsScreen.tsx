@@ -1,3 +1,4 @@
+import { paymentProvider } from "../../config/paymentProvider";
 import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
@@ -132,6 +133,7 @@ function ChapterDetailsScreen() {
       {!notesUnlocked && Platform.OS === "android" && (
         <>
           <Text style={styles.buySectionTitle}>Unlock PDF Notes</Text>
+          {paymentProvider === "disabled" && <Text style={styles.empty}>New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account.</Text>}
 
           {loading ? (
             <ActivityIndicator size="large" color={COLORS.accent} />
@@ -155,7 +157,7 @@ function ChapterDetailsScreen() {
                   style={styles.buyCardPrice}
                   onPress={() => buy(product)}
                 >
-                  ₹{product.price}
+                  {paymentProvider === "disabled" ? "Unavailable" : `₹${product.price}`}
                 </Text>
               </View>
             ))

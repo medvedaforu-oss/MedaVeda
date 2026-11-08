@@ -10,7 +10,7 @@ Study app for the five AYUSH degrees: a React Native mobile app, an admin panel,
 | [admin-panel/](admin-panel) | Admin dashboard | React, Vite, TypeScript, Tailwind |
 | [website/](website) | Public site and legal pages (medveda.in) | Static HTML/CSS/JS |
 | [supabase/](supabase) | Migrations, Edge Functions, SQL tests, `config.toml` | Postgres, Deno |
-| [docs/](docs) | Analysis notes and the long [setup guide](docs/SETUP_GUIDE.md) | Markdown |
+| [docs/](docs) | [Release gates](docs/RELEASE_GATES.md), migration runbooks and legal review | Markdown |
 
 ## Run locally
 
@@ -59,15 +59,15 @@ The same script runs in CI (`.github/workflows/ci.yml`) together with the admin/
 |---|---|---|
 | mobile-app | `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`, `EXPO_PUBLIC_SENTRY_DSN` | [mobile-app/.env.example](mobile-app/.env.example) |
 | admin-panel | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | [admin-panel/.env.example](admin-panel/.env.example) |
-| Edge Functions | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `ALLOW_TEST_MODE`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | [supabase/functions/.env.example](supabase/functions/.env.example) |
+| Edge Functions | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `APP_ENV`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | [supabase/functions/.env.example](supabase/functions/.env.example) |
 
 Only public/publishable Supabase keys go in the app and admin panel. The service-role key and Razorpay secrets exist only as Supabase function secrets (`supabase secrets set ...`).
 
 ## Deploy
 
-- **Edge Functions and DB:** `supabase db push`, then `supabase functions deploy <name>`. Set secrets with `supabase secrets set`. Use live Razorpay keys in production and leave `ALLOW_TEST_MODE` unset.
+- **Edge Functions and DB:** `supabase db push`, then `supabase functions deploy <name>`. Set secrets with `supabase secrets set`. Confirm the exact migration plan first; use `APP_ENV=production` with live Razorpay keys. `ALLOW_TEST_MODE` is ignored.
 - **Admin panel:** `npm run build`, deploy `dist/` (Vercel; needs SPA rewrites to `index.html`).
 - **Website:** deployed on Vercel from `website/` (`vercel.json`); the built `.html` files are committed.
-- **Mobile app:** EAS Build (`eas build --platform android --profile production`); see `mobile-app/eas.json`.
+- **Mobile app:** from `mobile-app/`, run `npx eas-cli build --platform android --profile production`; see `mobile-app/eas.json`. Production disables new purchases; existing Notes entitlements remain server-checked.
 
-Full step-by-step instructions: [docs/SETUP_GUIDE.md](docs/SETUP_GUIDE.md).
+Setup and operations: [admin deployment](ADMIN_PANEL_DEPLOYMENT.md), [website](website/README.md), [backend deployment](supabase/DEPLOY_ORDER.md), [isolated staging](supabase/staging/README.md), and [Android submission](mobile-app/PLAY_STORE_SUBMISSION.md). Review [current release gates](docs/RELEASE_GATES.md) before any hosted migration or release.

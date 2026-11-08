@@ -58,7 +58,8 @@ declaration.
 
 The details below document the existing integration for a future eligibility
 review; they are not collection paths in the current Play build. The Play
-build must continue to use Google Play Billing only.
+build now disables new purchases after removal of mobile Google Play Billing.
+Earlier transaction verification, refunds and retention remain backend obligations.
 
 | Data type | New collection / recipient | Why and when | Play Console review |
 |---|---|---|---|
@@ -73,7 +74,7 @@ pages. The seller state remains unset until the owner supplies it; it is not a
 substitute for the buyer-selected state. UCB enrollment, exact live price-tier
 inventory, a successful report with the buyer state and snapshotted 0% tax,
 and licensed Play testing remain release gates, as listed in
-`docs/UCB_SETUP.md`.
+[the current release gates](../docs/RELEASE_GATES.md).
 
 ## Executive findings
 
@@ -231,8 +232,9 @@ and `android:allowBackup="false"`.
 * At the 2026-10-09 baseline, `IN_APP_PURCHASES_ENABLED` was not found in
   `mobile-app/` source/configuration or `package.json`. Re-audit the final UCB
   build and any remote feature flags before filing.
-* The Google Play build selects Google Play Billing only. Razorpay checkout is
-  available only in the separately configured non-Play distribution profile.
+* The Android build disables new purchases. Mobile Google Play Billing is removed;
+  earlier purchase history and backend transaction/refund processing remain.
+  No replacement checkout is enabled.
   Declare purchase data paths that are reachable in the exact submitted build;
   do not declare UCB transaction reporting or buyer-state collection for the
   Play build unless those features are later approved and enabled.

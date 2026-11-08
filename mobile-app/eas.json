@@ -48,7 +48,7 @@
       "env": {
         "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_fXCKukdHR8Yy05Er-t47wQ_fxHuYMZD",
-        "MEDVEDA_PAYMENT_PROVIDER": "play"
+        "MEDVEDA_PAYMENT_PROVIDER": "disabled"
       },
       "channel": "production"
     },
@@ -60,7 +60,7 @@
       "environment": "preview",
       "env": {
         "MEDVEDA_BUILD_TARGET": "same-project",
-        "MEDVEDA_PAYMENT_PROVIDER": "play",
+        "MEDVEDA_PAYMENT_PROVIDER": "disabled",
         "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_fXCKukdHR8Yy05Er-t47wQ_fxHuYMZD"
       },
@@ -78,6 +78,20 @@
         "MEDVEDA_PAYMENT_PROVIDER": "disabled",
         "EXPO_PUBLIC_SUPABASE_URL": "https://nsmsqsogedzohwboripd.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "REPLACE_WITH_STAGING_PUBLISHABLE_KEY"
+      }
+    },
+    "razorpay-internal-test": {
+      "distribution": "internal",
+      "environment": "development",
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "razorpay-internal-test",
+      "env": {
+        "MEDVEDA_BUILD_TARGET": "staging",
+        "MEDVEDA_DISTRIBUTION": "non-play-internal-test",
+        "MEDVEDA_PAYMENT_PROVIDER": "razorpay",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://nsmsqsogedzohwboripd.supabase.co"
       }
     },
     "shrink-test": {

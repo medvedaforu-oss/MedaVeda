@@ -1,4 +1,97 @@
-# Deploy order (audit fixes + referral, Sept 2026)
+# Backend deployment order and operations
+
+
+Current handoff: 4 November 2026. Read [release gates](../docs/RELEASE_GATES.md)
+first. The September matrix below documents migration dependencies, not current
+hosted state. Refresh project/history/schema and verify restorable backups before
+any write. The linked production ref must not be used implicitly for staging.
+
+## Current deployment handoffs
+
+- [Isolated staging](staging/README.md) and [migration safety](staging/MIGRATION_SAFETY_AUDIT.md).
+- [Quiz/admin URL cutover and forward recovery](../docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md).
+- [Razorpay snapshot/retry migration, Edge deployment and rollback](../docs/audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md).
+- Course/year repair: review `migrations/20261104110000_course_year_profile_confirmation.sql`
+  against current deployed history; validate caller-only profile creation and
+  exact saved IDs in staging before hosted rollout.
+
+Stage only the exact reviewed pending SQL in a separate temporary CLI project;
+copy the required configuration, validate the target and dry-run, then apply
+through the migration-history-aware workflow. Do not move files out of the
+shared checkout, blindly push all pending migrations or use standalone DDL that
+omits migration history. Verify grants, counts and dependencies after each step.
+
+## Trusted PDF upload and quarantine deployment
+
+Review these dependencies against live history; do not replay already-applied SQL:
+
+1. `20261018110000_trusted_note_uploads.sql` makes Notes private, restricts direct
+   client writes and introduces trusted upload/save state. Coordinate an admin
+   upload maintenance window; old direct-upload clients intentionally stop working.
+2. `20261018120000_note_upload_deleted_retry.sql` hardens deleted-note/retry paths.
+3. `20261018130000_note_pdf_quarantine.sql` adds private quarantine, validation
+   queues and service-only leases/RPCs. Keep ambiguous objects and ledger intact.
+4. Deploy only the reviewed `upload-note-pdf` after its schema exists; its
+   `verify_jwt=false` gateway retains independent bearer/admin/MFA authentication.
+   Verify deployed authentication, hash/size match on ambiguous-upload retry,
+   invalid/oversized input denial and duplicate-request behavior.
+5. Operate `workers/validate-note-pdf.ts` in a supervised private Deno runtime,
+   not as an Edge Function. Source currently requires the exact production URL,
+   private service-role credentials and `MEDVEDA_VALIDATOR_APPROVAL` equal to
+   `APPROVED_QUARANTINE_VALIDATOR`. That flag is a technical guard, not approval.
+   The production guard must not be bypassed to claim isolated staging acceptance;
+   a separately reviewed staging worker arrangement is needed for that rehearsal.
+   Give at least 512 MiB initially, OS CPU/memory limits and a five-minute hard
+   deadline. Each invocation processes at most one job; supervise repeat execution.
+6. Deploy/enable the new admin upload flow only when schema, function and validator
+   are ready. Test draft create/edit/publish/delete, retries and refresh errors.
+   Publishing `active=true` affects the shared catalog; use controlled visibility.
+
+Keep over-10 MiB upload use disabled until hosted 1/10/near-50 MiB memory,
+timeout/network failure, duplicate worker/stale lease, denied-read and signed
+retrieval tests pass. Quarantine uses ten-minute leases and five attempts;
+structural/hash PDF validation is not malware scanning. On failure, stop the
+worker/new upload UI, retain queues/objects and repair forward; never reopen
+public Storage or discard ambiguous objects as routine rollback.
+
+## Historical Play payment support worker
+
+Mobile Billing removal does not retire existing transaction obligations.
+`functions/play-payment-worker/index.ts` handles authenticated `consume`,
+`reconcile` and `voids` phases; it does not accept caller-supplied purchase IDs.
+Review deployed schema/prerequisites including
+`20261015100000_play_payment_jobs.sql`, worker revision and queue state first.
+
+Required server secret names: `PLAY_PAYMENT_CRON_SECRET` (32+ characters),
+`GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`, `GOOGLE_PLAY_PACKAGE_NAME`; injected Supabase
+service credentials stay server-side. `UCB_SENTRY_DSN` supplies best-effort alerts.
+The worker's `verify_jwt=false` route authenticates the dedicated
+`x-play-payment-cron-secret` header. Current `play_payment_cron_setup.sql` reads
+Vault **`PLAY_PAYMENT_CRON_SECRET`** and must match the Edge secret; older
+lowercase Vault-name instructions are superseded. Inspect script contents and
+project URL before use. Executing that SQL enables jobs; it is not a read-only
+health check.
+
+Before any approved scheduling, inventory existing job IDs/names and avoid
+running old `ucb-consume`/`ucb-reconcile` alongside the replacement phases.
+Enable only the reviewed job, observe at least two successful runs, queue leases,
+consumption/reversal and alert behavior, then proceed to the next. On anomaly,
+deactivate only that job and preserve queued records. Catalog scheduling is a
+separate decision: `sync-play-catalog` can create/activate/rotate products and
+must not be invoked as a diagnostic. See [catalog setup](../docs/PLAY_CATALOG_SYNC_SETUP.md).
+
+Monitor `play_recovery_metrics`, parked `play_payment_jobs`, void cursor age,
+provider failures and Sentry. Parked work needs operator review; a cursor beyond
+Google's retained history requires investigation, not blind advancement. Verify
+actual service-account/package access and legitimate historical transaction
+recovery/refund outcomes. Refresh batches/retries/leases from current source;
+old report constants are not current capacity evidence. Retain unrelated
+Razorpay/reporting/refund jobs and financial records during any worker change.
+
+## Historical September migration matrix
+
+The following observations and test commands refer to the dated rollout. Use
+current source/deployed inventories and the handoffs above for new operations.
 
 `supabase db push` applies EVERY pending migration, and the CLI refuses to push one that is older than
 one already applied. Migrations first, then functions, then the admin panel, then the mobile app.
@@ -15,9 +108,9 @@ one already applied. Migrations first, then functions, then the admin panel, the
 
 ## Staging: `db push` cannot pick files
 All stage files are now in `supabase/migrations/`, so a plain `supabase db push` would apply every pending stage at
-once (in the right order, but with no chance to verify between stages). To deploy ONE stage: move the later stages'
-files out (`mkdir -p /tmp/pending && mv supabase/migrations/<later files> /tmp/pending/`), run
-`supabase db push --dry-run` and confirm it lists only that stage, push, verify, then move the files back.
+once (in the right order, but with no chance to verify between stages). To deploy one reviewed stage, use the separate temporary CLI project described above,
+confirm the dry-run lists only that stage, apply it through the approved migration
+workflow and verify its recorded history and schema before proceeding.
 
 | Stage | Migration | Functions / builds | Needs first |
 |---|---|---|---|

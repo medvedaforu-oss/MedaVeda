@@ -1,13 +1,12 @@
 # MedVeda — Play Store Submission Guide
 
 This guide covers the remaining build and Google Play Console steps for the
-MedVeda release. Google Play currently reports that the app is not eligible
-for alternative billing. Therefore Play-distributed builds use Google Play
-Billing only; Razorpay checkout is disabled in those builds. Do not enroll or
-enable alternative billing unless eligibility and program requirements are
-confirmed.
-
-**Production release gate:** remove the ₹1 test tier and re-price all products before production.
+MedVeda release. New purchases are disabled in the Android app after removal
+of Google Play Billing. No replacement checkout is enabled. Existing purchased
+Notes continue to require server-side entitlements. Earlier Play purchases,
+pending transactions, verification, refunds and support require a separate
+operational migration decision; do not disable backend processing or change
+Play products/secrets as part of this mobile change.
 
 ## 1. Google Play Developer Account
 
@@ -52,10 +51,10 @@ variable.
 
 ## 5. Build with EAS
 
-`expo-iap` adds native Android code. Rebuild after installing/changing it;
-Expo Go cannot test billing. Install the Play test-track build for final
-billing tests. The development APK helps with native integration but does not
-replace a Play-installed licensed-tester run.
+This removal requires a new native build; an OTA update cannot remove the
+billing SDK or permission from an installed binary. Inspect the merged release
+manifest and native dependency graph, then the final APK/AAB, to confirm no
+`expo-iap`, BillingClient or `com.android.vending.BILLING` remains.
 
 ```bash
 cd mobile-app
@@ -92,8 +91,8 @@ only disables screenshot blocking; do not use it for production.
 > your study routine.
 >
 > Video lectures and MCQ quizzes are free for every student. PDF Notes are
-> paid content and may be purchased as individual chapter, subject, year or
-> bundle packs where available. Use the app to review study material, practise
+> paid content. New purchases are unavailable in this Android version;
+> previously purchased Notes remain accessible through your account. Use the app to review study material, practise
 > with quizzes and track your quiz scores.
 >
 > MedVeda provides educational content for exam preparation only. It does not
@@ -109,8 +108,8 @@ only disables screenshot blocking; do not use it for production.
 
 **App access**: The app requires login. In Play Console → App content → App
 access, provide test credentials for a verified student account with a paid
-Note already unlocked and clear steps to reach a still-locked Note's checkout.
-Explain that paid digital Notes use Google Play Billing in the Play build.
+Note already unlocked and clear steps to inspect a still-locked Note.
+Explain that new purchases are unavailable in this Android version.
 A reviewer can inspect an already-unlocked Note without paying. Put
 credentials in the Console only, never in this repository.
 
@@ -121,16 +120,15 @@ credentials in the Console only, never in this repository.
 **Target audience**: VERIFY MANUALLY.
 
 **Data safety**: VERIFY MANUALLY against the release build, the privacy policy,
-and every enabled third-party service. The billing flow handles purchase history and Play purchase/obfuscated account
-identifiers. Review the data types collected by the actual release build and
+and every enabled third-party service. The app retains server-backed purchase
+history; earlier Play transaction data may still be processed by backend services. Review the data types collected by the actual release build and
 any enabled third-party service. Use
 [`DATA_SAFETY_AUDIT.md`](DATA_SAFETY_AUDIT.md) for the evidence inventory;
 declare only data actually collected or shared by the release.
 
 **Alternative billing**: Not enabled. Do not display Razorpay or a user-choice
 alternative billing flow in a Google Play build while the app is ineligible.
-The separate `razorpay-distribution` EAS profile is a staging-only internal
-APK, not a Play submission; it requires isolated preview Supabase settings.
+No replacement checkout is enabled by this removal.
 
 ## 8. Submit
 
@@ -146,25 +144,20 @@ Or upload the AAB manually in Play Console → Production → Create release.
       `delete-account` are deployed.
 - [ ] Required Supabase Edge Function secrets are set.
 - [ ] RLS is enabled on all Supabase tables.
-- [ ] The resolved `production` and `internal-testing` app configs select
-      Google Play Billing and do not register a user-choice billing program.
-- [ ] Razorpay checkout is unavailable from every Play-distributed build.
-- [ ] Every live active paid price has an exact active Play one-time SKU at the
-      matching INR price. Record the inventory in `docs/UCB_SETUP.md`.
-- [ ] Google Play Developer API service account permissions and Supabase
-      secrets are configured server-side; no service-account key is shipped.
-- [ ] Play grants are verified server-side before access is granted; test
-      success, pending, cancel/failure, restore, and duplicate-purchase paths.
-- [ ] A Play-installed, licensed Indian tester completes Play success,
-      same-tier repeat purchase, cancel/failure, and recovery.
-- [ ] VERIFY MANUALLY: full purchase flow is tested end-to-end with the
-      production configuration.
+- [ ] The resolved `production` and `internal-testing` app configs disable new purchases.
+- [ ] Buy UI shows purchases unavailable and opens no checkout or external payment link.
+- [ ] The merged release manifest, dependency graph and final APK/AAB contain no
+      `expo-iap`, BillingClient or `com.android.vending.BILLING`.
+- [ ] Existing entitled Notes open; locked Notes remain locked. Purchase history,
+      downloads, offline content, videos and quizzes still work.
+- [ ] Earlier Play purchases and pending transactions have a separate backend/support
+      migration decision, including verification, acknowledgment and refund handling.
 - [ ] In-app Delete Account is tested.
 - [ ] `google-services.json` is for `in.medveda.app` and is available locally
       or as the production `GOOGLE_SERVICES_JSON` EAS file secret.
 - [ ] `eas build --platform android --profile production` succeeds.
 - [ ] Play Console App access includes the verified test student credentials
-      with an unlocked Note and checkout navigation steps.
+      with an unlocked Note and content navigation steps.
 - [ ] The live website Terms, Privacy and Refund pages accurately describe
       the payment provider available in this Play build.
 - [ ] Play Console Data safety, content rating, store listing, screenshots,

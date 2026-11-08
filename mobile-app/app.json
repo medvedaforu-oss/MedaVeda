@@ -45,7 +45,6 @@
       "expo-status-bar",
       "expo-web-browser",
       "expo-sqlite",
-      "expo-iap",
       "./plugins/withAndroidQueries.js",
       "expo-font"
     ],

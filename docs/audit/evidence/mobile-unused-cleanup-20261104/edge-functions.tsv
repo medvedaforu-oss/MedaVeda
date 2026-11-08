@@ -1,0 +1,20 @@
+endpoint	classification	caller_or_compatibility_evidence	decision
+attach-external-token	unused by current mobile; compatibility retained	scripts/ucb-smoke-test.mjs; legacy UCB order flow; external/released-client use unverified	retain; live verification not performed
+create-order	gated mobile compatibility	services/paymentService.ts:88 -> OrderSummaryScreen; disabled Android guard; old clients retained	retain; live verification not performed
+create-play-order	unused by current mobile; compatibility retained	HEAD mobile playBillingService.ts:createPlayOrder; scripts/ucb-smoke-test.mjs; old installed clients	retain; live verification not performed
+delete-account	active mobile	services/usersService.ts:94 -> SettingsScreen	retain; live verification not performed
+diagnose-play-matrix	unverified operational diagnostic	local config.toml entry; manual admin/AAL2 endpoint; no current app caller established	retain; live verification not performed
+diagnose-play-pricing	active admin REST proxy	admin-panel/src/services/playPricingDiagnostic.ts:124 -> /api/diagnose-play-pricing; admin-panel/vercel.json	retain; live verification not performed
+diagnose-play-service-account	active admin source	admin-panel/src/services/playServiceAccountDiagnostic.ts:55	retain; live verification not performed
+get-note-url	active mobile	services/secureNotesService.ts:23 -> Notes/PDF/download access	retain; live verification not performed
+get-video-url	unused by current mobile; compatibility/held rollout retained	supabase/held/batch2-videos/secureVideosService.ts; current videos use direct URLs; deployed/older clients unverified	retain; live verification not performed
+login-with-mobile	active mobile	features/auth/authService.ts:34 -> LoginScreen	retain; live verification not performed
+play-payment-worker	backend job; unverified live	historical cron snapshots/runbooks; consume/reconcile/void/recovery; current scheduling unverified	retain; live verification not performed
+razorpay-webhook	external webhook; unverified live	provider callback; settlement/refund/dispute handlers; scripts/ucb-smoke-test.mjs; no mobile caller expected	retain; live verification not performed
+report-external-transaction	backend job; unverified live	scripts/ucb-smoke-test.mjs; UCB report/refund/void queues; current scheduling unverified	retain; live verification not performed
+request-password-reset-by-mobile	active mobile	features/auth/authService.ts:71 -> ForgotPasswordScreen	retain; live verification not performed
+send-push-notification	active admin source	admin-panel/src/services/notificationService.ts:23	retain; live verification not performed
+sync-play-catalog	backend/admin catalog job; unverified live	admin playBillingSyncService retry RPC; queue triggers/migrations; historical cron snapshots; current scheduling unverified	retain; live verification not performed
+upload-note-pdf	active admin source	admin-panel/src/services/storageService.ts:36,71; quarantine/PDF worker	retain; live verification not performed
+verify-payment	mobile recovery/compatibility	services/paymentService.ts:129,201 -> checkout/pending status; verifyUrl returned by create-order; old clients	retain; live verification not performed
+verify-play-purchase	unused by current mobile; compatibility retained	HEAD mobile playBillingService.ts:verifyPlayPurchase; scripts/ucb-smoke-test.mjs; old installed clients	retain; live verification not performed

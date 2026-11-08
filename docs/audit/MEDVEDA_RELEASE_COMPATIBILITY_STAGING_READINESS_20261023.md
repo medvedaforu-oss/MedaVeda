@@ -1,75 +1,105 @@
-# MedVeda release compatibility and staging readiness — 2026-10-23 UTC
+# Quiz and admin URL migration: compatibility and recovery
 
-**Verdict: NO-GO for production.** This was a source and history-evidence audit. No database write, migration application, deployment, build, secret read, or application source edit was performed. The local disposable PostgreSQL pass is recorded in `docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md:25-29`; it is not a hosted Supabase or released-device result. This report is the only file created by this audit.
+Retained operational handoff, refreshed 4 November 2026. Hosted cutover and
+old/new installed-client acceptance remain unverified. The original October
+migration counts, local line numbers and temporary bundles are not current
+release preconditions. Re-inventory the current checkout and both hosted targets.
+Use the [release gates](../RELEASE_GATES.md) for the current build/purchase boundary.
 
-## 1. Migration history and provenance
+## Migration provenance and dependencies
 
-| Check | Result | Evidence and release consequence |
-| --- | --- | --- |
-| Current local file inventory | **PASS** | `supabase/migrations/` contains 64 SQL files with 64 distinct version prefixes. The final three are `20261020104000_course_wide_content_browsing.sql`, `20261020105000_quiz_answer_read_boundary.sql`, and `20261020110000_admin_url_mfa.sql`, in that order. This is a filesystem count, not proof of remote pending state. |
-| Fresh linked remote history | **BLOCKED** | `supabase/.temp/project-ref` names production `xbvenkfmesugrbjuufyw` (`supabase/staging/README.md:3-5`). A read-only `supabase migration list --linked` attempt returned no history: the CLI first tried to write telemetry under `/home/ganeshp8545/.supabase/`, which is outside this audit's writable scope. `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` were absent from the process environment; their values and local env files were not read. The last documented snapshot, **not a current verification**, is 61 production recorded versions and one then-pending `1040` (`supabase/staging/MIGRATION_SAFETY_AUDIT.md:9-15`). Confirm exactly 61 applied and exactly these three pending with an authorized read-only history listing immediately before release. |
-| `20260801` same-version mismatch | **BLOCKED for provenance; no repair** | The archived remote `20260801` is named `razorpay_webhook_atomic_grant` and duplicates remote `20260801150000`; local `20260801_auth_verified_identities.sql` contains different SQL (`supabase/staging/MIGRATION_SAFETY_AUDIT.md:9-15,86`; `docs/audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md:31-33`). `20260919120000_multi_course_and_referrals.sql:88-99` adds the needed profile fields idempotently. Thus a matching version number cannot attest to an identical database body. The mismatch does not itself prove the three pending migrations will fail, but release preflight must compare the live columns, grants, functions, and policies they depend on. Do not replay the local eight-digit file, rename a recorded version, or repair history as part of this release. |
+The relevant security transitions are, in dependency order:
 
-## 2. Client and backend compatibility
+1. `20261020104000_course_wide_content_browsing.sql`: same-course browsing across
+   active years, publication guards and access helpers.
+2. `20261020105000_quiz_answer_read_boundary.sql`: safe student quiz RPC,
+   admin-only answer RPC and removal of raw student answer reads.
+3. `20261020110000_admin_url_mfa.sql`: AAL-aware service-only URL helpers.
 
-| Component / transition | Result | Evidence and failure mode |
-| --- | --- | --- |
-| Older mobile quiz list and detail | **FAIL** | The pre-change source calls `quiz_tests.select("*, subjects ( title ), years ( title )")` in both list and detail (`git show HEAD:mobile-app/src/repositories/quizRepository.ts:5-14,47-52`). Migration `1050` revokes table-level SELECT and grants only safe columns (`supabase/migrations/20261020105000_quiz_answer_read_boundary.sql:5-7`). Those `*` requests therefore fail authorization after the migration. Actual shipped build versions and active population have not been inventoried; HEAD is evidence of a client contract, not proof of every binary in production. |
-| Older mobile grading and UI | **FAIL** | The same earlier client compares `q.options[answer]` to `q.answer` for score and correct-choice display (`git show HEAD:mobile-app/src/screens/quiz/QuizScreen.tsx:138-142,332-343`). A server facade could retain the `select('*')` response shape by returning sanitized questions, but it cannot preserve **correct** local scoring while withholding the answer key. Returning a real key recreates the security failure. A compatibility view/table swap would also need a separate schema, relationship, write, and PostgREST audit. The current three migrations provide no such facade. Full secure semantic backwards compatibility with that binary is impossible; its quiz feature must be explicitly retired, or its breakage accepted and communicated. |
-| New mobile before / after `1050` | **BLOCKED before; source-compatible after** | New list/detail calls `get_public_quiz_tests` (`mobile-app/src/repositories/quizRepository.ts:5-15,42-54`), which exists only after `1050` (`supabase/migrations/20261020105000_quiz_answer_read_boundary.sql:9-41`). Its search path queries only safe metadata (`mobile-app/src/repositories/quizRepository.ts:23-39`). The new UI stores selections and waits for server verification (`mobile-app/src/screens/quiz/QuizScreen.tsx:142-168,235-263`); offline results may remain pending. Hosted RPC JSON shape, filters, pagination, and device sync remain untested. |
-| Existing admin panel after `1050` | **FAIL for quiz listing** | The updated panel calls `get_admin_quiz_tests` (`admin-panel/src/services/quizService.ts:11-16`), introduced by `1050:43-59`. A previously deployed panel using raw quiz `select('*')` loses listing/answer reads when the grant is revoked. Updated add/update/delete still use `.select('id')` (`admin-panel/src/services/quizService.ts:21-35`), but hosted policy and response behavior need testing. Deploying the updated panel before `1050` produces a missing-RPC failure. Admin RPC returns keys only after `am_i_admin()`; verify AAL1/AAL2 in hosted Auth. |
-| Force-update gate | **FAIL as a security cutover control** | It is checked on launch/resume (`mobile-app/src/hooks/useForceUpdate.ts:6-29`) but does not block during its fetch. Fetch/parse/timeout errors fail open, checks are cached for 10 minutes (`mobile-app/src/services/appConfigService.ts:7-11,23-27,42-70,74-89`), and an already-running or offline old binary can continue. `app_open` logs version/build for newer clients, but builds preceding that event are uncounted (`mobile-app/src/services/analyticsService.ts:40-54`). Raising `min_app_version` alone does not prove old clients stopped using `select('*')`. |
-| Quiz server security | **PASS locally; BLOCKED hosted** | `1050:9-38` constructs questions from only `question` and `options`, enforces active/publication, nonblocked profile, and course access; `1050:43-59` gates the admin answer RPC. The local rollback SQL suite covers student, cross-course, payment, and admin AAL cases (`supabase/tests/quiz_answer_and_admin_mfa_checks.sql:1-140`; local result recorded in prior audit `:25-29`). Managed PostgREST/RLS behavior and production drift still require hosted checks. |
+Refresh live migration history and compare definitions, grants and policies
+before deciding which are pending. The archived remote version `20260801` named
+`razorpay_webhook_atomic_grant` differs from local
+`20260801_auth_verified_identities.sql`; equal version numbers do not prove equal
+SQL. Do not replay, rename or repair that recorded version during this rollout.
+Inspect actual prerequisite columns/functions and the later idempotent profile
+setup. See [staging safety review](../../supabase/staging/MIGRATION_SAFETY_AUDIT.md).
 
-### Existing offline answer-bearing JSON
+The staging preparation script and hash manifest were frozen for an older
+inventory. Refresh/review all current files and isolation edits before replay;
+a plain disposable PostgreSQL pass does not establish hosted Supabase readiness.
+Always target staging `nsmsqsogedzohwboripd` explicitly, independently of the
+production link `xbvenkfmesugrbjuufyw`.
 
-**FAIL for pre-existing copies; BLOCKED for device migration.** The older client serialized the entire quiz object directly to disk (`git show HEAD:mobile-app/src/utils/downloadManager.ts:447-471`) and parsed it unchanged (`:496-500`). The path is `documentDirectory/medveda/quizzes/<id>.json` (`mobile-app/src/utils/downloadManager.ts:12-17`). The new writer keeps only question/options and the new reader scrubs a file **when opened** (`mobile-app/src/utils/downloadManager.ts:420-456,486-495`). There is no eager scan on startup (`mobile-app/App.tsx:32-53` only recovers interrupted downloads). A failed rewrite leaves the raw file in place (`downloadManager.ts:490-495`). Course switching hides rows without deleting files (`:105-117`); marking stale does not delete them (`:380-386`). `clearAllDownloads` also removes notes (`:350-365`), so it is not a targeted remedy.
+## Client compatibility boundary
 
-Before release, ship and device-test a one-time migration that scans the quiz directory and its SQLite rows for **all accounts and courses** before quiz rendering or offline export. Safest behavior is to invalidate and delete old quiz JSON plus corresponding quiz rows, then re-download answer-free questions when authenticated; make deletion idempotent and handle interrupted writes, missing files, orphan files, and account switching. If sanitized offline retention is needed, write a new file atomically, verify its allowlist, then replace the old file and update row size/version; on any error, fail closed and delete/quarantine the old quiz file. Never use a global notes wipe. Test upgrade from an actual old binary with an answer-bearing fixture, app restart, offline launch, failed write, and backup/restore. Server changes cannot recall copies already outside app-managed storage; document that residual exposure separately.
+Old mobile/admin clients that select raw quiz `*` fail after answer-read
+revocation. Old local grading also requires the secret answer key; withholding
+it cannot preserve that scoring contract. New clients use `get_public_quiz_tests`
+and server grading, while the updated admin uses `get_admin_quiz_tests`.
+Deploying those clients before the RPC exists causes missing-RPC errors.
 
-## 3. Note/video URL helpers and rollout order
+Inventory actual released binaries, admin deployment and active readers. Either
+prepare an additive, reviewed server capability before client rollout and prove
+old-reader retirement, or explicitly accept/communicate an old-client quiz
+outage. A force-update prompt alone is insufficient: offline/running clients
+and failed config reads can continue. Never return answers to retain old local
+scoring. Any new compatibility migration is forward-only reviewed work.
 
-**Signature check: PASS in source; BLOCKED hosted.** `1100` retains service-only two-argument `user_can_access_note(uuid,text)` and `user_can_access_video(uuid,text)` while removing admin-only membership access when MFA is required (`supabase/migrations/20261020110000_admin_url_mfa.sql:6-59,88-95`). It adds `user_can_access_note_with_aal(uuid,text,text)` and `user_can_access_video_with_aal(uuid,text,text)` (`:61-95`). Updated handlers pass exactly `p_user,p_note_id,p_aal` and `p_user,p_video_id,p_aal` (`supabase/functions/get-note-url/index.ts:32-47`; `get-video-url/index.ts:16-31`). They authenticate the bearer before decoding AAL from that same header (`supabase/functions/_shared/supabaseAdmin.ts:24-49`); both endpoints have `verify_jwt = true` (`supabase/config.toml:52-60`). A body-supplied AAL is not used.
+Current source includes startup cleanup of old quiz files; test an upgrade from
+an actual answer-bearing old binary across all device accounts/courses. Cover
+orphan/missing files, interrupted cleanup, offline startup, account switch and
+backup/restore. Avoid wiping unrelated Notes. Copies already outside
+app-managed storage cannot be recalled; record that residual exposure.
 
-`1100:17-29,43-56` retains same-course free preview/free video and successful paid scope checks; `:64-85` adds the verified AAL2 admin path and publication/active checks. Test blocked users, inactive ancestors, wrong course, refund, AAL1 and AAL2 with real hosted tokens. Deploying **Edge first** yields missing-RPC errors (handlers return 500). Deploying **`1100` first** leaves older handlers using hardened two-argument helpers: student note/video flows should work, but an AAL2 admin can temporarily lose admin-only previews while MFA is on. Limit and monitor this interval. Rolling handlers back to the old version after `1100` retains that fail-closed admin limitation; rolling SQL back to pre-`1100` would restore the bypass and is prohibited. Signed note URLs already issued may remain usable until their 120-second TTL (`get-note-url/index.ts:12-13,58-63`). Video URLs returned by the handler are direct `youtube_url` values (`get-video-url/index.ts:38-40`), so authorization only controls URL discovery, not a previously learned URL.
+## URL helpers and deployment sequence
 
-## 4. Isolated staging readiness
+Migration `1100` keeps hardened service-only two-argument note/video helpers and
+adds AAL-aware variants. Updated `get-note-url` and `get-video-url` require those
+new helpers, so deploy schema first. Edge-first deployment produces missing-RPC
+errors. During schema-first transition, older handlers can temporarily deny
+admin-only previews even for AAL2 admins; student entitlement paths remain the
+intended contract and require hosted tests.
 
-**Project/config exists in the repository; hosted integration is BLOCKED.** The documented staging project is `nsmsqsogedzohwboripd`, separate from production (`supabase/staging/README.md:1-5`). A prior read-only snapshot found zero recorded staging migrations and no app data (`supabase/staging/MIGRATION_SAFETY_AUDIT.md:9-15`); that is not a fresh hosted check. `admin-panel/.env.staging.local` exists, but its contents were not opened. The admin staging URL/key guards are present (`admin-panel/vite.config.ts:6-16`; `admin-panel/src/config/supabase.ts:12-16`). The mobile staging profile has a distinct package/channel and payments disabled, but its publishable key is still a placeholder (`mobile-app/eas.json:68-80`); `mobile-app/.env.staging.local` is absent. Remote EAS preview environment and key ownership are unknown (`supabase/staging/README.md:20-28`). A separate staging Edge allowlist excludes payment functions (`supabase/staging/edge-functions.json:1-22`). Staging admin hosting needs its separate config, not the production `vercel.json` (`supabase/staging/README.md:15-19`).
+The updated handlers must derive AAL from the verified bearer session, never
+body input, and preserve their gateway authentication. Already-issued signed
+Notes URLs can survive their 120-second TTL. Direct free video URLs can be
+retained outside the app; URL-discovery authorization cannot recall them.
 
-**The staging SQL preparation path is currently stale:** `supabase/staging/prepare_migrations.py:66-77` requires exactly 62 files and a 62-file reviewed-hash manifest; the current tree has 64. The existing prepared bundle under `/tmp/medveda-staging-prepared-verified` has 62 SQL files, so it cannot validate `1050`/`1100`. The staging README likewise describes 62 files and documents cron/payment isolation concerns (`supabase/staging/README.md:45-73`). Refresh that staging-only preparation/manifest in a separately authorized change, review all 64 hashes and neutralizations, then replay the **full** chain only in the explicitly named isolated staging target. Do not infer staging readiness from a local disposable PostgreSQL cluster.
+1. Capture current history, schema/grants/RLS, private bucket state, helper
+   signatures and exact client/Edge versions. Stop on drift or unknown target.
+2. Rehearse the reviewed migration and client cutover in isolated staging with
+   synthetic users, old/new mobile, old/new admin and both handler versions.
+3. Prove the matrix below, file cleanup and accepted old-client behavior.
+4. After the cutover is accepted, apply only the reviewed pending migrations in
+   dependency order, then dependent handlers/panel/mobile in the tested sequence.
+   Monitor errors and authorization after each step; never blindly push pending SQL.
 
-## 5. Safe release sequence and gates
+## Required hosted and device evidence
 
-There is **no zero-breakage production order for the current artifacts**: new mobile/admin need `1050` first, while old mobile/admin quiz reads fail immediately after it. A security-first cutover with an acknowledged old-client quiz outage is possible only after product/operations explicitly accepts that outage; it does not meet a backwards-compatible release criterion. To meet the requested compatibility standard, prepare an additive, reviewed server capability before revocation and an updated client that can use it, then prove an old-client retirement or a tested degraded old-client mode that never returns answers. The latter cannot preserve old local scoring. Any redesigned migration is new forward-only work and needs another audit; this report changes none.
+| Identity/content | Expected result |
+|---|---|
+| Anonymous, blocked or cross-course student | No protected quiz/Notes access or admin answers. |
+| Published own-course content, including other years | Safe quiz metadata/questions; free video; paid Notes only with valid scope or explicit preview. |
+| Student direct raw quiz `questions` or `select('*')` | Denied; no answer-bearing response. |
+| Refunded/failed/other-account purchase | No paid Notes entitlement. Free quiz/video follows course/publication rules. |
+| Admin AAL1 while MFA is required | No admin answer or admin-only signed URL privilege. |
+| Admin AAL2 while MFA is required | Intended authorized admin editing, answers and preview paths. |
+| Inactive/unpublished content or ancestor | Denied to students; admin editing only through its policy. |
 
-1. **Read-only preflight, before any staging or production operation.** Capture fresh local/production/staging migration lists and project refs, confirm exactly three production pending versions in stated order, review `20260801` live object state, and compare live grants/policies/RPC signatures to the local baseline. Confirm `content_is_published`, `has_content_access`, `am_i_admin`, `admin_mfa_required`, `quiz_tests.question_revision`, required profile columns, purchase status/scope, and private notes bucket. Inspect the exact released Android/iOS versions, admin deployment version, Edge versions, active-client distribution, and offline file format. Never trust the implicit linked ref for staging.
-2. **Prepare staging separately.** Update the staging-only 64-file manifest/process, confirm target `nsmsqsogedzohwboripd`, keep payment functions/secrets, production URLs, cron jobs, and catalog writes out. Validate staging publishable key ownership and remote EAS environment without disclosing keys. Replay all reviewed migrations into isolated staging only after a separate execution authorization; verify resulting history and no unintended scheduled jobs.
-3. **Hosted integration rehearsal.** Apply `1040`, then `1050`, then `1100` in staging; deploy updated `get-note-url`/`get-video-url` only after `1100`. Test both previous and updated handlers around `1100`. Exercise updated admin panel and new mobile on real staging devices, plus an installed old production binary pointed only at staging. Check PostgREST responses, real Auth AAL claims, storage signing, grading, offline upgrade, publication, and cross-course rules. Capture sanitized evidence and latency/error rates.
-4. **Resolve the client cutover.** Ship and validate the new mobile binary and targeted offline invalidation strategy. Establish a measurable old-client retirement criterion from actual server traffic/device tests, not `min_app_version` alone. If a temporary additive RPC is chosen, introduce and validate it in a **new** forward migration before client rollout, then separately revoke answer reads only when old-reader risk is addressed. Update the admin panel at the compatible boundary. Freeze/re-audit the exact SQL and artifacts.
-5. **Production only after every gate passes.** Recheck linked history immediately before execution; apply reviewed `1040` → `1050` → `1100` with monitoring and stop points; then update Edge handlers, panel, and mobile distribution in the tested sequence. Verify grants, policies, quiz calls, note/video URLs, grading, and error telemetry after each step. No production action is authorized by this audit.
+Also test real PostgREST filtering/pagination/body shapes, invalid/expired tokens,
+server grading/revision conflicts, offline attempts/reconnect, installed old-build
+behavior, cold/warm URL opens, signed URL expiry and source/client upgrade paths.
+Keep sanitized status/body-shape evidence without answer keys or credentials.
 
-### Hosted test matrix (required evidence)
+## Stop and rollback rules
 
-| Identity / content | Quiz metadata and answer-free RPC | Direct `questions` / `select('*')` | Admin answer RPC | Note URL | Video URL |
-| --- | --- | --- | --- | --- | --- |
-| Anon / blocked | Denied | Denied | Denied | Denied | Denied |
-| Student, own course/year | Allowed when published | Denied | Denied | Paid only or free preview | Free when published |
-| Student, another year same course | Allowed when published | Denied | Denied | Purchase/preview rule | Free when published |
-| Student, other course | Denied | Denied | Denied | Denied absent valid scoped entitlement | Denied absent valid scoped entitlement |
-| Student, refunded/failed purchase | Quiz per course access | Denied | Denied | Denied for paid note | Free if otherwise eligible |
-| Admin AAL1, MFA required | Student path only if eligible | Denied | Denied | Student entitlement only | Student entitlement only |
-| Admin AAL2, MFA required | Allowed if otherwise eligible | Denied | Allowed | Admin path allowed | Admin path allowed |
-| Inactive quiz/parent or unpublished content | Denied | Denied | Admin editing only per policy | Denied | Denied |
-
-Also test real old-build list/detail failure or approved degraded mode, new-build RPC before/after migration, old/new panel, old/new Edge versions, expired/invalid token, answer-key search in every client response, server grading after submission, offline launch and upgrade, signed URL expiry, and PostgREST pagination/order. Preserve sanitized HTTP status and body-shape evidence; do not log answers or credentials.
-
-### Rollback and stop rules
-
-- Before `1050`, stop without changing quiz read grants; `1040` must be assessed by its own rollback review. After `1050`, **do not restore raw quiz SELECT** or old answer-bearing responses. If a new client or panel fails, stop the rollout and correct forward; disable only the broken quiz path through a separately tested control while preserving the answer boundary.
-- After `1100`, an Edge rollback to the older handler is security-safe for AAL1 but temporarily blocks admin-only AAL2 content. Use a fixed forward handler for recovery. Never roll back to old SQL helpers or public storage. Existing signed URLs have the TTL caveat above.
-- If hosted grants, RLS, cross-course, payment, AAL, or answer-leak tests fail, halt. If history shows an extra/missing/reordered version or live object drift, halt and investigate read-only. If staging isolation or old-client retirement cannot be proven, halt production.
-
-## Explicit production GO criteria
-
-**Current status: NO-GO.** GO requires: (1) fresh read-only production history proving precisely the expected three pending migrations; (2) reviewed live object preflight despite the `20260801` provenance mismatch; (3) current 64-file isolated staging replay and hosted pass for the full matrix; (4) real old/new mobile, admin, and Edge compatibility evidence with no answer-bearing endpoint; (5) tested targeted cleanup of old offline quiz JSON on upgraded devices and a stated residual-copy policy; (6) a proven client cutover or an explicitly accepted old-client outage, since secure full old-client semantics are impossible; and (7) a rehearsed forward-only recovery path. A local PostgreSQL pass alone satisfies none of the hosted or released-binary gates.
+- After answer-read revocation, never restore raw quiz SELECT or old answer-bearing
+  responses. Halt rollout and correct forward; a temporary disabled quiz feature
+  must preserve the answer boundary.
+- After AAL URL hardening, an old Edge handler can temporarily deny admin-only
+  previews. Prefer the fixed forward handler; never restore insecure SQL helpers,
+  public Notes or permissive Storage policies as routine rollback.
+- Stop on history/order/body drift, failed RLS/payment/AAL tests, broken staging
+  isolation or an unaccepted old-client outage. Retain financial and grading data.
+- Obtain a restorable backup and rehearse recovery. Local checks alone prove
+  neither deployed security nor safe rollback; see the [backup limitation](MEDVEDA_PRODUCTION_BACKUP_RESTORE_READINESS_20261023.md).

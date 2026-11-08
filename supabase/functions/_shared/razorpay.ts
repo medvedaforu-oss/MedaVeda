@@ -34,6 +34,10 @@ function getKeys(): { keyId: string; keySecret: string } {
   if (appEnv !== "production" && appEnv !== "staging") {
     throw new Error("APP_ENV must be explicitly set to production or staging");
   }
+  const expectedPrefix = appEnv === "staging" ? "rzp_test_" : "rzp_live_";
+  if (!keyId.startsWith(expectedPrefix)) {
+    throw new Error("Razorpay key mode does not match APP_ENV");
+  }
   if (keyId.startsWith("rzp_test_")) {
     if (appEnv !== "staging") throw new Error("Refusing test Razorpay key outside staging");
     console.warn("[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.");

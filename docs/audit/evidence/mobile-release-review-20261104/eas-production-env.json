@@ -1,0 +1,20 @@
+{
+  "project": {
+    "exit": 0,
+    "names": [],
+    "no_variables_message": true,
+    "stdout_bytes": 66,
+    "stderr_bytes": 110,
+    "metadata_lines": [],
+    "diagnostic": "No variables listed"
+  },
+  "account": {
+    "exit": 0,
+    "names": [],
+    "no_variables_message": true,
+    "stdout_bytes": 66,
+    "stderr_bytes": 110,
+    "metadata_lines": [],
+    "diagnostic": "No variables listed"
+  }
+}

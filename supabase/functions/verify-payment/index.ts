@@ -10,7 +10,6 @@ import { supabaseAdmin, getUserFromAuthHeader } from "../_shared/supabaseAdmin.t
 import { verifyPaymentSignature, fetchCapturedPaymentForOrder } from "../_shared/razorpay.ts";
 import { settleCapturedPayment } from "../_shared/settle.ts";
 import { clientIp, withinLimit } from "../_shared/rateLimit.ts";
-import { paymentGate } from "../_shared/paymentGate.ts";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -26,7 +25,10 @@ async function settle(razorpayOrderId: string, razorpayPaymentId: string): Promi
     if (!result.ok) {
       console.warn("verify-payment: not settled", { reason: result.reason, razorpayPaymentId });
       return jsonResponse(
-        { success: false, message: "Payment could not be verified. If money was debited, it will be confirmed automatically or contact support." },
+        { success: false, pending: result.status >= 500 || result.reason === "payment not captured",
+          message: result.reason === "payment captured; refund queued"
+            ? "Payment was captured but access could not be granted. A refund is queued; contact support with your order ID."
+            : "Payment could not be verified. If money was debited, check My Purchases or contact support before paying again." },
         result.status >= 500 ? 500 : 400
       );
     }
@@ -72,24 +74,24 @@ Deno.serve(async (req: Request) => {
 
     const { data: order, error: orderError } = await supabaseAdmin
       .from("orders")
-      .select("id, user_id, razorpay_order_id, external_transaction_token")
+      .select("id, user_id, status, razorpay_order_id, external_transaction_token")
       .eq("id", internalOrderId)
       .maybeSingle();
     if (orderError || !order) return jsonResponse({ error: "Order not found. Please contact support." }, 404);
     if (recover && order.user_id !== recoveryUser?.id)
       return jsonResponse({ error: "This order does not belong to you." }, 403);
-    const gate = await paymentGate(req, !!order.external_transaction_token);
-    if (gate !== "allow") return jsonResponse({ error: gate === "upgrade"
-      ? "Update the app before verifying payment." : gate === "choice"
-      ? "Billing choice is required." : "Billing configuration unavailable." },
-      gate === "unavailable" ? 503 : 403);
+    // Rollout/version/choice gates apply when creating new orders. Existing
+    // captured payments must remain recoverable by old installed clients;
+    // JWT ownership or callback HMAC and provider capture checks still apply.
 
     if (recover) {
+      if (order.status === "refunded") return jsonResponse({ success: false, pending: false,
+        message: "This order was refunded or reversed. Contact support if you need help with the refund." });
       // No client signature: we ask Razorpay ourselves which payment (if any)
       // was captured for THIS order, then settle it through the same checks.
-      if (!order.razorpay_order_id) return jsonResponse({ success: false, message: "Payment not started yet." });
+      if (!order.razorpay_order_id) return jsonResponse({ success: false, pending: true, message: "Payment not started yet." });
       const captured = await fetchCapturedPaymentForOrder(order.razorpay_order_id);
-      if (!captured) return jsonResponse({ success: false, message: "Payment not completed yet." });
+      if (!captured) return jsonResponse({ success: false, pending: true, message: "Payment not completed yet." });
       return settle(order.razorpay_order_id, captured.id);
     }
 
@@ -103,7 +105,7 @@ Deno.serve(async (req: Request) => {
     const signatureValid = await verifyPaymentSignature({ razorpayOrderId, razorpayPaymentId, razorpaySignature });
     if (!signatureValid || order.razorpay_order_id !== razorpayOrderId) {
       console.warn("verify-payment: signature/order mismatch", { internalOrderId, razorpayPaymentId });
-      return jsonResponse({ success: false, message: "Payment verification failed." }, 400);
+      return jsonResponse({ success: false, pending: false, message: "Payment verification failed." }, 400);
     }
 
     return settle(razorpayOrderId, razorpayPaymentId);

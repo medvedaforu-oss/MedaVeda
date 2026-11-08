@@ -1,0 +1,100 @@
+ M .github/workflows/ci.yml
+ M mobile-app/App.tsx
+ M mobile-app/DATA_SAFETY_AUDIT.md
+ M mobile-app/PLAY_STORE_SUBMISSION.md
+ M mobile-app/app.config.js
+ M mobile-app/app.json
+ M mobile-app/eas.json
+ M mobile-app/package-lock.json
+ M mobile-app/package.json
+ D mobile-app/scripts/billing-ui-selftest.cjs
+ M mobile-app/scripts/check-staging-build.cjs
+ M mobile-app/scripts/navigation-lazy-selftest.cjs
+ M mobile-app/scripts/payment-poll-selftest.cjs
+ M mobile-app/scripts/payment-provider-selftest.cjs
+ M mobile-app/scripts/payment-routing-selftest.cjs
+ D mobile-app/scripts/play-lifecycle-selftest.cjs
+ D mobile-app/scripts/play-restore-selftest.cjs
+ D mobile-app/scripts/release-play-only-selftest.cjs
+ M mobile-app/src/components/ProductPosterCard.tsx
+ M mobile-app/src/components/UnlockOptionsPanel.tsx
+ M mobile-app/src/components/search/SearchResultRow.tsx
+ M mobile-app/src/config/paymentProvider.ts
+ M mobile-app/src/constants/privacyInventory.ts
+ D mobile-app/src/features/auth/ResetPasswordScreen.tsx
+ M mobile-app/src/hooks/usePurchase.ts
+ M mobile-app/src/navigation/AppNavigator.tsx
+ M mobile-app/src/repositories/notesRepository.ts
+ D mobile-app/src/repositories/ordersRepository.ts
+ M mobile-app/src/repositories/subjectsRepository.ts
+ M mobile-app/src/screens/details/ChapterDetailsScreen.tsx
+ M mobile-app/src/screens/payment/OrderSummaryScreen.tsx
+ M mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx
+ M mobile-app/src/screens/payment/PaymentFailedScreen.tsx
+ D mobile-app/src/screens/payment/PlayBillingScreen.tsx
+ D mobile-app/src/screens/payment/indiaAdministrativeAreas.ts
+ M mobile-app/src/screens/privacy/PrivacyScreen.tsx
+ M mobile-app/src/screens/purchases/MyPurchasesScreen.tsx
+ M mobile-app/src/screens/store/StoreScreen.tsx
+ M mobile-app/src/screens/terms/TermsScreen.tsx
+ M mobile-app/src/services/analyticsService.ts
+ M mobile-app/src/services/ordersService.ts
+ M mobile-app/src/services/paymentService.ts
+ D mobile-app/src/services/playBillingService.ts
+ D mobile-app/src/services/playOfferSelection.ts
+ D mobile-app/src/types/download.ts
+ M mobile-app/src/types/navigation.ts
+ D mobile-app/src/types/react-native-razorpay.d.ts
+ M scripts/mobile-perf-probe.cjs
+ M supabase/functions/.env.example
+ M supabase/functions/_shared/googlePlay.ts
+ M supabase/functions/_shared/playCatalog.ts
+ M supabase/functions/_shared/razorpay.ts
+ M supabase/functions/sync-play-catalog/index.ts
+ M supabase/functions/verify-payment/index.ts
+ M supabase/tests/account_deletion_checks.sql
+ M supabase/tests/batch1_checks.sql
+ M supabase/tests/discount-concurrency.sh
+ M supabase/tests/phase2_referral_wallet_checks.sql
+ M supabase/tests/play-catalog-creation-selftest.cjs
+ M supabase/tests/play-catalog-worker-selftest.cjs
+ D supabase/tests/play-offer-selftest.ts
+ M supabase/tests/play_catalog_api_test.ts
+ M supabase/tests/play_entitlement_snapshot_checks.sql
+ M supabase/tests/razorpay-env-selftest.ts
+ M supabase/tests/run-all.sh
+ M website/_src/faq.mjs
+ M website/_src/pages/features.html
+ M website/_src/pages/how-it-works.html
+ M website/_src/pages/privacy-policy.html
+ M website/_src/pages/terms.html
+ M website/faq.html
+ M website/features.html
+ M website/how-it-works.html
+ M website/index.html
+ M website/privacy-policy.html
+ M website/terms.html
+?? docs/audit/MEDVEDA_MOBILE_PLAY_BILLING_REMOVAL_2026-11-04.md
+?? docs/audit/MEDVEDA_PLAY_CATALOG_INR_FIX_2026-10-27.md
+?? docs/audit/MEDVEDA_PLAY_PATCH_403_2026-10-27.md
+?? docs/audit/MEDVEDA_RAZORPAY_CURRENT_AUDIT_2026-11-04.md
+?? docs/audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md
+?? docs/audit/MEDVEDA_RAZORPAY_IMPLEMENTATION_PLAN_2026-11-04.md
+?? docs/audit/MEDVEDA_UNUSED_MOBILE_CLEANUP_2026-11-04.md
+?? docs/audit/evidence/mobile-unused-cleanup-20261104/
+?? docs/audit/evidence/notes-flow-acceptance-20261104/
+?? docs/audit/evidence/play-patch-403-20261027/
+?? docs/audit/evidence/razorpay-current-20261104/
+?? docs/audit/evidence/razorpay-fixes-20261104/
+?? mobile-app/scripts/notification-preferences-selftest.cjs
+?? mobile-app/scripts/payment-request-selftest.cjs
+?? mobile-app/scripts/payment-summary-selftest.cjs
+?? mobile-app/scripts/payment-verdict-selftest.cjs
+?? mobile-app/scripts/purchases-unavailable-ui-selftest.cjs
+?? mobile-app/scripts/release-payments-disabled-selftest.cjs
+?? supabase/migrations/20261104100000_razorpay_snapshot_discount_retry.sql
+?? supabase/tests/play_catalog_patch_diagnostic_test.ts
+?? supabase/tests/razorpay-retry-concurrency.py
+?? supabase/tests/razorpay-security-selftest.cjs
+?? supabase/tests/razorpay_production_preflight_readonly.sql
+?? supabase/tests/razorpay_snapshot_retry_checks.sql

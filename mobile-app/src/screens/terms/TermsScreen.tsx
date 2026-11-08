@@ -55,13 +55,14 @@ export default function TermsScreen() {
       <Text style={styles.body}>
         Video lectures and MCQ tests are free. PDF notes are sold as
         paid packages. All prices are in Indian Rupees (INR) and are
-        inclusive of applicable taxes, if any. Payments are processed
-        through Google Play Billing in the Google Play Android app.
+        inclusive of applicable taxes, if any. New purchases are unavailable
+        in this Android app version. Previously purchased Notes remain
+        accessible through your account.
         Razorpay is used in separate distribution builds where permitted.
         The payment method, final price and
         applicable terms are shown before you pay. Referral discounts
         and wallet credit apply only to eligible Razorpay purchases;
-        Google Play purchases use the price shown by Google Play.{"\n\n"}
+        Earlier Google Play purchases used the price shown by Google Play.{"\n\n"}
         Purchased content has no fixed expiry. Access continues for as
         long as your account is active and the content is offered on
         the platform.

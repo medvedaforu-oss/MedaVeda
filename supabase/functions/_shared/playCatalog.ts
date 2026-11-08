@@ -2,6 +2,23 @@ import type { GoogleOperation } from "./googlePlay.ts";
 import { googleRequest, GoogleApiError, packageName } from "./googlePlay.ts";
 
 type Money = { currencyCode?: string; units?: string; nanos?: number };
+type InrMoney = { currencyCode: "INR"; units: string; nanos: number };
+// Creation supplies input fields only; lifecycle state and regionsVersion in
+// OneTimeProduct are output-only. The required version is a PATCH query field.
+type IndiaProductCreateRequest = {
+  packageName: string;
+  productId: string;
+  listings: { languageCode: string; title: string; description: string }[];
+  purchaseOptions: [{
+    purchaseOptionId: string;
+    buyOption: { legacyCompatible: true; multiQuantityEnabled: false };
+    regionalPricingAndAvailabilityConfigs: [{
+      regionCode: "IN";
+      price: InrMoney;
+      availability: "AVAILABLE";
+    }];
+  }];
+};
 type Option = {
   purchaseOptionId?: string;
   state?: string;
@@ -18,8 +35,9 @@ export class PlayCatalogConfigurationError extends Error {}
 // No supported-regions listing method exists in Android Publisher v3.
 // RegionsVersion documents explicit versions, including historical support:
 // https://developers.google.com/android-publisher/api-ref/rest/v3/RegionsVersion
-// Google's published discovery history documents 2022/02; see the local review
-// report for the pinned source. Add new versions only after reviewing IN/INR.
+// Historical documented candidate, not a claim of current app acceptance:
+// https://github.com/googleapis/google-api-go-client/blob/0386e0fba6d3ca3073953a1a8a95f658bc223d09/androidpublisher/v3/androidpublisher-api.json
+// Add new versions only after reviewing Google's published IN/INR mapping.
 const REVIEWED_REGIONS_VERSIONS = new Set(["2022/02"]);
 function configuredRegionsVersion(): string {
   const version = Deno.env.get("PLAY_CATALOG_REGIONS_VERSION");
@@ -100,11 +118,11 @@ export async function createOneTimeProduct(sku: string, optionId: string, cents:
   const regionsVersion = configuredRegionsVersion();
   if (!Number.isSafeInteger(cents) || cents < 100 || cents > 9_999_999_999)
     throw new PlayCatalogConfigurationError("Catalog price is outside supported INR precision or range");
-  const price: Money = { currencyCode: "INR", units: String(Math.floor(cents / 100)),
+  const price: InrMoney = { currencyCode: "INR", units: String(Math.floor(cents / 100)),
     nanos: (cents % 100) * 10_000_000 };
   // Only India is enabled. The Admin catalog is INR-only; other regions require
   // a separate currency and tax design, rather than silent conversion.
-  const body = {
+  const body: IndiaProductCreateRequest = {
     packageName: pkg,
     productId: sku,
     listings: [{ languageCode: "en-US", title: `MedVeda content INR ${cents / 100}`,

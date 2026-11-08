@@ -45,8 +45,21 @@ jobs:
       - run: node scripts/staging-build-selftest.cjs
       - run: node scripts/payment-provider-selftest.cjs
       - run: node scripts/payment-routing-selftest.cjs
-      - run: node scripts/play-restore-selftest.cjs
-      - run: node scripts/play-lifecycle-selftest.cjs
+      - run: node mobile-app/scripts/release-payments-disabled-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/razorpay-internal-test-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/purchases-unavailable-ui-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/payment-poll-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/payment-request-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/payment-verdict-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/payment-summary-selftest.cjs
+        working-directory: .
+      - run: node scripts/navigation-lazy-selftest.cjs
       - run: node scripts/offline-download-selftest.cjs
       - run: node scripts/offline-owner-selftest.cjs
       - run: node scripts/quiz-hooks-selftest.cjs

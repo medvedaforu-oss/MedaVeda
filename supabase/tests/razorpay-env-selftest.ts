@@ -18,6 +18,14 @@ try {
   Deno.env.set('RAZORPAY_KEY_ID','rzp_live_example');
   if (getRazorpayKeyId()!=='rzp_live_example') throw new Error('F07 production live key rejected');
   console.log('PASS F07 production accepts live key');
+  for (const [env,key] of [['staging','rzp_live_example'],['staging','unknown_example'],['production','unknown_example']]) {
+    Deno.env.set('APP_ENV',env); Deno.env.set('RAZORPAY_KEY_ID',key);
+    let rejected=false;
+    try { getRazorpayKeyId(); } catch { rejected=true; }
+    if (!rejected) throw new Error('mismatched or unknown mode accepted');
+    console.log('PASS F07',env,'rejects mismatched/unknown key mode');
+  }
+
 } finally {
   for (const [key,value] of Object.entries(original)) if (value === undefined) Deno.env.delete(key); else Deno.env.set(key,value);
 }

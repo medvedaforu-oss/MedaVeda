@@ -1,3 +1,4 @@
+import { paymentProvider } from "../config/paymentProvider";
 import { getCourseYear } from "../services/courseState";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Platform } from "react-native";
@@ -72,6 +73,7 @@ export default function UnlockOptionsPanel({
   return (
     <View style={styles.wrap}>
       <Text style={styles.title}>🔒 Unlock Options</Text>
+      {paymentProvider === "disabled" && <Text style={styles.empty}>New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account.</Text>}
 
       {loading ? (
         <ActivityIndicator size="small" color={COLORS.accent} style={{ marginVertical: SPACING.md }} />
@@ -89,7 +91,7 @@ export default function UnlockOptionsPanel({
               style={styles.price}
               onPress={() => buy(product)}
             >
-              ₹{product.price}
+              {paymentProvider === "disabled" ? "Unavailable" : `₹${product.price}`}
             </Text>
           </View>
         ))

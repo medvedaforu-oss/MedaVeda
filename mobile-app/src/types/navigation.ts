@@ -97,6 +97,7 @@ export type RootStackParamList = {
   MyPurchases: undefined;
   Downloads: undefined;
   Notifications: undefined;
+  NotificationPreferences: undefined;
 
   PdfViewer: {
     pdfUrl: string;
@@ -117,7 +118,6 @@ export type RootStackParamList = {
     title?: string;
     reason?: string;
     pending?: boolean;
-    provider?: "razorpay" | "play";
     internalOrderId?: string;
     verifyUrl?: string;
     paymentId?: string;
@@ -126,10 +126,6 @@ export type RootStackParamList = {
     productId: string;
     productTitle: string;
     ucbOrderId?: string;
-  };
-  PlayBilling: {
-    productId: string;
-    productTitle: string;
   };
   PaymentCheckout: {
     keyId: string;

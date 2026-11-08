@@ -59,7 +59,16 @@ export function needsCourseYearSelection(s: CourseYearState = state): boolean {
   return s.status === "ready" && (!s.courseId || !s.yearId);
 }
 
-export async function loadCourseYear(force = false): Promise<CourseYearState> {
+export function loadCourseYear(force = false): Promise<CourseYearState> {
+  return readCourseYear(force);
+}
+
+const SAVE_UNCONFIRMED = "We could not confirm your saved course and year. Please try again.";
+
+async function readCourseYear(
+  force: boolean,
+  expected?: { courseId: string; yearId: string }
+): Promise<CourseYearState> {
   // authState's own session read may not have finished yet right after
   // launch/login, so fall back to asking Supabase directly.
   const user =
@@ -67,20 +76,31 @@ export async function loadCourseYear(force = false): Promise<CourseYearState> {
   if (!user) {
     stateUserId = null;
     setState(IDLE);
+    if (expected) throw new Error(SAVE_UNCONFIRMED);
     return state;
   }
 
   if (!force && state.status === "ready" && stateUserId === user.id) return state;
-  if (inFlight && stateUserId === user.id) return inFlight;
+  // A forced reload after saving must read the profile after the write,
+  // rather than reuse a request that may contain the previous choice.
+  if (!force && inFlight && stateUserId === user.id) return inFlight;
 
   stateUserId = user.id;
   if (state.status !== "ready") setState({ ...state, status: "loading" });
 
   const uid = user.id;
-  inFlight = fetchUserProfile(uid)
+  const request: Promise<CourseYearState> = fetchUserProfile(uid)
     .then((profile) => {
-      // Ignore a result that arrives after the user signed out/switched.
-      if (stateUserId !== uid) return state;
+      // Ignore results from a previous account or a superseded profile read.
+      if (stateUserId !== uid || inFlight !== request) {
+        if (expected) throw new Error(SAVE_UNCONFIRMED);
+        return state;
+      }
+      // A successful void RPC can have updated zero rows. Only this fresh
+      // profile response can confirm the write; cached state is insufficient.
+      if (expected && (profile?.courseId !== expected.courseId || profile?.yearId !== expected.yearId)) {
+        throw new Error(SAVE_UNCONFIRMED);
+      }
       setState({
         status: "ready",
         courseId: profile?.courseId,
@@ -92,14 +112,20 @@ export async function loadCourseYear(force = false): Promise<CourseYearState> {
     })
     .catch((err) => {
       logDebug("loadCourseYear failed:", err);
-      if (stateUserId === uid) setState({ ...state, status: state.courseId ? "ready" : "error" });
+      if (stateUserId === uid && inFlight === request) {
+        setState({ ...state, status: state.courseId ? "ready" : "error" });
+      }
+      // Normal startup reads still fail open. Saves must never treat a failed
+      // verification read (even with a matching cached choice) as success.
+      if (expected) throw new Error(SAVE_UNCONFIRMED);
       return state;
     })
     .finally(() => {
-      inFlight = null;
+      if (inFlight === request) inFlight = null;
     });
 
-  return inFlight;
+  inFlight = request;
+  return request;
 }
 
 // Clears everything on this device that belongs to the previous course:
@@ -112,16 +138,16 @@ async function clearCourseScopedLocalState(): Promise<void> {
 }
 
 // Saves the student's choice through the validated set_my_course_year RPC
-// (the only permitted write path), then refreshes the shared state. If the
-// course itself changed, course-scoped local state is cleared first.
+// (the only permitted write path), then confirms the exact pair from a fresh
+// profile read. Navigation may proceed only after this promise resolves.
 export async function saveCourseYear(courseId: string, yearId: string): Promise<void> {
   const previousCourseId = state.courseId;
   await setMyCourseYear(courseId, yearId);
+  await readCourseYear(true, { courseId, yearId });
 
   if (previousCourseId && previousCourseId !== courseId) {
     await clearCourseScopedLocalState();
   }
-  await loadCourseYear(true);
 }
 
 // Where to send a student straight after login / on app start. If the

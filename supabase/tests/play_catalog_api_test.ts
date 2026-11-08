@@ -64,13 +64,27 @@ Deno.test("Google catalog create, activate and read-back use the supported APIs"
     assert.ok(seen.every((call) => !call.includes("convertRegionPrices")));
     // Prices originate in Admin/database configuration. Serialize exact Money
     // for whole rupees, paise and the upper supported numeric(10,2) boundary.
-    for (const cents of [100, 4900, 13725, 9999999999]) {
+    for (const cents of [100, 101, 200, 4900, 13725, 9999999999]) {
       let patches = 0;
       globalThis.fetch = async (input, init) => {
         assert.equal(init?.method, "PATCH");
         assert.ok(!String(input).includes("convertRegionPrices"));
         const body = JSON.parse(String(init?.body));
+        const url = new URL(String(input));
+        assert.equal(url.searchParams.get("updateMask"), "listings,purchaseOptions");
+        assert.equal(url.searchParams.get("allowMissing"), "true");
+        assert.equal(url.searchParams.get("regionsVersion.version"), "2022/02");
+        assert.equal(body.packageName, "in.medveda.app");
+        assert.equal(body.productId, sku);
+        assert.deepEqual(body.listings, [{ languageCode: "en-US", title: `MedVeda content INR ${cents / 100}`,
+          description: "One purchase of MedVeda digital content selected in the app." }]);
+        assert.equal(body.purchaseOptions.length, 1);
         const option = body.purchaseOptions[0];
+        assert.equal(option.purchaseOptionId, "buy");
+        assert.deepEqual(option.buyOption, { legacyCompatible: true, multiQuantityEnabled: false });
+        assert.equal(option.rentOption, undefined);
+        assert.equal(option.state, undefined);
+        assert.equal(body.regionsVersion, undefined);
         assert.equal(option.regionalPricingAndAvailabilityConfigs.length, 1);
         assert.deepEqual(option.regionalPricingAndAvailabilityConfigs[0], {
           regionCode: "IN", availability: "AVAILABLE", price: { currencyCode: "INR",

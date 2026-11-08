@@ -1,77 +1,106 @@
-# MedVeda Google Play release gates
+# MedVeda release gates
 
-As of 2026-10-15. Complete in order. `VERIFY` means the value, current console location, or live result cannot be confirmed locally. Google Play has reported that this app is not currently eligible for alternative billing: the Play build must use Google Play Billing only. Do not enable UCB, external Razorpay transactions, or set `require_ucb_for_razorpay=true`. UCB-only steps below are deferred until eligibility and program requirements are confirmed. Never paste secrets into this repository or terminal output.
+Current source handoff: 4 November 2026. This checklist supersedes removed audit
+summaries and old Play-only/UCB rollout plans. It does not certify a deployed
+service, signed artifact or payment. Dated runbook observations are historical;
+obtain fresh inventories before using their commands.
 
-| Step | Who | Exact command or console path | How to verify | Status |
-|---|---|---|---|---|
-| 1. Local preflight | Developer | `cd mobile-app && npx tsc --noEmit`; from repo root: `find supabase/functions -name '*.ts' -print0 | xargs -0 deno check`; `PGHOST=127.0.0.1 PGPORT=55437 PGUSER=postgres KEEP_DB=1 bash supabase/tests/run-all.sh`; run all `mobile-app/scripts/*selftest*` | All checks pass against a scratch PostgreSQL only. | Local scratch checks passed 2026-10-14; repeat before release |
-| 2. Play alternative billing enrollment | Ganesh | None while ineligible | Do not expose or enable alternative billing in Play builds. Revisit only after eligibility and program terms are confirmed. | Deferred |
-| 3. Google API service account | Ganesh | Google Cloud Console → APIs & Services → Enable Google Play Developer API; Play Console → Users and permissions (**VERIFY menu**) → invite service account for this app with order/financial permissions | Licensed API purchase lookup, consumption, and external report work. | Pending |
-| 4. Verify production price inventory and tax records | Ganesh | Run the read-only product-price query in [UCB_SETUP.md](UCB_SETUP.md); verify seller state and current GST rule with business records; configure `app_config.seller_state` from the verified record in the approved SQL Editor workflow | Every active paid product has an exact intended INR price; no invented tax or state value. | Pending: values VERIFY |
-| 5. Synchronize existing Admin prices to Play | Ganesh | Follow [PLAY_CATALOG_SYNC_SETUP.md](PLAY_CATALOG_SYNC_SETUP.md). Review the new migration and deploy the server-only catalog worker after approval; the manual tier seed script is retired. | Every distinct positive Admin price has a verified India BUY tier, with no change to `products.price` or `products.active`. | Pending, blocking production |
-| 6. Server secrets | Ganesh | Follow [ucb-secrets-set.md](../scripts/ucb-secrets-set.md); Supabase Dashboard → Project Settings → Edge Functions → Secrets (**VERIFY menu**) | `supabase secrets list --project-ref <confirmed-ref>` shows required names; key JSON remains server-side. | Pending |
-| 7. UCB migrations | Ganesh | Supabase SQL Editor → verify `20261012100000_google_play_ucb.sql`, `20261012110000_google_play_refunds.sql`, `20261012120000_ucb_partial_refunds.sql` are applied; apply only missing reviewed migrations through approved workflow | Tables/functions/columns exist; no migration errors. Handoff says already applied; live state VERIFY. | VERIFY live state |
-| 8. Deploy seven payment functions | Ganesh | `bash scripts/ucb-deploy.sh` then `bash scripts/ucb-deploy.sh --yes` in a TTY; type the linked project ref when prompted | Supabase CLI reports success for all seven; four user endpoints retain JWT verification. | Pending |
-| 9. UCB reporting cron | Ganesh | No setup while alternative billing is ineligible | UCB reporting and reconciliation remain disabled for the Play release. | Deferred |
-| 10. UCB post-deploy checks | Ganesh | No UCB rollout | Do not enable the UCB switch or configure seller-state/reporting settings for Play checkout. | Deferred |
-| 11. UCB endpoint smoke test | Ganesh | No UCB rollout | Not required for the Play-only payment flow; retain for a future eligibility review. | Deferred |
-| 11a. Expo config and doctor | Ganesh | `cd mobile-app && npx expo-doctor && npx expo config --type public && npx eas-cli build:version:get --platform android --profile internal-testing` | Doctor passes, public config has `expo-iap` and `in.medveda.app`, and remote Android version code is ready to exceed the latest Play artifact. | Expo Doctor passed 21/21 locally; public config and remote version code still pending |
-| 11b. Dependency security review | Developer | `cd mobile-app && npm audit --omit=dev`; review the dependency CVE report | No unresolved high/critical vulnerabilities, or each remaining finding has an approved risk disposition before release. | Pending: npm reports 21 high findings; CVE scan still finds `braces@3.0.3` and `node-forge@1.4.0` |
-| 12. EAS internal AAB build | Ganesh | `cd mobile-app && npx eas-cli build --platform android --profile internal-testing` | Downloaded artifact is an AAB with package `in.medveda.app`; `versionCode` exceeds live build. | Pending |
-| 13. Upload and license tester | Ganesh | `cd mobile-app && npx eas-cli submit --platform android --profile internal-testing --latest` after checking the latest artifact is the intended internal AAB, or manually upload it at Play Console → Test and release → Testing → Internal testing (**VERIFY menu**); Settings → License testing (**VERIFY menu**) → add tester | Test device installs from Play opt-in link, using an eligible India account. | Pending |
-| 14. Licensed tester matrix | Ganesh | Test on Play-installed build: Play success, cancel, failure, pending, restore/recovery, duplicate purchase, and refund/void paths | Only server-verified Play purchases grant access; one entitlement per paid order; Play consumption and refund/void revocation behave correctly. | Pending |
-| 14a. Voided-purchase sweep capacity | Ganesh | Inspect `cron.job_run_details`, backend Sentry, and `select * from public.play_void_sweep_metrics;` during realistic test volume | `unchecked_count` and `cursor_lag_seconds` stay bounded; oldest paid purchase is checked within two hours; each invocation finishes within 90 seconds. The void cursor handles three pages; the paid-token queue claims up to 40 due checks with eight bounded workers per minute. Monitor `public.payment_queue_metrics` too. | Pending live validation |
-| 15. Data safety and listing | Ganesh | Play Console → App content → Data safety (**VERIFY menu**); Main store listing (**VERIFY menu**); use [listing draft](PLAY_LISTING_DRAFT.md) and `mobile-app/DATA_SAFETY_AUDIT.md` | Answers match actual built app and public Privacy Policy/Terms URLs; screenshots show real app. | Pending |
-| 16. Release and monitor | Ganesh | Play Console → production release (**VERIFY menu**), after gates above; monitor Play purchase verification, function logs, and Sentry | The Play-only release is live; server verification and recovery remain healthy. | Pending |
-| 17. Enable server-wide UCB enforcement | Ganesh | No rollout while ineligible | Never set `app_config.require_ucb_for_razorpay=true` for the Play release without confirmed program eligibility and a separate approval. | Deferred |
+## Production Android build
 
-## Local blockers and verification limits
+From the repository root:
 
-- Local SQL and mock suites passed against PostgreSQL 17 on `/tmp` port 55431 on 2026-10-13. This does not verify deployed migrations or provider behavior.
-- `npx expo-doctor` passed 21/21 checks locally on 2026-10-15. No Android AAB was built; signing and remote build-version readiness remain unverified.
-- Dependency overrides in `mobile-app/package.json` patch `image-size`, `shell-quote`, and `xcode`'s `uuid`. The current npm audit still reports 21 high findings, and the CVE scan identifies two high-severity advisories for which the npm registry has no patched release yet: `braces@3.0.3` and `node-forge@1.4.0`. Re-scan and disposition these before release.
-- Production Supabase, Play Console, Google Cloud, Razorpay, and EAS are not accessible in this workspace. Their settings and live outcomes remain `VERIFY`.
-- **Android package release gate:** Expo and the local server Play package check use `in.medveda.app`, which the owner confirms is registered in Play Console. Mobile share/rate links, website Play links, and the app fallback URL now use this package. Confirm the signed AAB and deployed Supabase `GOOGLE_PLAY_PACKAGE_NAME` match before Play purchase testing or release. The hosted `app_config.store_url` may still contain the obsolete URL and requires a read-only check followed by a separately approved correction. Local checks do not prove the signed artifact or deployed configuration.
-- A Play-installed licensed tester is required for real Play purchase, token consumption, refunds, duplicate protection, and restart recovery. Local static checks cannot establish those results.
-- The `payment-reviewer` agent/tool was not available in this session; a manual payment diff review is being performed. Any unresolved findings must be closed before step 12.
+```sh
+cd mobile-app
+npx eas-cli build --platform android --profile production
+```
 
-## DECISION NEEDED — captured payment with wallet shortfall
+The production profile selects the production EAS environment, an Android
+`app-bundle`, remote versioning with auto-increment, the production channel and
+disabled new purchases. `internal-testing` also uses the production backend with
+purchases disabled; it is not isolated staging. Building and release approval are
+separate steps. The production **submit** profile currently targets the **internal**
+Play track; inspect `mobile-app/eas.json` before submission.
 
-The new reservation prevents an underfunded entitlement. A cancelled or expired checkout can still capture after its reservation is released. If its wallet discount is no longer fully available, `settle_razorpay_payment` rejects the grant and the callback/webhook retries receive an error. Choose and approve an operating policy before rollout: refund the captured Razorpay payment promptly, or collect the difference through a separate approved flow before granting. Define who handles the alert, the response deadline, and customer wording. Do not silently grant the shortfall. Reservations are effective only while an order remains `created` and unexpired; failure, cancellation, expiry, payment, and refund release them by order state.
+Use the [submission guide](../mobile-app/PLAY_STORE_SUBMISSION.md) for signing,
+Firebase, listing and reviewer access. Verify package `in.medveda.app`, a
+versionCode above all accepted Play artifacts, certificate, SHA-256, merged
+permissions, native dependencies and 16 KB compatibility on the exact AAB.
+Confirm no `expo-iap`, BillingClient or `com.android.vending.BILLING` remains.
+A JS export or generated manifest is not final native-artifact evidence.
 
-## DECISION NEEDED — isolated internal testing project and values
+## Purchase and historical transaction boundaries
 
-Create a **new Supabase staging project** in the Supabase Dashboard (New project, separate project reference and database). Apply reviewed migrations and seed only staging test catalog data there. Configure staging auth, cron, the Google Play service account, and server secrets in that project. In EAS project environment **preview**, set `EXPO_PUBLIC_SUPABASE_URL` to that staging project's HTTPS URL and `EXPO_PUBLIC_SUPABASE_ANON_KEY` to its staging publishable key. Never use production values. The `internal-testing` profile now selects preview and the build fails when either value is missing or matches production. Validate locally with `node mobile-app/scripts/staging-build-selftest.cjs`; inspect resolved `eas config -p android -e internal-testing` before any build, without displaying keys in logs or tickets.
+- Production and Play internal testing must show purchases unavailable, open no
+  checkout/external payment link, and preserve existing account-bound Notes.
+  Videos and MCQs are free.
+- The distinct `razorpay-internal-test` APK has local routing, a separate native
+  package/runtime/channel and staging backend. It needs a real staging public
+  key. Its native create-order request is still denied by the server guard.
+  Follow the [test-profile setup](audit/MEDVEDA_RAZORPAY_INTERNAL_TEST_ROUTING_2026-11-04.md);
+  connected local routing is not completed hosted payment acceptance.
+- Retain historical Play verification, consumption, pending-purchase,
+  void/refund/dispute and external-reporting obligations. Inventory installed
+  clients, queues, credentials, jobs and provider duties before backend retirement.
+  RTDN is not implemented; live polling/void-sweep operation needs verification.
+- Alternative-billing eligibility and accepted terms are unverified. Retained
+  UCB backend code does not authorize Play Razorpay checkout. Keep new Play
+  purchases disabled pending a separately reviewed distribution/billing design.
+- Use the [Razorpay deployment and rollback handoff](audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md)
+  for the prepared migration, four affected Edge bundles, backup and acceptance.
+  Confirm `APP_ENV=production` with live keys or `APP_ENV=staging` with test keys;
+  `ALLOW_TEST_MODE` is ignored. Maintain disabled Play purchasing during rollout.
+- Keep referral/wallet rollout disabled until economics and compensation
+  procedures are approved; confirm `referral_settings.enabled` live. Approve
+  full automatic-refund policy, operator, customer message and response deadline.
+  Provider acceptance must prove marker lookup/retries avoid duplicate refunds.
+  November reservation transfer supersedes the old proposal to consume a first
+  discount permanently after a failed unpaid checkout.
 
-Use **Razorpay test mode** for staging: create/select the test key ID and test key secret in the Razorpay Dashboard, set them only as staging Edge Function secrets, and set a separate staging webhook secret. Do not use live keys or paste any value into files. Verify the returned checkout mode says TEST and place only test transactions. The exact staging project reference, Razorpay test credentials, tax rate, seller state, Play SKUs/prices, and the verified minimum app version require owner input. No EAS command, provider call, or remote project change was made here.
+## Deployment and operational acceptance still required
 
-## RTDN follow-up after the durable sweep
+| Gate | Required evidence / procedure |
+|---|---|
+| Project and access | Confirm production `xbvenkfmesugrbjuufyw` and staging `nsmsqsogedzohwboripd`. The latest retained Management API checks could not inspect either project. Deployed state is unverified. |
+| Migration provenance | Refresh local/remote histories and compare definitions, grants, RLS and prerequisites. Never blindly push every pending file. The historical `20260801` same-version/body mismatch needs object-level review, not history repair. |
+| Staging isolation | Follow [staging preparation](../supabase/staging/README.md) and its [safety review](../supabase/staging/MIGRATION_SAFETY_AUDIT.md). Refresh the frozen manifest/preparation logic for the current inventory; historical counts are not today's expected count. Use synthetic accounts and test-only integrations. |
+| Quiz/admin URL cutover | Follow the [compatibility and rollback procedure](audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md). Prove hosted answer-free RPCs, old/new client behavior, AAL1/AAL2 and private Storage access. Never restore raw answer reads or public Notes. Local quiz-file cleanup still needs device-upgrade acceptance; copies outside app-managed storage cannot be recalled. |
+| Course/year persistence | Stage `supabase/migrations/20261104110000_course_year_profile_confirmation.sql`. The client requires a fresh exact profile match; hosted caller-only missing-profile repair and authenticated save/refresh remain unverified. Run course-year selection/confirmation scripts and `supabase/tests/course-year-profile-selftest.sh` against disposable PostgreSQL. |
+| Razorpay settlement | Stage `supabase/migrations/20261104100000_razorpay_snapshot_discount_retry.sql` with snapshot, retry, concurrency, callback/refund and legacy-client acceptance from its handoff. Preserve historical financial rows. |
+| Real payment acceptance | For a permitted isolated non-Play distribution, prove genuine test checkout → capture → webhook/server verification → exact purchase → authorized Notes bytes → My Purchases. Include cancel/pending, duplicate delivery, refund and process death. Hosted/device acceptance is unverified. |
+| Backup/recovery | Use the [backup guide](phase0/BACKUP_GUIDE.md). The [restore limitation](audit/MEDVEDA_PRODUCTION_BACKUP_RESTORE_READINESS_20261023.md) remains: application-table restore passed, complete managed Auth/Storage restore did not. Verify object bytes, external configuration and recovery time in a compatible isolated environment. |
+| Admin MFA | Follow [ADMIN_MFA.md](security/ADMIN_MFA.md), enroll/recover all admin factors and verify RLS, quiz, upload, push and URL enforcement. Historical default/off observations do not establish today's setting. |
+| Workers and alerts | Inspect consume/reconcile/void/refund/reporting queues, oldest pending age, parked jobs and successful scheduled runs. Do not invoke the catalog worker as a read-only probe or blindly restart terminal jobs. |
+| Google catalog incident | The [PATCH 403 incident](audit/MEDVEDA_PLAY_PATCH_403_2026-10-27.md) is unresolved. Preserve sanitized evidence; application UUIDs are not Google request IDs. [Catalog setup](PLAY_CATALOG_SYNC_SETUP.md) supports separately reviewed backend operations; mobile Billing need not be restored for diagnosis. |
+| Privacy/retention | Resolve operator/address/grievance details, audience/minor handling, provider region/retention and deletion exceptions using the [roadmap](ADULTS_ONLY_PRIVACY_ROADMAP.md), [deletion proposal](ACCOUNT_DELETION_CHANGE_PROPOSAL.md) and [identity-cleanup procedure](audit/PRIVACY_OWNER_ACTIONS_20261026.md). Prove identity/analytics schedules and lag before retention promises. |
+| Auth/site/deletion | Verify SMTP/Resend, Auth hooks/redirects, recovery/MFA, legal/bridge URLs and monitored outside-app deletion requests. Test synthetic in-app deletion and enumerate retained server/device records. |
+| Monitoring | Follow [SENTRY_SETUP.md](../SENTRY_SETUP.md). Prove symbolicated native/JS release events and backend alerts without exposing private data. |
+| Dependencies/diagnostics | Re-run current dependency/security checks; dated advisory counts are not release evidence. Use frozen `supabase/deno.lock` with a compatible toolchain. Keep the [diagnostic retirement procedure](audit/DIAGNOSTICS_RETIREMENT_20261026.md) until investigation/support obligations close. |
+| Device/Console | Complete the [device checklist](../REAL_DEVICE_RELEASE_TEST_CHECKLIST.md) and [performance checklist](audit/MEDVEDA_PERF_ANDROID_CHECKLIST_2026-10-27.md) on the exact new binary. Verify push, recovery, offline upgrade, account switch, reviewer access, declarations, listing and pre-launch results. |
 
-The code still uses polling; RTDN is **not implemented or enabled**. Before enabling it, implement a secure authenticated Pub/Sub push receiver in this repo, deduplicate `messageId`, validate the package and token, call the Google Play Developer API for current purchase status, and use the existing idempotent reversal path. Keep the cursor sweep as backup. Then the owner can follow [Google's RTDN setup guide](https://developer.android.com/google/play/billing/getting-ready):
+## Unresolved offline PDF encryption requirement
 
-1. In the chosen Google Cloud project, enable Cloud Pub/Sub API, create a topic, and grant `google-play-developer-notifications@system.gserviceaccount.com` the **Pub/Sub Publisher** role on that topic.
-2. Create a push subscription to the reviewed HTTPS receiver with authenticated delivery. Check that failed deliveries retry and that only validated notifications are acknowledged.
-3. In Play Console for `in.medveda.app`, open **Monetize → Monetization setup → Real-time developer notifications**, enable notifications, enter `projects/{project_id}/topics/{topic_name}`, and select **all notifications for subscriptions and one-time products** so voided and one-time events arrive.
-4. Use **Send Test Message** and verify receipt, deduplication, API recheck, entitlement reversal, and alerting. Monitor subscription delivery and the `play_void_sweep_metrics` backlog. [Google's RTDN reference](https://developer.android.com/google/play/billing/rtdn-reference) says the notification alone is not the authoritative purchase state.
+Paid PDFs and license timestamps still lack the requested encrypted local
+storage. Seven-day/account gates do not satisfy this requirement. Acceptance:
 
-No Cloud Pub/Sub or Play Console setting was changed in this work.
+1. Protect a random per-user key in OS secure storage. Authenticate encrypted
+   chunks and owner/note/version/order/length metadata. Protect license,
+   checked-at/last-seen-at data while retaining expiry/clock-rollback denial.
+2. Encrypt network chunks before persistent writes. The resumable downloader
+   writes plaintext; post-download encryption is insufficient. Validate native
+   streaming with bounded large-PDF memory; the installed blob transformer
+   buffers the full response and requires a native transformer.
+3. Publish completed ciphertext atomically after integrity/length checks. On
+   interruption, retain only incomplete ciphertext and safely retry.
+4. Migrate/invalidate legacy plaintext, clean orphan/native-viewer caches and
+   test missing keys and interrupted migration. Do not count old rows as secure.
+5. Authenticate before exposing content; decrypt only to a private temporary
+   viewing file. Clean it on close/background/logout/account switch, invalidate
+   in-flight work on account changes and purge leftovers on next startup after
+   process death. Native lifecycle handling is required.
+6. Test 1/10/50/100 MB PDFs on low-end and normal Android devices, ten cold/warm
+   opens each. Record median/p95 first-page latency and peak memory; cover expiry,
+   clock rollback, revoke/refund, disk full, restart/reboot and upgrade. Agree
+   latency/memory budgets before shipping.
 
-## 2026-10-14 audit decisions and local release settings
-
-**DECISION NEEDED — automatic compensation policy.** The implemented default is a full automatic Razorpay refund after a verified capture cannot grant access because of wallet shortfall, a stale or reused discount, an underpriced order, a deleted account, or an owned product. The retry worker lists existing refunds using a stable request marker before posting; ambiguous provider responses are retried after lookup, and repeated permanent failures park with an alert. Approve or change the policy, customer message, on-call owner and refund deadline before rollout. For UCB orders, the capture report is queued even without an entitlement; the processed refund is queued separately for Google.
-
-**DECISION NEEDED — unused first-discount reservation.** The safest default holds the first discounted checkout's reservation even when that checkout is cancelled. A later checkout gets list price. This avoids an old paid Razorpay checkout consuming a discount after it was reassigned. Approve a future release procedure only after a provider reconciliation proves the first checkout was never captured; otherwise the friend loses an unused discount until support resolves it.
-
-**DECISION NEEDED — refund ambiguity and provider acceptance.** The worker sends a stable marker in refund notes and searches Razorpay's refunds before each attempt. Razorpay's public refund documentation does not establish an exactly-once idempotency header for this API. A live/staging provider acceptance test must prove the request marker is returned in refund listings and retries do not issue a second refund. Keep production blocked until that test and the automatic-refund policy are approved.
-
-**DECISION NEEDED — production environment marker.** Set the Edge Function secret `APP_ENV=production` in the confirmed production Supabase project and `APP_ENV=staging` only in the isolated staging project. `ALLOW_TEST_MODE` has no effect. With `APP_ENV` missing, Razorpay calls fail closed; with `APP_ENV=production`, `rzp_test_` keys fail closed. Confirm the project reference and marker name without printing values before deploying. No remote secret was changed here.
-
-### Ship v1 with referral and wallet off
-
-1. In the reviewed production SQL change, run `update public.referral_settings set enabled=false where id=true;` before opening checkout. Keep it false through the first v1 release. Run the local `referral_switch_off_paths.sql` test first, then check `select enabled from public.referral_settings where id=true;` read-only after deployment; it must return `false`.
-2. With the switch off, Razorpay ignores a client `use_wallet=true`, charges list price, creates no wallet reservation or debit, applies no friend discount and writes no new referral reward. Play orders already use full tier price and no wallet amount or friend discount; Play settlement writes no reward while disabled. Existing wallet balances and ledger history remain visible. Existing purchases, provider verification, refunds, Play consumption, UCB external reporting, reconciliation and account access remain active.
-3. To enable later, first approve the referral economics and unused-reservation policy, verify eligible product types and wallet balances, then run `update public.referral_settings set enabled=true where id=true;` in a reviewed production change. Run both provider purchase/refund paths and monitor reservations, credits and compensation alerts before expanding rollout.
-
-### RTDN follow-up
-
-The paid-token reconciliation queue now uses separate attempt/success times, fair leased claims and retry backoff; the void cursor remains active. RTDN is still a follow-up. Use the secure Pub/Sub receiver, package/token validation, Google API recheck and Play Console setup steps above before enabling it. Local mocks do not verify live Pub/Sub delivery.
+This Markdown cleanup supplies no encryption implementation or release approval.
+Resolve applicable gates with fresh evidence and record the reviewer/artifact.

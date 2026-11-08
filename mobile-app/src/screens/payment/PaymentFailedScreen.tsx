@@ -9,7 +9,6 @@ import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
 import { recoverPayment } from "../../services/paymentService";
-import { recheckPlayOrder } from "../../services/playBillingService";
 
 // Reached via normal in-app navigation - either from
 // PaymentCheckoutScreen (Razorpay reported a failure, or verify-payment
@@ -37,15 +36,16 @@ export default function PaymentFailedScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
-  const { title, reason, pending, provider, verifyUrl, internalOrderId, paymentId } = route.params ?? {};
+  const { title, reason, pending, verifyUrl, internalOrderId, paymentId } = route.params ?? {};
 
-  const [stillConfirming, setStillConfirming] = useState(!!pending);
+  const [terminalReason, setTerminalReason] = useState<string | null>(null);
+  const stillConfirming = !!pending && !terminalReason;
   const resolvedRef = useRef(false);
   const pollCountRef = useRef(0);
   const focused = useRef(false);
   const focusGeneration = useRef(0);
   const checking = useRef(false);
-  const [statusReason, setStatusReason] = useState<string | undefined>(reason);
+  const statusReason = terminalReason ?? reason;
 
   function goTo(screenName: string) {
     navigation.dispatch(
@@ -58,7 +58,7 @@ export default function PaymentFailedScreen() {
 
   const checkStatus = useCallback(async () => {
     if (!focused.current || checking.current || resolvedRef.current || !pending || !internalOrderId ||
-        (provider !== "play" && !verifyUrl)) return;
+        !verifyUrl) return;
     // Give up quietly after MAX_POLL_MINUTES - the student can still see
     // it unlock on its own via My Purchases, or reach out to support with
     // the Payment ID shown below.
@@ -67,10 +67,13 @@ export default function PaymentFailedScreen() {
     checking.current = true;
     const run = focusGeneration.current;
     try {
-      const result = provider === "play"
-        ? await recheckPlayOrder(internalOrderId)
-        : await recoverPayment(verifyUrl, internalOrderId);
+      const result = await recoverPayment(verifyUrl, internalOrderId);
       if (!focused.current || resolvedRef.current || run !== focusGeneration.current) return;
+      if (!result.success && result.pending === false) {
+        resolvedRef.current = true;
+        setTerminalReason(result.message || "This payment could not unlock the Notes. Contact support before paying again.");
+        return;
+      }
       if (result.success) {
         resolvedRef.current = true;
         navigation.dispatch(
@@ -85,15 +88,11 @@ export default function PaymentFailedScreen() {
             ],
           })
         );
-      } else if (provider === "play" && "pending" in result && result.pending === false) {
-        resolvedRef.current = true;
-        setStillConfirming(false);
-        setStatusReason(result.message ?? "Payment was not completed. Check My Purchases before paying again.");
       }
     } catch {
       // Transient - the next interval tick or app-resume will try again.
     } finally { checking.current = false; }
-  }, [pending, provider, verifyUrl, internalOrderId, title, navigation]);
+  }, [pending, verifyUrl, internalOrderId, title, navigation]);
 
   // Poll on an interval while this screen is focused.
   useFocusEffect(
@@ -127,24 +126,23 @@ export default function PaymentFailedScreen() {
         <Text style={styles.title}>Confirming Your Payment</Text>
         <Text style={styles.subtitle}>
           {title
-            ? `We're still confirming your payment for "${title}". If money was deducted, it will unlock automatically - usually within a few minutes.`
-            : "We're still confirming your payment. If money was deducted, it will unlock automatically - usually within a few minutes."}
+            ? `We're still confirming your payment for "${title}". Notes will unlock after the server confirms a captured payment.`
+            : "We're still confirming your payment. Notes will unlock after the server confirms a captured payment."}
         </Text>
 
         <View style={styles.reasonCard}>
           <Text style={styles.reasonLabel}>Details</Text>
           <Text style={styles.reasonText}>
             Payment may have succeeded but verification could not be confirmed yet
-            {provider === "play" && internalOrderId
-              ? `. Order ID: ${internalOrderId}`
-              : paymentId ? `. Payment ID: ${paymentId}` : "."}
+            {paymentId ? `. Payment ID: ${paymentId}` : "."}
+            {internalOrderId ? ` Order ID: ${internalOrderId}` : ""}
           </Text>
         </View>
 
         <Text style={styles.note}>
           No need to pay again. Check My Purchases in a few minutes. If it is
           still locked after {MAX_POLL_MINUTES} minutes, contact support with
-          {provider === "play" ? " the order ID" : " the payment ID"} above.
+          the order or payment ID above.
         </Text>
 
         <TouchableOpacity
@@ -178,9 +176,9 @@ export default function PaymentFailedScreen() {
         <Text style={styles.icon}>❌</Text>
       </View>
 
-      <Text style={styles.title}>Payment Failed</Text>
+      <Text style={styles.title}>{terminalReason ? "Payment update" : "Payment Failed"}</Text>
       <Text style={styles.subtitle}>
-        {title
+        {terminalReason ? "This payment has not unlocked the Notes. See the details below." : title
           ? `Your payment for "${title}" could not be completed.`
           : "Your payment could not be completed."}
       </Text>
@@ -193,16 +191,16 @@ export default function PaymentFailedScreen() {
       )}
 
       <Text style={styles.note}>
-        No amount has been charged if the payment didn't go through. You can
-        try again anytime from the Store.
+        {terminalReason ? "Check the payment or refund status with support before paying again."
+          : "If money was deducted, check My Purchases or contact support before paying again."}
       </Text>
 
       <TouchableOpacity
         style={styles.primaryButton}
         activeOpacity={0.85}
-        onPress={() => goTo("Store")}
+        onPress={() => goTo(terminalReason ? "MyPurchases" : "Store")}
       >
-        <Text style={styles.primaryButtonText}>Try Again</Text>
+        <Text style={styles.primaryButtonText}>{terminalReason ? "My Purchases" : "Try Again"}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

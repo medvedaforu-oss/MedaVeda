@@ -1,0 +1,65 @@
+[
+  {
+    "profile": "development",
+    "artifact": "apk",
+    "source_distribution": "internal",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  },
+  {
+    "profile": "preview",
+    "artifact": "apk",
+    "source_distribution": "internal",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  },
+  {
+    "profile": "screenshots",
+    "artifact": "apk",
+    "source_distribution": "internal",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  },
+  {
+    "profile": "production",
+    "artifact": "app-bundle",
+    "source_distribution": "store",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  },
+  {
+    "profile": "internal-testing",
+    "artifact": "app-bundle",
+    "source_distribution": "store",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  },
+  {
+    "profile": "staging-validation",
+    "artifact": "apk",
+    "source_distribution": "internal",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": "staging publishable key placeholder"
+  },
+  {
+    "profile": "shrink-test",
+    "artifact": "apk",
+    "source_distribution": "internal",
+    "android_payment_provider": "disabled",
+    "buy_now": "unavailable",
+    "razorpay_enabled": false,
+    "configuration_blocker": null
+  }
+]

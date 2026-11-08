@@ -1,0 +1,15 @@
+{
+  "mobile-typescript": 0,
+  "lint": 0,
+  "mobile-payment-request": 0,
+  "mobile-payment-verdict": 0,
+  "mobile-payment-poll": 0,
+  "mobile-payment-disabled": 1,
+  "mobile-payment-routing": 1,
+  "mobile-payment-provider": 0,
+  "mobile-purchases": 0,
+  "mobile-staging": 0,
+  "razorpay-security": 0,
+  "backend-env": 0,
+  "expo-dependencies": 1
+}

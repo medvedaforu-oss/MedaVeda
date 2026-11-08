@@ -1,0 +1,24 @@
+{
+  "unexpected_changed_or_deleted_preexisting_files": [],
+  "intentional_changed_preexisting_files": [
+    ".github/workflows/ci.yml",
+    "mobile-app/scripts/payment-routing-selftest.cjs",
+    "mobile-app/scripts/payment-poll-selftest.cjs",
+    "mobile-app/scripts/release-payments-disabled-selftest.cjs",
+    "mobile-app/src/services/paymentService.ts",
+    "mobile-app/src/screens/payment/PaymentFailedScreen.tsx",
+    "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+    "mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx",
+    "mobile-app/src/screens/purchases/MyPurchasesScreen.tsx",
+    "supabase/tests/phase2_referral_wallet_checks.sql",
+    "supabase/tests/account_deletion_checks.sql",
+    "supabase/tests/batch1_checks.sql",
+    "supabase/tests/run-all.sh",
+    "supabase/tests/razorpay-env-selftest.ts",
+    "supabase/tests/discount-concurrency.sh",
+    "supabase/tests/play_entitlement_snapshot_checks.sql",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/verify-payment/index.ts"
+  ],
+  "prior_billing_removal_and_cleanup_preserved": true
+}

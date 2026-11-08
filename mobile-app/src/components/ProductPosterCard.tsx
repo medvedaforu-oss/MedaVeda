@@ -1,3 +1,4 @@
+import { paymentProvider } from "../config/paymentProvider";
 import React from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 
@@ -48,6 +49,7 @@ export default function ProductPosterCard({
 }: Props) {
   const coverColor =
     COLORS.yearAccents[colorIndex % COLORS.yearAccents.length];
+  const purchasesUnavailable = paymentProvider === "disabled";
   const showDiscount = !!originalPrice && originalPrice > price;
   const discountPercent = showDiscount
     ? Math.round(((originalPrice! - price) / originalPrice!) * 100)
@@ -79,7 +81,7 @@ export default function ProductPosterCard({
         {title}
       </Text>
 
-      {!owned && !!onBuyPress && (
+      {!owned && !!onBuyPress && !purchasesUnavailable && (
         <View style={styles.priceBlock}>
           <Text style={styles.price}>₹{price}</Text>
 
@@ -98,13 +100,13 @@ export default function ProductPosterCard({
 
       {!owned && !!onBuyPress && (
         <TouchableOpacity
-          style={[styles.buyButton, buying && styles.buyButtonDisabled]}
+          style={[styles.buyButton, (buying || purchasesUnavailable) && styles.buyButtonDisabled]}
           onPress={onBuyPress}
           activeOpacity={0.85}
           disabled={buying}
         >
           <Text style={styles.buyButtonText}>
-            {buying ? "Please wait…" : "Buy Now"}
+            {purchasesUnavailable ? "Purchases unavailable" : buying ? "Please wait…" : "Buy Now"}
           </Text>
         </TouchableOpacity>
       )}

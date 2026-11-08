@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-11-04T11:36:48.810358+00:00",
+  "verdict": "NO-GO",
+  "open_blocker": "Firebase Android client configuration missing locally and from EAS production environment",
+  "existing_mobile_files_changed": [
+    "mobile-app/src/screens/onboarding/SelectCourseYearScreen.tsx"
+  ],
+  "typescript_and_affected_checks_pass": true,
+  "production_export_pass": true,
+  "live_pending_migrations_applied": true,
+  "deployed_bodies_match": true,
+  "production_writes": 0,
+  "settlement_modified": false,
+  "aab_built": false
+}

@@ -59,8 +59,9 @@ export default function PrivacyScreen() {
         Payments
       </Text>
       <Text style={styles.body}>
-        Google Play processes digital Notes purchases in the Google Play
-        Android app. Separate permitted distribution builds use Razorpay.
+        New purchases are unavailable in this Android app version. We retain
+        records of earlier Google Play purchases for access verification,
+        refunds and support. Separate permitted distribution builds use Razorpay.
         We verify purchases and, where required by an enrolled payment
         program, report eligible Razorpay transactions and refunds to
         Google Play. We do not store your card numbers, UPI PIN or bank
@@ -76,8 +77,8 @@ export default function PrivacyScreen() {
         • Configured account-email provider (intended to be Resend; live setup requires verification){"\n"}
         • Sentry – crash and error reports{"\n"}
         • Expo and device push providers – push notifications{"\n"}
-        • Google Play – app distribution, Google Play Billing, purchase
-        verification and any required payment-program reporting{"\n\n"}
+        • Google Play – app distribution, earlier purchase verification
+        and refunds, and any required payment-program reporting{"\n\n"}
         Each provider follows its own privacy policy. We may also
         disclose data where the law requires it.
       </Text>

@@ -34,7 +34,7 @@ const ALLOWED_APP_SCHEMES = new Set([
 export default function PaymentCheckoutScreen() {
   // Defense in depth if a stale route or future caller bypasses navigator guards.
   if (paymentProvider !== "razorpay") {
-    return <View style={styles.center}><Text style={styles.errorText}>Use Google Play Billing to purchase this item.</Text></View>;
+    return <View style={styles.center}><Text style={styles.errorText}>New purchases are unavailable in this app version.</Text></View>;
   }
   return <RazorpayCheckoutScreen />;
 }
@@ -127,7 +127,7 @@ function RazorpayCheckoutScreen() {
   );
 
   async function handleMessage(event: WebViewMessageEvent) {
-    if (messageHandledRef.current) return;
+    if (messageHandledRef.current || settledRef.current) return;
 
     let message: any;
     try {
@@ -147,6 +147,9 @@ function RazorpayCheckoutScreen() {
           razorpay_signature: message.razorpay_signature,
         });
 
+        // Resume recovery may have confirmed this order while verification
+        // was in flight. A late callback must not replace that destination.
+        if (settledRef.current) return;
         if (result.success) {
           settledRef.current = true;
           resetTo("PaymentSuccess", {
@@ -154,11 +157,20 @@ function RazorpayCheckoutScreen() {
             amount: result.amount,
             orderId: internalOrderId,
           });
-        } else {
+        } else if (result.pending === false) {
           settledRef.current = true;
           goToFailed(result.message || "Payment verification failed.");
+        } else {
+          // A structured unconfirmed response (including older servers without
+          // a verdict) is ambiguous, just like a dropped network response.
+          const recovered = await runRecoveryCheck();
+          if (!recovered) {
+            settledRef.current = true;
+            goToPending(message.razorpay_payment_id);
+          }
         }
       } catch {
+        if (settledRef.current) return;
         // The payment may well have succeeded on Razorpay's side even if
         // this network call failed (dropped mid-request, timed out, etc).
         // Don't mark this settled and don't send the student to a dead
@@ -249,6 +261,7 @@ function RazorpayCheckoutScreen() {
       setVerifying(true);
       try {
         const result = await recoverPaymentWithRetry(verifyUrl, internalOrderId);
+        if (settledRef.current) return true;
         if (result.success) {
           settledRef.current = true;
           resetTo("PaymentSuccess", {
@@ -441,7 +454,7 @@ function RazorpayCheckoutScreen() {
           <ActivityIndicator color={COLORS.accent} size="large" />
           <Text style={styles.overlayText}>Verifying payment...</Text>
           <Text style={styles.overlaySubText}>
-            This can take up to 30 seconds. Please don't close the app.
+            Keep this screen open while we check. Delayed payments will show an order reference.
           </Text>
         </View>
       )}

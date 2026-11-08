@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "accessible_count": 2,
+    "medveda_production_visible": false,
+    "medveda_staging_visible": false
+  },
+  "functions": {
+    "http_status": 403
+  },
+  "secrets": {
+    "http_status": 403
+  },
+  "schema_inventory": {
+    "http_status": 403
+  },
+  "function_inventory": {
+    "http_status": 403
+  },
+  "cron_inventory": {
+    "http_status": 403
+  }
+}

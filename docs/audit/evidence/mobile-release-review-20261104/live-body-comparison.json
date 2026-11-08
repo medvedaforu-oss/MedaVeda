@@ -1,0 +1,52 @@
+[
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "orders_entitlement_immutable",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "orders_derive_course",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "razorpay_purchase_entitlement_from_order",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "orders_reserve_first_discount",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "quote_my_order",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "settle_razorpay_payment_legacy",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104100000_razorpay_snapshot_discount_retry.sql",
+    "function": "settle_razorpay_payment",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104110000_course_year_profile_confirmation.sql",
+    "function": "backfill_auth_user_profile",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104110000_course_year_profile_confirmation.sql",
+    "function": "handle_new_user",
+    "body_matches_local": true
+  },
+  {
+    "migration": "20261104110000_course_year_profile_confirmation.sql",
+    "function": "set_my_course_year",
+    "body_matches_local": true
+  }
+]

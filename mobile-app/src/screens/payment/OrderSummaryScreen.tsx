@@ -43,10 +43,14 @@ export default function OrderSummaryScreen() {
   const [error, setError] = useState<string | null>(null);
   const [paying, setPaying] = useState(false);
   const requestId = useRef(0);
+  const paymentInFlight = useRef(false);
+  const quoteReady = useRef(false);
 
   const loadQuote = useCallback(
     async (wallet: boolean) => {
       const id = ++requestId.current;
+      quoteReady.current = false;
+      setQuote(null);
       try {
         setLoading(true);
         setError(null);
@@ -57,6 +61,7 @@ export default function OrderSummaryScreen() {
           return;
         }
         setQuote(q);
+        quoteReady.current = true;
       } catch (err) {
         if (id !== requestId.current) return;
         logError("quote failed:", err);
@@ -84,20 +89,27 @@ export default function OrderSummaryScreen() {
   };
 
   const pay = async () => {
-    if (paying) return;
+    if (paymentInFlight.current || !quoteReady.current || paying || loading || !quote) return;
     if (Platform.OS !== "android" || paymentProvider !== "razorpay") {
       Alert.alert("Checkout unavailable", "Start checkout from a note on Android.");
       return;
     }
+    paymentInFlight.current = true;
     try {
       setPaying(true);
       // Same flag the server just quoted for; the server recomputes everything.
       const checkoutData = await purchaseProduct(productId, useWallet);
+      if (checkoutData.amountPaise !== Math.round(quote.amount * 100)) {
+        Alert.alert("Price updated", "The total changed. Review the updated price before paying.");
+        await loadQuote(useWallet);
+        return;
+      }
       navigation.replace("PaymentCheckout", checkoutData);
     } catch (err: any) {
       Alert.alert("Could Not Start Payment", err?.message || "Please try again.");
       loadQuote(useWallet); // balance / discount may have changed
     } finally {
+      paymentInFlight.current = false;
       setPaying(false);
     }
   };

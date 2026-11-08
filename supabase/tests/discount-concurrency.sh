@@ -26,19 +26,19 @@ wait "$p1"; wait "$p2"
   from public.discount_race_orders r where o.id=r.id" >/dev/null
 priced=$("${P[@]}" -c "select string_agg(o.referral_discount::text,',' order by o.referral_discount)
   from public.discount_race_orders r join public.orders o on o.id=r.id")
-if [ "$priced" != '0.00,50.00' ]; then echo "FAIL F02 concurrent orders priced $priced"; exit 1; fi
+if [ "$priced" != '50.00,50.00' ]; then echo "FAIL F02 concurrent orders priced $priced"; exit 1; fi
 "${P[@]}" -c "select public.settle_razorpay_payment('evt_discount_live',razorpay_order_id,
   'pay_discount_live',round(amount*100)::bigint,now()) from public.orders
   where id=(select o.id from public.orders o join public.discount_race_orders r on r.id=o.id where o.status='created')" >/dev/null
 "${P[@]}" -c "select public.settle_razorpay_payment('evt_discount_stale',razorpay_order_id,
   'pay_discount_stale',round(amount*100)::bigint,now()) from public.orders
-  where id=(select o.id from public.orders o join public.discount_race_orders r on r.id=o.id where o.referral_discount>0)" >/dev/null
+  where id=(select o.id from public.orders o join public.discount_race_orders r on r.id=o.id where o.referral_discount>0 and o.status='cancelled')" >/dev/null
 read -r grants discounted compensations <<< "$("${P[@]}" -F ' ' -c "select
   (select count(*) from public.purchases p join public.orders o on o.id=p.order_id where o.user_id='$buyer' and p.status='success'),
   (select count(*) from public.purchases p join public.orders o on o.id=p.order_id where o.user_id='$buyer' and p.status='success' and o.referral_discount>0),
   (select count(*) from public.payment_compensations c join public.orders o on o.id=c.order_id where o.user_id='$buyer' and c.reason='stale_discount')")"
-if [ "$grants" = 1 ] && [ "$discounted" = 0 ] && [ "$compensations" = 1 ]; then
-  echo 'PASS F02 concurrent orders reserve one discount; stale discounted capture is compensated without access'
+if [ "$grants" = 1 ] && [ "$discounted" = 1 ] && [ "$compensations" = 1 ]; then
+  echo 'PASS F02 concurrent replacement orders retain discount; only live reservation grants; stale capture compensated'
 else
   echo "FAIL F02 grants=$grants discounted=$discounted compensations=$compensations"; exit 1
 fi

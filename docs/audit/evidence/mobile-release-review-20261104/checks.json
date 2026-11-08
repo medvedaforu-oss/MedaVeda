@@ -1,0 +1,191 @@
+[
+  {
+    "name": "typescript",
+    "command": [
+      "./node_modules/.bin/tsc",
+      "--noEmit"
+    ],
+    "cwd": "mobile-app",
+    "exit": 0,
+    "seconds": 12.86
+  },
+  {
+    "name": "targeted-lint",
+    "command": [
+      "tooling/node_modules/.bin/eslint",
+      "mobile-app/src/services/courseState.ts",
+      "mobile-app/src/screens/onboarding/SelectCourseYearScreen.tsx",
+      "mobile-app/src/config/paymentProvider.ts",
+      "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+      "mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 3.98
+  },
+  {
+    "name": "course-state-race-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/course-state-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 1.4
+  },
+  {
+    "name": "course-year-confirmation-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/course-year-confirmation-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 8.05
+  },
+  {
+    "name": "course-year-selection-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/course-year-selection-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 1.32
+  },
+  {
+    "name": "years-inflight-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/years-inflight-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.48
+  },
+  {
+    "name": "navigation-lazy-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/navigation-lazy-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.57
+  },
+  {
+    "name": "notification-preferences-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.54
+  },
+  {
+    "name": "release-payments-disabled-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.81
+  },
+  {
+    "name": "payment-routing-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.69
+  },
+  {
+    "name": "payment-provider-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.04
+  },
+  {
+    "name": "purchases-unavailable-ui-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.67
+  },
+  {
+    "name": "payment-summary-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/payment-summary-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.73
+  },
+  {
+    "name": "payment-verdict-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 1.44
+  },
+  {
+    "name": "razorpay-internal-test-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 1.02
+  },
+  {
+    "name": "staging-build-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/staging-build-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.04
+  },
+  {
+    "name": "same-project-build-selftest.cjs",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/same-project-build-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.04
+  }
+]

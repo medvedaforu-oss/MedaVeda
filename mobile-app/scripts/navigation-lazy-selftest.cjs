@@ -13,7 +13,7 @@ function compile(file, require_) {
   vm.runInNewContext(code, { exports: mod.exports, module: mod, require: require_, React: { createElement: element }, __DEV__: false });
   return mod.exports;
 }
-for (const provider of ['play', 'razorpay']) {
+for (const provider of ['disabled', 'razorpay']) {
   const loads = [], modules = new Map(); let fail = false, sentry = false;
   const react = { createElement: element, useState: () => [false, () => {}], useEffect() {} };
   const Stack = { Navigator: 'Navigator', Screen: 'Screen' };
@@ -42,13 +42,18 @@ for (const provider of ['play', 'razorpay']) {
   assert.equal(tree.type, 'ErrorBoundary', 'Existing load/render error boundary remains');
   const screens = flatten(tree).filter(n => n?.type === 'Screen');
   assert.equal(new Set(screens.map(n => n.props.name)).size, screens.length);
-  assert.equal(screens.some(n => n.props.name === 'PlayBilling'), provider === 'play');
+  assert.equal(screens.some(n => n.props.name === 'PlayBilling'), false);
   assert.equal(screens.some(n => n.props.name === 'PaymentCheckout'), provider === 'razorpay');
   assert.equal(screens.some(n => n.props.name === 'OrderSummary'), provider === 'razorpay');
+  const preferences = screens.find(n => n.props.name === 'NotificationPreferences');
+  assert.ok(preferences, 'The notification center preferences destination must be registered');
+  assert.equal(typeof preferences.props.getComponent, 'function', 'Preferences remain lazy');
   const pdf = screens.find(n => n.props.name === 'PdfViewer');
   if (!baseline) {
     assert.equal(eager, 7, 'Only startup/auth/onboarding screens remain eager');
     assert.equal(loads.length, eager, 'Registering routes does not load deferred screens');
+    assert.equal(typeof preferences.props.getComponent(), 'function');
+    assert.ok(loads.includes('../screens/notifications/NotificationPreferencesScreen'));
     fail = true; assert.throws(() => pdf.props.getComponent(), /fixture module load failure/); fail = false;
     const loaded = pdf.props.getComponent();
     assert.equal(pdf.props.getComponent(), loaded, 'Repeated navigation preserves component identity');

@@ -78,6 +78,9 @@ Deno.serve(async (req: Request) => {
     if (failure instanceof GoogleApiError) console.error("play_catalog_failure", JSON.stringify({
       operation: failure.operation, status, reason: failure.reason, requestId: failure.requestId,
       details: failure.details,
+      ...(failure.catalogPatchDiagnostic ? {
+        requestIdSource: "application", catalogPatchDiagnostic: failure.catalogPatchDiagnostic,
+      } : {}),
       jobId: job.price_inr, leaseId: job.lease_id, retryable: retry,
     }));
     try {

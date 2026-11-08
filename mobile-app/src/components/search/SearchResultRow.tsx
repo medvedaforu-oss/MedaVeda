@@ -1,3 +1,4 @@
+import { paymentProvider } from "../../config/paymentProvider";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
@@ -47,7 +48,7 @@ export default function SearchResultRow({ result, onPress, loading = false }: Pr
             {result.downloaded && <Text style={styles.badgeIcon}>⬇️</Text>}
             {result.type === "product" && (
               <Text style={[styles.badge, result.owned ? styles.badgeOwned : styles.badgePrice]}>
-                {result.owned ? "Owned" : `₹${result.price ?? ""}`}
+                {result.owned ? "Owned" : paymentProvider === "disabled" ? "Purchases unavailable" : `₹${result.price ?? ""}`}
               </Text>
             )}
             {result.free && result.type !== "product" && <Text style={styles.badgeFree}>Free</Text>}

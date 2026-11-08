@@ -2,7 +2,7 @@
 
 **Working review, 2026-10-15. Not for publication or Console submission.** The operator intends MedVeda for adults and has explicitly decided to keep registration, login and authentication unchanged, without age verification, declarations, date-of-birth collection or age-based blocking. Source findings below describe this checkout, not deployed behavior. No production system, live legal page, database schema, account, or payment code was changed for this review. See [the unpublished policy draft](PRIVACY_POLICY_DRAFT.md) for the preserved data disclosures.
 
-**Later local update, 2026-10-15:** current release-document and website legal-page package labels were corrected to `in.medveda.app` in the shared working tree. The table below records the earlier audit snapshot. Runtime Play verification and store links still use `com.medveda.app`; see [the release report](MEDVEDA_PRIVACY_RELEASE_REPORT.md).
+**Current handoff, 2026-11-04:** the table below is a dated privacy review, not a current package/routing inventory. Use the [release gates](RELEASE_GATES.md) and final signed artifact for package `in.medveda.app` and the disabled Play purchase boundary. Resolve the audience/legal decisions below using current source and deployed evidence.
 
 ## 1. Intended audience and actual access
 
@@ -33,7 +33,7 @@ This is a proposed Terms paragraph only; neither Terms location was changed. Leg
 - **Families:** Do not select child groups merely because the app teaches students. If content or presentation actually targets children, reassess the audience and Families duties; an 18+ statement alone cannot settle this. Confirm applicable local-law definitions with counsel. [Families Policy](https://support.google.com/googleplay/android-developer/answer/9893335)
 - **User Data / deletion:** Google requires an in-app and external account-deletion request path for apps with account creation, plus accurate disclosure of any retained data. Existing paths are visible in source; complete cleanup and production verification remain open. [User Data policy](https://support.google.com/googleplay/android-developer/answer/10144311), [deletion guidance](https://support.google.com/googleplay/android-developer/answer/13327111)
 - **Data Safety:** Prepare answers for all versions currently distributed under the actual Play package, including SDK behavior, provider sharing, purchase tokens, analytics/search, push tokens and conditional Sentry. Do not claim no collection. Console declarations are not verified here. [Data Safety guidance](https://support.google.com/googleplay/android-developer/answer/10787469)
-- **Payments:** Digital notes in a Play-distributed app generally require Google Play Billing unless an eligible enrolled exception applies. The existing release gate reports no current alternative-billing eligibility; keep Play checkout Play-only. No Billing or Razorpay code was changed. [Payments policy](https://support.google.com/googleplay/android-developer/answer/9858738)
+- **Payments:** Digital notes in a Play-distributed app generally require Google Play Billing unless an eligible enrolled exception applies. The existing release gate reports no current alternative-billing eligibility; keep new Play purchases disabled as specified in the current release gates. No Billing or Razorpay code was changed. [Payments policy](https://support.google.com/googleplay/android-developer/answer/9858738)
 
 ## 4. Remaining blocker register
 

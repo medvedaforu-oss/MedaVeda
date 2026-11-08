@@ -344,13 +344,13 @@ select pg_temp.chk('X1 at most one discounted entitlement is granted',
   (select count(*) from public.purchases p join public.orders o on o.id=p.order_id
     where o.user_id=:F6::uuid and o.referral_discount>0 and p.status='success') <= 1
   and pg_temp.owns(:F6::uuid, 'pb_c8') = 'false');
-select pg_temp.chk('X2 second checkout is charged list price and stale capture is compensated',
-  (:'x2'::jsonb->>'referral_discount')::numeric=0
-  and (:'x2'::jsonb->>'amount')::numeric=500
+select pg_temp.chk('X2 replacement retains discount and stale capture is compensated',
+  (:'x2'::jsonb->>'referral_discount')::numeric=50
+  and (:'x2'::jsonb->>'amount')::numeric=450
   and (select reason from public.payment_compensations
     where payment_id='pay_' || (:'x1'::jsonb->>'order_id'))='stale_discount');
 select pg_temp.srv(format($$select public.handle_payment_refund(%L, true)::text$$, 'pay_' || (:'x1'::jsonb->>'order_id'))) as r \gset
-select pg_temp.chk('X3 refund of rejected stale capture leaves the paid list-price access alone',
+select pg_temp.chk('X3 refund of rejected stale capture leaves the paid replacement access alone',
   pg_temp.owns(:F6::uuid, 'pb_c8') = 'false'
   and pg_temp.owns(:F6::uuid, 'pb_c9') = 'true', :'r');
 

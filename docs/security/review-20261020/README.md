@@ -10,7 +10,7 @@ verification SQL files are historical fixtures, not the current acceptance
 criteria. They have been retained unchanged for audit provenance.
 
 Answer-key protection and server-verified scoring still matter for free tests.
-Use the later [quiz/admin MFA report](../../audit/MEDVEDA_QUIZ_ANSWER_AND_ADMIN_MFA_FIX_20261023.md)
+Use the later [quiz/admin MFA rollout procedure](../../audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md)
 and current source tests for that boundary. Other historical findings need
 their own current-source/deployment verification; this correction does not
 invalidate unrelated evidence or certify a production release.

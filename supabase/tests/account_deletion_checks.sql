@@ -16,9 +16,10 @@ begin
     (c, 'del.c@example.test', 'authenticated', 'authenticated');
 
   -- A: paid order + payment + purchase, an open checkout session, quiz, token, analytics
-  insert into public.orders (id, user_id, product_id, amount, status, razorpay_order_id, razorpay_payment_id)
-    values ('ord-a', a, v_prod, 99, 'paid', 'rzp_o_a', 'rzp_p_a'),
-           ('ord-b', b, v_prod, 99, 'paid', 'rzp_o_b', 'rzp_p_b');
+  insert into public.orders(id,user_id,product_id,scope,chapter_id,subject_id,year_id,year_ids,course_id,amount,status,razorpay_order_id,razorpay_payment_id)
+  select v.id,v.uid,p.id,p.scope,p.chapter_id,p.subject_id,p.year_id,p.year_ids,p.course_id,99,'paid',v.rzp_order,v.rzp_payment
+  from public.products p cross join (values ('ord-a',a,'rzp_o_a','rzp_p_a'),('ord-b',b,'rzp_o_b','rzp_p_b')) v(id,uid,rzp_order,rzp_payment)
+  where p.id=v_prod;
   insert into public.payments (order_id, user_id, product_id, amount, razorpay_order_id, razorpay_payment_id)
     values ('ord-a', a, v_prod, 99, 'rzp_o_a', 'rzp_p_a'), ('ord-b', b, v_prod, 99, 'rzp_o_b', 'rzp_p_b');
   insert into public.purchases (user_id, order_id, product_id, scope, amount, course_id)
@@ -91,7 +92,9 @@ begin
 
   -- 6. normal grant for a live user still works
   insert into auth.users (id, email, aud, role) values ('eeeeeeee-0000-4000-8000-000000000005', 'del.e@example.test', 'authenticated', 'authenticated');
-  insert into public.orders (id, user_id, product_id, amount, status, razorpay_order_id) values ('ord-e', 'eeeeeeee-0000-4000-8000-000000000005', v_prod, 99, 'created', 'rzp_o_e');
+  insert into public.orders (id,user_id,product_id,scope,chapter_id,subject_id,year_id,year_ids,course_id,amount,status,razorpay_order_id)
+  select 'ord-e','eeeeeeee-0000-4000-8000-000000000005',id,scope,chapter_id,subject_id,year_id,year_ids,course_id,99,'created','rzp_o_e'
+  from public.products where id=v_prod;
   -- pay marks a payment_sessions row used before settlement; grant_razorpay_payment now requires it (Phase 1)
   insert into public.payment_sessions (id, order_id, user_id, product_id, expires_at, used) values (gen_random_uuid(), 'ord-e', 'eeeeeeee-0000-4000-8000-000000000005', v_prod, now() + interval '1 hour', true);
   perform public.grant_razorpay_payment('evt-e', 'rzp_o_e', 'rzp_p_e', 9900);

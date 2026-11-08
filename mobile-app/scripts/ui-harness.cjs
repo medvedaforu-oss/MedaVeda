@@ -8,8 +8,14 @@ function harness() {
   const react = {
     useState(value) { const i = cursor++; slots[i] ??= { value }; return [slots[i].value, next => { slots[i].value = typeof next === 'function' ? next(slots[i].value) : next; }]; },
     useRef(value) { return react.useState({ current: value })[0]; },
-    useCallback(fn) { return fn; },
-    useMemo(fn) { return fn(); },
+    useCallback(fn, deps) { return react.useMemo(() => fn, deps); },
+    useMemo(fn, deps) {
+      const i = cursor++, old = slots[i];
+      if (!old || !deps || deps.some((v,j) => !Object.is(v,old.deps[j]))) {
+        slots[i] = { deps, value: fn() };
+      }
+      return slots[i].value;
+    },
     useEffect(effect, deps) { const i = cursor++; const old = slots[i]; if (!old || !deps || deps.some((v,j) => !Object.is(v,old.deps[j]))) { old?.cleanup?.(); slots[i] = { deps }; pending.push(() => { slots[i].cleanup = effect(); }); } },
   };
   return { react, render(fn) { cursor = 0; const value = fn(); pending.splice(0).forEach(fn => fn()); return value; }, unmount() { slots.forEach(slot => slot.cleanup?.()); } };

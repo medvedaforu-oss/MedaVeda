@@ -1,3 +1,4 @@
+import { paymentProvider } from "../../config/paymentProvider";
 import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
@@ -132,7 +133,7 @@ export default function StoreScreen() {
             <Text style={styles.fullYearPillText}>
               {yearOwned
                 ? "✓ Full Year Notes Owned"
-                : `Buy Full Year Notes · ₹${block.yearProduct.price}`}
+                : paymentProvider === "disabled" ? "New purchases unavailable" : `Buy Full Year Notes · ₹${block.yearProduct.price}`}
             </Text>
           </TouchableOpacity>
         )}
@@ -152,7 +153,7 @@ export default function StoreScreen() {
     <View style={styles.screen}>
       <View style={styles.container}>
         <Text style={styles.title}>Notes</Text>
-        <Text style={styles.subtitle}>Buy a Year, a Subject, or just one Chapter</Text>
+        <Text style={styles.subtitle}>{paymentProvider === "disabled" ? "New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account." : "Buy a Year, a Subject, or just one Chapter"}</Text>
 
         {loading ? (
           <ActivityIndicator size="large" color={COLORS.accent} />

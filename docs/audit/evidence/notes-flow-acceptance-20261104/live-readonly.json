@@ -1,0 +1,22 @@
+{
+  "projects_http": 200,
+  "credential_present": true,
+  "writes": 0,
+  "projects": {
+    "production": {
+      "expected_ref": "xbvenkfmesugrbjuufyw",
+      "identity_confirmed": false,
+      "functions_http": 403,
+      "secrets_http": 403,
+      "migrations_http": 403
+    },
+    "staging": {
+      "expected_ref": "nsmsqsogedzohwboripd",
+      "identity_confirmed": false,
+      "functions_http": 403,
+      "secrets_http": 403,
+      "migrations_http": 403
+    }
+  },
+  "accessible_project_count": 2
+}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -36,9 +36,11 @@ export default function SelectCourseYearScreen() {
   const [years, setYears] = useState<Year[]>([]);
   const [yearsLoading, setYearsLoading] = useState(false);
   const [yearsError, setYearsError] = useState<string | null>(null);
+  const yearsRequestId = useRef(0);
 
   const [yearId, setYearId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const loadCourses = useCallback(() => {
     setCoursesLoading(true);
@@ -68,38 +70,49 @@ export default function SelectCourseYearScreen() {
   }, [current.ready, current.courseId, current.yearId, courseId]);
 
   const loadYears = useCallback((forCourseId: string) => {
+    const requestId = ++yearsRequestId.current;
     setYearsLoading(true);
     setYearsError(null);
     fetchYears(forCourseId)
-      .then(setYears)
+      .then((loadedYears) => {
+        if (requestId === yearsRequestId.current) setYears(loadedYears);
+      })
       .catch((err) => {
+        if (requestId !== yearsRequestId.current) return;
         logError("Failed to load years:", err);
         setYearsError("Could not load years. Please try again.");
       })
-      .finally(() => setYearsLoading(false));
+      .finally(() => {
+        if (requestId === yearsRequestId.current) setYearsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
     if (courseId) loadYears(courseId);
     else setYears([]);
+    return () => { yearsRequestId.current += 1; };
   }, [courseId, loadYears]);
 
   const pickCourse = (id: string) => {
     if (id === courseId) return;
+    yearsRequestId.current++;
     setCourseId(id);
+    setYears([]);
     setYearId(null); // a year always belongs to exactly one course
+    setSaveError(null);
   };
 
   const performSave = async () => {
     if (!courseId || !yearId) return;
     try {
       setSaving(true);
+      setSaveError(null);
       await saveCourseYear(courseId, yearId);
       if (mode === "change") navigation.goBack();
       else navigation.replace("Home");
     } catch (err: any) {
       logError("Failed to save course/year:", err);
-      Alert.alert("Could not save", err?.message || "Please try again.");
+      setSaveError(err?.message || "Could not save your course and year. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -146,6 +159,7 @@ export default function SelectCourseYearScreen() {
               key={course.id}
               title={`${course.icon ? course.icon + "  " : ""}${course.name}`}
               isCorrect={course.id === courseId}
+              disabled={saving}
               onPress={() => pickCourse(course.id)}
             />
           ))
@@ -166,7 +180,8 @@ export default function SelectCourseYearScreen() {
                   key={year.id}
                   title={`${year.icon ? year.icon + "  " : ""}${year.title}`}
                   isCorrect={year.id === yearId}
-                  onPress={() => setYearId(year.id)}
+                  disabled={saving}
+                  onPress={() => { setYearId(year.id); setSaveError(null); }}
                 />
               ))
             )}
@@ -178,11 +193,16 @@ export default function SelectCourseYearScreen() {
         {saving ? (
           <ActivityIndicator color={COLORS.accent} />
         ) : (
-          <CustomButton
-            title={mode === "change" ? "Save" : "Continue"}
-            onPress={handleContinue}
-            disabled={!courseId || !yearId}
-          />
+          <>
+            {saveError && (
+              <Text accessibilityRole="alert" style={styles.saveError}>{saveError}</Text>
+            )}
+            <CustomButton
+              title={saveError ? "Try Again" : mode === "change" ? "Save" : "Continue"}
+              onPress={handleContinue}
+              disabled={!courseId || !yearId}
+            />
+          </>
         )}
         {mode === "change" && !saving && (
           <Text style={styles.cancel} onPress={() => navigation.goBack()}>
@@ -227,6 +247,11 @@ const styles = StyleSheet.create({
   footer: {
     paddingTop: SPACING.md,
     paddingBottom: SPACING.lg,
+  },
+  saveError: {
+    color: COLORS.error,
+    fontSize: FONT.body,
+    marginBottom: SPACING.sm,
   },
   cancel: {
     textAlign: "center",

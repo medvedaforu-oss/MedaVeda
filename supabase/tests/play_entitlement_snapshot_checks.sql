@@ -22,7 +22,7 @@ begin
   raise notice 'PASS Play entitlement uses immutable order snapshot';
 end $$;
 
--- A Razorpay purchase keeps its caller-supplied entitlement fields.
+-- Both providers now use the authorized order entitlement snapshot.
 insert into public.orders(id,user_id,product_id,scope,chapter_id,course_id,
   amount,list_price,status,provider,razorpay_order_id)
 values('qa_razor_snapshot','5eed0000-0000-0000-0000-00000000000b','seed_product',
@@ -31,8 +31,8 @@ insert into public.purchases(id,user_id,order_id,product_id,scope,chapter_id,cou
 values('qa_razor_snapshot_purchase','5eed0000-0000-0000-0000-00000000000b',
   'qa_razor_snapshot','seed_product','chapter','qa_new_chapter','bams',49,'duplicate');
 do $$ begin
-  assert (select chapter_id='qa_new_chapter' from public.purchases
-    where id='qa_razor_snapshot_purchase'), 'Razorpay purchase was changed';
-  raise notice 'PASS Razorpay entitlement insert unchanged';
+  assert (select chapter_id='seed_c' from public.purchases
+    where id='qa_razor_snapshot_purchase'), 'Razorpay order snapshot was not used';
+  raise notice 'PASS Razorpay entitlement insert uses order snapshot';
 end $$;
 rollback;

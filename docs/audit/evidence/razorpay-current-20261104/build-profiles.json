@@ -1,0 +1,67 @@
+[
+  {
+    "profile": "development",
+    "buildType": "apk",
+    "distribution": "internal",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  },
+  {
+    "profile": "preview",
+    "buildType": "apk",
+    "distribution": "internal",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  },
+  {
+    "profile": "screenshots",
+    "buildType": "apk",
+    "distribution": "internal",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  },
+  {
+    "profile": "production",
+    "buildType": "app-bundle",
+    "distribution": "store",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  },
+  {
+    "profile": "internal-testing",
+    "buildType": "app-bundle",
+    "distribution": "store",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  },
+  {
+    "profile": "staging-validation",
+    "error": "Staging requires its exact Supabase URL, a distinct publishable key, and disabled payments.",
+    "runtimeProvider": "disabled"
+  },
+  {
+    "profile": "shrink-test",
+    "buildType": "apk",
+    "distribution": "internal",
+    "backend": "xbvenkfmesugrbjuufyw.supabase.co",
+    "configured": "disabled",
+    "androidRuntime": "1.2.1-disabled",
+    "runtimeProvider": "disabled",
+    "package": "in.medveda.app"
+  }
+]

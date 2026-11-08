@@ -67,8 +67,8 @@ export async function serviceAccountToken(): Promise<string> {
   return cached.token;
 }
 
-// Only static operation/reason labels reach logs. Paths, bodies and Google's free-form
-// messages can contain purchase tokens or account data and must never be logged.
+// Only bounded, sanitized diagnostic projections reach logs, never request paths,
+// unrestricted responses, or credentials. Persisted Error.message stays generic.
 export type GoogleOperation = "api.request" | "oauth.token" | "catalog.get" |
   "catalog.readback.created" | "catalog.readback.activated" | "catalog.price-conversion" |
   "catalog.patch" | "catalog.activate" | "purchase.get" | "purchase.get-v2" |
@@ -87,6 +87,148 @@ const safeDetailReasons = new Set([
   "API_KEY_HTTP_REFERRER_BLOCKED", "CREDENTIALS_MISSING", "ACCOUNT_STATE_INVALID",
 ]);
 const safeDomains = new Set(["googleapis.com", "androidpublisher.googleapis.com", "serviceusage.googleapis.com"]);
+// Legacy/detail messages retain their exact reviewed projection. The top-level
+// PATCH message and BadRequest descriptions additionally use bounded redaction.
+const safeMessages = new Set([
+  "The caller does not have permission", "The caller does not have permission.",
+  "Request had insufficient authentication scopes.",
+  "The current user has insufficient permissions to perform the requested operation.",
+  "Permission denied", "Permission denied.", "Insufficient Permission",
+]);
+type GoogleMessageDiagnostic = {
+  state: "absent" | "preserved" | "redacted" | "omitted";
+  text?: string;
+  truncated?: true;
+};
+const MAX_DIAGNOSTIC_TEXT = 512;
+const MAX_DIAGNOSTIC_INPUT = 16_384;
+const sensitiveKey = /token|secret|password|authorization|credential|private[_ -]?key|api[_ -]?key|assertion/i;
+const invisibleDiagnosticCharacters = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f\p{Cf}]/gu;
+
+// Find opaque secrets in structured fields before selecting diagnostic text.
+// Exhausting the budget suppresses free text rather than using incomplete masks.
+function diagnosticSecrets(value: unknown): string[] | null {
+  const secrets: string[] = [];
+  let budget = 256;
+  function visit(item: unknown, sensitive = false, depth = 0): boolean {
+    if (--budget < 0 || depth > 8) return false;
+    if (typeof item === "string") {
+      if (sensitive && item) {
+        if (item.length > MAX_DIAGNOSTIC_INPUT || secrets.length >= 64) return false;
+        secrets.push(item);
+      }
+      return true;
+    }
+    if (item === null || typeof item !== "object") return true;
+    if (Array.isArray(item)) {
+      for (const entry of item) if (!visit(entry, sensitive, depth + 1)) return false;
+    } else {
+      for (const [key, entry] of Object.entries(item))
+        if (!visit(entry, sensitive || sensitiveKey.test(key), depth + 1)) return false;
+    }
+    return true;
+  }
+  return visit(value) ? secrets : null;
+}
+
+function safeGoogleMessage(value: unknown, secrets: readonly string[] | null,
+  reviewedOnly = false): GoogleMessageDiagnostic {
+  if (typeof value !== "string" || !value) return { state: "absent" };
+  if (secrets === null || value.length > MAX_DIAGNOSTIC_INPUT ||
+      (reviewedOnly && !safeMessages.has(value))) return { state: "omitted" };
+  // Remove invisible characters before matching credentials, so an embedded
+  // formatting/control character cannot split a known token or its label.
+  let text = value.replace(invisibleDiagnosticCharacters, "");
+  // Mask before truncating so a credential crossing the output boundary cannot
+  // leave a prefix behind. Include JSON-escaped and URL-encoded known values.
+  const masks = new Set<string>();
+  for (const secret of secrets.filter(Boolean)) {
+    if (secret.length > MAX_DIAGNOSTIC_INPUT) return { state: "omitted" };
+    for (const variant of [secret, secret.replace(invisibleDiagnosticCharacters, "")].filter(Boolean)) {
+      masks.add(variant);
+      masks.add(JSON.stringify(variant).slice(1, -1));
+      try { masks.add(encodeURIComponent(variant)); }
+      catch { return { state: "omitted" }; } // Malformed Unicode must not change queue behavior.
+    }
+  }
+  for (const secret of [...masks].sort((a, b) => b.length - a.length))
+    text = text.replaceAll(secret, "[redacted]");
+  text = text
+    .replace(/-----BEGIN[ A-Z]*PRIVATE KEY-----[\s\S]*?(?:-----END[ A-Z]*PRIVATE KEY-----|$)/gi, "[redacted]")
+    .replace(/\b(?:Bearer|Basic)\s+[^\s,;"'}]+/gi, "[redacted]")
+    .replace(/["']?\b(?:proxy[-_ ]?)?authorization\b["']?\s*[:=][^\r\n]*/gi, "[redacted]")
+    .replace(/["']?\b[\w-]*(?:token|secret|password|credential|private[_ -]?key|api[_ -]?key|assertion)[\w-]*\b["']?\s*[:=]\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s,;}\]]+)/gi, "[redacted]")
+    .replace(/\bya29\.[A-Za-z0-9._~-]+|\beyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, "[redacted]")
+    .replace(/https?:\/\/[^\s<>"']+|\/tokens\/[^\s/?#<>"']+/gi, "[redacted]")
+    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[redacted]")
+    .replace(/\b[A-Za-z0-9_+\/=~-]{40,}\b/g, "[redacted]")
+    .replace(/[\x00-\x1f\x7f-\x9f]/g, " ");
+  return { state: text === value ? "preserved" : "redacted", text: text.slice(0, MAX_DIAGNOSTIC_TEXT),
+    ...(text.length > MAX_DIAGNOSTIC_TEXT ? { truncated: true as const } : {}) };
+}
+function errorRecord(value: unknown): Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown> : {};
+}
+const safeViolationFields = new Set([
+  "oneTimeProduct", "regionsVersion", "version", "updateMask", "allowMissing", "latencyTolerance",
+  "packageName", "productId", "listings", "languageCode", "title", "description",
+  "purchaseOptions", "purchaseOptionId", "buyOption", "legacyCompatible", "multiQuantityEnabled",
+  "regionalPricingAndAvailabilityConfigs", "regionCode", "price", "currencyCode", "units", "nanos", "availability",
+]);
+function safeViolationField(value: unknown): string | undefined {
+  if (typeof value !== "string" || !value || value.length > 200) return undefined;
+  // Only schema field names and bounded array indices, never arbitrary subjects,
+  // product identifiers, dictionary keys, or credential-bearing field strings.
+  return value.split(".").every((part) => {
+    const match = /^([A-Za-z_]+)(?:\[[0-9]{1,3}\])?$/.exec(part);
+    return match && safeViolationFields.has(match[1].replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()));
+  }) ? value : undefined;
+}
+function catalogPatchDiagnostic(raw: unknown, knownSecrets: readonly string[] | null) {
+  const error = errorRecord(errorRecord(raw).error);
+  const legacy = Array.isArray(error.errors) ? error.errors : [];
+  const details = Array.isArray(error.details) ? error.details : [];
+  const structuredSecrets = diagnosticSecrets(raw);
+  const secrets = knownSecrets === null || structuredSecrets === null ? null : [...knownSecrets, ...structuredSecrets];
+  return {
+    bodyFormat: raw === null ? "unavailable" : "json",
+    googleStatus: typeof error.status === "string" && safeReasons.has(error.status) ? error.status : undefined,
+    googleCode: Number.isInteger(error.code) && (error.code as number) >= 100 && (error.code as number) <= 599
+      ? error.code as number : undefined,
+    message: safeGoogleMessage(error.message, secrets),
+    legacyErrors: legacy.slice(0, 4).map((value: unknown) => {
+      const entry = errorRecord(value);
+      return {
+        reason: typeof entry.reason === "string" && safeReasons.has(entry.reason) ? entry.reason : undefined,
+        reasonOmitted: typeof entry.reason === "string" && !safeReasons.has(entry.reason),
+        message: safeGoogleMessage(entry.message, secrets, true),
+      };
+    }),
+    legacyErrorsTruncated: legacy.length > 4,
+    // Preserve the presence and size of Google's original details, even when
+    // safeErrorDetails filters every entry. Never copy subjects or metadata.
+    detailEntryCount: details.length,
+    detailReasonsOmitted: details.slice(0, 8).some((value: unknown) => {
+      const entry = errorRecord(value);
+      return typeof entry.reason === "string" && !safeDetailReasons.has(entry.reason);
+    }),
+    detailMessages: details.slice(0, 8).map((value: unknown) => safeGoogleMessage(errorRecord(value).message, secrets, true)),
+    detailsTruncated: details.length > 8,
+    badRequests: details.slice(0, 8).map(errorRecord)
+      .filter((entry) => entry["@type"] === "type.googleapis.com/google.rpc.BadRequest")
+      .map((entry) => {
+        const violations = Array.isArray(entry.fieldViolations) ? entry.fieldViolations : [];
+        return { fieldViolationCount: violations.length, fieldViolationsTruncated: violations.length > 4,
+          fieldViolations: violations.slice(0, 4).map((value: unknown) => {
+            const violation = errorRecord(value);
+            const field = safeViolationField(violation.field);
+            return { field, fieldOmitted: typeof violation.field === "string" && field === undefined,
+              description: safeGoogleMessage(violation.description, secrets) };
+          }) };
+      }),
+  };
+}
 export type GoogleErrorDetail = {
   type: "ErrorInfo" | "QuotaFailure" | "PreconditionFailure" | "RetryInfo";
   reason?: string;
@@ -123,22 +265,27 @@ export class GoogleApiError extends Error {
   readonly retryable: boolean;
   readonly reason: string;
   readonly details: readonly GoogleErrorDetail[];
+  readonly catalogPatchDiagnostic?: ReturnType<typeof catalogPatchDiagnostic>;
   constructor(public readonly status: number, public readonly operation: GoogleOperation = "api.request",
-    reason = "unclassified", public readonly requestId = crypto.randomUUID(), details: unknown = []) {
+    reason = "unclassified", public readonly requestId = crypto.randomUUID(), details: unknown = [], raw?: unknown,
+    diagnosticRedactions: readonly string[] | null = []) {
     const safeReason = safeReasons.has(reason) ? reason : "unclassified";
     super(`Google API operation=${operation} status=${status} reason=${safeReason} request=${requestId}`);
     this.reason = safeReason;
     this.details = safeErrorDetails(details);
+    if (operation === "catalog.patch" && raw !== undefined)
+      this.catalogPatchDiagnostic = catalogPatchDiagnostic(raw, diagnosticRedactions);
     // Permanent OAuth permission/credential failures need operator correction,
     // just like Publisher 403s. Only transport/conflict/quota/server failures retry.
     this.retryable = status === 0 || status === 409 || status === 429 || status >= 500;
   }
 }
-async function googleError(response: Response, operation: GoogleOperation): Promise<GoogleApiError> {
+async function googleError(response: Response, operation: GoogleOperation,
+  diagnosticRedactions: readonly string[] | null = []): Promise<GoogleApiError> {
   const value = await response.json().catch(() => null);
   const candidates = [value?.error?.errors?.[0]?.reason, value?.error?.status, value?.error];
   const reason = candidates.find((entry) => typeof entry === "string" && safeReasons.has(entry));
-  return new GoogleApiError(response.status, operation, reason, undefined, value?.error?.details);
+  return new GoogleApiError(response.status, operation, reason, undefined, value?.error?.details, value, diagnosticRedactions);
 }
 export async function googleRequest<T>(method: "GET" | "POST" | "PATCH", path: string,
   body?: unknown, operation: GoogleOperation = "api.request"): Promise<T> {
@@ -152,7 +299,10 @@ export async function googleRequest<T>(method: "GET" | "POST" | "PATCH", path: s
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
   } catch { throw new GoogleApiError(0, operation); }
-  if (!response.ok) throw await googleError(response, operation);
+  if (!response.ok) {
+    const secrets = operation === "catalog.patch" ? diagnosticSecrets(body) : [];
+    throw await googleError(response, operation, secrets === null ? null : [token, ...secrets]);
+  }
   const text = await response.text();
   if (!text) return {} as T;
   try { return JSON.parse(text) as T; } catch { throw new Error("Google Play API response invalid"); }

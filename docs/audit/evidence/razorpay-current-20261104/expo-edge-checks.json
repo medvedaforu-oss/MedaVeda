@@ -1,0 +1,14 @@
+[
+  {
+    "check": "expo-public-config",
+    "exit": 0
+  },
+  {
+    "check": "expo-dependency-check",
+    "exit": 0
+  },
+  {
+    "check": "edge-typecheck",
+    "exit": 1
+  }
+]

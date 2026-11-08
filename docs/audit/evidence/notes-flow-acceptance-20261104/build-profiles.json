@@ -1,0 +1,96 @@
+[
+  {
+    "profile": "development",
+    "artifact": "apk",
+    "distribution": "internal",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  },
+  {
+    "profile": "preview",
+    "artifact": "apk",
+    "distribution": "internal",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  },
+  {
+    "profile": "screenshots",
+    "artifact": "apk",
+    "distribution": "internal",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  },
+  {
+    "profile": "production",
+    "artifact": "app-bundle",
+    "distribution": "store",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  },
+  {
+    "profile": "internal-testing",
+    "artifact": "app-bundle",
+    "distribution": "store",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  },
+  {
+    "profile": "staging-validation",
+    "artifact": "apk",
+    "distribution": "internal",
+    "backend": "https://nsmsqsogedzohwboripd.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "configuration_blocker": "Staging requires its exact Supabase URL, a distinct publishable key, and disabled payments."
+  },
+  {
+    "profile": "shrink-test",
+    "artifact": "apk",
+    "distribution": "internal",
+    "backend": "https://xbvenkfmesugrbjuufyw.supabase.co",
+    "native_runtime_provider": "disabled",
+    "can_buy_pay_unlock": "FAIL",
+    "hosted_acceptance": "UNVERIFIED",
+    "resolved_config": {
+      "package": "in.medveda.app",
+      "provider": "disabled",
+      "runtime": "1.2.1-disabled"
+    }
+  }
+]

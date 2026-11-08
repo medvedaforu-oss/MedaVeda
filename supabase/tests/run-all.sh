@@ -43,7 +43,7 @@ done
 
 # Older suites: they RAISE (psql exits non-zero) or print a line starting with FAIL.
 for s in account_deletion_checks critical_fixes_checks app_config_checks null_year_fallback_checks \
-         course_wide_browsing_checks content_publication_checks quiz_answer_and_admin_mfa_checks payment_queue_checks referral_switch_off_paths play_catalog_sync_checks play_payment_pg_checks play_entitlement_snapshot_checks; do
+         course_wide_browsing_checks content_publication_checks quiz_answer_and_admin_mfa_checks payment_queue_checks referral_switch_off_paths play_catalog_sync_checks play_payment_pg_checks play_entitlement_snapshot_checks razorpay_snapshot_retry_checks; do
   out=$(psql -X -q -At -v ON_ERROR_STOP=1 -d $DB -f "$here/$s.sql" 2>&1); rc=$?
   if [ $rc -eq 0 ] && ! echo "$out" | grep -qE '(^|[^A-Za-z])FAIL'; then printf "PASS  %s\n" "$s"
   else printf "FAIL  %s (exit %s)\n" "$s" "$rc"; echo "$out" | tail -6; fail=1; fi
@@ -60,13 +60,15 @@ if out=$(bash "$here/wallet-concurrency.sh" 2>&1); then echo "$out";
 else echo "$out"; fail=1; fi
 if out=$(bash "$here/discount-concurrency.sh" 2>&1); then echo "$out";
 else echo "$out"; fail=1; fi
+if out=$(python3 "$here/razorpay-retry-concurrency.py" 2>&1); then echo "$out";
+else echo "$out"; fail=1; fi
 if out=$(bash "$here/payment-concurrency.sh" 2>&1); then echo "$out";
 else echo "$out"; fail=1; fi
 for test in settle-timestamp-selftest.cjs f10-coverage-selftest.cjs google-reporting-selftest.cjs play-consumption-selftest.cjs recovery-selftest.cjs \
             play-reconcile-fairness-selftest.cjs compensation-worker-selftest.cjs ucb-cron-config-selftest.cjs \
             play-payment-worker-selftest.cjs play-cron-config-selftest.cjs play-catalog-worker-selftest.cjs play-catalog-creation-selftest.cjs \
             play-service-account-diagnostic-selftest.cjs play-order-selftest.cjs play-verification-selftest.cjs \
-            razorpay-routing-selftest.cjs content-url-publication-selftest.cjs; do
+            razorpay-routing-selftest.cjs razorpay-security-selftest.cjs content-url-publication-selftest.cjs; do
   if out=$(cd "$root" && node "$here/$test" 2>&1); then echo "$out" | grep '^PASS';
   else echo "$out" | tail -8; fail=1; fi
 done
