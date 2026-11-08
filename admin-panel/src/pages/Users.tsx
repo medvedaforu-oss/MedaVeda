@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -11,15 +12,16 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import type { AppUser } from "../types/user";
 
 export default function Users() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { users, loading, error, reload, toggleBlocked } = useUsers({ courseId: courseFilter || undefined });
+  const { users, loading, hasLoaded, error, reload, toggleBlocked } = useUsers({ courseId: courseFilter || undefined });
 
   const [search, setSearch] = useState("");
 
   const [pendingUser, setPendingUser] = useState<AppUser | null>(null);
   const [saving, setSaving] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
@@ -36,14 +38,18 @@ export default function Users() {
     if (!pendingUser) return;
     try {
       setSaving(true);
+      setActionError(null);
       await toggleBlocked(pendingUser.id, !pendingUser.blocked);
       setPendingUser(null);
+    } catch (err) {
+      console.error("Could not update this user:", err);
+      setActionError(err instanceof Error ? err.message : "Could not update this user. Please try again.");
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) {
+  if (loading && !hasLoaded) {
     return (
       <h2 className="text-xl">
         Loading...
@@ -53,6 +59,8 @@ export default function Users() {
 
   return (
     <div>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Users</h1>
         <p className="text-gray-500 mt-1">
@@ -84,7 +92,7 @@ export default function Users() {
           <p className="text-gray-500 mt-2">Try a different search.</p>
         </div>
       ) : (
-        <UsersTable users={filteredUsers} onToggleBlock={setPendingUser} />
+        <UsersTable users={filteredUsers} onToggleBlock={(user) => { setActionError(null); setPendingUser(user); }} />
       )}
 
       <ConfirmDialog
@@ -97,6 +105,7 @@ export default function Users() {
               : `"${pendingUser.name || pendingUser.email}" will lose access to the app immediately.`
             : ""
         }
+        error={actionError}
         loading={saving}
         confirmLabel={pendingUser?.blocked ? "Unblock" : "Block"}
         loadingLabel={pendingUser?.blocked ? "Unblocking..." : "Blocking..."}

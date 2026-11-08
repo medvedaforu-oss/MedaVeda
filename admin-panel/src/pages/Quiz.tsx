@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -15,16 +16,18 @@ import SearchBar from "../components/SearchBar";
 import type { QuizTest, QuizTestInput } from "../types/quiz";
 
 export default function Quiz() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { tests, loading, error, reload, createTest, editTest, removeTest } = useQuiz({ courseId: courseFilter || undefined });
+  const { tests, loading, hasLoaded, error, reload, createTest, editTest, removeTest } = useQuiz({ courseId: courseFilter || undefined });
 
-  const { years } = useYears();
-  const { subjects } = useSubjects();
+  const { years, loading: yearsLoading, error: yearsError, reload: reloadYears } = useYears();
+  const { subjects, loading: subjectsLoading, error: subjectsError, reload: reloadSubjects } = useSubjects();
 
   const [search, setSearch] = useState("");
   const [subjectId, setSubjectId] = useState("");
+
+  const lookupsReady = !coursesLoading && !coursesError && !yearsLoading && !yearsError && !subjectsLoading && !subjectsError;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<QuizTest | null>(null);
@@ -82,7 +85,7 @@ export default function Quiz() {
     }
   }
 
-  if (loading) {
+  if (loading && !hasLoaded) {
     return (
       <h2 className="text-xl">
         Loading...
@@ -92,9 +95,13 @@ export default function Quiz() {
 
   return (
     <>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      <LookupStatus label="years" loading={yearsLoading} error={yearsError} onRetry={reloadYears} />
+      <LookupStatus label="subjects" loading={subjectsLoading} error={subjectsError} onRetry={reloadSubjects} />
+      {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
       <QuizHeader onAdd={openCreate} />
 
-      {subjects.length === 0 && (
+      {lookupsReady && subjects.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Subject first before adding a Quiz Test.
         </p>
@@ -114,7 +121,7 @@ export default function Quiz() {
           />
         </div>
 
-        <SearchBar value={search} onChange={setSearch} />
+        <SearchBar value={search} onChange={setSearch} placeholder="Search quiz tests..." />
 
         <select
           value={subjectId}
@@ -154,6 +161,7 @@ export default function Quiz() {
       )}
 
       <QuizFormModal
+        lookupsReady={lookupsReady}
         open={formOpen}
         courses={courses}
         years={years}

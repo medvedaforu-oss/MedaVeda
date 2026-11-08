@@ -18,6 +18,7 @@ const emptySettings: AppSettings = {
 export default function useSettings() {
   const [settings, setSettings] = useState<AppSettings>(emptySettings);
   const [loading, setLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function useSettings() {
       setLoading(true);
       const data = await getSettings();
       setSettings(data);
+      setHasLoaded(true);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -43,5 +45,5 @@ export default function useSettings() {
     setSettings(data);
   }
 
-  return { settings, loading, error, reload: load, saveSettings };
+  return { settings, loading, hasLoaded, error, reload: load, saveSettings };
 }

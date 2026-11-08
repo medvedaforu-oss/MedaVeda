@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
-import { getDashboardStats } from "../services/dashboardService";
+import { dashboardStatKeys, getDashboardStats } from "../services/dashboardService";
+import type { DashboardErrors, DashboardStats } from "../services/dashboardService";
+import useRequestGuard from "./useRequestGuard";
 
 export default function useDashboard(filters: ContentFilters = {}) {
   const { courseId, yearId } = filters;
-  const [stats, setStats] = useState({
+  const beginRequest = useRequestGuard(JSON.stringify([courseId, yearId]));
+  const [errors, setErrors] = useState<DashboardErrors>({});
+  const [stats, setStats] = useState<DashboardStats>({
     courses: 0,
     years: 0,
     subjects: 0,
@@ -19,18 +23,26 @@ export default function useDashboard(filters: ContentFilters = {}) {
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const data = await getDashboardStats({ courseId, yearId });
-      setStats(data);
+      if (!current()) return;
+      setStats(data.stats);
+      setErrors(data.errors);
+    } catch (err) {
+      if (!current()) return;
+      console.error("Could not load dashboard stats:", err);
+      setErrors(Object.fromEntries(dashboardStatKeys.map((key) => [key, "Could not load this count."])));
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [courseId, yearId]);
+  }, [courseId, yearId, beginRequest]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  return { stats, loading, reload: load };
+  return { stats, errors, loading, reload: load };
 }

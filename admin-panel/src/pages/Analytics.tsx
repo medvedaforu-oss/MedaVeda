@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useState } from "react";
 
 import useAnalytics from "../hooks/useAnalytics";
@@ -8,12 +9,13 @@ import TopProductsTable from "../components/TopProductsTable";
 import CoursePicker from "../components/CoursePicker";
 
 export default function Analytics() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
   const { data, loading, error } = useAnalytics({ courseId: courseFilter || undefined });
 
   const filterBar = (
     <div className="mb-6 w-56">
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
       <CoursePicker
         courses={courses}
         value={courseFilter}

@@ -3,6 +3,7 @@ type Props = {
   value: string;
   icon: string;
   color: string;
+  error?: string;
 };
 
 export default function StatCard({
@@ -10,6 +11,7 @@ export default function StatCard({
   value,
   icon,
   color,
+  error,
 }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow p-6">
@@ -23,6 +25,7 @@ export default function StatCard({
           <h2 className="text-3xl font-bold mt-2">
             {value}
           </h2>
+          {error && <p role="alert" className="mt-2 text-xs text-red-600">{error}</p>}
         </div>
 
         <div

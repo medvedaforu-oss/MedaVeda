@@ -1,3 +1,4 @@
+import useRequestGuard from "../hooks/useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 
 import Button from "../components/Button";
@@ -22,6 +23,7 @@ function formatDate(value: string | null) {
 export default function ReviewFlags() {
   const [flags, setFlags] = useState<ReviewFlag[]>([]);
   const [showResolved, setShowResolved] = useState(false);
+  const beginRequest = useRequestGuard(JSON.stringify(showResolved));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [target, setTarget] = useState<ReviewFlag | null>(null);
@@ -29,17 +31,22 @@ export default function ReviewFlags() {
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       setError("");
-      setFlags(await getReviewFlags(showResolved));
+      const data = await getReviewFlags(showResolved);
+      if (!current()) return;
+      setFlags(data);
     } catch (err: any) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load review flags.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [showResolved]);
+  }, [showResolved, beginRequest]);
 
   useEffect(() => {
     load();

@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -12,10 +13,10 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import type { Order, OrderStatus } from "../types/order";
 
 export default function Orders() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { orders, loading, error, reload, changeStatus } = useOrders({ courseId: courseFilter || undefined });
+  const { orders, loading, hasLoaded, error, reload, changeStatus } = useOrders({ courseId: courseFilter || undefined });
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -25,6 +26,7 @@ export default function Orders() {
     status: OrderStatus;
   } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -41,6 +43,7 @@ export default function Orders() {
 
   function requestStatusChange(order: Order, newStatus: OrderStatus) {
     if (newStatus === order.status) return;
+    setActionError(null);
     setPendingChange({ order, status: newStatus });
   }
 
@@ -48,14 +51,18 @@ export default function Orders() {
     if (!pendingChange) return;
     try {
       setSaving(true);
+      setActionError(null);
       await changeStatus(pendingChange.order.id, pendingChange.status);
       setPendingChange(null);
+    } catch (err) {
+      console.error("Could not update this order:", err);
+      setActionError(err instanceof Error ? err.message : "Could not update this order. Please try again.");
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) {
+  if (loading && !hasLoaded) {
     return (
       <h2 className="text-xl">
         Loading...
@@ -65,6 +72,8 @@ export default function Orders() {
 
   return (
     <div>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Orders</h1>
         <p className="text-gray-500 mt-1">
@@ -111,6 +120,7 @@ export default function Orders() {
             ? `Mark this order as "${pendingChange.status}" for ${pendingChange.order.userName || "this student"}?`
             : ""
         }
+        error={actionError}
         loading={saving}
         confirmLabel="Update Status"
         loadingLabel="Updating..."

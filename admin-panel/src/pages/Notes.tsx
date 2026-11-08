@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -17,18 +18,20 @@ import type { Note, NoteInput } from "../types/note";
 import { saveNoteWithUpload } from "../services/noteService";
 
 export default function Notes() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { notes, loading, error, reload, createNote, editNote, removeNote } =
+  const { notes, loading, hasLoaded, error, reload, createNote, editNote, removeNote } =
     useNotes({ courseId: courseFilter || undefined });
 
-  const { years } = useYears();
-  const { subjects } = useSubjects();
-  const { chapters } = useChapters();
+  const { years, loading: yearsLoading, error: yearsError, reload: reloadYears } = useYears();
+  const { subjects, loading: subjectsLoading, error: subjectsError, reload: reloadSubjects } = useSubjects();
+  const { chapters, loading: chaptersLoading, error: chaptersError, reload: reloadChapters } = useChapters();
 
   const [search, setSearch] = useState("");
   const [chapterId, setChapterId] = useState("");
+
+  const lookupsReady = !coursesLoading && !coursesError && !yearsLoading && !yearsError && !subjectsLoading && !subjectsError && !chaptersLoading && !chaptersError;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Note | null>(null);
@@ -91,7 +94,7 @@ export default function Notes() {
     }
   }
 
-  if (loading) {
+  if (loading && !hasLoaded) {
     return (
       <h2 className="text-xl">
         Loading...
@@ -101,9 +104,14 @@ export default function Notes() {
 
   return (
     <>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      <LookupStatus label="years" loading={yearsLoading} error={yearsError} onRetry={reloadYears} />
+      <LookupStatus label="subjects" loading={subjectsLoading} error={subjectsError} onRetry={reloadSubjects} />
+      <LookupStatus label="chapters" loading={chaptersLoading} error={chaptersError} onRetry={reloadChapters} />
+      {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
       <NotesHeader onAdd={openCreate} />
 
-      {chapters.length === 0 && (
+      {lookupsReady && chapters.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Chapter first before adding Notes.
         </p>
@@ -162,6 +170,7 @@ export default function Notes() {
       )}
 
       <NoteFormModal
+        lookupsReady={lookupsReady}
         open={formOpen}
         courses={courses}
         years={years}

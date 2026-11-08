@@ -18,7 +18,7 @@ export default function useSubjects(filters: ContentFilters = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadSubjects = useCallback(async () => {
+  const loadSubjects = useCallback(async (afterMutation = false) => {
     const current = beginRequest();
     if (!current()) return;
     try {
@@ -30,7 +30,7 @@ export default function useSubjects(filters: ContentFilters = {}) {
     } catch (err) {
       if (!current()) return;
       console.error(err);
-      setError("Could not load subjects. Please try again.");
+      setError(afterMutation ? "Saved, but the list could not refresh. Please retry." : "Could not load subjects. Please try again.");
     } finally {
       if (current()) setLoading(false);
     }
@@ -42,17 +42,17 @@ export default function useSubjects(filters: ContentFilters = {}) {
 
   async function createSubject(data: SubjectInput) {
     await addSubject(data);
-    await loadSubjects();
+    await loadSubjects(true);
   }
 
   async function editSubject(id: string, data: SubjectInput) {
     await updateSubject(id, data);
-    await loadSubjects();
+    await loadSubjects(true);
   }
 
   async function removeSubject(id: string) {
     await deleteSubject(id);
-    await loadSubjects();
+    await loadSubjects(true);
   }
 
   return {

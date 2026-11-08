@@ -18,7 +18,7 @@ export default function useChapters(filters: ContentFilters = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadChapters = useCallback(async () => {
+  const loadChapters = useCallback(async (afterMutation = false) => {
     const current = beginRequest();
     if (!current()) return;
     try {
@@ -30,7 +30,7 @@ export default function useChapters(filters: ContentFilters = {}) {
     } catch (err) {
       if (!current()) return;
       console.error(err);
-      setError("Could not load chapters. Please try again.");
+      setError(afterMutation ? "Saved, but the list could not refresh. Please retry." : "Could not load chapters. Please try again.");
     } finally {
       if (current()) setLoading(false);
     }
@@ -42,17 +42,17 @@ export default function useChapters(filters: ContentFilters = {}) {
 
   async function createChapter(data: ChapterInput) {
     await addChapter(data);
-    await loadChapters();
+    await loadChapters(true);
   }
 
   async function editChapter(id: string, data: ChapterInput) {
     await updateChapter(id, data);
-    await loadChapters();
+    await loadChapters(true);
   }
 
   async function removeChapter(id: string) {
     await deleteChapter(id);
-    await loadChapters();
+    await loadChapters(true);
   }
 
   return {

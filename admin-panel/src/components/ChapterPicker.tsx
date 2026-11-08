@@ -55,7 +55,7 @@ export default function ChapterPicker({
       setSubjectId(selectedChapter.subjectId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chapterId]);
+  }, [chapterId, selectedChapter?.courseId, selectedChapter?.yearId, selectedChapter?.subjectId]);
 
   const yearsInCourse = useMemo(
     () => (courses ? years.filter((y) => y.courseId === courseId) : years),

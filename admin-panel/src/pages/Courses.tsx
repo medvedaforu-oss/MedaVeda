@@ -16,6 +16,7 @@ export default function Courses() {
     courses,
     loading,
     error,
+    reload,
     createCourse,
     editCourse,
     toggleCourseActive,
@@ -145,7 +146,7 @@ export default function Courses() {
 
       {loading && <p className="text-gray-400">Loading...</p>}
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <div role="alert" className="text-red-500"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {actionError && (
         <p className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">

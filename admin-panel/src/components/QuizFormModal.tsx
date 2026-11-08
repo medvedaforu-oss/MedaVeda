@@ -13,6 +13,7 @@ import { validateQuizQuestion } from "../utils/quizValidation";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   subjects: Subject[];
@@ -43,6 +44,7 @@ function buildEmptyForm(): QuizTestInput {
 
 export default function QuizFormModal({
   open,
+  lookupsReady = true,
   courses,
   years,
   subjects,
@@ -167,7 +169,7 @@ export default function QuizFormModal({
       closeDisabled={saving}
       title={initialData ? "Edit Quiz Test" : "Create New Quiz Test"}
     >
-      {subjects.length === 0 && (
+      {lookupsReady && subjects.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Subject first before adding a Quiz Test.
         </p>

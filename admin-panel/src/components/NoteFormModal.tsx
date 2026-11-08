@@ -15,6 +15,7 @@ import type { Chapter } from "../types/chapter";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   subjects: Subject[];
@@ -41,6 +42,7 @@ function buildEmptyForm(): NoteInput {
 
 export default function NoteFormModal({
   open,
+  lookupsReady = true,
   courses,
   years,
   subjects,
@@ -205,7 +207,7 @@ export default function NoteFormModal({
       title={initialData ? "Edit Note" : "Create New Note"}
     >
       <fieldset disabled={saving} className="min-w-0">
-      {chapters.length === 0 && (
+      {lookupsReady && chapters.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Chapter first before adding a Note.
         </p>

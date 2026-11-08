@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useState } from "react";
 
 import useCourses from "../hooks/useCourses";
@@ -13,11 +14,13 @@ import Button from "../components/Button";
 import type { Year, YearInput } from "../types/year";
 
 export default function Years() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
   const { years, loading, error, reload, createYear, editYear, removeYear } =
     useYears({ courseId: courseFilter || undefined });
+
+  const lookupsReady = !coursesLoading && !coursesError;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Year | null>(null);
@@ -60,6 +63,7 @@ export default function Years() {
 
   return (
     <div>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-800">
@@ -98,6 +102,7 @@ export default function Years() {
       )}
 
       <YearFormModal
+        lookupsReady={lookupsReady}
         open={formOpen}
         courses={courses}
         initialData={editing}

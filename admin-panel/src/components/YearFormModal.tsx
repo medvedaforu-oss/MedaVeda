@@ -10,6 +10,7 @@ import type { Course } from "../types/course";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   initialData?: Year | null;
   onClose: () => void;
@@ -27,6 +28,7 @@ const emptyForm: YearInput = {
 
 export default function YearFormModal({
   open,
+  lookupsReady = true,
   courses,
   initialData,
   onClose,
@@ -103,7 +105,7 @@ export default function YearFormModal({
           onChange={handleCourseChange}
           error={errors.courseId}
         />
-        {courses.length === 0 && (
+        {lookupsReady && courses.length === 0 && (
           <p className="mt-1 text-xs text-amber-600">
             Create a Course first in Courses.
           </p>

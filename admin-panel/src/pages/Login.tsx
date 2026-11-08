@@ -48,9 +48,19 @@ export default function Login() {
   }
 
   async function reject(message: string) {
-    await supabase.auth.signOut();
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) throw signOutError;
     goToStep("password");
     setError(message);
+  }
+
+  async function handleSignOut() {
+    try {
+      await reject("");
+    } catch (err) {
+      console.error("Failed to sign out:", err);
+      setError("Could not sign out. Please try again.");
+    }
   }
 
   // Decide what a signed-in session still needs before the panel opens.
@@ -120,9 +130,13 @@ export default function Login() {
   // A page refresh (or being bounced here at AAL1) resumes the MFA step instead of asking for the password again.
   useEffect(() => {
     let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(({ data, error: sessionError }) => {
+      if (sessionError) throw sessionError;
       if (cancelled || !data.session) return;
-      runFlow().catch(() => setError("Could not continue sign-in. Please sign in again."));
+      return runFlow();
+    }).catch((err) => {
+      console.error("Could not continue sign-in:", err);
+      if (!cancelled) setError("Could not continue sign-in. Please sign in again.");
     });
     return () => {
       cancelled = true;
@@ -198,7 +212,7 @@ export default function Login() {
               Skip for now (only until MFA is switched on)
             </button>
           )}
-          <button type="button" onClick={() => reject("")} className="w-full mt-3 text-sm text-gray-500 underline">
+          <button type="button" onClick={handleSignOut} className="w-full mt-3 text-sm text-gray-500 underline">
             Sign out
           </button>
         </form>

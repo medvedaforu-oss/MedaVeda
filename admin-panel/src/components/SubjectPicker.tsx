@@ -50,7 +50,7 @@ export default function SubjectPicker({
       setYearId(selectedSubject.yearId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subjectId]);
+  }, [subjectId, selectedSubject?.courseId, selectedSubject?.yearId]);
 
   const yearsInCourse = useMemo(
     () => (courses ? years.filter((y) => y.courseId === courseId) : years),

@@ -1,3 +1,4 @@
+import useRequestGuard from "./useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 
 import {
@@ -17,6 +18,7 @@ import type {
 } from "../types/referral";
 
 export default function useReferrals(status?: ReferralStatus) {
+  const beginRequest = useRequestGuard(status ?? "");
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [settings, setSettings] = useState<ReferralSettings | null>(null);
   const [audit, setAudit] = useState<ReferralSettingsAuditEntry[]>([]);
@@ -24,6 +26,8 @@ export default function useReferrals(status?: ReferralStatus) {
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const [list, s, log] = await Promise.all([
@@ -36,17 +40,19 @@ export default function useReferrals(status?: ReferralStatus) {
           return [] as ReferralSettingsAuditEntry[];
         }),
       ]);
+      if (!current()) return;
       setReferrals(list);
       setSettings(s);
       setAudit(log);
       setError(null);
     } catch (err) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load referrals. Please try again.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [status]);
+  }, [status, beginRequest]);
 
   useEffect(() => {
     void load();

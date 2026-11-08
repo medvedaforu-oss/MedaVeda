@@ -1,3 +1,4 @@
+import useRequestGuard from "./useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
@@ -17,23 +18,28 @@ const emptyData: AnalyticsData = {
 
 export default function useAnalytics(filters: ContentFilters = {}) {
   const { courseId, yearId } = filters;
+  const beginRequest = useRequestGuard(JSON.stringify([courseId, yearId]));
   const [data, setData] = useState<AnalyticsData>(emptyData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    const current = beginRequest();
+    if (!current()) return;
     try {
       setLoading(true);
       const result = await getAnalytics({ courseId, yearId });
+      if (!current()) return;
       setData(result);
       setError(null);
     } catch (err) {
+      if (!current()) return;
       console.error(err);
       setError("Could not load analytics. Please try again.");
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
-  }, [courseId, yearId]);
+  }, [courseId, yearId, beginRequest]);
 
   useEffect(() => {
     void load();

@@ -12,6 +12,7 @@ import type { Subject } from "../types/subject";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   subjects: Subject[];
@@ -35,6 +36,7 @@ function buildEmptyForm(): ChapterInput {
 
 export default function ChapterFormModal({
   open,
+  lookupsReady = true,
   courses,
   years: allYears,
   subjects,
@@ -146,7 +148,7 @@ export default function ChapterFormModal({
       onClose={onClose}
       title={initialData ? "Edit Chapter" : "Create New Chapter"}
     >
-      {allYears.length === 0 && (
+      {lookupsReady && allYears.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Year first.
         </p>
@@ -159,7 +161,7 @@ export default function ChapterFormModal({
           onChange={handleCourseChange}
           error={errors.courseId}
         />
-        {courses.length === 0 && (
+        {lookupsReady && courses.length === 0 && (
           <p className="mt-1 text-xs text-amber-600">
             Create a Course first in Courses.
           </p>

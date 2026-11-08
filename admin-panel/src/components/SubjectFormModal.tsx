@@ -11,6 +11,7 @@ import type { Course } from "../types/course";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   initialData?: Subject | null;
@@ -33,6 +34,7 @@ function buildEmptyForm(): SubjectInput {
 
 export default function SubjectFormModal({
   open,
+  lookupsReady = true,
   courses,
   years: allYears,
   initialData,
@@ -121,7 +123,7 @@ export default function SubjectFormModal({
       onClose={onClose}
       title={initialData ? "Edit Subject" : "Create New Subject"}
     >
-      {allYears.length === 0 && (
+      {lookupsReady && allYears.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Year first before adding a Subject.
         </p>
@@ -134,7 +136,7 @@ export default function SubjectFormModal({
           onChange={handleCourseChange}
           error={errors.courseId}
         />
-        {courses.length === 0 && (
+        {lookupsReady && courses.length === 0 && (
           <p className="mt-1 text-xs text-amber-600">
             Create a Course first in Courses.
           </p>

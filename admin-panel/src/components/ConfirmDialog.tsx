@@ -2,6 +2,7 @@ type Props = {
   open: boolean;
   title: string;
   message: string;
+  error?: string | null;
   loading?: boolean;
   confirmLabel?: string;
   loadingLabel?: string;
@@ -13,6 +14,7 @@ export default function ConfirmDialog({
   open,
   title,
   message,
+  error,
   loading = false,
   confirmLabel = "Delete",
   loadingLabel = "Deleting...",
@@ -26,6 +28,7 @@ export default function ConfirmDialog({
       <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
         <p className="mt-2 text-sm text-gray-500">{message}</p>
+        {error && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}
 
         <div className="mt-6 flex justify-end gap-3">
           <button

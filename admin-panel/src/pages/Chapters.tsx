@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -14,7 +15,7 @@ import Button from "../components/Button";
 import type { Chapter, ChapterInput } from "../types/chapter";
 
 export default function Chapters() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
   const {
@@ -27,11 +28,13 @@ export default function Chapters() {
     removeChapter,
   } = useChapters({ courseId: courseFilter || undefined });
 
-  const { years, loading: yearsLoading } = useYears();
-  const { subjects, loading: subjectsLoading } = useSubjects();
+  const { years, loading: yearsLoading, error: yearsError, reload: reloadYears } = useYears();
+  const { subjects, loading: subjectsLoading, error: subjectsError, reload: reloadSubjects } = useSubjects();
 
   const [yearFilter, setYearFilter] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
+
+  const lookupsReady = !coursesLoading && !coursesError && !yearsLoading && !yearsError && !subjectsLoading && !subjectsError;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Chapter | null>(null);
@@ -99,6 +102,9 @@ export default function Chapters() {
 
   return (
     <div>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      <LookupStatus label="years" loading={yearsLoading} error={yearsError} onRetry={reloadYears} />
+      <LookupStatus label="subjects" loading={subjectsLoading} error={subjectsError} onRetry={reloadSubjects} />
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-800">Chapters</h2>
@@ -113,13 +119,13 @@ export default function Chapters() {
         </Button>
       </div>
 
-      {!yearsLoading && years.length === 0 && (
+      {lookupsReady && !yearsLoading && years.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Year first.
         </p>
       )}
 
-      {!subjectsLoading && years.length > 0 && subjects.length === 0 && (
+      {lookupsReady && !subjectsLoading && years.length > 0 && subjects.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Subject first.
         </p>
@@ -185,6 +191,7 @@ export default function Chapters() {
       )}
 
       <ChapterFormModal
+        lookupsReady={lookupsReady}
         open={formOpen}
         courses={courses}
         years={years}

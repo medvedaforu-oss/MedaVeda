@@ -14,7 +14,7 @@ import { validateUpdateGate } from "../utils/appVersion";
 import type { AppSettings } from "../types/settings";
 
 export default function Settings() {
-  const { settings, loading, error, saveSettings } = useSettings();
+  const { settings, loading, hasLoaded, error, reload, saveSettings } = useSettings();
 
   const [form, setForm] = useState<AppSettings>(settings);
   const [saving, setSaving] = useState(false);
@@ -47,7 +47,7 @@ export default function Settings() {
     }
   }
 
-  if (loading) {
+  if (loading && !hasLoaded) {
     return (
       <h2 className="text-xl">
         Loading...
@@ -57,6 +57,7 @@ export default function Settings() {
 
   return (
     <div className="max-w-2xl">
+      {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-gray-500 mt-1">
@@ -64,7 +65,7 @@ export default function Settings() {
         </p>
       </div>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
       {saveError && <p className="text-red-500 mb-4">{saveError}</p>}
 
       <div className="bg-white rounded-xl shadow p-6">

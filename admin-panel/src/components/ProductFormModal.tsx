@@ -13,6 +13,7 @@ import type { Chapter } from "../types/chapter";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   subjects: Subject[];
@@ -53,6 +54,7 @@ function buildEmptyForm(): ProductInput {
 
 export default function ProductFormModal({
   open,
+  lookupsReady = true,
   courses,
   years: allYears,
   subjects: allSubjects,
@@ -281,7 +283,7 @@ export default function ProductFormModal({
       onClose={onClose}
       title={initialData ? "Edit Product" : "Create New Product"}
     >
-      {allYears.length === 0 && (
+      {lookupsReady && allYears.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Year first before adding a Product.
         </p>

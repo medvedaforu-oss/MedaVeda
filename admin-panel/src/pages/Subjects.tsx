@@ -1,3 +1,4 @@
+import LookupStatus from "../components/LookupStatus";
 import { useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
@@ -13,15 +14,17 @@ import Button from "../components/Button";
 import type { Subject, SubjectInput } from "../types/subject";
 
 export default function Subjects() {
-  const { courses } = useCourses();
+  const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
   const { subjects, loading, error, reload, createSubject, editSubject, removeSubject } =
     useSubjects({ courseId: courseFilter || undefined });
 
-  const { years, loading: yearsLoading } = useYears();
+  const { years, loading: yearsLoading, error: yearsError, reload: reloadYears } = useYears();
 
   const [yearFilter, setYearFilter] = useState("");
+
+  const lookupsReady = !coursesLoading && !coursesError && !yearsLoading && !yearsError;
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Subject | null>(null);
@@ -74,6 +77,8 @@ export default function Subjects() {
 
   return (
     <div>
+      <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
+      <LookupStatus label="years" loading={yearsLoading} error={yearsError} onRetry={reloadYears} />
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-800">Subjects</h2>
@@ -87,7 +92,7 @@ export default function Subjects() {
         </Button>
       </div>
 
-      {years.length === 0 && !yearsLoading && (
+      {lookupsReady && years.length === 0 && !yearsLoading && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Year in "Academic Years" first.
         </p>
@@ -135,6 +140,7 @@ export default function Subjects() {
       )}
 
       <SubjectFormModal
+        lookupsReady={lookupsReady}
         open={formOpen}
         courses={courses}
         years={years}

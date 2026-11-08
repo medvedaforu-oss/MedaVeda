@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import RouteErrorBoundary from "../components/RouteErrorBoundary";
 
 export default function AdminLayout() {
   return (
@@ -15,9 +16,11 @@ export default function AdminLayout() {
         <Header />
 
         <div className="mt-8">
-          <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
-            <Outlet />
-          </Suspense>
+          <RouteErrorBoundary>
+            <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
+              <Outlet />
+            </Suspense>
+          </RouteErrorBoundary>
         </div>
 
       </div>

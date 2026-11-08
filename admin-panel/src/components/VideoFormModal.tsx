@@ -13,6 +13,7 @@ import { isSupportedYouTubeUrl } from "../utils/videoUrl";
 
 type Props = {
   open: boolean;
+  lookupsReady?: boolean;
   courses: Course[];
   years: Year[];
   subjects: Subject[];
@@ -38,6 +39,7 @@ function buildEmptyForm(): VideoInput {
 
 export default function VideoFormModal({
   open,
+  lookupsReady = true,
   courses,
   years,
   subjects,
@@ -114,7 +116,7 @@ export default function VideoFormModal({
       closeDisabled={saving}
       title={initialData ? "Edit Video" : "Create New Video"}
     >
-      {subjects.length === 0 && (
+      {lookupsReady && subjects.length === 0 && (
         <p className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           Create at least one Subject first before adding a Video.
         </p>
