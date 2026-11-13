@@ -35,7 +35,16 @@
     if (error && (error.name === "AuthRetryableFetchError" || error.name === "TypeError" || error.status === 0 || error.status >= 500)) return recoveryError("network_error");
     return recoveryError("recovery_failed");
   }
+  // One queue per auth client serializes imports, verification, updates and cleanup
+  // across replacement controllers. A disposed controller cannot resume SDK work.
+  var queues = new WeakMap();
   function createRecoveryFlow(auth) {
+    var disposed = false;
+    function alive() { if (disposed) throw recoveryError("recovery_expired"); }
+    async function wait(promise) {
+      try { var result = await promise; alive(); return result; }
+      catch (error) { alive(); throw error; }
+    }
     var phase = "idle", factors = [], imported = false, requireMfa = false, challengeRequired = false, busy = false;
     function snapshot() { return { phase: phase, factors: factors.slice() }; }
     function checked(result) { if (result.error) throw result.error; return result.data; }
@@ -43,36 +52,43 @@
       if (!imported) throw recoveryError("recovery_expired");
       // Remember a server-required challenge even if the next network check fails.
       if (forceChallenge) { challengeRequired = true; requireMfa = true; }
-      var aal = checked(await auth.mfa.getAuthenticatorAssuranceLevel());
+      var aal = checked(await wait(auth.mfa.getAuthenticatorAssuranceLevel()));
       if (!aal || !aal.currentLevel || !aal.nextLevel) throw recoveryError("recovery_expired");
       if (forceChallenge || aal.nextLevel === "aal2") requireMfa = true;
       if ((!challengeRequired && aal.currentLevel === "aal2") || (!requireMfa && aal.currentLevel === "aal1" && aal.nextLevel === "aal1")) {
         phase = "ready"; factors = []; return snapshot();
       }
       // Only verified, existing TOTP factors may be used. Never enroll during recovery.
-      var listed = checked(await auth.mfa.listFactors());
+      var listed = checked(await wait(auth.mfa.listFactors()));
       factors = ((listed && listed.all) || []).filter(function (f) { return f.status === "verified" && f.factor_type === "totp"; })
         .map(function (f, i) { return { id: f.id, label: "Authenticator " + (i + 1) }; });
       if (!factors.length) { phase = "blocked"; throw recoveryError("mfa_unavailable"); }
       phase = "mfa";
       return snapshot();
     }
-    async function exclusive(work) {
-      if (busy) throw recoveryError("busy");
+    function exclusive(work) {
+      if (busy) return Promise.reject(recoveryError("busy"));
       busy = true;
-      try { return await work(); }
-      catch (raw) {
-        var error = normalize(raw);
-        if (error.code === "recovery_expired") { phase = "expired"; imported = false; factors = []; }
-        if (error.code === "mfa_unavailable") phase = "blocked";
-        if (error.code === "mfa_required") { requireMfa = true; phase = "mfa"; }
-        throw error;
-      } finally { busy = false; }
+      var previous = queues.get(auth) || Promise.resolve();
+      var operation = previous.catch(function () {}).then(async function () {
+        alive();
+        try { var result = await work(); alive(); return result; }
+        catch (raw) {
+          alive();
+          var error = normalize(raw);
+          if (error.code === "recovery_expired") { phase = "expired"; imported = false; factors = []; }
+          if (error.code === "mfa_unavailable") phase = "blocked";
+          if (error.code === "mfa_required") { requireMfa = true; phase = "mfa"; }
+          throw error;
+        } finally { busy = false; }
+      });
+      queues.set(auth, operation.catch(function () {}));
+      return operation;
     }
     async function cleanup() {
       phase = "cleanup";
       try {
-        var result = await auth.signOut();
+        var result = await wait(auth.signOut());
         if (result.error) throw result.error;
       } catch (_) { throw recoveryError("cleanup_failed"); }
       imported = false; factors = []; phase = "done";
@@ -80,11 +96,12 @@
     }
     return {
       snapshot: snapshot,
+      dispose: function () { disposed = true; factors = []; imported = false; },
       start: function (tokens) { return exclusive(async function () {
         if (["expired", "blocked", "done", "cleanup"].indexOf(phase) !== -1) throw recoveryError("recovery_expired");
         if (!imported) {
           if (!tokens || !tokens.accessToken || !tokens.refreshToken) throw recoveryError("recovery_expired");
-          var data = checked(await auth.setSession({ access_token: tokens.accessToken, refresh_token: tokens.refreshToken }));
+          var data = checked(await wait(auth.setSession({ access_token: tokens.accessToken, refresh_token: tokens.refreshToken })));
           if (!data || !data.session) throw recoveryError("recovery_expired");
           imported = true;
         }
@@ -95,9 +112,10 @@
         if (phase !== "mfa") throw recoveryError("mfa_required");
         if (!factors.some(function (f) { return f.id === factorId; })) throw recoveryError("mfa_unavailable");
         if (!/^\d{6}$/.test(code)) throw recoveryError("mfa_verification_failed");
-        checked(await auth.mfa.challengeAndVerify({ factorId: factorId, code: code }));
+        checked(await wait(auth.mfa.challengeAndVerify({ factorId: factorId, code: code })));
         requireMfa = true; challengeRequired = false;
         var result = await assurance(false);
+        alive();
         if (result.phase !== "ready") throw recoveryError("mfa_required");
         return result;
       }); },
@@ -106,8 +124,9 @@
         if (phase !== "ready") throw recoveryError("mfa_required");
         phase = "idle";
         var state = await assurance(false);
+        alive();
         if (state.phase !== "ready") return state;
-        var result = await auth.updateUser({ password: password });
+        var result = await wait(auth.updateUser({ password: password }));
         if (result.error && result.error.code === "insufficient_aal") {
           phase = "idle"; return assurance(true);
         }

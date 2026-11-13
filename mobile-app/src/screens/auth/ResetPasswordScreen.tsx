@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -15,7 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { resetPasswordSchema } from "../../validation/resetPasswordSchema";
 import { createPasswordRecovery, parseRecoveryTokensFromUrl } from "../../features/auth/authService";
-import { getLastDeepLinkUrl, clearLastDeepLinkUrl } from "../../features/auth/deepLinkStore";
+import { getLastDeepLinkUrl, clearLastDeepLinkUrl, getRecoveryLinkRevision, subscribeRecoveryLinks } from "../../features/auth/deepLinkStore";
 import type { RecoveryState } from "../../features/auth/recoveryFlow";
 import { COLORS } from "../../theme/colors";
 import { RADIUS } from "../../theme/radius";
@@ -29,18 +29,18 @@ type ResetPasswordForm = {
 export default function ResetPasswordScreen() {
   const navigation = useNavigation<any>();
 
-  // BUG FIX ("link tapped while app was already open loses the token"):
-  // this used to call Linking.getInitialURL()/addEventListener("url", ...)
-  // itself. On a cold start that's fine, but on a warm start (app already
-  // running in the background) React Navigation's own linking listener
-  // reacts to the same "url" event and navigates here - by the time this
-  // screen mounts and registers its own listener, the event has already
-  // fired and passed, so it never actually catches the token. Reading
-  // from deepLinkStore instead works both ways, since that listener is
-  // registered once at app root (AppNavigator), before any screen exists.
-  const resetUrl = useRef(getLastDeepLinkUrl());
-  const [recovery] = useState(createPasswordRecovery);
-  const [state, setState] = useState<RecoveryState>(recovery.snapshot);
+  const active = useRef<{ recovery: ReturnType<typeof createPasswordRecovery>; revision: number } | null>(null);
+  const subscribe = useCallback((notify: () => void) => subscribeRecoveryLinks(() => {
+    const session = active.current;
+    // Retire continuations synchronously, before React renders the new link.
+    if (session && getRecoveryLinkRevision() !== session.revision) {
+      session.recovery.dispose();
+      active.current = null;
+    }
+    notify();
+  }), []);
+  const revision = useSyncExternalStore(subscribe, getRecoveryLinkRevision);
+  const [state, setState] = useState<RecoveryState>({ phase: "idle", factors: [] });
   const [message, setMessage] = useState("");
   const [code, setCode] = useState("");
   const [factorId, setFactorId] = useState("");
@@ -63,12 +63,15 @@ export default function ResetPasswordScreen() {
 
   // Hold the guard synchronously: React's saving state alone permits rapid double taps.
   const run = useCallback(async (work: () => Promise<RecoveryState>) => {
-    if (busy.current) return;
+    const session = active.current;
+    if (!session || busy.current) return;
+    const current = () => active.current === session && getRecoveryLinkRevision() === session.revision;
     busy.current = true;
     setSaving(true);
     setMessage("");
     try {
       const next = await work();
+      if (!current()) return;
       setState(next);
       if (next.phase === "mfa") {
         reset();
@@ -76,46 +79,58 @@ export default function ResetPasswordScreen() {
       }
       if (next.phase === "cleanup" || next.phase === "done") {
         reset();
-        resetUrl.current = null;
-        clearLastDeepLinkUrl();
+        clearLastDeepLinkUrl(session.revision);
       }
       if (next.phase === "done") {
         Alert.alert("Password Updated", "Your password has been reset. Please log in with your new password.", [
-          { text: "OK", onPress: () => navigation.reset({ index: 0, routes: [{ name: "Login" }] }) },
+          { text: "OK", onPress: () => { if (current()) navigation.reset({ index: 0, routes: [{ name: "Login" }] }); } },
         ]);
       }
     } catch (error) {
-      const next = recovery.snapshot();
+      if (!current()) return;
+      const next = session.recovery.snapshot();
       setState(next);
       // Only the controller's fixed, sanitized messages reach the UI. No auth payload logging.
       setMessage(error instanceof Error ? error.message : "Couldn't complete password recovery. Please try again.");
       if (["expired", "blocked", "cleanup"].includes(next.phase)) {
         reset();
-        resetUrl.current = null;
-        clearLastDeepLinkUrl();
+        clearLastDeepLinkUrl(session.revision);
       }
     } finally {
-      setCode("");
-      busy.current = false;
-      setSaving(false);
+      if (current()) {
+        setCode("");
+        busy.current = false;
+        setSaving(false);
+      }
     }
-  }, [navigation, recovery, reset]);
+  }, [navigation, reset]);
 
   const start = useCallback(() => run(async () => {
+    const session = active.current!;
     let tokens = null;
-    try { tokens = resetUrl.current ? parseRecoveryTokensFromUrl(resetUrl.current) : null; }
-    catch { return recovery.start(null); }
-    const next = await recovery.start(tokens);
-    resetUrl.current = null;
-    clearLastDeepLinkUrl();
+    try { const url = getLastDeepLinkUrl(); tokens = url ? parseRecoveryTokensFromUrl(url) : null; }
+    catch { /* controller returns a sanitized expired-session error */ }
+    const next = await session.recovery.start(tokens);
+    if (active.current === session) clearLastDeepLinkUrl(session.revision);
     return next;
-  }), [recovery, run]);
+  }), [run]);
 
-  useEffect(() => { void start(); }, [start]);
+  useEffect(() => {
+    const controller = createPasswordRecovery();
+    const session = { recovery: controller, revision };
+    active.current = session;
+    busy.current = false;
+    reset(); setCode(""); setMessage(""); setFactorId(""); setState(controller.snapshot());
+    void start();
+    return () => {
+      if (active.current === session) active.current = null;
+      controller.dispose();
+    };
+  }, [revision, reset, start]);
 
   const submit = ({ password }: ResetPasswordForm) => {
     if (state.phase !== "ready") return;
-    return run(() => recovery.updatePassword(password));
+    return run(() => active.current!.recovery.updatePassword(password));
   };
 
   return (
@@ -148,7 +163,7 @@ export default function ResetPasswordScreen() {
           accessibilityLabel="Authenticator code" value={code} onChangeText={setCode} keyboardType="number-pad"
           textContentType="oneTimeCode" autoComplete="one-time-code" maxLength={6} editable={!saving} secureTextEntry />
         <TouchableOpacity style={[styles.button, saving && styles.disabled]} disabled={saving}
-          onPress={() => run(() => recovery.verify(factorId, code.trim()))}>
+          onPress={() => run(() => active.current!.recovery.verify(factorId, code.trim()))}>
           {saving ? <ActivityIndicator color={COLORS.textOnPrimary} /> : <Text style={styles.buttonText}>Verify code</Text>}
         </TouchableOpacity>
       </>}
@@ -159,7 +174,7 @@ export default function ResetPasswordScreen() {
       )}
       {state.phase === "cleanup" && (
         <TouchableOpacity style={[styles.button, saving && styles.disabled]} disabled={saving}
-          onPress={() => run(() => recovery.retryCleanup())}>
+          onPress={() => run(() => active.current!.recovery.retryCleanup())}>
           <Text style={styles.buttonText}>{saving ? "Signing out…" : "Retry sign-out"}</Text>
         </TouchableOpacity>
       )}

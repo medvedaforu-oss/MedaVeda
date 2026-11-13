@@ -4,6 +4,7 @@ export type RecoveryState = { phase: RecoveryPhase; factors: { id: string; label
 export type RecoveryTokens = { accessToken: string; refreshToken: string };
 export type RecoveryFlow = {
   snapshot(): RecoveryState;
+  dispose(): void;
   start(tokens: RecoveryTokens | null): Promise<RecoveryState>;
   verify(factorId: string, code: string): Promise<RecoveryState>;
   updatePassword(password: string): Promise<RecoveryState>;
