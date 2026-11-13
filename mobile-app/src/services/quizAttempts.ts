@@ -4,7 +4,7 @@
 // Existing client scores remain local practice results, never trusted scores.
 
 import { getDb, OFFLINE_DB_SUPPORTED } from "../config/database";
-import { queueForSync } from "./syncEngine";
+import { enqueueForSync, drainQueue } from "./syncEngine";
 import { logDebug } from "../utils/logger";
 
 export interface QuizAttemptInput {
@@ -28,32 +28,35 @@ export function recordQuizAttempt(input: QuizAttemptInput): string {
 
   const canVerify = !!input.userId && Number.isSafeInteger(input.questionRevision) &&
     (input.questionRevision ?? 0) > 0;
-  db.runSync(
-    `INSERT INTO quiz_attempts_local
-      (attempt_id, quiz_id, chapter_id, score, total_questions, answers_json, taken_at, synced, verification_status)
-     VALUES (?,?,?,?,?,?,?,0,?);`,
-    [
-      attemptId,
-      input.quizId,
-      "", // quizzes are subject-scoped, not chapter-scoped in this app
-      input.score,
-      input.totalQuestions,
-      JSON.stringify(input.answers),
-      takenAt,
-      canVerify ? "unverified" : "legacy",
-    ]
-  );
+  db.withTransactionSync(() => {
+    db.runSync(
+      `INSERT INTO quiz_attempts_local
+        (attempt_id, quiz_id, chapter_id, score, total_questions, answers_json, taken_at, synced, verification_status)
+       VALUES (?,?,?,?,?,?,?,0,?);`,
+      [
+        attemptId,
+        input.quizId,
+        "", // quizzes are subject-scoped, not chapter-scoped in this app
+        input.score,
+        input.totalQuestions,
+        JSON.stringify(input.answers),
+        takenAt,
+        canVerify ? "unverified" : "legacy",
+      ]
+    );
 
-  if (canVerify) {
-    queueForSync("quiz_attempt", "upsert", {
-      attempt_id: attemptId,
-      user_id: input.userId,
-      test_id: input.quizId,
-      question_revision: input.questionRevision,
-      answers: input.answers,
-    });
-  }
+    if (canVerify) {
+      enqueueForSync("quiz_attempt", "upsert", {
+        attempt_id: attemptId,
+        user_id: input.userId,
+        test_id: input.quizId,
+        question_revision: input.questionRevision,
+        answers: input.answers,
+      });
+    }
 
+  });
+  if (canVerify) void drainQueue();
   return attemptId;
 }
 

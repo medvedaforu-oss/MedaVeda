@@ -55,8 +55,8 @@ function rowToQueueItem(row: any): SyncQueueItem | null {
   }
 }
 
-/** Call this from any repository/service right after a successful local write. */
-export function queueForSync(
+/** Enqueue inside the same SQLite transaction as the local write. Does not drain. */
+export function enqueueForSync(
   entityType: SyncEntityType,
   operation: "upsert" | "delete",
   payload: Record<string, unknown>
@@ -69,8 +69,16 @@ export function queueForSync(
      VALUES (?,?,?,?,?,0,NULL);`,
     [queueId, entityType, operation, JSON.stringify(payload), Date.now()]
   );
-  // Fire-and-forget: try syncing immediately in case we're already online.
-  drainQueue();
+}
+
+/** For standalone writes; transactional callers enqueue then drain after commit. */
+export function queueForSync(
+  entityType: SyncEntityType,
+  operation: "upsert" | "delete",
+  payload: Record<string, unknown>
+): void {
+  enqueueForSync(entityType, operation, payload);
+  void drainQueue();
 }
 
 function getPendingItems(): SyncQueueItem[] {
