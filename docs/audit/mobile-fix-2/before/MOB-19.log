@@ -1,0 +1,15 @@
+$ node mobile-app/__tests__/MOB-19.cjs
+AssertionError [ERR_ASSERTION]: connected=true, reachable=null
+
+false !== true
+
+    at /home/ganeshp8545/AyurPulse/mobile-app/__tests__/MOB-19.cjs:5:210 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+EXIT 1
