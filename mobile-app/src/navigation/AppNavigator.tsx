@@ -15,7 +15,7 @@ import {
 } from "../services/studyReminderService";
 import usePreventScreenshot from "../hooks/usePreventScreenshot";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { getInitialDeepLinkUrl, subscribeDeepLinks } from "../features/auth/deepLinkStore";
+import { getInitialDeepLinkUrl, subscribeDeepLinks, recoveryLinkPrefix } from "../features/auth/deepLinkStore";
 
 import SplashScreen from "../screens/auth/SplashScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
@@ -86,13 +86,9 @@ const navigationTheme = {
   },
 };
 
-// ResetPassword IS live: Supabase's password-reset email links back to
-// "medveda://reset-password" (see authService.PASSWORD_RESET_REDIRECT_URL).
-//
-// NOTE: the prefix below must match app.json's "scheme" field exactly
-// ("medveda") or none of these deep links will open the app.
+// Use the recovery scheme declared by this installed native build.
 const linking = {
-  prefixes: ["medveda://"],
+  prefixes: recoveryLinkPrefix ? [recoveryLinkPrefix] : [],
   getInitialURL: getInitialDeepLinkUrl,
   subscribe: subscribeDeepLinks,
   config: {

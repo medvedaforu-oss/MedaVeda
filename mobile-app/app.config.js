@@ -44,6 +44,7 @@ module.exports = ({ config }) => {
     next.name = "MedVeda Razorpay Test";
     next.scheme = "medveda-razorpay-test";
   }
+  next.extra.medvedaRecoveryScheme = next.scheme;
   // Keep this native build separate from earlier Play Billing and Razorpay runtimes.
   // EAS Update does not supply EAS_BUILD_PROFILE, so the profile check above
   // cannot protect an update published to the wrong channel by itself.

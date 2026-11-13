@@ -1,4 +1,17 @@
 import { Linking } from "react-native";
+import Constants from "expo-constants";
+
+// The native manifest and navigator must target the same installed application.
+const configuredScheme = Constants.expoConfig?.scheme;
+const scheme = typeof configuredScheme === "string" ? configuredScheme :
+  Array.isArray(configuredScheme) ? configuredScheme[0] : "medveda";
+const allowedSchemes = ["medveda", "medveda-staging", "medveda-razorpay-test"];
+const declaredScheme = Constants.expoConfig?.extra?.medvedaRecoveryScheme ?? scheme;
+export const recoveryLinkPrefix = allowedSchemes.includes(scheme) && declaredScheme === scheme ? `${scheme}://` : "";
+function isRecoveryUrl(url: string | null): url is string {
+  if (!url || !recoveryLinkPrefix || !url.startsWith(recoveryLinkPrefix)) return false;
+  return /^reset-password(?:[?#]|$)/.test(url.slice(recoveryLinkPrefix.length));
+}
 
 let lastUrl: string | null = null;
 let revision = 0;
@@ -14,7 +27,7 @@ export function subscribeRecoveryLinks(listener: () => void) {
 function remember(url: string | null) {
   readGeneration++;
   // Only retain recovery links; never keep unrelated URLs in the auth store.
-  lastUrl = url?.startsWith("medveda://reset-password") ? url : null;
+  lastUrl = isRecoveryUrl(url) ? url : null;
   // Unrelated links must not retire an active recovery controller.
   if (lastUrl) {
     revision++;
