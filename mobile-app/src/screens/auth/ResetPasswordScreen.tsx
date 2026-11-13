@@ -6,7 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
   Linking,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -134,7 +136,8 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
       <Text style={styles.logo}>🔑</Text>
 
       <Text style={styles.title}>Reset Password</Text>
@@ -168,7 +171,11 @@ export default function ResetPasswordScreen() {
         </TouchableOpacity>
       </>}
       {(state.phase === "mfa" || state.phase === "blocked") && (
-        <TouchableOpacity onPress={() => Linking.openURL("https://www.medveda.in/contact")}>
+        <TouchableOpacity onPress={() => {
+          void Linking.openURL("https://www.medveda.in/contact").catch(() => {
+            setMessage("Couldn't open support. Visit www.medveda.in/contact in your browser.");
+          });
+        }}>
           <Text style={styles.link}>Can't access your enrolled factor? Contact support for account recovery.</Text>
         </TouchableOpacity>
       )}
@@ -235,16 +242,21 @@ export default function ResetPasswordScreen() {
       <TouchableOpacity disabled={saving} onPress={() => navigation.navigate("Login")}>
         <Text style={styles.link}>Back to Login</Text>
       </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.background,
+  },
+
+  content: {
+    flexGrow: 1,
     justifyContent: "center",
     padding: 25,
-    backgroundColor: COLORS.background,
   },
 
   logo: {

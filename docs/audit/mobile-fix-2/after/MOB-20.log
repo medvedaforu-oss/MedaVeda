@@ -1,0 +1,5 @@
+$ node mobile-app/__tests__/MOB-20.cjs
+DEVICE TEST PENDING: landscape, small viewport, large text and open keyboard
+PASS MOB-20.cjs
+
+EXIT 0

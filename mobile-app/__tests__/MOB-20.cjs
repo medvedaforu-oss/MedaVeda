@@ -1,0 +1,2 @@
+const {assert,run,nodes}=require('./audit-harness.cjs');const setup=require('./reset-harness.cjs');
+run(()=>{const s=setup();const tree=s.render();assert.ok(nodes(tree).some(n=>n.type==='KeyboardAvoidingView'),'recovery rendered inside keyboard avoiding container');assert.ok(nodes(tree).some(n=>n.type==='ScrollView'&&n.props.keyboardShouldPersistTaps==='handled'),'recovery actions scroll with keyboard taps handled');s.h.unmount();console.log('DEVICE TEST PENDING: landscape, small viewport, large text and open keyboard');});
