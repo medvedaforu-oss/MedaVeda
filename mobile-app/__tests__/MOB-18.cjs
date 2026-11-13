@@ -1,0 +1,2 @@
+const {assert,run,tick,nodes}=require('./audit-harness.cjs');const setup=require('./payment-harness.cjs');
+run(async()=>{const s=setup(true);s.render();await tick();const tree=s.render();const target=nodes(tree).find(n=>typeof n.props?.onPress==='function'&&/purchases/i.test(n.props.title||nodes(n).map(x=>typeof x.props?.children==='string'?x.props.children:'').join(' ')));assert.ok(target,'already_owned quote exposes My Purchases action');target.props.onPress();assert.ok(s.nav.some(a=>a.includes('MyPurchases')),'owned action navigates MyPurchases');s.h.unmount();});

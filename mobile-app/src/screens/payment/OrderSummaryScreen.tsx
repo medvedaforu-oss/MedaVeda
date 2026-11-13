@@ -41,6 +41,7 @@ export default function OrderSummaryScreen() {
   const [settings, setSettings] = useState<ReferralSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [alreadyOwned, setAlreadyOwned] = useState(false);
   const [paying, setPaying] = useState(false);
   const requestId = useRef(0);
   const paymentInFlight = useRef(false);
@@ -54,9 +55,14 @@ export default function OrderSummaryScreen() {
       try {
         setLoading(true);
         setError(null);
+        setAlreadyOwned(false);
         const q = await fetchOrderQuote(productId, wallet);
         if (id !== requestId.current) return; // a newer request superseded this one
         if (!q.ok) {
+          if (q.code === "already_owned") {
+            setAlreadyOwned(true);
+            return;
+          }
           setError("This product is no longer available.");
           return;
         }
@@ -118,6 +124,15 @@ export default function OrderSummaryScreen() {
     return (
       <View style={styles.container}>
         <ErrorState message="Start checkout from a note on Android." onRetry={() => navigation.goBack()} />
+      </View>
+    );
+  }
+
+  if (alreadyOwned) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.product}>You already own this product. Open My Purchases to access it.</Text>
+        <CustomButton title="My Purchases" onPress={() => navigation.navigate("MyPurchases")} />
       </View>
     );
   }
