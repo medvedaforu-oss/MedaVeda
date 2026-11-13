@@ -51,41 +51,27 @@ export default function ProgressRing({
         { width: size, height: size, borderRadius: size / 2, backgroundColor: trackColor },
       ]}
     >
-      {/* Right half mask */}
-      <View style={[styles.halfMask, { width: size / 2, height: size, left: size / 2 }]}>
-        <View
-          style={[
-            styles.fullCircle,
-            {
-              width: size,
-              height: size,
-              borderRadius: size / 2,
-              left: -size / 2,
-              backgroundColor: color,
-              transform: [{ rotate: `${rightRotation}deg` }],
-            },
-          ]}
-        />
-      </View>
-
-      {/* Left half mask - only contributes once progress passes 50% */}
-      {progress > 50 && (
-        <View style={[styles.halfMask, { width: size / 2, height: size, left: 0 }]}>
-          <View
-            style={[
-              styles.fullCircle,
-              {
-                width: size,
-                height: size,
-                borderRadius: size / 2,
-                left: 0,
-                backgroundColor: color,
-                transform: [{ rotate: `${leftRotation}deg` }],
-              },
-            ]}
-          />
+      {/* Each fixed mask clips a rotating semicircle around the full disc center.
+          Right reveals 0–50%; left reveals the remaining 50–100%. */}
+      {[0, 1].map((half) => (
+        <View key={half} style={[styles.halfMask, {
+          width: size / 2, height: size, left: half === 0 ? size / 2 : 0,
+        }]}>
+          <View style={[styles.fullCircle, {
+            width: size, height: size, left: half === 0 ? -size / 2 : 0,
+            transform: [{ rotate: `${half === 0 ? rightRotation : leftRotation}deg` }],
+          }]}>
+            <View style={[styles.halfMask, {
+              width: size / 2, height: size, left: half === 0 ? 0 : size / 2,
+            }]}>
+              <View style={[styles.fullCircle, {
+                width: size, height: size, borderRadius: size / 2,
+                left: half === 0 ? 0 : -size / 2, backgroundColor: color,
+              }]} />
+            </View>
+          </View>
         </View>
-      )}
+      ))}
 
       {/* Inner cutout to turn the filled disc into a ring, and hold the label */}
       <View

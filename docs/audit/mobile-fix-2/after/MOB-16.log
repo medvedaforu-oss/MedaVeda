@@ -1,0 +1,4 @@
+$ node mobile-app/__tests__/MOB-16.cjs
+PASS MOB-16.cjs
+
+EXIT 0
