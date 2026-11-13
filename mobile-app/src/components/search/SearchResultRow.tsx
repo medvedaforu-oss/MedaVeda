@@ -22,7 +22,7 @@ type Props = {
 // six visually different card layouts crammed into one list.
 export default function SearchResultRow({ result, onPress, loading = false }: Props) {
   const icon = SECTION_META[result.type].icon;
-  const locked = result.type === "note" && result.owned === false;
+  const locked = result.type === "note" && !result.owned && !result.free;
   const isPaidProduct = result.type === "product" && !result.owned;
 
   return (

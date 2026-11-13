@@ -23,7 +23,8 @@ const jsx={jsx:(type,props,key)=>({type,props,key}),jsxs:(type,props,key)=>({typ
 const rn={View:'View',Text:'Text',ScrollView:'ScrollView',KeyboardAvoidingView:'KeyboardAvoidingView',TouchableOpacity:'TouchableOpacity',Pressable:'Pressable',ActivityIndicator:'ActivityIndicator',TextInput:'TextInput',Switch:'Switch',Modal:'Modal',Platform:{OS:'android'},StyleSheet:{create:s=>s,flatten:s=>Object.assign({},...[s].flat(Infinity).filter(Boolean))},Alert:{alert(){}},Linking:{openURL:async()=>{}}};
 function load(file,mocks={},globals={}) {
  const mod={exports:{}};
- const source=fs.readFileSync(path.join(root,file),'utf8');
+ const overlay=path.join(root,file);
+ const source=fs.readFileSync(fs.existsSync(overlay)?overlay:path.resolve(__dirname,'..',file),'utf8');
  const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText;
  const base={'react/jsx-runtime':jsx,'react-native':rn};
  vm.runInNewContext(code,{module:mod,exports:mod.exports,console,Error,URL,Date,Promise,AbortController,AbortSignal,process:{env:{}},setTimeout,clearTimeout,setInterval,clearInterval,...globals,require:id=>{if(id in mocks)return mocks[id];if(id in base)return base[id];throw Error('Unmocked import '+id+' in '+file)}},{filename:file});

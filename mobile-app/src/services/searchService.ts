@@ -250,7 +250,7 @@ export function applyOwnership(
     if (r.type === "note") {
       const chapter = r.data.chapter as Chapter | undefined;
       const owned = chapter ? isChapterUnlocked(ownedScopes, chapter) : false;
-      return { ...r, owned, downloaded: downloadedIds.has(r.data.id) };
+      return { ...r, owned, free: r.data.isFreePreview === true, downloaded: downloadedIds.has(r.data.id) };
     }
     if (r.type === "chapter") {
       const owned = isChapterUnlocked(ownedScopes, r.data as Chapter);

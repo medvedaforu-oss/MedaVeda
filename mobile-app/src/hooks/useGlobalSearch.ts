@@ -52,7 +52,7 @@ export default function useGlobalSearch() {
   const { buy, purchasing } = usePurchase();
   const { downloads, refresh: refreshDownloads } = useDownloads();
 
-  const downloadedIds = useMemo(() => new Set(downloads.map((d) => d.id)), [downloads]);
+  const downloadedIds = useMemo(() => new Set(downloads.filter((d) => d.status === "completed" && d.localUri).map((d) => d.id)), [downloads]);
 
   const loadIndex = useCallback(async (forceRefresh = false) => {
     const request = ++loadRequest.current.sequence;
