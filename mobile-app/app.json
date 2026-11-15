@@ -2,8 +2,8 @@
   "expo": {
     "name": "MedVeda",
     "slug": "ayurpulse",
-    "version": "1.2.1",
-    "orientation": "portrait",
+    "version": "1.2.2",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "scheme": "medveda",
@@ -27,7 +27,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.READ_MEDIA_IMAGES",
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"
-      ]
+      ],
+      "softwareKeyboardLayoutMode": "resize"
     },
     "plugins": [
       "@react-native-community/datetimepicker",

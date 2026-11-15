@@ -1,0 +1,413 @@
+{
+  "observed_at": "2026-11-11T04:10:57.885256+00:00",
+  "project": "xbvenkfmesugrbjuufyw",
+  "database": {
+    "role": "supabase_read_only_user",
+    "totals": {
+      "orders": 27,
+      "payments": 15,
+      "purchases": 15,
+      "orders_by_status": {
+        "paid": 13,
+        "failed": 11,
+        "created": 1,
+        "cancelled": 2
+      },
+      "success_payments": 15,
+      "success_purchases": 15,
+      "null_success_product": 0,
+      "keyed_duplicate_success_groups": 1
+    },
+    "functions": [
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_product_id text, p_use_wallet boolean",
+        "name": "create_priced_order",
+        "owner": "postgres",
+        "definition_sha256": "9e986431c18784459a8ea9e55f7f55079fe9a133ce5216c808a0f42efc7070f6",
+        "locking_lines": []
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_razorpay_payment_id text, p_outcome text",
+        "name": "handle_payment_dispute",
+        "owner": "postgres",
+        "definition_sha256": "31693ec89f4cc79b1c6c3b084242e7151de9ffc1b9c775bb0237a04d05cc735b",
+        "locking_lines": [
+          "perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text, 0));",
+          "select * into v_order from public.orders where razorpay_payment_id = p_razorpay_payment_id for update;"
+        ]
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_razorpay_payment_id text, p_full_refund boolean",
+        "name": "handle_payment_refund",
+        "owner": "postgres",
+        "definition_sha256": "fbfd4bdd21004a8f08d70c155fe5518ffcc741e812eb88298d22b1bcfb20f4bd",
+        "locking_lines": []
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_guard_client_writes",
+        "owner": "postgres",
+        "definition_sha256": "bbf1c02e5de6412a142dafcc35d2376a310b7b9edcb9aee2d4b281a84df0a99f",
+        "locking_lines": []
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+        "name": "settle_razorpay_payment",
+        "owner": "postgres",
+        "definition_sha256": "25457888b99e1ee22dd93f6d2ad939c5cddd86916349f46d229846437d85e0da",
+        "locking_lines": [
+          "perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text,0));",
+          "select * into v_order from public.orders where razorpay_order_id=p_razorpay_order_id for update;",
+          "select * into v_capture from public.payment_captures where payment_id=p_razorpay_payment_id for update;"
+        ]
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+        "name": "settle_razorpay_payment_legacy",
+        "owner": "postgres",
+        "definition_sha256": "0b2c18c2c81cd289b711441919c6dec32daf869b6b673c92612c4fa2a4d8c5f4",
+        "locking_lines": [
+          "perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text, 0));",
+          "for update;",
+          "-- user by the wallet advisory lock above; replays of the winner see their own",
+          "select * into v_ref from public.referrals where referred_id = v_order.user_id for update;"
+        ]
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid, p_note_id text",
+        "name": "user_can_access_note",
+        "owner": "postgres",
+        "definition_sha256": "859cef94e3ebc9d0367c0e548248777ca4088206e32990c217fe0d639142a25b",
+        "locking_lines": []
+      }
+    ],
+    "isolation": "read committed",
+    "read_only": "on",
+    "schema_acl": {
+      "acl": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner,postgres=U/pg_database_owner,anon=U/pg_database_owner,authenticated=U/pg_database_owner,service_role=U/pg_database_owner}",
+      "owner": "pg_database_owner"
+    },
+    "indexes_full": [
+      {
+        "name": "orders_pkey",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "1e861b2316e46c7c69d0d3b4f87ca0f0"
+      },
+      {
+        "name": "orders_user_id_idx",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "20b845891ce4719e811ac88b398e56d2"
+      },
+      {
+        "name": "orders_razorpay_order_id_unique",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "7ee86a73edfcab36831e774ffebcbdb5"
+      },
+      {
+        "name": "idx_orders_course_id",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "9d87c08921e00252513cf4a189c404ca"
+      },
+      {
+        "name": "idx_orders_product_id",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "c5285144776d24badb8134afdff63f2c"
+      },
+      {
+        "name": "idx_orders_referral_id",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "11a70a2f5d43f2fd0e4eb98be6b2cc33"
+      },
+      {
+        "name": "orders_play_purchase_token_unique",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "6b3fc4d9a0c1293a0966e10bff0cc73f"
+      },
+      {
+        "name": "orders_external_token_unique",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "ee89bf64de7370767d323a2f907b4cba"
+      },
+      {
+        "name": "orders_external_id_unique",
+        "ready": true,
+        "table": "orders",
+        "valid": true,
+        "definition_md5": "b10923d586e03c7f4f16a8aaf45872d2"
+      },
+      {
+        "name": "purchases_pkey",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "43aad9e5fec098cad2ee4045c269c900"
+      },
+      {
+        "name": "purchases_order_id_unique",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "97330d23644f973a362b04439184ae69"
+      },
+      {
+        "name": "idx_purchases_course_id",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "00134bff1ccf8782bd90d9a1577acf53"
+      },
+      {
+        "name": "purchases_one_success_per_product",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "0e790089192baa71e5101a97da978eb5"
+      },
+      {
+        "name": "idx_purchases_product_id",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "c2166833d7a3a17d317057858b5a1af9"
+      },
+      {
+        "name": "idx_purchases_chapter_id",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "cb4fd0b903acc3484b9876336bbc3b97"
+      },
+      {
+        "name": "idx_purchases_subject_id",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "f2a3d25452a62ca593ab131abf648123"
+      },
+      {
+        "name": "idx_purchases_year_id",
+        "ready": true,
+        "table": "purchases",
+        "valid": true,
+        "definition_md5": "68fd8aedc952f5cc3969a33710acba8f"
+      },
+      {
+        "name": "payments_pkey",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "20860a170aa0e56c48e7b4d3c96c692b"
+      },
+      {
+        "name": "payments_razorpay_payment_id_key",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "a6b65c100411ce74b62fc97378b440aa"
+      },
+      {
+        "name": "idx_payments_product_id",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "767670381c820b4ade38d4001be9fef7"
+      },
+      {
+        "name": "idx_payments_user_id",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "9e0f84baa2927ccc2aa55e9e28d71706"
+      },
+      {
+        "name": "idx_payments_order_id",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "01b0af15b36b71b46b5850b6fbb1e312"
+      },
+      {
+        "name": "payments_play_purchase_token_unique",
+        "ready": true,
+        "table": "payments",
+        "valid": true,
+        "definition_md5": "b755506b8622b12700b08cefaf69cfea"
+      }
+    ],
+    "table_owners": {
+      "orders": "postgres",
+      "payments": "postgres",
+      "purchases": "postgres",
+      "provider_events": "postgres",
+      "payment_captures": "postgres",
+      "payment_compensations": "postgres"
+    },
+    "event_triggers": [
+      {
+        "name": "issue_graphql_placeholder",
+        "event": "sql_drop",
+        "enabled": "O",
+        "function": "extensions.set_graphql_placeholder"
+      },
+      {
+        "name": "pgrst_ddl_watch",
+        "event": "ddl_command_end",
+        "enabled": "O",
+        "function": "extensions.pgrst_ddl_watch"
+      },
+      {
+        "name": "pgrst_drop_watch",
+        "event": "sql_drop",
+        "enabled": "O",
+        "function": "extensions.pgrst_drop_watch"
+      },
+      {
+        "name": "issue_pg_cron_access",
+        "event": "ddl_command_end",
+        "enabled": "O",
+        "function": "extensions.grant_pg_cron_access"
+      },
+      {
+        "name": "issue_pg_net_access",
+        "event": "ddl_command_end",
+        "enabled": "O",
+        "function": "extensions.grant_pg_net_access"
+      },
+      {
+        "name": "issue_pg_graphql_access",
+        "event": "ddl_command_end",
+        "enabled": "O",
+        "function": "extensions.grant_pg_graphql_access"
+      },
+      {
+        "name": "ensure_rls",
+        "event": "ddl_command_end",
+        "enabled": "O",
+        "function": "rls_auto_enable"
+      }
+    ],
+    "ledger_columns": [
+      {
+        "name": "version",
+        "type": "text",
+        "nullable": "NO"
+      },
+      {
+        "name": "statements",
+        "type": "ARRAY",
+        "nullable": "YES"
+      },
+      {
+        "name": "name",
+        "type": "text",
+        "nullable": "YES"
+      }
+    ],
+    "server_version": "17.6",
+    "trigger_states": [
+      {
+        "name": "orders_00_guard_client_writes",
+        "type": 23,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_00_guard_client_writes BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_guard_client_writes()"
+      },
+      {
+        "name": "orders_01_discount_reserve",
+        "type": 7,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_01_discount_reserve BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_reserve_first_discount()"
+      },
+      {
+        "name": "orders_01_immutable_columns",
+        "type": 19,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_01_immutable_columns BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_immutable_columns()"
+      },
+      {
+        "name": "orders_02_entitlement_immutable",
+        "type": 19,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_02_entitlement_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_entitlement_immutable()"
+      },
+      {
+        "name": "orders_02_tax_snapshot",
+        "type": 7,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_02_tax_snapshot BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_snapshot_tax()"
+      },
+      {
+        "name": "orders_before_write",
+        "type": 23,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_before_write BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_derive_course()"
+      },
+      {
+        "name": "orders_play_option_immutable",
+        "type": 19,
+        "table": "orders",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER orders_play_option_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_play_option_immutable()"
+      },
+      {
+        "name": "purchases_00_block_client_writes",
+        "type": 31,
+        "table": "purchases",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER purchases_00_block_client_writes BEFORE INSERT OR DELETE OR UPDATE ON public.purchases FOR EACH ROW EXECUTE FUNCTION block_client_writes()"
+      },
+      {
+        "name": "purchases_play_order_snapshot",
+        "type": 7,
+        "table": "purchases",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER purchases_play_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION play_purchase_entitlement_from_order()"
+      },
+      {
+        "name": "purchases_razorpay_order_snapshot",
+        "type": 7,
+        "table": "purchases",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER purchases_razorpay_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION razorpay_purchase_entitlement_from_order()"
+      }
+    ],
+    "untrusted_schema_create": {
+      "anon": false,
+      "authenticated": false
+    }
+  },
+  "backup_metadata": {
+    "region": "ap-northeast-2",
+    "pitr_enabled": false,
+    "physical_backup_data": {},
+    "backups": []
+  }
+}

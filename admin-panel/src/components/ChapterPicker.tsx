@@ -91,7 +91,7 @@ export default function ChapterPicker({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Year
         </label>
-        <select
+        <select aria-label="Year"
           value={yearId}
           onChange={(e) => {
             setYearId(e.target.value);
@@ -114,7 +114,7 @@ export default function ChapterPicker({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Subject
         </label>
-        <select
+        <select aria-label="Subject"
           value={subjectId}
           onChange={(e) => {
             setSubjectId(e.target.value);
@@ -136,7 +136,7 @@ export default function ChapterPicker({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Chapter
         </label>
-        <select
+        <select aria-label="Chapter"
           value={chapterId}
           onChange={(e) => {
             const chapter = chapters.find((c) => c.id === e.target.value);

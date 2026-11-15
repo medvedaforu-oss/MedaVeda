@@ -1,0 +1,29 @@
+[functions.create-play-order]
+verify_jwt = true
+
+[functions.attach-external-token]
+verify_jwt = true
+
+[functions.create-order-play-choice]
+verify_jwt = true
+
+[functions.verify-payment]
+verify_jwt = false
+
+[functions.razorpay-webhook]
+verify_jwt = false
+
+[functions.verify-play-purchase]
+verify_jwt = true
+
+[functions.report-external-transaction]
+verify_jwt = false
+
+[functions.play-payment-worker]
+verify_jwt = false
+
+[functions.sync-play-catalog]
+verify_jwt = false
+
+[functions.get-note-url]
+verify_jwt = true

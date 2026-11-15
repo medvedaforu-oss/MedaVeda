@@ -22,6 +22,7 @@ export async function getUserDoc(
     .from("profiles")
     .select("*, courses ( name ), years ( title )")
     .eq("id", uid)
+    .abortSignal(AbortSignal.timeout(10_000))
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;

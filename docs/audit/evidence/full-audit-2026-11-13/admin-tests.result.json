@@ -1,0 +1,10 @@
+{
+  "name": "admin-tests",
+  "cwd": "admin-panel",
+  "command": [
+    "npm",
+    "test"
+  ],
+  "exit": 0,
+  "seconds": 11.12
+}

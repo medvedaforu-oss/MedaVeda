@@ -1,5 +1,6 @@
 import { settleCapturedPayment, settleDispute, settleRefund } from "../_shared/settle.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
+import { reportNotesChoiceAuthorization } from "../_shared/notesChoiceAuthorization.ts";
 
 const encoder = new TextEncoder();
 const HEX_SIGNATURE = /^[0-9a-f]{64}$/i;
@@ -112,7 +113,7 @@ Deno.serve(async (request: Request) => {
 
   const signature = request.headers.get("x-razorpay-signature");
   const eventId = request.headers.get("x-razorpay-event-id");
-  if (!signature || !eventId) return response(400, { error: "Missing Razorpay webhook headers" });
+  if (!signature || !eventId || eventId.startsWith("capture:") || eventId.length > 200) return response(400, { error: "Missing Razorpay webhook headers" });
 
   // This must be the first and only body read. Do not use request.json(),
   // JSON.stringify(), trimming, or any other transformation before HMAC.
@@ -129,7 +130,9 @@ Deno.serve(async (request: Request) => {
 
   let event: RazorpayWebhook;
   try {
-    event = JSON.parse(rawBody) as RazorpayWebhook;
+    const input: unknown = JSON.parse(rawBody);
+    if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Invalid event");
+    event = input as RazorpayWebhook;
   } catch {
     return response(400, { error: "Invalid JSON" });
   }
@@ -195,6 +198,16 @@ Deno.serve(async (request: Request) => {
     }
   }
 
+  if (event.event === "payment.authorized") {
+    if (!entity?.id || !PAYMENT_ID.test(entity.id) || !entity.order_id || !ORDER_ID.test(entity.order_id))
+      return response(400, { error: "Invalid authorization event" });
+    try {
+      await reportNotesChoiceAuthorization(entity.id, entity.order_id);
+      const { error } = await supabaseAdmin.from("provider_events").update({ status: "applied" }).eq("event_id", eventId);
+      return error ? response(503, { error: "Authorization inbox unavailable" }) : response(204);
+    } catch { return response(503, { error: "Authorization reporting pending" }); }
+  }
+
   // Acknowledge unrelated, authentic events. Everything except payment.captured,
   // refund.processed and payment.dispute.* is ignored, so out-of-order delivery is harmless.
   if (event.event !== "payment.captured") {
@@ -228,11 +241,9 @@ Deno.serve(async (request: Request) => {
 
   if (!result.ok) {
     console.error("razorpay-webhook: not settled", { eventId, paymentId: payment.id, reason: result.reason });
-    // Permanent rejections (unknown order, mismatch) are acknowledged so Razorpay
-    // stops retrying; they are logged for manual review. Transient failures
-    // (5xx-class, not-yet-captured) return non-2xx so Razorpay retries.
-    if (result.status === 404 || result.status === 400
-        || (result.status === 409 && ["payment captured; refund queued", "payment already refunded"].includes(result.reason)))
+    // Only a durable financial disposition permits acknowledgement. A provider
+    // mismatch or missing local evidence remains retryable for reconciliation.
+    if (result.status === 409 && ["payment captured; refund queued", "payment already refunded", "payment reversed"].includes(result.reason))
       return response(204);
     return response(500, { error: "Unable to process webhook" });
   }

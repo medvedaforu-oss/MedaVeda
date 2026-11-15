@@ -1,0 +1,11 @@
+{
+  "name": "test-mobile-app_scripts_checkout-html-selftest.mjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "mobile-app/scripts/checkout-html-selftest.mjs"
+  ],
+  "exit": 0,
+  "seconds": 0.44
+}

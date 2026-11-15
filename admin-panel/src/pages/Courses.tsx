@@ -133,7 +133,7 @@ export default function Courses() {
       <div className="mb-4 flex flex-wrap gap-3">
         <SearchBar value={search} onChange={setSearch} placeholder="Search courses..." />
 
-        <select
+        <select aria-label="Filter by active status"
           value={activeFilter}
           onChange={(e) => setActiveFilter(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"

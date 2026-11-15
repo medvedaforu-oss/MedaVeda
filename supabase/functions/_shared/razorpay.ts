@@ -80,8 +80,7 @@ export async function createRazorpayOrder(params: {
   });
 
   if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Razorpay order creation failed (${res.status}): ${body}`);
+    throw new Error(`Razorpay order creation failed (${res.status})`);
   }
 
   return (await res.json()) as { id: string };
@@ -105,8 +104,7 @@ export async function fetchCapturedPaymentForOrder(
   });
 
   if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Razorpay order-payments lookup failed (${res.status}): ${body}`);
+    throw new Error(`Razorpay order-payments lookup failed (${res.status})`);
   }
 
   const data = (await res.json()) as { items: { id: string; status: string; amount: number }[] };
@@ -134,8 +132,7 @@ async function razorpayGet<T>(path: string): Promise<T> {
     headers: { Authorization: "Basic " + btoa(`${keyId}:${keySecret}`) },
   });
   if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Razorpay GET ${path.split("/")[0]} failed (${res.status}): ${body}`);
+    throw new Error(`Razorpay GET ${path.split(/[/?]/)[0]} failed (${res.status})`);
   }
   return (await res.json()) as T;
 }
@@ -211,10 +208,24 @@ export function fetchDispute(disputeId: string): Promise<RazorpayDispute> {
   return razorpayGet<RazorpayDispute>(`disputes/${encodeURIComponent(disputeId)}`);
 }
 
+export type RazorpayOrder = { id: string; amount: number; currency: string; status: string;
+  receipt?: string; notes?: Record<string, string> };
+
 export function fetchRazorpayOrder(
   razorpayOrderId: string
-): Promise<{ id: string; amount: number; currency: string; status: string }> {
+): Promise<RazorpayOrder> {
   return razorpayGet(`orders/${encodeURIComponent(razorpayOrderId)}`);
+}
+
+// Receipt search is read-only. Never retry CREATE after an ambiguous provider
+// outcome. A full/truncated or conflicting result requires later reconciliation.
+export async function findRazorpayOrderByReceipt(receipt: string): Promise<RazorpayOrder | null> {
+  const page = await razorpayGet<{ items?: RazorpayOrder[] }>(
+    `orders?receipt=${encodeURIComponent(receipt)}&count=100`);
+  if (!Array.isArray(page.items) || page.items.length >= 100) throw new Error("Ambiguous provider receipt search");
+  const exact = page.items.filter(order => order.receipt === receipt);
+  if (exact.length > 1) throw new Error("Conflicting provider orders for receipt");
+  return exact[0] ?? null;
 }
 
 function hexToBytes(hex: string): Uint8Array | null {

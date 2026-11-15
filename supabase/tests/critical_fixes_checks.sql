@@ -71,7 +71,8 @@ begin
     raise exception 'ATTACK SUCCEEDED: notes bucket is public';
   end if;
   if exists (select 1 from pg_policies where schemaname = 'storage' and tablename = 'objects'
-             and cmd in ('SELECT', 'ALL') and coalesce(qual, '') ilike '%notes%' and coalesce(qual, '') not ilike '%am_i_admin%') then
+             and permissive = 'PERMISSIVE' and cmd in ('SELECT', 'ALL')
+             and coalesce(qual, '') ilike '%notes%' and coalesce(qual, '') not ilike '%am_i_admin%') then
     raise exception 'ATTACK SUCCEEDED: client read policy on notes bucket';
   end if;
 end;

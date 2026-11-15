@@ -1,0 +1,10 @@
+{
+  "name": "website-links",
+  "cwd": "website",
+  "command": [
+    "node",
+    "scripts/check-links.mjs"
+  ],
+  "exit": 0,
+  "seconds": 0.31
+}

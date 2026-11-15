@@ -1,0 +1,148 @@
+{
+  "scope": "local synthetic only; production NO-GO",
+  "tools": {
+    "node": "22.23.1",
+    "deno": "2.9.7",
+    "postgres": "17.11",
+    "temporary_migration_generator": "Supabase CLI3.1.0"
+  },
+  "no_production_or_provider_calls": true,
+  "payments_disabled_preserved": true,
+  "prices_1_2_5_preserved": true,
+  "lightweight": {
+    "commands": 102,
+    "exit_zero": 102,
+    "nonzero": []
+  },
+  "static_build_edge": {
+    "commands": 36,
+    "exit_zero": 36,
+    "nonzero": []
+  },
+  "additional_initial": {
+    "commands": 20,
+    "exit_zero": 17,
+    "nonzero": [
+      {
+        "name": "audit-mobile-app",
+        "command": [
+          "npm",
+          "audit",
+          "--omit=dev",
+          "--json"
+        ],
+        "cwd": "/home/ganeshp8545/AyurPulse/mobile-app",
+        "exit_code": 1,
+        "seconds": 6.39
+      },
+      {
+        "name": "audit-admin-panel",
+        "command": [
+          "npm",
+          "audit",
+          "--omit=dev",
+          "--json"
+        ],
+        "cwd": "/home/ganeshp8545/AyurPulse/admin-panel",
+        "exit_code": 1,
+        "seconds": 2.58
+      },
+      {
+        "name": "doctor",
+        "command": [
+          "npm",
+          "exec",
+          "--offline",
+          "--yes",
+          "--package=expo-doctor",
+          "--",
+          "expo-doctor"
+        ],
+        "cwd": "/home/ganeshp8545/AyurPulse/mobile-app",
+        "exit_code": 1,
+        "seconds": 3.99
+      }
+    ]
+  },
+  "admin_final": {
+    "commands": 17,
+    "exit_zero": 17,
+    "nonzero": []
+  },
+  "database.log": {
+    "exit_code": 0,
+    "final_marker": "ALL SUITES PASSED",
+    "webhook_checks": 25,
+    "direct_sql_groups": 38
+  },
+  "database-after-indexes.log": {
+    "exit_code": 0,
+    "final_marker": "ALL SUITES PASSED",
+    "webhook_checks": 25,
+    "direct_sql_groups": 39
+  },
+  "independent-rehearsal-results.json": {
+    "groups": 7,
+    "passed": true
+  },
+  "staged-addon-results.json": {
+    "groups": 8,
+    "passed": true
+  },
+  "index-rollback-results.json": {
+    "groups": 4,
+    "passed": true
+  },
+  "final_index_red_green": {
+    "red_predecessor_missing_paths": 7,
+    "green_indexed_paths": 7,
+    "row_and_security_preservation": true
+  },
+  "advisories": {
+    "mobile-all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 5,
+      "high": 0,
+      "critical": 0,
+      "total": 5
+    },
+    "tooling-all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 9,
+      "high": 0,
+      "critical": 0,
+      "total": 9
+    },
+    "admin-before-all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 2,
+      "critical": 0,
+      "total": 2
+    },
+    "admin-after-all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "expo_doctor": {
+    "exit_code": 0,
+    "checks_passed": 21,
+    "checks_total": 21
+  },
+  "not_executed": [
+    "native Gradle/EAS build",
+    "genuine AAB/device inspection",
+    "hosted Supabase advisors/ledger/drift probes",
+    "genuine provider acceptance",
+    "private managed Auth/Storage/database restore",
+    "remote CI"
+  ]
+}

@@ -1,0 +1,9 @@
+# BACK-11 / BACK-13 — DESIGN ONLY
+
+Migration 20260925100000 adds nullable credit_expiry_days with null meaning never expires. Repository seed does not set an expiry; later migrations consume this setting but do not configure a positive expiry. No hosted wallet/configuration rows were queried. Live expiry policy is therefore unverified, not asserted null. This follows the owner's instruction to keep these changes design-only when expiry is not configured by migrations/seeds.
+
+Do not enable expiry until both allocation and hold semantics are implemented together. Preserve immutable ledger history. Define deterministic per-credit remaining amounts after debit/reversal consumption, never active-credit-face-value minus all historical debits. Centralize the same computation in balance, reservation/pricing and no-overdraw validation. Refund restoration and reward reversal must reference original allocations, not retroactively erase debits. Allocate under the existing wallet-owner lock and stable ordering; retry keys prevent double allocation/restoration.
+
+For hold expiry, snapshot the original duration separately from mutable settings; actual first availability plus that captured duration defines effective expiry if the product promise is expiry after availability. Do not rewrite immutable historical timestamps or apply changed settings retroactively. Owner decides whether expiry during manual hold is ever intended.
+
+Replay acceptance before any rollout: credit100/spend100/expire/new100 -> 100 available; partial spend then expiry; partial/full refund; already-spent reversed credit; held reward approved before/after original expiry; dispute hold/win/loss; cancellation; changed settings; concurrent reservations/settlement and duplicate refunds. Compare display, spendability and trigger authority. No ledger-allocation migration or production mutation was made here.

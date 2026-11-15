@@ -1,0 +1,1 @@
+PASS startup rejection/error → visible retry → onboarding; auth transport timeout/caller cancellation; content transport unchanged

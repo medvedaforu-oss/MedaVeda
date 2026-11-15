@@ -1,0 +1,5 @@
+{
+  "command": "bash supabase/tests/run-all.sh",
+  "cluster": "fresh disposable local PostgreSQL 17, Unix socket only",
+  "exit": 0
+}

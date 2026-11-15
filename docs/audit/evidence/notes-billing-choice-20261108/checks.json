@@ -1,0 +1,119 @@
+{
+  "kind": "local fixtures, no hosted payment or device",
+  "results": [
+    {
+      "file": "mobile-app/scripts/notes-billing-choice-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS existing Play release profiles disabled; Alpha validation requires confirmed enrolment, exact staging project/key and isolated runtime; standard UCB requires test acceptance\nPASS native Play-only initialization, product-bound choice, durable retry, account binding, callback dedup, pending/verified/cancelled receipts\nPASS native UCB initialization, product-bound choice, durable retry, account binding, callback dedup, pending/verified/cancelled receipts\nPASS Buy \u2192 summary \u2192 Google choice \u2192 Razorpay: one create for duplicate taps/callbacks; valid server order opens existing checkout\nPASS Buy \u2192 summary \u2192 Google choice \u2192 Razorpay: one create for duplicate taps/callbacks; changed price requires confirmation\n",
+      "stderr": ""
+    },
+    {
+      "file": "supabase/tests/notes-choice-order-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS authenticated Notes choice endpoint denies before writes when disabled/invalid; server price/user win; repeat request returns same provider order\nPASS ambiguous provider creation never repeats CREATE for the same choice\nPASS verified authorization queues reporting only, rejects provider mismatches, skips website orders and never calls settlement\nPASS enrolment, isolated staging account opt-in and separate production test-acceptance gate fail closed\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-provider-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "Payment provider and package configuration checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-routing-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS disabled payments block navigation and requests; existing Razorpay guards preserved\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/razorpay-internal-test-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS dedicated non-Play APK/package/channel/runtime; staging-only configuration; existing profiles and Play native package stay disabled\nPASS paid Notes pass the exact product ID to summary/server; Pay forwards server checkout data; owned Notes create no order; duplicate Pay creates once\nPASS existing checkout cancel/failure/pending/server-confirmed-success behavior remains intact\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-summary-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS same-render duplicate taps create once; changed server total requires price review before checkout\nPASS pending, rejected and offline wallet quotes cannot charge using a stale total; retry remains available\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-request-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS create sends product/wallet only and cleans request deadline\nPASS malformed, live-mode and foreign verification checkout responses cannot open checkout\nPASS stalled create request aborts without automatic duplicate order retry\nPASS stalled verification aborts and bounded retry progresses\nPASS recovery cannot send a session token to a route-supplied foreign endpoint\nPASS structured pending verdict remains unconfirmed\nPASS durable server-order recovery coalesces, binds account and excludes owned/refunded purchases\nPASS signed-out/account-switched recovery cannot refresh the previous account as success\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-poll-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS Razorpay polls coalesce, ignore blurred results, confirm focused success and stop on terminal refund verdict\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/payment-verdict-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS structured pending, legacy unconfirmed and network failures recover then show pending without failed writes\nPASS only server-confirmed verification/recovery navigates to success; explicit rejection remains terminal\nPASS UPI resume confirmation cannot be replaced or duplicated by a delayed callback verdict or network error\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/notes-entitlement-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS paid note local restriction, authorized opening/reopening with fresh links, and authoritative server denial despite a stale unlocked route\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/release-payments-disabled-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS release Android actual provider config \u2192 navigation/service/checkout: no Razorpay order or checkout, including hostile Razorpay config\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS unavailable Buy/search UI, no checkout navigation, content browsing and owned state preserved\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/navigation-lazy-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "{\"provider\":\"disabled\",\"registeredRoutes\":35,\"eagerScreenModules\":7,\"lazyRoutes\":28}\n{\"provider\":\"razorpay\",\"registeredRoutes\":37,\"eagerScreenModules\":7,\"lazyRoutes\":30}\n{\"provider\":\"play\",\"registeredRoutes\":37,\"eagerScreenModules\":7,\"lazyRoutes\":30}\nPASS route registration, provider gates, eager Sentry and existing error/retry fallback contract\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/same-project-build-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS same-project build and wrong-project/missing-key/wrong-provider rejection\n",
+      "stderr": ""
+    },
+    {
+      "file": "mobile-app/scripts/staging-build-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS internal profile does not inherit production\nPASS internal profile uses preview EAS environment\nPASS internal profile identifies same-project target\nPASS internal profile pins existing project\nPASS staging profile is a separate internal APK and channel\nPASS staging profile uses exact staging URL and disables payments\nPASS staging profile remains blocked until its key is provided\nPASS exact staging URL with distinct fixture key\nPASS placeholder key\nPASS production URL\nPASS production key\nPASS unexpected project\nPASS Play provider\nPASS Razorpay provider\nPASS production Google services file variable\nPASS production payment worker secret\nPASS missing target\nPASS wrong profile\nPASS staging APK has distinct app identity and disabled runtime\n",
+      "stderr": ""
+    },
+    {
+      "file": "supabase/tests/razorpay-routing-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS standard entrypoint: native requests denied before writes; website checkout retained\nPASS staging entrypoint: exact project/environment/test keys/server opt-in/Auth allowlist required; Play headers, blocked users, wrong course, UCB and missing rollout fail closed; server price retained\n",
+      "stderr": ""
+    },
+    {
+      "file": "supabase/tests/razorpay-security-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS staging rejects live-mode key before provider request\nPASS actual HMAC implementation accepts authentic and rejects forged/malformed signatures\nPASS missing callback signature\nPASS forged callback signature\nPASS callback order swapped\nPASS authorized payment cannot unlock\nPASS wrong payment currency cannot unlock\nPASS provider payment/order mismatch cannot unlock\nPASS provider amount mismatch cannot unlock\nPASS stored amount mismatch cannot unlock\nPASS valid captured callback reaches server settlement\nPASS refunded recovery is terminal without provider call or regrant\nPASS recovery owner=undefined status=401\nPASS recovery owner=other status=403\nPASS recovery owner=buyer status=200\n",
+      "stderr": "[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: signature/order mismatch {\n  internalOrderId: '11111111-1111-4111-8111-111111111111',\n  razorpayPaymentId: 'pay_audit0001'\n}\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: signature/order mismatch {\n  internalOrderId: '11111111-1111-4111-8111-111111111111',\n  razorpayPaymentId: 'pay_audit0001'\n}\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: not settled { reason: 'payment not captured', razorpayPaymentId: 'pay_audit0001' }\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: not settled { reason: 'currency mismatch', razorpayPaymentId: 'pay_audit0001' }\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: not settled {\n  reason: 'payment/order mismatch',\n  razorpayPaymentId: 'pay_audit0001'\n}\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: not settled {\n  reason: 'razorpay order amount mismatch',\n  razorpayPaymentId: 'pay_audit0001'\n}\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\nverify-payment: not settled {\n  reason: 'payment captured; refund queued',\n  razorpayPaymentId: 'pay_audit0001'\n}\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n[razorpay] RUNNING IN STAGING TEST MODE. Real payments will NOT be processed.\n"
+    },
+    {
+      "file": "supabase/tests/play-verification-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS real verification handler validates v2 receipt then settles and consumes\nPASS invalid ownership/token/SKU/option/refund/cancellation/pending/API/network cases cannot settle\nPASS failed settlement never consumes; duplicate conflicts; paid replay and concurrent consumption remain idempotent\n",
+      "stderr": ""
+    },
+    {
+      "file": "supabase/tests/google-reporting-selftest.cjs",
+      "exit_code": 0,
+      "stdout": "PASS F10 missing completion time prevents Google call\nPASS F10 transient rejection records failed state\nPASS F10 retry then success\nPASS F10 F05 Google transactionTime is provider capture time, 25h before receipt\nPASS F10 permanent Google rejection stays failed\nPASS F10 Google amount mismatch rejected\nPASS F10 first partial refund\nPASS F10 second partial refund uses prior reported amount\n",
+      "stderr": ""
+    }
+  ]
+}

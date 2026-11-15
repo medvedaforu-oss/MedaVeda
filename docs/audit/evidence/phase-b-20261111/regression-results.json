@@ -1,0 +1,207 @@
+[
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_mv004-recovery-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv005-create-order-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_mv005-create-order-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv006-restoration-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_mv006-restoration-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/razorpay-security-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_razorpay-security-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_recovery-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/settle-timestamp-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "supabase_tests_settle-timestamp-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv004-recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv004-recovery-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv007-billing-boundary-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv007-billing-boundary-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv008-ownership-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv009-store-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv009-store-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv010-options-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv010-options-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv011-accessibility-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv011-accessibility-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv012-history-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_mv012-history-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_release-payments-disabled-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_payment-routing-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_payment-provider-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-request-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_payment-request-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-poll-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_payment-poll-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_payment-verdict-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/checkout-security-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_checkout-security-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-entitlement-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_notes-entitlement-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-open-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_notes-open-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_purchases-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_purchases-unavailable-ui-selftest.cjs.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "mobile-app_scripts_razorpay-internal-test-selftest.cjs.log"
+  },
+  {
+    "command": "mobile TypeScript",
+    "exit_code": 0,
+    "log": "mobile-typescript.log"
+  }
+]

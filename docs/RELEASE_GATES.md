@@ -1,6 +1,6 @@
 # MedVeda release gates
 
-Current source handoff: 4 November 2026. This checklist supersedes removed audit
+Current source handoff: 8 November 2026. This checklist supersedes removed audit
 summaries and old Play-only/UCB rollout plans. It does not certify a deployed
 service, signed artifact or payment. Dated runbook observations are historical;
 obtain fresh inventories before using their commands.
@@ -25,7 +25,8 @@ Use the [submission guide](../mobile-app/PLAY_STORE_SUBMISSION.md) for signing,
 Firebase, listing and reviewer access. Verify package `in.medveda.app`, a
 versionCode above all accepted Play artifacts, certificate, SHA-256, merged
 permissions, native dependencies and 16 KB compatibility on the exact AAB.
-Confirm no `expo-iap`, BillingClient or `com.android.vending.BILLING` remains.
+The Notes purchase work restores `expo-iap`/BillingClient. Check the billing
+dependency, merged permission and native runtime on the exact new artifact.
 A JS export or generated manifest is not final native-artifact evidence.
 
 ## Purchase and historical transaction boundaries
@@ -35,16 +36,20 @@ A JS export or generated manifest is not final native-artifact evidence.
   Videos and MCQs are free.
 - The distinct `razorpay-internal-test` APK has local routing, a separate native
   package/runtime/channel and staging backend. It needs a real staging public
-  key. Its native create-order request is still denied by the server guard.
-  Follow the [test-profile setup](audit/MEDVEDA_RAZORPAY_INTERNAL_TEST_ROUTING_2026-11-04.md);
-  connected local routing is not completed hosted payment acceptance.
+  key. It now targets the isolated `create-order-nonplay-test` endpoint, prepared
+  locally with an exact staging-project/test-key/server-opt-in/account-allowlist gate.
+  Standard `create-order` retains the native guard in repository source.
+  Follow the [current setup and evidence](audit/MEDVEDA_STARTUP_PAYMENTS_2026-11-08.md);
+  staging is paused and hosted payment acceptance remains blocked.
 - Retain historical Play verification, consumption, pending-purchase,
   void/refund/dispute and external-reporting obligations. Inventory installed
   clients, queues, credentials, jobs and provider duties before backend retirement.
   RTDN is not implemented; live polling/void-sweep operation needs verification.
-- Alternative-billing eligibility and accepted terms are unverified. Retained
-  UCB backend code does not authorize Play Razorpay checkout. Keep new Play
-  purchases disabled pending a separately reviewed distribution/billing design.
+- Alternative-billing enrolment remains unconfirmed by the owner. The locally
+  restored Notes-only Play/UCB flow stays disabled in existing Play profiles.
+  Its Alpha validation profile also refuses to build without enrolment confirmation
+  and a real isolated staging key. See the [Notes billing-choice handoff](audit/MEDVEDA_NOTES_BILLING_CHOICE_2026-11-08.md)
+  for exact deployment prerequisites, local evidence and device acceptance.
 - Use the [Razorpay deployment and rollback handoff](audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md)
   for the prepared migration, four affected Edge bundles, backup and acceptance.
   Confirm `APP_ENV=production` with live keys or `APP_ENV=staging` with test keys;
@@ -60,7 +65,7 @@ A JS export or generated manifest is not final native-artifact evidence.
 
 | Gate | Required evidence / procedure |
 |---|---|
-| Project and access | Confirm production `xbvenkfmesugrbjuufyw` and staging `nsmsqsogedzohwboripd`. The latest retained Management API checks could not inspect either project. Deployed state is unverified. |
+| Project and access | Fresh read-only Management API access on 8 November confirms production `xbvenkfmesugrbjuufyw` is active and staging `nsmsqsogedzohwboripd` is INACTIVE. Staging payment functions and payment secret names are absent. Production create-order v23 lacks the repository native guard and APP_ENV validation; it contains older ALLOW_TEST_MODE logic. Do not infer deployed parity from local checks. See the [current evidence](audit/MEDVEDA_STARTUP_PAYMENTS_2026-11-08.md). |
 | Migration provenance | Refresh local/remote histories and compare definitions, grants, RLS and prerequisites. Never blindly push every pending file. The historical `20260801` same-version/body mismatch needs object-level review, not history repair. |
 | Staging isolation | Follow [staging preparation](../supabase/staging/README.md) and its [safety review](../supabase/staging/MIGRATION_SAFETY_AUDIT.md). Refresh the frozen manifest/preparation logic for the current inventory; historical counts are not today's expected count. Use synthetic accounts and test-only integrations. |
 | Quiz/admin URL cutover | Follow the [compatibility and rollback procedure](audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md). Prove hosted answer-free RPCs, old/new client behavior, AAL1/AAL2 and private Storage access. Never restore raw answer reads or public Notes. Local quiz-file cleanup still needs device-upgrade acceptance; copies outside app-managed storage cannot be recalled. |

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "database",
+    "command": [
+      "bash",
+      "supabase/tests/run-all.sh"
+    ],
+    "exit_code": 0,
+    "seconds": 139.12
+  },
+  {
+    "name": "mv003-006",
+    "command": [
+      "python3",
+      "supabase/tests/run-mv006-local.py"
+    ],
+    "exit_code": 0,
+    "seconds": 122.82
+  },
+  {
+    "name": "phase-b",
+    "command": [
+      "python3",
+      "/home/ganeshp8545/AyurPulse/docs/audit/p2-final-quality-20261111_150037/evidence/run-phase-b-preserved.py"
+    ],
+    "exit_code": 0,
+    "seconds": 251.27
+  },
+  {
+    "name": "phase-c",
+    "command": [
+      "python3",
+      "/home/ganeshp8545/AyurPulse/docs/audit/p2-final-quality-20261111_150037/evidence/run-phase-c-preserved.py"
+    ],
+    "exit_code": 0,
+    "seconds": 120.39
+  }
+]

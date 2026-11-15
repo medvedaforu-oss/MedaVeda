@@ -1,6 +1,7 @@
 import { supabase } from "../config/supabase";
 import { toCamelCase } from "../utils/caseConvert";
 import { Product } from "../types/product";
+import { isNonplayTestBuild } from "../config/paymentProvider";
 
 // The "products" table itself only stores subject_id/year_id (see the
 // admin panel's productService.ts - chapterTitle/subjectTitle/yearTitle
@@ -20,12 +21,16 @@ function mapRow(row: any): Product {
 }
 
 async function runQuery(builder: any): Promise<Product[]> {
-  const { data, error } = await builder;
-  if (error) throw error;
-  return (data ?? []).map(mapRow);
+  const { data, error, status } = await builder;
+  if (error) throw { ...error, status };
+  // These unpaginated catalog reads require a complete array, including [].
+  // A missing payload or explicit partial-content response is not an empty tier.
+  if (!Array.isArray(data) || status === 206) throw { code: "OPTIONS_INCOMPLETE" };
+  return data.map(mapRow);
 }
 
 export async function getProductsByChapter(chapterId: string): Promise<Product[]> {
+  if (isNonplayTestBuild) return (await (await import("../services/nonplayTestService")).testCatalog()).products.filter(p => p.chapterId===chapterId);
   return runQuery(
     supabase
       .from("products")
@@ -37,6 +42,7 @@ export async function getProductsByChapter(chapterId: string): Promise<Product[]
 }
 
 export async function getProductsBySubject(subjectId: string): Promise<Product[]> {
+  if (isNonplayTestBuild) return [];
   return runQuery(
     supabase
       .from("products")
@@ -48,6 +54,7 @@ export async function getProductsBySubject(subjectId: string): Promise<Product[]
 }
 
 export async function getProductsByYear(yearId: string): Promise<Product[]> {
+  if (isNonplayTestBuild) return [];
   return runQuery(
     supabase
       .from("products")
@@ -59,6 +66,7 @@ export async function getProductsByYear(yearId: string): Promise<Product[]> {
 }
 
 export async function getBundleProducts(courseId?: string): Promise<Product[]> {
+  if (isNonplayTestBuild) return [];
   let query = supabase
     .from("products")
     .select(SELECT_WITH_TITLES)
@@ -69,6 +77,7 @@ export async function getBundleProducts(courseId?: string): Promise<Product[]> {
 }
 
 export async function getAllActiveProducts(courseId?: string): Promise<Product[]> {
+  if (isNonplayTestBuild) return (await (await import("../services/nonplayTestService")).testCatalog()).products.filter(p => !courseId || p.courseId===courseId);
   let query = supabase.from("products").select(SELECT_WITH_TITLES).eq("active", true);
   if (courseId) query = query.eq("course_id", courseId);
   return runQuery(query);

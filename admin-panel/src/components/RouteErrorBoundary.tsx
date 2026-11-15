@@ -1,5 +1,4 @@
-import { Component } from "react";
-import type { ErrorInfo, ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
 export default class RouteErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };

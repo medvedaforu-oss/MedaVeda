@@ -11,7 +11,7 @@ export default function MaintenanceScreen({ checking, retry }: {
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.title}>
-        {checking ? "Checking availability…" : "Down for maintenance"}
+        Down for maintenance
       </Text>
       <Text style={styles.message}>MedVeda will be back soon. Please try again shortly.</Text>
       <CustomButton title="Retry" onPress={retry} disabled={checking} />

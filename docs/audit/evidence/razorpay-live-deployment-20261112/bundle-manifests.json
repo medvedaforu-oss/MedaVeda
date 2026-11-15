@@ -1,0 +1,28 @@
+{
+  "before": {
+    "archive_sha256": "43557f2fbed2d2dc33bf0f0d16a39f145a408db6dffffae1ace34245bae7ff36",
+    "files": {
+      "supabase/config.toml": "cf781e19933c7b03f10655091de47fa280793398eb166a34191956c32c5266ab",
+      "supabase/functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+      "supabase/functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+      "supabase/functions/_shared/razorpay.ts": "90a96662c9f0be9f6f60aa104c04fa414478576a727c2204825d84916cb6ea56",
+      "supabase/functions/_shared/settle.ts": "a2ff6fe8685fa0bbc925bf8d401e215df3d7ed2a5abe4bec4f1d816e0fd82d25",
+      "supabase/functions/_shared/supabaseAdmin.ts": "6ef7980900206f1ac91b07bf371f6794c17930d30c6c1a16a1097331f040b2da",
+      "supabase/functions/razorpay-webhook/index.ts": "866e6716991b3ceef659ae15ca87e583c4a9313163df3dc58af79d7c08c94c1d",
+      "supabase/functions/verify-payment/index.ts": "533b21bb9d3866b7f4f24fd565dbf838751024e8afb338a83da84d5c86a098d5"
+    }
+  },
+  "deployed": {
+    "archive_sha256": "594e47d2bc192ff1fc1c458456434bea3ec7b4f2f9a9112bdb94edf6f43cf9df",
+    "files": {
+      "supabase/config.toml": "cf781e19933c7b03f10655091de47fa280793398eb166a34191956c32c5266ab",
+      "supabase/functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+      "supabase/functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+      "supabase/functions/_shared/razorpay.ts": "90a96662c9f0be9f6f60aa104c04fa414478576a727c2204825d84916cb6ea56",
+      "supabase/functions/_shared/settle.ts": "e4b2d392d51d43e01fad3877ab7e9f6d9289a45541e30c6d87f730168bf6922d",
+      "supabase/functions/_shared/supabaseAdmin.ts": "6ef7980900206f1ac91b07bf371f6794c17930d30c6c1a16a1097331f040b2da",
+      "supabase/functions/razorpay-webhook/index.ts": "866e6716991b3ceef659ae15ca87e583c4a9313163df3dc58af79d7c08c94c1d",
+      "supabase/functions/verify-payment/index.ts": "533b21bb9d3866b7f4f24fd565dbf838751024e8afb338a83da84d5c86a098d5"
+    }
+  }
+}

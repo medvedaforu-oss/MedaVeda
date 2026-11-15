@@ -10,7 +10,7 @@ import CoursePicker from "../components/CoursePicker";
 export default function Dashboard() {
   const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
-  const { stats, errors, loading } = useDashboard({ courseId: courseFilter || undefined });
+  const { stats, errors, loading, reload } = useDashboard({ courseId: courseFilter || undefined });
 
   const filterBar = (
     <div className="mb-6 w-56">
@@ -39,6 +39,7 @@ export default function Dashboard() {
     <div>
       {filterBar}
 
+      {Object.values(errors).some(Boolean) && <button type="button" onClick={() => void reload()}>Retry counts</button>}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Courses"

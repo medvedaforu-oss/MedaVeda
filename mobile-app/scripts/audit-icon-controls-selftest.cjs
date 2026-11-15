@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),ts=require('typescript');
+const {jsx}=require('./ui-harness.cjs');
+function component(file,name){const text=fs.readFileSync((process.env.AUDIT_BASELINE||'')+file,'utf8'),ast=ts.createSourceFile(file,text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);const fn=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text===name);assert.ok(fn,name);const mod={exports:{}};vm.runInNewContext(ts.transpileModule('export '+fn.getText(ast),{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.CommonJS}}).outputText,{module:mod,exports:mod.exports,require:()=>jsx,TouchableOpacity:'Button',Text:'Text',FontAwesome:'Icon',styles:{}});return mod.exports[name]}
+const Action=component('mobile-app/src/screens/downloads/DownloadsScreen.tsx','ActionIcon');for(const [icon,label]of [['⏸','Pause download'],['▶️','Resume download'],['🔄','Retry download'],['✕','Cancel download'],['🗑️','Delete download']]){let clicked=false;const node=Action({icon,onPress:()=>clicked=true});assert.equal(node.props.accessibilityRole,'button');assert.equal(node.props.accessibilityLabel,label);node.props.onPress();assert.ok(clicked)}
+const Social=component('mobile-app/src/components/SideDrawer.tsx','SocialButton');for(const [icon,label]of [['youtube-play','YouTube'],['telegram','Telegram'],['instagram','Instagram']]){const node=Social({icon,color:'red',onPress(){}});assert.equal(node.props.accessibilityRole,'button');assert.equal(node.props.accessibilityLabel,'Open '+label)}
+console.log('PASS AUD-006 download and social actions expose names, roles and working handlers');
+
+const {harness,load,nodes}=require('./ui-harness.cjs');
+const h=harness();let back=0;const mocks={react:h.react,'react/jsx-runtime':jsx,'react-native':{View:'View',Text:'Text',SectionList:'List',TouchableOpacity:'Button',ActivityIndicator:'Spinner',RefreshControl:'Refresh',StyleSheet:{create:x=>x}},'@react-navigation/native':{useNavigation:()=>({goBack:()=>back++})},'../../hooks/useGlobalSearch':{__esModule:true,default:()=>({query:'',filters:{},sections:[],isOnline:true,recentSearches:[],availableYears:[],availableSubjects:[]})},'../../types/search':{hasActiveFilters:()=>false}};
+for(const name of ['PurchaseOwnershipStatus','SearchBar','SectionHeader','motion/FadeSlideIn','search/SearchResultRow','search/SearchFiltersSheet','search/RecentSearchesRow','search/SearchEmptyState'])mocks['../../components/'+name]={__esModule:true,default:name};
+mocks['../../components/Skeleton']={SkeletonBlock:'Skeleton'};
+for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
+const Search=load('mobile-app/src/screens/search/SearchScreen.tsx',mocks).default;
+let controls=nodes(h.render(Search));controls.find(n=>n.props?.accessibilityLabel==='Go back').props.onPress();assert.equal(back,1);
+controls.find(n=>n.props?.accessibilityLabel==='Search filters').props.onPress();controls=nodes(h.render(Search));assert.equal(controls.find(n=>n.props?.accessibilityLabel==='Search filters').props.accessibilityState.expanded,true);
+console.log('PASS AUD-006 search Back and filter name, role, activation and expanded state');

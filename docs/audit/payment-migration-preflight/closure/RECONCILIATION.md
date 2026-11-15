@@ -1,0 +1,32 @@
+# Private read-only reconciliation and provider checklist
+
+Status: PREPARED; no private case extraction or provider lookup performed. Retained observation at 2026-11-11T12:37:42.621010+00:00 reports two success-purchase/nonpaid-order contradictions and one duplicate-success user/product group. Current membership, overlap and financial truth remain UNKNOWN. Use labels FIN-001, FIN-002 and FIN-G001 only; they are not three proven customers or payments. Prior detailed requirements remain applicable: [financial requirements](../../p0-closure-20261111_134419/FINANCIAL_RECONCILIATION_REQUIREMENTS.md).
+
+Minimum outstanding evidence to close each case:
+
+| Evidence | Required minimum | Closure owner |
+|---|---|---|
+| Current private membership | Same-snapshot exact contradiction rows and every duplicate-group member, protected crosswalk linking order/payment/purchase/provider, overlap between cases, current row preimages | DB custodian + independent reviewer |
+| Money provenance | Independent provider account/mode, amount/currency, capture/refund/dispute status and timestamps for every distinct payment; retrievable source, retrieval UTC and protected evidence digest | Provider account custodian |
+| Application accounting/access | Matching immutable entitlement/price/tax/wallet/referral snapshots, captures, compensations, inbox and queue/report/refund timeline; current access and known writer chronology; unknown gaps explicit | Finance + application owner |
+| Disposition | Each original payment's funds/status/access/replay/reversal outcome, evidence-backed no-change decision or separately reviewed forward correction; no arbitrary survivor selection | Named finance owner + independent reviewer |
+| Verification | If correction is needed, separate approval and independent postchecks against protected preimages, preserved original history and correct ownership/reversal behavior | Operator + reviewer |
+
+Read-only collection procedure, requiring separate approved target/account, operator, scope, destination and retention:
+
+1. Create an access-controlled case folder outside git/public audit exports. Record project `xbvenkfmesugrbjuufyw`, connection identity verified independently, observer, UTC and snapshot identity. Use a REPEATABLE READ READ ONLY transaction with bounded timeouts. Do not invoke application RPCs, triggers, queues or workers as probes.
+2. Privately select purchases with `status='success'` and linked orders whose status is distinct from `paid`; separately enumerate all user/product groups with more than one successful purchase. Match the retained query's exact null/joins and historical excluded-index predicate before comparing counts; report any difference in population definition. A changed count is a finding, not permission to fix it. Resolve missing order links separately. Do not limit collection to one arbitrary group member.
+3. For each member, follow actual FK/provider references to orders/payments/purchases/captures/compensations/provider_events/payment_jobs/ucb_external_refunds/wallet_ledger/referrals and their relevant immutable scope, reservation and reporting facts. Retrieve only necessary fields, not full user profiles. Preserve all linked original payments, including failed/refunded/duplicate representations. Record event time versus ingestion time and known deployed writer version. Do not infer an unlogged transition.
+4. Retain protected original exports and a signed SHA-256 inventory. Put only opaque case labels, bundle digests, observation times, coverage/gap status and signoff references in this repository. Never publish identifiers, raw tokens, customer data, provider payloads, credentials or unsalted hashes of guessable identifiers.
+5. Provider custodian obtains existing facts using approved read-only dashboard/export/GET access. Record HTTP/API version or dashboard provenance and pagination completeness. Do not POST/capture/refund/report/consume/acknowledge, trigger retries or create a test payment. Redact credentials from receipts; raw sensitive evidence stays private.
+6. Reconcile a timeline in integer paise with explicit currency, mapping each real capture to each application representation and each refund/dispute to that capture. Account separately for wallet credit/reservation/release/reversal, referral effects, discounts/tax and external reports. Do not assume provider settlement net equals purchase gross; document fees and settlement timing where relevant. Document current legitimate entitlement and downloaded/offline-access implications.
+7. Finance signs a per-payment disposition table for funds, access, application state, future replay and reversal. Explain case overlap. A signed explanation alone does not close an inconsistent invariant. Any change needs its own reviewed forward proposal, exact preimages, approval and independent postchecks. Keep affected recovery held under separately approved operations until accepted.
+
+Provider evidence checklist (only the actual linked provider applies):
+
+- Razorpay: merchant/account + live/test mode; order receipt/reference and payment binding; authorized/captured amount/currency/time; every refund ID/amount/status/time; current and historic dispute state and outcome; available settlement/reconciliation references; webhook event IDs/delivery attempts and independently verified provenance. A signed callback or local paid flag alone is insufficient. Explain any missing history.
+- Play purchase: package/account, protected token/order, SKU/base plan/offer, amount/currency/region as applicable; purchase/payment/acknowledgement/consumption state; refund/cancel/void history and retrieval provenance. Confirm token meaning before using it.
+- External-choice reporting, only if applicable: protected choice/external-token/report/refund bindings, accepted report responses and transaction/authorization times. Do not fabricate Play evidence for website Razorpay purchases.
+- Reversals: full versus partial refund against original captured amount; open/under-review/action-required/lost/won dispute provenance; exact provider fetch/event-to-`blocks_entitlement` mapping and authorized classifier version. NULL/unknown is not false; no bulk historical classification or capture backfill.
+
+All case closure boxes remain unchecked. The current task prepares this workflow; it does not establish provider facts, execute corrections or authorize finance operations.

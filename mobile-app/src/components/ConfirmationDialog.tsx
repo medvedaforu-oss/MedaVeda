@@ -22,6 +22,7 @@ type Props = {
   cancelLabel?: string;
   /** Uses the error color for the confirm button - for destructive actions like Logout/Delete. */
   destructive?: boolean;
+  busy?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
@@ -37,6 +38,7 @@ export default function ConfirmationDialog({
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
   destructive = false,
+  busy = false,
   onConfirm,
   onCancel,
 }: Props) {
@@ -45,19 +47,21 @@ export default function ConfirmationDialog({
       visible={visible}
       transparent
       animationType="fade"
-      onRequestClose={onCancel}
+      onRequestClose={() => { if (!busy) onCancel(); }}
     >
-      <Pressable style={styles.backdrop} onPress={onCancel}>
+      <Pressable accessible={false} style={styles.backdrop} onPress={() => { if (!busy) onCancel(); }}>
         {/* Swallow taps on the card itself so they don't dismiss the dialog */}
-        <Pressable style={styles.card} onPress={() => {}}>
-          <Text style={styles.title}>{title}</Text>
+        <Pressable accessible={false} accessibilityViewIsModal style={styles.card} onPress={() => {}}>
+          <Text accessibilityRole="header" style={styles.title}>{title}</Text>
 
           {!!message && <Text style={styles.message}>{message}</Text>}
 
           <View style={styles.actions}>
             <TouchableOpacity
               style={[styles.button, styles.cancelButton]}
-              onPress={onCancel}
+              accessibilityRole="button" accessibilityLabel={cancelLabel}
+              accessibilityState={{ disabled: busy }} disabled={busy}
+              onPress={() => { if (!busy) onCancel(); }}
               activeOpacity={0.8}
             >
               <Text style={styles.cancelText}>{cancelLabel}</Text>
@@ -68,7 +72,9 @@ export default function ConfirmationDialog({
                 styles.button,
                 destructive ? styles.destructiveButton : styles.confirmButton,
               ]}
-              onPress={onConfirm}
+              accessibilityRole="button" accessibilityLabel={confirmLabel}
+              accessibilityState={{ disabled: busy, busy }} disabled={busy}
+              onPress={() => { if (!busy) onConfirm(); }}
               activeOpacity={0.8}
             >
               <Text style={styles.confirmText}>{confirmLabel}</Text>
@@ -115,11 +121,14 @@ const styles = StyleSheet.create({
 
   actions: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "flex-end",
   },
 
   button: {
-    minHeight: 44,
+    minHeight: 48,
+    minWidth: 48,
+    paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.lg,
     justifyContent: "center",
     alignItems: "center",
@@ -146,7 +155,7 @@ const styles = StyleSheet.create({
   },
 
   confirmText: {
-    color: COLORS.white,
+    color: COLORS.background,
     fontWeight: "700",
     fontSize: FONT.body,
   },

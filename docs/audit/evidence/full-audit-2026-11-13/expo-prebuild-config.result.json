@@ -1,0 +1,15 @@
+{
+  "name": "expo-prebuild-config",
+  "cwd": "mobile-app",
+  "command": [
+    "npx",
+    "--no-install",
+    "expo",
+    "config",
+    "--type",
+    "prebuild",
+    "--json"
+  ],
+  "exit": 0,
+  "seconds": 4.05
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "bash",
+      "supabase/tests/batch3b_backfill.sh"
+    ],
+    "adaptation": "only local socket and repository root; original assertions retained",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "bash",
+      "supabase/tests/batch3_race.sh"
+    ],
+    "adaptation": "only local socket and repository root; original assertions retained",
+    "exit_code": 0
+  },
+  {
+    "command": "stub + pre-multi-course migrations + legacy_backfill_seed.sql + migrations through 20260920120000 + legacy_backfill_verify.sql",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "bash",
+      "supabase/tests/play_catalog_migration_legacy_selftest.sh"
+    ],
+    "exit_code": 0
+  }
+]

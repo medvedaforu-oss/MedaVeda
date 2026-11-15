@@ -1,0 +1,80 @@
+{
+  "artifact": "/tmp/medveda-v9.aab",
+  "sha256": "b850c79aba3312187f9e3360035bc0f918f8f6011ba7225125986364bbbb3600",
+  "aabBytes": 86908852,
+  "dex": [
+    {
+      "path": "base/dex/classes.dex",
+      "bytes": 9060956
+    },
+    {
+      "path": "base/dex/classes2.dex",
+      "bytes": 9285120
+    },
+    {
+      "path": "base/dex/classes3.dex",
+      "bytes": 10434600
+    },
+    {
+      "path": "base/dex/classes4.dex",
+      "bytes": 5985140
+    }
+  ],
+  "totalDexBytes": 34765816,
+  "deprecatedWindowMethodReferences": [
+    "android.view.Window.getNavigationBarColor",
+    "android.view.Window.getStatusBarColor",
+    "android.view.Window.setDecorFitsSystemWindows",
+    "android.view.Window.setNavigationBarColor",
+    "android.view.Window.setNavigationBarContrastEnforced",
+    "android.view.Window.setStatusBarColor",
+    "android.view.Window.setStatusBarContrastEnforced"
+  ],
+  "r8Metadata": null,
+  "mappingEntry": null,
+  "gradleMetadata": "appMetadataVersion=1.1\nandroidGradlePluginVersion=8.12.0\n",
+  "manifest": {
+    "package": "in.medveda.app",
+    "versionName": "1.2.1",
+    "versionCode": 9,
+    "minSdk": "24",
+    "targetSdk": "36",
+    "activity": {
+      "screenOrientation": "1",
+      "resizeableActivity": null,
+      "windowSoftInputMode": "0x00000010",
+      "configChanges": "0x80000fb0"
+    },
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.POST_NOTIFICATIONS",
+      "android.permission.VIBRATE",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.ACCESS_WIFI_STATE",
+      "android.permission.WAKE_LOCK",
+      "android.permission.RECEIVE_BOOT_COMPLETED",
+      "android.permission.DETECT_SCREEN_CAPTURE",
+      "android.permission.USE_BIOMETRIC",
+      "android.permission.USE_FINGERPRINT",
+      "com.google.android.c2dm.permission.RECEIVE",
+      "in.medveda.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+      "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
+      "com.sec.android.provider.badge.permission.READ",
+      "com.sec.android.provider.badge.permission.WRITE",
+      "com.htc.launcher.permission.READ_SETTINGS",
+      "com.htc.launcher.permission.UPDATE_SHORTCUT",
+      "com.sonyericsson.home.permission.BROADCAST_BADGE",
+      "com.sonymobile.home.permission.PROVIDER_INSERT_BADGE",
+      "com.anddoes.launcher.permission.UPDATE_COUNT",
+      "com.majeur.launcher.permission.UPDATE_BADGE",
+      "com.huawei.android.launcher.permission.CHANGE_BADGE",
+      "com.huawei.android.launcher.permission.READ_SETTINGS",
+      "com.huawei.android.launcher.permission.WRITE_SETTINGS",
+      "android.permission.READ_APP_BADGE",
+      "com.oppo.launcher.permission.READ_SETTINGS",
+      "com.oppo.launcher.permission.WRITE_SETTINGS",
+      "me.everything.badger.permission.BADGE_COUNT_READ",
+      "me.everything.badger.permission.BADGE_COUNT_WRITE"
+    ]
+  }
+}

@@ -8,6 +8,7 @@ export type LimitedField =
   | "friendDiscountMax"
   | "referrerCreditAmount"
   | "creditHoldDays"
+  | "creditExpiryDays"
   | "walletMaxPercent"
   | "applyWindowDays"
   | "maxReferralsPerUser";
@@ -22,6 +23,7 @@ export const SAMPLE_ORDER_PRICE = 499;
 type Rule = { min: number; max: number; integer: boolean; optional: boolean; message: string };
 
 const RULES: Record<LimitedField, Rule> = {
+  creditExpiryDays: { min: 0, max: 36500, integer: true, optional: true, message: "Enter 1–36,500 whole days (up to 100 years), or leave blank / enter 0 for no expiry." },
   friendDiscountPercent: { min: 0, max: 50, integer: false, optional: false, message: "Enter a percentage between 0 and 50." },
   friendDiscountMax: { min: 1, max: 10000, integer: false, optional: true, message: "Enter an amount between ₹1 and ₹10,000, or leave blank for no cap." },
   referrerCreditAmount: { min: 0, max: 10000, integer: false, optional: false, message: "Enter an amount between ₹0 and ₹10,000." },

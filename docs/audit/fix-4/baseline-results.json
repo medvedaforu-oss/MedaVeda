@@ -1,0 +1,58 @@
+[
+  {
+    "name": "mobile-tsc",
+    "exit": 0
+  },
+  {
+    "name": "eslint",
+    "exit": 0
+  },
+  {
+    "name": "admin-tsc",
+    "exit": 0
+  },
+  {
+    "name": "admin-node-tsc",
+    "exit": 0
+  },
+  {
+    "name": "admin-tests",
+    "exit": 0
+  },
+  {
+    "name": "deno-unit",
+    "exit": 0
+  },
+  {
+    "name": "deno-check",
+    "exit": 0
+  },
+  {
+    "name": "sql",
+    "exit": 2
+  },
+  {
+    "name": "password-recovery",
+    "exit": 0
+  },
+  {
+    "name": "expo-doctor",
+    "exit": 1
+  },
+  {
+    "name": "mobile-app-npm-audit",
+    "exit": 1
+  },
+  {
+    "name": "admin-panel-npm-audit",
+    "exit": 1
+  },
+  {
+    "name": "tooling-npm-audit",
+    "exit": 1
+  },
+  {
+    "name": "website-links",
+    "exit": 0
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "wrapper_exact_changes": {
+    "trim_hash_comparisons": 126,
+    "foreach_syntax": 2
+  },
+  "archives": [
+    {
+      "release": "phase-b-20261111",
+      "name": "verify-payment",
+      "exit_code": 0
+    },
+    {
+      "release": "phase-b-20261111",
+      "name": "razorpay-webhook",
+      "exit_code": 0
+    },
+    {
+      "release": "phase-b-20261111",
+      "name": "create-order",
+      "exit_code": 0
+    },
+    {
+      "release": "b-to-c-compatible-20261111",
+      "name": "verify-payment",
+      "exit_code": 0
+    },
+    {
+      "release": "b-to-c-compatible-20261111",
+      "name": "razorpay-webhook",
+      "exit_code": 0
+    },
+    {
+      "release": "b-to-c-compatible-20261111",
+      "name": "report-external-transaction",
+      "exit_code": 0
+    },
+    {
+      "release": "b-to-c-compatible-20261111",
+      "name": "create-order",
+      "exit_code": 0
+    }
+  ]
+}

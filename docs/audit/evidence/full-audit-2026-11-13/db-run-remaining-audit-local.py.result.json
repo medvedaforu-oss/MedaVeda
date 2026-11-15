@@ -1,0 +1,10 @@
+{
+  "name": "db-run-remaining-audit-local.py",
+  "cwd": ".",
+  "command": [
+    "python3",
+    "supabase/tests/run-remaining-audit-local.py"
+  ],
+  "exit": 0,
+  "seconds": 17.93
+}

@@ -7,12 +7,13 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
   react:h.react,'react/jsx-runtime':jsx,'react-native':{AppState:state,StyleSheet:{create:x=>x},View:'View',Text:'Text',ActivityIndicator:'Spinner'},
   'react-native-pdf':{__esModule:true,default:'PDF'},'expo-file-system/legacy':{getInfoAsync:async()=>({exists,size:100})},
   '@react-navigation/native':{useRoute:()=>({params:{pdfUrl:'file:///notes/fixture.pdf'}}),useNavigation:()=>({goBack(){}})},
-  '../../components/ErrorState':{__esModule:true,default:'Error'},'../../utils/downloadManager':{getAllDownloads:()=>[{contentType:'note',id:'note',localUri:'file:///notes/fixture.pdf'}]},
+  '../../components/ErrorState':{__esModule:true,default:'Error'},'../../utils/downloadManager':{getAllDownloads:()=>[{contentType:'note',isFreePreview:true,id:'note',localUri:'file:///notes/fixture.pdf'}]},
   '../../services/offlineNoteAccess':{mayOpenOfflineNote:()=>new Promise(r=>{resolveAccess=r;})},
   '../../config/supabase':{supabase:{auth:{onAuthStateChange:fn=>{auth=fn;return {data:{subscription:{unsubscribe:()=>cleaned++}}};}}}},
+  '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/secureNotesService':{},
   '../../theme/fonts':{FONT:{}},'../../utils/logger':{logError(){}},
- },{setInterval:fn=>{interval=fn;return 1;},clearInterval:()=>cleaned++}).default;
- const render=()=>nodes(h.render(Screen));
+ },{setInterval:fn=>{interval=fn;return 1;},clearInterval:()=>cleaned++}).PdfViewerSession;
+ const render=()=>nodes(h.render(()=>Screen({pdfUrl:'file:///notes/fixture.pdf'})));
  render();const old=resolveAccess;state.currentState='background';app('background');old(true);await tick();
  assert.ok(!render().some(n=>n.type==='PDF'));
  state.currentState='active';app('active');resolveAccess(true);await tick();assert.ok(render().some(n=>n.type==='PDF'));

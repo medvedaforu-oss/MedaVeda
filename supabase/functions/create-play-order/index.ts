@@ -1,12 +1,16 @@
+import { newOrdersEnabled } from "../_shared/newOrderGate.ts";
 import { handleOptions, jsonResponse } from "../_shared/cors.ts";
 import { getUserFromAuthHeader, supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { withinLimit } from "../_shared/rateLimit.ts";
+import { notesChoiceAllowed } from "../_shared/notesChoiceGate.ts";
 
 Deno.serve(async (req: Request) => {
   const preflight = handleOptions(req); if (preflight) return preflight;
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
   const user = await getUserFromAuthHeader(req);
   if (!user) return jsonResponse({ error: "Please log in before purchasing." }, 401);
+    if (!await newOrdersEnabled(supabaseAdmin)) return jsonResponse({ error: "New purchases are disabled in this release.", code: "sales_disabled" }, 403);
+  if (!notesChoiceAllowed(req, user.id)) return jsonResponse({ error: "Play billing choice checkout is disabled." }, 403);
   const input: unknown = await req.json().catch(() => null);
   if (!input || typeof input !== "object" || Array.isArray(input))
     return jsonResponse({ error: "Invalid request body." }, 400);

@@ -17,9 +17,10 @@ const send = async (body, { sign = true, sig } = {}) => {
   const r = await handler(new Request("http://x/razorpay-webhook", { method: "POST", headers, body: raw }));
   return r.status;
 };
-const PAY = "pay_WhTest0001", DISP = "disp_WhTest0001";
+let PAY = "pay_WhTest0001";
+const DISP = "disp_WhTest0001";
 const access = () => q(`select public.user_can_access_note('b4000000-0000-0000-0000-000000000001','wh_note')`);
-const pstatus = () => q(`select status from public.purchases where user_id='b4000000-0000-0000-0000-000000000001' order by created_at limit 1`);
+const pstatus = () => q(`select p.status from public.purchases p join public.orders o on o.id=p.order_id where o.razorpay_payment_id='${PAY}'`);
 const ostatus = () => q(`select status from public.orders where razorpay_payment_id='${PAY}'`);
 const amount = Number(q(`select round(amount*100) from public.orders where razorpay_payment_id='${PAY}'`));
 globalThis.__rzp.payments[PAY] = { id: PAY, order_id: "order_x", status: "captured", amount, currency: "INR", amount_refunded: 0, refund_status: null };
@@ -54,8 +55,17 @@ ok(await send(dispEvt("payment.dispute.lost", "lost")) === 204 && access() === "
 ok(await send(dispEvt("payment.dispute.lost", "lost")) === 204 && pstatus() === "chargeback", "replayed lost event -> idempotent");
 
 // full refund on a fresh purchase
-q(`update public.purchases set status='success' where status='chargeback'; update public.orders set status='paid' where razorpay_payment_id='${PAY}'`);
-globalThis.__rzp.payments[PAY] = { ...globalThis.__rzp.payments[PAY], amount_refunded: amount, refund_status: "full" };
+// A chargeback is terminal. Exercise the full-refund path on a NEW legitimate
+// purchase rather than bypassing the financial transition guard to reset it.
+PAY = 'pay_WhFresh0001';
+q(`do $$ declare j jsonb; begin
+ j:=public.create_priced_order('b4000000-0000-0000-0000-000000000001','wh_p',false);
+ assert j->>'ok'='true';
+ update public.orders set razorpay_order_id='order_whfresh' where id=j->>'order_id';
+ perform public.settle_razorpay_payment('evt_fresh','order_whfresh','${PAY}',${amount},now());
+end $$`);
+globalThis.__rzp.payments[PAY] = { id:PAY,order_id:'order_whfresh',status:'refunded',amount,currency:'INR',amount_refunded:amount,refund_status:'full' };
+globalThis.__rzp.refunds.rfnd_1.payment_id = PAY;
 globalThis.__rzp.refunds.rfnd_1.amount = amount;
 ok(access() === "t", "fixture reset: access back");
 ok(await send(refundEvt()) === 204 && access() === "f" && pstatus() === "refunded" && ostatus() === "refunded", "FULL refund -> access revoked, purchase refunded");
@@ -84,7 +94,7 @@ globalThis.__rzp.payments[earlyPay]={id:earlyPay,order_id:earlyRefund.oid,status
   currency:'INR',amount_refunded:earlyRefund.paise,refund_status:'full'};
 globalThis.__rzp.refunds[earlyRfnd]={id:earlyRfnd,payment_id:earlyPay,amount:earlyRefund.paise,
   currency:'INR',status:'processed',created_at:Math.floor(Date.now()/1000)};
-ok(await send(refundEvent(earlyPay,earlyRfnd))===204
+ok(await send(refundEvent(earlyPay,earlyRfnd))===500
   && Number(q(`select count(*) from public.provider_events where payment_id='${earlyPay}' and status='pending'`))===1,
   'F01 refund-before-link persists authenticated pending event');
 ok(await send(captureEvent(earlyPay,earlyRefund))===204 && noGrant(earlyRefund)
@@ -99,11 +109,25 @@ const earlyDispute=makeOrder('03'), disputePay='pay_WhDispute03', disputeId='dis
 globalThis.__rzp.payments[disputePay]={id:disputePay,order_id:earlyDispute.oid,status:'captured',
  amount:earlyDispute.paise,currency:'INR',amount_refunded:0};
 globalThis.__rzp.disputes[disputeId]={id:disputeId,payment_id:disputePay,status:'open',amount:earlyDispute.paise};
-ok(await send({event:'payment.dispute.created',payload:{dispute:{entity:{id:disputeId,payment_id:disputePay}}}})===204
+ok(await send({event:'payment.dispute.created',payload:{dispute:{entity:{id:disputeId,payment_id:disputePay}}}})===500
   && Number(q(`select count(*) from public.provider_events where payment_id='${disputePay}' and status='pending'`))===1,
   'F01 dispute-before-capture persists pending event');
-ok(await send(captureEvent(disputePay,earlyDispute))===204 && noGrant(earlyDispute),
+ok(await send(captureEvent(disputePay,earlyDispute))===500 && noGrant(earlyDispute),
   'F01 dispute-before-capture cannot grant access');
+globalThis.__rzp.disputes[disputeId].status='won';
+ok(await send({event:'payment.dispute.won',payload:{dispute:{entity:{id:disputeId,payment_id:disputePay}}}})===204
+  && await send(captureEvent(disputePay,earlyDispute))===204 && !noGrant(earlyDispute),
+  'B14 dispute won after early capture hold allows one valid entitlement');
+
+const earlyPartial=makeOrder('05'), partialPay='pay_WhPartial05', partialRefund='rfnd_WhPartial05';
+globalThis.__rzp.payments[partialPay]={id:partialPay,order_id:earlyPartial.oid,status:'captured',amount:earlyPartial.paise,
+  currency:'INR',amount_refunded:100,refund_status:'partial'};
+globalThis.__rzp.refunds[partialRefund]={id:partialRefund,payment_id:partialPay,amount:100,
+  currency:'INR',status:'processed',created_at:Math.floor(Date.now()/1000)};
+ok(await send(refundEvent(partialPay,partialRefund))===500
+  && await send(captureEvent(partialPay,earlyPartial))===204 && !noGrant(earlyPartial),
+  'B14 verified partial refund before capture does not revoke legitimate access');
+
 
 const interleaved=makeOrder('04'), racePay='pay_WhRace004', raceRefund='rfnd_WhRace004';
 globalThis.__rzp.payments[racePay]={id:racePay,order_id:interleaved.oid,status:'captured',

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -50,11 +50,11 @@ const SOCIAL_LINKS: Record<string, string> = {
 // a possible next step.
 export default function ContactScreen() {
   const [submitting, setSubmitting] = useState(false);
+  const submitBusy = useRef(false);
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ContactFormValues>({
     resolver: yupResolver(contactSchema),
@@ -62,7 +62,8 @@ export default function ContactScreen() {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    if (submitting) return;
+    if (submitBusy.current) return;
+    submitBusy.current = true;
     setSubmitting(true);
 
     try {
@@ -82,7 +83,7 @@ export default function ContactScreen() {
       }
 
       await Linking.openURL(url);
-      reset();
+      // Opening a composer does not confirm delivery. Keep the draft for retry.
     } catch (error) {
       logError("Contact form failed to open mail app", error);
       Alert.alert(
@@ -90,12 +91,18 @@ export default function ContactScreen() {
         `Please email us directly at ${SUPPORT_EMAIL}`
       );
     } finally {
+      submitBusy.current = false;
       setSubmitting(false);
     }
   };
 
   const openSocial = async (url: string) => {
     try {
+      if (url === SOCIAL_LINKS.whatsapp || url === SOCIAL_LINKS.youtube) {
+        // HTTPS links can open even when Android package visibility blocks canOpenURL.
+        await Linking.openURL(url);
+        return;
+      }
       const supported = await Linking.canOpenURL(url);
       if (supported) {
         await Linking.openURL(url);
@@ -104,6 +111,7 @@ export default function ContactScreen() {
       }
     } catch (error) {
       logError("Failed to open social link", error);
+      Alert.alert("Could Not Open Link", "Please check your connection and try again.");
     }
   };
 
@@ -119,8 +127,8 @@ export default function ContactScreen() {
       >
         <Text style={styles.title}>📞 Contact Us</Text>
         <Text style={styles.subtitle}>
-          We'd love to hear from you. Send us a message and we'll get back
-          to you at {SUPPORT_EMAIL}.
+          Compose an email to {SUPPORT_EMAIL}. Your email app opens next;
+          tap Send there to deliver your message.
         </Text>
 
         <Controller
@@ -157,6 +165,7 @@ export default function ContactScreen() {
             <View style={styles.messageWrap}>
               <TextInput
                 style={styles.messageInput}
+                accessibilityLabel="Message"
                 placeholder="Message"
                 placeholderTextColor={COLORS.subtitle}
                 value={value}
@@ -166,14 +175,15 @@ export default function ContactScreen() {
                 textAlignVertical="top"
               />
               {errors.message?.message ? (
-                <Text style={styles.errorText}>{errors.message.message}</Text>
+                <Text accessibilityLiveRegion="polite" style={styles.errorText}>{errors.message.message}</Text>
               ) : null}
             </View>
           )}
         />
 
         <CustomButton
-          title={submitting ? "Opening..." : "SEND"}
+          title={submitting ? "Opening email…" : "Open email app"}
+          disabled={submitting}
           onPress={handleSubmit(onSubmit)}
         />
 
@@ -242,7 +252,8 @@ function SocialButton({
   onPress: () => void;
 }) {
   return (
-    <TouchableOpacity style={styles.socialButton} activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity style={styles.socialButton} activeOpacity={0.8} onPress={onPress}
+      accessibilityRole="button" accessibilityLabel={`Open ${icon === "youtube-play" ? "YouTube" : icon}`}>
       <FontAwesome name={icon} size={18} color={color} />
     </TouchableOpacity>
   );
@@ -324,12 +335,13 @@ const styles = StyleSheet.create({
 
   socialRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "center",
   },
 
   socialButton: {
-    width: 40,
-    height: 40,
+    minWidth: 48,
+    minHeight: 48,
     borderRadius: 20,
     backgroundColor: COLORS.surfaceMuted,
     justifyContent: "center",

@@ -1,0 +1,925 @@
+[
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/accessibility-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-00.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/android-release-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-01.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-02.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-state-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-03.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/checkout-security-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-04.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/course-state-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-05.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-confirmation-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-06.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-picker-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-07.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-selection-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-08.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/deep-link-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-09.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/download-actions-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-10.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/firebase-config-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-11.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/list-states-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-12.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/load-resource-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-13.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/login-network-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-14.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/login-submit-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-15.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv004-recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-16.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv007-billing-boundary-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-17.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-18.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv009-store-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-19.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv010-options-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-20.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv011-accessibility-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-21.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv012-history-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-22.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/navigation-lazy-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-23.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/nonplay-test-isolation-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-24.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-billing-choice-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-25.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-entitlement-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-26.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-open-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-27.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-account-hook-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-28.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-inflight-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-29.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-30.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-reads-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-31.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-32.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-download-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-33.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-owner-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-34.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-poll-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-35.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-36.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-request-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-37.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-38.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-success-owner-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-39.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-summary-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-40.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-41.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-lifecycle-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-42.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-remote-retry-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-43.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/play-catalog-contract-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-44.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/profile-save-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-45.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-46.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-47.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/push-lifecycle-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-48.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-editing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-49.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-hooks-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-50.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-input-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-51.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-52.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/readiness-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-53.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-54.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/route-validation-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-55.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/same-project-build-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-56.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/search-cache-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-57.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/search-lazy-hook-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-58.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/search-pagination-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-59.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/sentry-config-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-60.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/startup-availability-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-61.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/sync-concurrency-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-62.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/video-data-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-63.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/video-link-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-64.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/video-tap-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-65.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/years-inflight-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-66.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/password-recovery.test.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-67.log"
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/password-policy-selftest.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-68.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/checkout-html-selftest.mjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-69.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-70.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-reversal-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-71.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-72.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/b-to-c-reporting-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-73.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/b-to-c-worker-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-74.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-body-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-75.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/phase-b-recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-76.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/phase-c-gates-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-77.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv006-restoration-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-78.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-79.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv005-create-order-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-80.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-81.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/settle-timestamp-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-82.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/razorpay-security-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-83.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/notes-choice-order-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-84.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/billing-recovery-worker-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-85.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-consumption-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-86.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-reconcile-fairness-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-87.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/compensation-worker-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-88.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-verification-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-89.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-order-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-90.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-payment-worker-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-91.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/razorpay-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-92.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/google-reporting-selftest.cjs",
+      "--production-only"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-93.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "mobile-app/tsconfig.json"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-94.log"
+  },
+  {
+    "command": [
+      "npm",
+      "ls",
+      "--depth=0",
+      "--offline",
+      "--ignore-scripts"
+    ],
+    "cwd": "mobile-app",
+    "exit_code": 0,
+    "log": "check-95.log"
+  },
+  {
+    "command": [
+      "node",
+      "node_modules/expo/bin/cli",
+      "install",
+      "--check"
+    ],
+    "cwd": "mobile-app",
+    "exit_code": 0,
+    "log": "check-96.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-97.log"
+  },
+  {
+    "command": [
+      "python3",
+      "mobile-app/scripts/android-bundle-validator-selftest.py"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-98.log"
+  },
+  {
+    "command": [
+      "node",
+      "admin-panel/scripts/p1-financial-ui-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-99.log"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "check-100.log"
+  }
+]

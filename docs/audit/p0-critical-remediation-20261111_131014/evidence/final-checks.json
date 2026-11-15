@@ -1,0 +1,16 @@
+[
+  {
+    "command": "sha256sum -c checksums.sha256",
+    "cwd": "/home/ganeshp8545/AyurPulse/supabase/releases/p0-critical-20261111_131014",
+    "exit_code": 0
+  },
+  {
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  {
+    "command": "node scripts/scan-secrets.mjs --stdin",
+    "files": 39,
+    "exit_code": 0
+  }
+]

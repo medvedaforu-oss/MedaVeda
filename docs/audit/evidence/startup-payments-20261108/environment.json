@@ -1,0 +1,52 @@
+{
+  "checked_at_utc": "2026-11-08",
+  "method": "read-only Supabase Management API; no project changes",
+  "projects": [
+    {
+      "ref": "xbvenkfmesugrbjuufyw",
+      "status": "ACTIVE_HEALTHY",
+      "payment_functions": [
+        {
+          "slug": "verify-payment",
+          "version": 68,
+          "verify_jwt": false
+        },
+        {
+          "slug": "razorpay-webhook",
+          "version": 50,
+          "verify_jwt": false
+        },
+        {
+          "slug": "create-order",
+          "version": 23,
+          "verify_jwt": true
+        }
+      ],
+      "payment_secret_names": [
+        "RAZORPAY_KEY_ID",
+        "RAZORPAY_KEY_SECRET",
+        "RAZORPAY_WEBHOOK_SECRET"
+      ]
+    },
+    {
+      "ref": "nsmsqsogedzohwboripd",
+      "status": "INACTIVE",
+      "payment_functions": [],
+      "payment_secret_names": []
+    }
+  ],
+  "production_create_order_bundle": {
+    "bytes": 8184016,
+    "native_version_header_present": false,
+    "play_billing_required_present": false,
+    "APP_ENV_present": false,
+    "ALLOW_TEST_MODE_present": true
+  },
+  "limitations": [
+    "No payment requests made",
+    "No secret values read",
+    "No authenticated Play Console enrollment evidence",
+    "No attached adb devices",
+    "Staging database and key mode could not be verified while paused"
+  ]
+}

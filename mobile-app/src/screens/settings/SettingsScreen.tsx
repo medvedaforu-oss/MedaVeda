@@ -41,29 +41,27 @@ export default function SettingsScreen() {
     const url =
       "mailto:medvedaforu@gmail.com?subject=MedVeda Support";
 
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      Alert.alert(
-        "Error",
-        "No email application found."
-      );
+    try {
+      if (await Linking.canOpenURL(url)) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert("No Email App Found", "Please email medvedaforu@gmail.com directly.");
+      }
+    } catch {
+      Alert.alert("Could Not Open Email", "Please email medvedaforu@gmail.com directly.");
     }
   };
 
   const handleRateApp = async () => {
     const packageName = "in.medveda.app";
-
     try {
-      await Linking.openURL(
-        `market://details?id=${packageName}`
-      );
+      await Linking.openURL(`market://details?id=${packageName}`);
     } catch {
-      await Linking.openURL(
-        `https://play.google.com/store/apps/details?id=${packageName}`
-      );
+      try {
+        await Linking.openURL(`https://play.google.com/store/apps/details?id=${packageName}`);
+      } catch {
+        Alert.alert("Could Not Open Store", "Check your connection and try again.");
+      }
     }
   };
 
@@ -192,6 +190,7 @@ export default function SettingsScreen() {
         title="Delete Account"
         message="This requests permanent account deletion and removes access to your purchases. Some transaction records may be retained. This action cannot be undone."
         confirmLabel={deleting ? "Deleting…" : "Delete"}
+        busy={deleting}
         destructive
         onConfirm={confirmDeleteAccount}
         onCancel={() => !deleting && setDeleteDialogVisible(false)}

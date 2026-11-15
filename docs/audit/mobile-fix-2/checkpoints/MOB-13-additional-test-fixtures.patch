@@ -1,0 +1,26 @@
+--- a/mobile-app/scripts/offline-download-selftest.cjs
++++ b/mobile-app/scripts/offline-download-selftest.cjs
+@@ -27,12 +27,13 @@
+   const secureStorage = new Map();
+   let secureDeleteError;
+   const calls = [];
++  let authEpoch = 0;
+   let user = { id: 'buyer' }, accessError, deleteError, refreshes = 0, transport = async () => ({ status: 200 }), header = 'JVBERi0=';
+   class NoteAccessError extends Error { constructor(status) { super('access'); this.status = status; } }
+   const secure = { NoteAccessError, getSecureNoteUrl: async () => { refreshes++; if (accessError) throw accessError; return `https://fixture.invalid/fresh-${refreshes}`; } };
+   const mocks = {
+     '../services/courseState': { getCourseYear: () => ({ courseId: 'bams' }) },
+-    '../services/authState': { getCurrentUser: () => user },
++    '../services/authState': { getCurrentUser: () => user, getAuthEpoch: () => authEpoch, waitForOfflineStorage: async () => !!user },
+     '../services/secureNotesService': secure,
+     '../config/database': { getDb: () => db, OFFLINE_DB_SUPPORTED: true },
+     './logger': { logDebug() {} },
+@@ -77,7 +78,7 @@
+   });
+   return { manager, access, calls, files, storage, secureStorage, NoteAccessError,
+     setSecureDeleteError: value => { secureDeleteError = value; },
+-    setUser: value => { user = value; }, setError: value => { accessError = value; },
++    setUser: value => { if (user?.id !== value?.id) authEpoch++; user = value; }, setError: value => { accessError = value; },
+     setDeleteError: value => { deleteError = value; },
+     setTransport: value => { transport = value; }, setHeader: value => { header = value; }, close: () => sql.close() };
+ }

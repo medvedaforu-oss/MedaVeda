@@ -1,0 +1,41 @@
+--- mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/MedvedaOfflineVaultModule.kt
++++ mobile-app/modules/medveda-offline-vault/android/src/main/java/expo/modules/medvedaoffline/MedvedaOfflineVaultModule.kt
+@@ -1,6 +1,7 @@
+-package `in`.medveda.offline
++package expo.modules.medvedaoffline
+ 
+ import android.os.Build
++import `in`.medveda.offline.AndroidVaultLifecycle
+ import expo.modules.kotlin.modules.Module
+ import expo.modules.kotlin.modules.ModuleDefinition
+ 
+@@ -22,9 +23,3 @@
+   }
+ }
+ 
+-/** Shared native lifecycle gate; no persistent initialization. */
+-internal object AndroidVaultLifecycle {
+-  private val session=OwnerSession()
+-  val leases=NativeLeases(session)
+-  fun invalidate() { leases.invalidate() }
+-}
+--- /dev/null
++++ mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultLifecycle.kt
+@@ -0,0 +1,8 @@
++package `in`.medveda.offline
++
++/** Shared native lifecycle gate; no persistent initialization. */
++internal object AndroidVaultLifecycle {
++  private val session=OwnerSession()
++  val leases=NativeLeases(session)
++  fun invalidate() { leases.invalidate() }
++}
+--- mobile-app/modules/medveda-offline-vault/expo-module.config.json
++++ mobile-app/modules/medveda-offline-vault/expo-module.config.json
+@@ -1,5 +1,5 @@
+ {
+   "platforms": ["android", "apple"],
+-  "android": { "modules": ["in.medveda.offline.MedvedaOfflineVaultModule"] },
++  "android": { "modules": ["expo.modules.medvedaoffline.MedvedaOfflineVaultModule"] },
+   "apple": { "modules": ["MedvedaOfflineVaultModule"] }
+ }

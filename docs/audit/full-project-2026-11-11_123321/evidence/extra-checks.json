@@ -1,0 +1,95 @@
+[
+  {
+    "name": "edge-check",
+    "command": [
+      "bash",
+      "-c",
+      "for f in supabase/functions/*/index.ts supabase/workers/validate-note-pdf.ts; do deno check --cached-only \"$f\" || exit; done"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "log": "edge-check.log",
+    "seconds": 44.0
+  },
+  {
+    "name": "deno-tests",
+    "command": [
+      "deno",
+      "test",
+      "--cached-only",
+      "--allow-env",
+      "supabase/tests/quarantine-worker-test.ts",
+      "supabase/tests/upload-note-pdf-test.ts",
+      "supabase/tests/play_catalog_unit_test.ts",
+      "supabase/tests/play_catalog_api_test.ts",
+      "supabase/tests/pdf-validation-test.ts",
+      "supabase/tests/upload-body-test.ts",
+      "supabase/tests/note-pdf-hash-test.ts"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "log": "deno-tests.log",
+    "seconds": 4.3
+  },
+  {
+    "name": "mobile-export",
+    "command": [
+      "node",
+      "node_modules/expo/bin/cli",
+      "export",
+      "--platform",
+      "web",
+      "--output-dir",
+      "/tmp/medveda-audit-web-export"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot/mobile-app",
+    "exit_code": 0,
+    "log": "mobile-export.log",
+    "seconds": 75.8
+  },
+  {
+    "name": "android-gradle",
+    "command": [
+      "bash",
+      "mobile-app/android/gradlew",
+      "--offline",
+      "-p",
+      "mobile-app/android",
+      ":app:bundleRelease"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "log": "android-gradle.log",
+    "seconds": 0.6
+  },
+  {
+    "name": "admin-audit",
+    "command": [
+      "npm",
+      "audit",
+      "--prefix",
+      "admin-panel",
+      "--omit=dev",
+      "--json"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "log": "admin-audit.log",
+    "seconds": 1.2
+  },
+  {
+    "name": "mobile-audit",
+    "command": [
+      "npm",
+      "audit",
+      "--prefix",
+      "mobile-app",
+      "--omit=dev",
+      "--json"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "log": "mobile-audit.log",
+    "seconds": 1.2
+  }
+]

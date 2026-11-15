@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import AppNavigator from "./src/navigation/AppNavigator";
 import UpdateRequiredScreen from "./src/screens/update/UpdateRequiredScreen";
@@ -58,26 +59,30 @@ export default function App() {
   }, [initializeApp]);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar style="light" />
-      {!ready ? (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#100C0A", padding: 24 }}>
-          {startupError ? (
-            <>
-              <Text style={{ color: "white", textAlign: "center", marginBottom: 20 }}>Could not prepare offline content. Please try again.</Text>
-              <TouchableOpacity onPress={() => void initializeApp()} accessibilityRole="button">
-                <Text style={{ color: "white" }}>Retry</Text>
-              </TouchableOpacity>
-            </>
-          ) : <ActivityIndicator size="large" color="white" />}
-        </View>
-      ) : maintenance.enabled !== false ? (
-        <MaintenanceScreen checking={maintenance.checking} retry={maintenance.retry} />
-      ) : update?.required ? (
-        <UpdateRequiredScreen storeUrl={update.storeUrl} />
-      ) : (
-        <AppNavigator />
-      )}
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        {!ready ? (
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#100C0A", padding: 24 }}>
+            {startupError ? (
+              <>
+                <Text style={{ color: "white", textAlign: "center", marginBottom: 20 }}>Could not prepare offline content. Please try again.</Text>
+                <TouchableOpacity onPress={() => void initializeApp()} accessibilityRole="button">
+                  <Text style={{ color: "white" }}>Retry</Text>
+                </TouchableOpacity>
+              </>
+            ) : <ActivityIndicator size="large" color="white" />}
+          </View>
+        ) : maintenance.enabled === true ? (
+          <MaintenanceScreen checking={maintenance.checking} retry={maintenance.retry} />
+        ) : update?.required ? (
+          <UpdateRequiredScreen storeUrl={update.storeUrl} />
+        ) : (
+          <SafeAreaView edges={["left", "right", "bottom"]} style={{ flex: 1, backgroundColor: "#100C0A" }}>
+            <AppNavigator />
+          </SafeAreaView>
+        )}
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

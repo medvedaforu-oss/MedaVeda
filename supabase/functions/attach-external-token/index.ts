@@ -1,6 +1,7 @@
 import { handleOptions, jsonResponse } from "../_shared/cors.ts";
 import { getUserFromAuthHeader, supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { withinLimit } from "../_shared/rateLimit.ts";
+import { notesChoiceAllowed } from "../_shared/notesChoiceGate.ts";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 Deno.serve(async (req: Request) => {
@@ -8,10 +9,14 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
   const user = await getUserFromAuthHeader(req);
   if (!user) return jsonResponse({ error: "Please log in before purchasing." }, 401);
-  const body = await req.json().catch(() => ({})) as { internalOrderId?: unknown; externalTransactionToken?: unknown };
+  if (!notesChoiceAllowed(req, user.id)) return jsonResponse({ error: "Play billing choice checkout is disabled." }, 403);
+  const input: unknown = await req.json().catch(() => null);
+  if (!input || typeof input !== "object" || Array.isArray(input))
+    return jsonResponse({ error: "Invalid choice details." }, 400);
+  const body = input as { internalOrderId?: unknown; externalTransactionToken?: unknown };
   const orderId = typeof body.internalOrderId === "string" ? body.internalOrderId : "";
   const token = typeof body.externalTransactionToken === "string" ? body.externalTransactionToken : "";
-  if (!UUID.test(orderId) || token.length < 10 || token.length > 4096) return jsonResponse({ error: "Invalid choice details." }, 400);
+  if (!UUID.test(orderId) || token.length < 10 || token.length > 4096 || /[\s\x00-\x1f\x7f]/.test(token)) return jsonResponse({ error: "Invalid choice details." }, 400);
   if (!(await withinLimit(`attach-external:${user.id}`, 20, 600))) return jsonResponse({ error: "Too many attempts." }, 429);
   const { data, error } = await supabaseAdmin.rpc("attach_ucb_external_token", {
     p_user_id: user.id, p_order_id: orderId, p_token: token,

@@ -24,10 +24,11 @@ else
 fi
 printf 'Linked Supabase project ref: %s\n' "$project_ref"
 
-# The four user functions retain gateway JWT verification. The other three
+# The five user functions retain gateway JWT verification. The other three
 # authenticate with a cron secret, Razorpay webhook HMAC, or payment signature.
 commands=(
   'create-order'
+  'create-order-play-choice'
   'create-play-order'
   'verify-play-purchase'
   'attach-external-token'

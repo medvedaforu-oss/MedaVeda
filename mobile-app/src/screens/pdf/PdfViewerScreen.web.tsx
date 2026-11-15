@@ -1,54 +1,68 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
 import ErrorState from "../../components/ErrorState";
+import { supabase } from "../../config/supabase";
+import { getCurrentUser } from "../../services/authState";
+import { getSecureNoteUrl } from "../../services/secureNotesService";
 
-// Web-only version of the PDF viewer. `react-native-pdf` (used in
-// PdfViewerScreen.native.tsx) is a native-only module — it can't be
-// bundled for the browser at all, and since AppNavigator imports every
-// screen up front, that failure was crashing the *entire* app on web
-// (the white screen), not just this one screen.
-//
-// Metro/Expo automatically picks this file over PdfViewerScreen.tsx when
-// building for web (the ".web.tsx" suffix), and picks the ".native.tsx"
-// one for the real Android/iOS app - so this file is never shipped to
-// the Play Store build, it only matters for `npx expo start` + press "w".
-//
-// Browsers already render PDFs natively inside an <iframe>, full
-// document, all pages, no extra library needed here.
 export default function PdfViewerScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-
-  const { pdfUrl } = route.params ?? {};
-
-  if (!pdfUrl) {
-    return (
-      <View style={styles.container}>
-        <ErrorState
-          message="This document couldn't be opened. Please go back and try again."
-          onRetry={() => navigation.goBack()}
-        />
-      </View>
-    );
+  const { pdfUrl, noteId } = route.params ?? {};
+  const owner = useRef(getCurrentUser()?.id);
+  const generation = useRef(0);
+  const [source, setSource] = useState(pdfUrl);
+  const [failed, setFailed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
+  useEffect(() => {
+    const invalidate = () => { generation.current++; };
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user?.id === owner.current) return;
+      invalidate();
+      pending.current = false;
+      setBusy(false);
+      setSource(undefined);
+      setFailed(true);
+    });
+    return () => { invalidate(); data.subscription.unsubscribe(); };
+  }, []);
+  const retry = async () => {
+    if (pending.current) return;
+    if (!noteId || !owner.current || owner.current !== getCurrentUser()?.id) {
+      navigation.goBack();
+      return;
+    }
+    pending.current = true;
+    setBusy(true);
+    const run = ++generation.current;
+    try {
+      const url = await getSecureNoteUrl(noteId);
+      if (run !== generation.current || getCurrentUser()?.id !== owner.current) return;
+      setSource(url);
+      setFailed(false);
+    } catch {
+      if (run === generation.current) setFailed(true);
+    } finally {
+      pending.current = false;
+      if (run === generation.current) setBusy(false);
+    }
+  };
+  if (failed || typeof source !== "string" || !/^https:\/\//i.test(source)) {
+    return <View style={styles.container}><ErrorState
+      message="Download PDF file."
+      onRetry={() => void retry()} busy={busy} /></View>;
   }
-
-  return (
-    <View style={styles.container}>
-      {React.createElement("iframe", {
-        src: pdfUrl,
-        title: "PDF Viewer",
-        style: { flex: 1, width: "100%", height: "100%", border: "none" },
-      })}
-    </View>
-  );
+  return <View style={styles.container}>
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel="Reload PDF with a fresh link"
+      disabled={busy} onPress={() => void retry()} style={styles.reload}>
+      <Text>{busy ? "Refreshing PDF…" : "Reload PDF with a fresh link"}</Text>
+    </TouchableOpacity>
+    {React.createElement("iframe", {
+    src: source, title: "PDF Viewer", onError: () => setFailed(true),
+    style: { flex: 1, width: "100%", height: "100%", border: "none" },
+  })}</View>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
+const styles = StyleSheet.create({ container: { flex: 1, backgroundColor: "#fff" },
+  reload: { minHeight: 48, padding: 12, alignItems: "center", justifyContent: "center" } });

@@ -1,0 +1,11 @@
+{
+  "name": "test-supabase_tests_mv005-history-selftest.cjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "supabase/tests/mv005-history-selftest.cjs"
+  ],
+  "exit": 1,
+  "seconds": 1.56
+}

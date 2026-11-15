@@ -1,0 +1,46 @@
+{
+  "window_start": "2026-11-11T14:44:00Z",
+  "window_end": "2026-11-12T14:44:00Z",
+  "result": [
+    {
+      "entries": 28,
+      "source": "auth_audit_logs"
+    },
+    {
+      "entries": 67,
+      "source": "auth_logs"
+    },
+    {
+      "entries": 3155,
+      "source": "edge_logs"
+    },
+    {
+      "entries": 38,
+      "source": "function_edge_logs"
+    },
+    {
+      "entries": 38,
+      "source": "function_logs"
+    },
+    {
+      "entries": 238,
+      "source": "pgbouncer_logs"
+    },
+    {
+      "entries": 512,
+      "source": "postgres_logs"
+    },
+    {
+      "entries": 63,
+      "source": "postgrest_logs"
+    },
+    {
+      "entries": 19,
+      "source": "realtime_logs"
+    },
+    {
+      "entries": 59,
+      "source": "storage_logs"
+    }
+  ]
+}

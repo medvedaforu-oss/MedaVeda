@@ -13,10 +13,10 @@ function compile(file, require_) {
   vm.runInNewContext(code, { exports: mod.exports, module: mod, require: require_, React: { createElement: element }, __DEV__: false });
   return mod.exports;
 }
-for (const provider of ['disabled', 'razorpay']) {
+for (const provider of ['disabled', 'razorpay', 'play']) {
   const loads = [], modules = new Map(); let fail = false, sentry = false;
-  const react = { createElement: element, useState: () => [false, () => {}], useEffect() {} };
-  const Stack = { Navigator: 'Navigator', Screen: 'Screen' };
+  const react = { createElement: element, useState: value => [typeof value === 'function' ? value() : value, () => {}], useEffect() {} };
+  const Stack = { Navigator: 'Navigator', Group: 'Group', Screen: 'Screen' };
   function require_(name) {
     if (name.includes('/screens/')) {
       loads.push(name);
@@ -28,6 +28,8 @@ for (const provider of ['disabled', 'razorpay']) {
     if (name === 'react') return { __esModule: true, default: react, ...react };
     if (name === '@react-navigation/native') return { NavigationContainer: 'NavigationContainer', DefaultTheme: { colors: {} }, useNavigationContainerRef: () => ({}) };
     if (name === '@react-navigation/native-stack') return { createNativeStackNavigator: () => Stack };
+    if (name === '../services/authState') return { getCurrentUser: () => ({ id: 'fixture' }), subscribeAuthUser() {} };
+    if (name === '../utils/logger') return {logError(){}};
     if (name === '../theme/colors') return { COLORS: {} };
     if (name === '../config/paymentProvider') return { paymentProvider: provider };
     if (name === '../components/ErrorBoundary') return { __esModule: true, default: 'ErrorBoundary' };
@@ -43,8 +45,8 @@ for (const provider of ['disabled', 'razorpay']) {
   const screens = flatten(tree).filter(n => n?.type === 'Screen');
   assert.equal(new Set(screens.map(n => n.props.name)).size, screens.length);
   assert.equal(screens.some(n => n.props.name === 'PlayBilling'), false);
-  assert.equal(screens.some(n => n.props.name === 'PaymentCheckout'), provider === 'razorpay');
-  assert.equal(screens.some(n => n.props.name === 'OrderSummary'), provider === 'razorpay');
+  assert.equal(screens.some(n => n.props.name === 'PaymentCheckout'), provider !== 'disabled');
+  assert.equal(screens.some(n => n.props.name === 'OrderSummary'), provider !== 'disabled');
   const preferences = screens.find(n => n.props.name === 'NotificationPreferences');
   assert.ok(preferences, 'The notification center preferences destination must be registered');
   assert.equal(typeof preferences.props.getComponent, 'function', 'Preferences remain lazy');

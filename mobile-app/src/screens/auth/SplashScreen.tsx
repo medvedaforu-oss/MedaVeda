@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Linking } from "react-native";
 import { COLORS } from "../../theme/colors";
 import { SPACING } from "../../theme/spacing";
 import { supabase } from "../../config/supabase";
 import { resolvePostLoginRoute } from "../../services/courseState";
 import BrandLogo from "../../components/BrandLogo";
+import ErrorState from "../../components/ErrorState";
 
 // BUG FIX ("app logs the student out on its own"): this screen used to
 // navigate straight to "Login" after a fixed 2s delay, no matter what -
@@ -20,16 +21,17 @@ import BrandLogo from "../../components/BrandLogo";
 // stale but the refresh_token is still valid) and route based on that -
 // only send them to Login if there's genuinely no valid session.
 export default function SplashScreen({ navigation }: any) {
+  const [attempt, setAttempt] = useState(0);
+  const [failed, setFailed] = useState(false);
   useEffect(() => {
     let isMounted = true;
+    setFailed(false);
 
     async function decideDestination() {
-      const minSplashTime = new Promise((resolve) => setTimeout(resolve, 1200));
-      const [{ data }, initialUrl] = await Promise.all([
+      const [{ data, error }, initialUrl] = await Promise.all([
         supabase.auth.getSession(),
         Linking.getInitialURL(),
       ]);
-      await minSplashTime;
 
       if (!isMounted) return;
 
@@ -48,6 +50,8 @@ export default function SplashScreen({ navigation }: any) {
         return;
       }
 
+      if (error) throw error;
+
       if (!data.session) {
         navigation.replace("Login");
         return;
@@ -59,12 +63,12 @@ export default function SplashScreen({ navigation }: any) {
       navigation.replace(route);
     }
 
-    decideDestination();
+    void decideDestination().catch(() => { if (isMounted) setFailed(true); });
 
     return () => {
       isMounted = false;
     };
-  }, [navigation]);
+  }, [navigation, attempt]);
 
   return (
     <View style={styles.container}>
@@ -74,11 +78,12 @@ export default function SplashScreen({ navigation }: any) {
         Learn Ayurveda{"\n"}Anytime, Anywhere
       </Text>
 
-      <ActivityIndicator
+      {failed ? <ErrorState message="Could not restore your session. Check your connection and try again."
+        onRetry={() => setAttempt(value => value + 1)} /> : <ActivityIndicator
         size="large"
         color={COLORS.accent}
         style={{ marginTop: 40 }}
-      />
+      />}
     </View>
   );
 }

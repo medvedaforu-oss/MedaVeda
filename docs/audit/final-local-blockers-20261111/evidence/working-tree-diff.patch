@@ -1,0 +1,289 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9116256..c58f0fe 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -27,7 +27,8 @@ jobs:
+           VITE_SUPABASE_URL: https://example.supabase.co
+           VITE_SUPABASE_ANON_KEY: ci-placeholder
+       - run: npm test
+-      - run: npm audit --omit=dev --audit-level=high
++      - run: node scripts/p1-financial-ui-selftest.cjs
++      - run: npm audit --audit-level=high
+ 
+   mobile-app:
+     runs-on: ubuntu-latest
+@@ -38,28 +39,48 @@ jobs:
+         with: { node-version: 22, cache: npm, cache-dependency-path: mobile-app/package-lock.json }
+       - run: npm ci
+       - run: npx tsc --noEmit
++      - run: node scripts/p2-quality-selftest.cjs && node scripts/p2-performance-selftest.cjs && node mobile-app/scripts/p2-registration-selftest.cjs && node scripts/p2-admin-labels-selftest.cjs
++        working-directory: .
++      - run: node mobile-app/scripts/closed-testing-selftest.cjs
++        working-directory: .
+       - run: node --experimental-strip-types scripts/checkout-html-selftest.mjs
+       - run: node --experimental-strip-types scripts/password-policy-selftest.mjs
+       - run: node scripts/verify-signature-selftest.js
+       - run: node scripts/same-project-build-selftest.cjs
+       - run: node scripts/staging-build-selftest.cjs
++      - run: node scripts/firebase-config-selftest.cjs && node scripts/push-lifecycle-selftest.cjs && node scripts/notification-routing-selftest.cjs && node scripts/notification-account-hook-selftest.cjs
++      - run: node scripts/play-catalog-contract-selftest.cjs
++      - run: python3 scripts/android-bundle-validator-selftest.py
++      - run: node supabase/tests/p1-push-delivery-selftest.cjs && node supabase/tests/p0-notification-selftest.cjs
++        working-directory: .
+       - run: node scripts/payment-provider-selftest.cjs
+       - run: node scripts/payment-routing-selftest.cjs
+       - run: node mobile-app/scripts/release-payments-disabled-selftest.cjs
+         working-directory: .
+       - run: node mobile-app/scripts/razorpay-internal-test-selftest.cjs
+         working-directory: .
++      - run: node mobile-app/scripts/nonplay-test-isolation-selftest.cjs
++        working-directory: .
+       - run: node mobile-app/scripts/purchases-unavailable-ui-selftest.cjs
+         working-directory: .
+       - run: node mobile-app/scripts/payment-poll-selftest.cjs
+         working-directory: .
+       - run: node mobile-app/scripts/payment-request-selftest.cjs
+         working-directory: .
++      - run: node mobile-app/scripts/startup-availability-selftest.cjs && node mobile-app/scripts/readiness-selftest.cjs
++        working-directory: .
++      - run: node supabase/tests/razorpay-routing-selftest.cjs && node supabase/tests/razorpay-security-selftest.cjs
++        working-directory: .
++      - run: node mobile-app/scripts/checkout-security-selftest.cjs
++        working-directory: .
+       - run: node mobile-app/scripts/payment-verdict-selftest.cjs
+         working-directory: .
+       - run: node mobile-app/scripts/payment-summary-selftest.cjs
+         working-directory: .
++      - run: node mobile-app/scripts/notes-billing-choice-selftest.cjs && node supabase/tests/notes-choice-order-selftest.cjs
++        working-directory: .
+       - run: node scripts/navigation-lazy-selftest.cjs
++      - run: node scripts/offline-license-storage-selftest.cjs
+       - run: node scripts/offline-download-selftest.cjs
+       - run: node scripts/offline-owner-selftest.cjs
+       - run: node scripts/quiz-hooks-selftest.cjs
+diff --git a/mobile-app/scripts/offline-download-selftest.cjs b/mobile-app/scripts/offline-download-selftest.cjs
+index d16d163..376e7de 100644
+--- a/mobile-app/scripts/offline-download-selftest.cjs
++++ b/mobile-app/scripts/offline-download-selftest.cjs
+@@ -4,6 +4,7 @@ const path = require('node:path');
+ const vm = require('node:vm');
+ const { DatabaseSync } = require('node:sqlite');
+ const ts = require('../node_modules/typescript');
++const { createHash } = require('node:crypto');
+ let now = 1_800_000_000_000;
+ class TestDate extends Date { static now() { return now; } }
+ function load(relative, mocks) {
+@@ -23,6 +24,8 @@ function fixture() {
+     getFirstSync: (q, args = []) => sql.prepare(q).get(...args), getAllSync: (q, args = []) => sql.prepare(q).all(...args) };
+   const storage = new Map([['medveda:offline-owner', 'buyer']]);
+   const files = new Map();
++  const secureStorage = new Map();
++  let secureDeleteError;
+   const calls = [];
+   let user = { id: 'buyer' }, accessError, deleteError, refreshes = 0, transport = async () => ({ status: 200 }), header = 'JVBERi0=';
+   class NoteAccessError extends Error { constructor(status) { super('access'); this.status = status; } }
+@@ -55,6 +58,14 @@ function fixture() {
+     },
+   };
+   const verification = load(path.join(__dirname, '../src/services/offlineNoteVerification.ts'), {
++    'react-native': { Platform: { OS: 'android' } },
++    'js-sha256': { sha256: value => createHash('sha256').update(value).digest('hex') },
++    'expo-secure-store': {
++      WHEN_UNLOCKED_THIS_DEVICE_ONLY: 7,
++      getItemAsync: async key => secureStorage.get(key) ?? null,
++      setItemAsync: async (key, value) => { secureStorage.set(key, value); },
++      deleteItemAsync: async key => { if (secureDeleteError) throw secureDeleteError; secureStorage.delete(key); },
++    },
+     '@react-native-async-storage/async-storage': mocks['@react-native-async-storage/async-storage'],
+   });
+   mocks['../services/offlineNoteVerification'] = verification;
+@@ -64,7 +75,8 @@ function fixture() {
+     './authState': mocks['../services/authState'], './secureNotesService': secure,
+     './offlineNoteVerification': verification, '../utils/downloadManager': manager,
+   });
+-  return { manager, access, calls, files, storage, NoteAccessError,
++  return { manager, access, calls, files, storage, secureStorage, NoteAccessError,
++    setSecureDeleteError: value => { secureDeleteError = value; },
+     setUser: value => { user = value; }, setError: value => { accessError = value; },
+     setDeleteError: value => { deleteError = value; },
+     setTransport: value => { transport = value; }, setHeader: value => { header = value; }, close: () => sql.close() };
+@@ -111,7 +123,8 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
+   for (const status of [undefined, 500, 429]) {
+     f = fixture(); now = 1_800_000_000_000;
+     await f.manager.enqueueDownload(request);
+-    assert.equal(JSON.parse(f.storage.get(verifiedKey)).checkedAt, now);
++    assert.equal(JSON.parse([...f.secureStorage.values()][0]).checkedAt, now);
++    assert.equal(f.storage.get(verifiedKey), 'secure-store:v1');
+     f.setError(status ? new f.NoteAccessError(status) : new Error('network'));
+     now += 7 * day;
+     assert.equal(await f.access.mayOpenOfflineNote('note-1'), true, 'seven-day boundary allowed');
+@@ -146,6 +159,21 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
+   await f.manager.removeDownload('note-1'); assert.equal(f.storage.has(verifiedKey), false);
+   await f.manager.enqueueDownload(request); await f.manager.clearAllDownloads(); assert.equal(f.storage.has(verifiedKey), false);
+   f.close();
++  f = fixture(); await f.manager.enqueueDownload(request);
++  const retainedUri = f.manager.getDownload('note-1').localUri;
++  f.storage.set(verifiedKey, JSON.stringify({ checkedAt: now, lastSeenAt: now }));
++  f.setError(new Error('offline'));
++  assert.equal(await f.access.mayOpenOfflineNote('note-1'), false, 'Legacy plaintext requires online check');
++  assert.equal(f.files.has(retainedUri), true, 'Legacy recheck never deletes downloaded PDF');
++  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('note-1'), true);
++  f.setSecureDeleteError(new Error('keystore unavailable'));
++  await assert.rejects(f.manager.clearAllDownloads(), /keystore unavailable/);
++  assert.equal(f.files.has(retainedUri), true, 'Failed secure cleanup preserves content for retry');
++  assert.equal(f.storage.get(verifiedKey), 'secure-store:v1');
++  f.setSecureDeleteError(undefined); await f.manager.clearAllDownloads();
++  assert.equal(f.secureStorage.size, 0); assert.equal(f.files.size, 0);
++  f.close();
++  console.log('PASS secure bulk cleanup failure/retry and legacy PDF preservation');
+   console.log('PASS seven-day grace/network/5xx/429, day eight, 401/403 deletion, persistent rollback expiry, future/corrupt timestamps, legacy recovery, cleanup');
+   f = fixture();
+   assert.equal(await f.access.mayOpenOfflineNote('n'), true);
+diff --git a/mobile-app/src/services/offlineNoteVerification.ts b/mobile-app/src/services/offlineNoteVerification.ts
+index f5cc3eb..9b7fdb8 100644
+--- a/mobile-app/src/services/offlineNoteVerification.ts
++++ b/mobile-app/src/services/offlineNoteVerification.ts
+@@ -1,37 +1,96 @@
+ import AsyncStorage from "@react-native-async-storage/async-storage";
++import { Platform } from "react-native";
++import * as SecureStore from "expo-secure-store";
++import { sha256 } from "js-sha256";
+ 
+ export const OFFLINE_NOTE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;
++// Only a nonsecret marker remains here, for logout/bulk cleanup discovery.
+ export const OFFLINE_NOTE_VERIFICATION_PREFIX = "medveda:note-verified:";
++const MARKER = "secure-store:v1";
+ const keyFor = (owner: string, noteId: string) => `${OFFLINE_NOTE_VERIFICATION_PREFIX}${owner}:${noteId}`;
++const secureKeyFor = (key: string) => `medveda.license.v1.${sha256(key)}`;
++const options = { keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY };
+ 
+-export async function recordNoteVerification(owner: string, noteId: string): Promise<void> {
+-  const now = Date.now();
+-  await AsyncStorage.setItem(keyFor(owner, noteId), JSON.stringify({ checkedAt: now, lastSeenAt: now }));
+-  await AsyncStorage.removeItem(`medveda:note-denied:${owner}:${noteId}`);
++// Keep read/update and revoke/cleanup ordered across asynchronous native calls.
++let pending: Promise<unknown> = Promise.resolve();
++function serialize<T>(operation: () => Promise<T>): Promise<T> {
++  const next = pending.then(operation);
++  pending = next.catch(() => {});
++  return next;
+ }
+ 
+-export async function clearNoteVerification(owner: string, noteId: string): Promise<void> {
+-  await AsyncStorage.removeItem(keyFor(owner, noteId));
++async function invalidate(key: string): Promise<void> {
++  // Retain a tombstone until deletion succeeds; storage recovery or restoring
++  // the clock must not make a rejected record trusted again.
++  await AsyncStorage.setItem(key, "invalid:v1");
++  await erase(key);
+ }
+ 
+-export async function hasRecentNoteVerification(owner: string, noteId: string): Promise<boolean> {
+-  const key = keyFor(owner, noteId);
+-  try {
+-    const raw = await AsyncStorage.getItem(key);
+-    if (!raw) return false; // Legacy downloads need a successful server check.
+-    const { checkedAt, lastSeenAt } = JSON.parse(raw);
++async function erase(key: string): Promise<void> {
++  if (Platform.OS !== "web") await SecureStore.deleteItemAsync(secureKeyFor(key));
++  // Keep the discovery marker if secure deletion fails, so cleanup can retry.
++  await AsyncStorage.removeItem(key);
++}
++
++export function recordNoteVerification(owner: string, noteId: string): Promise<void> {
++  return serialize(async () => {
++    if (Platform.OS === "web") return; // No native offline license on web.
++    const key = keyFor(owner, noteId);
+     const now = Date.now();
+-    if (!Number.isSafeInteger(checkedAt) || !Number.isSafeInteger(lastSeenAt) ||
+-        checkedAt <= 0 || lastSeenAt < checkedAt || now < lastSeenAt ||
+-        now - checkedAt > OFFLINE_NOTE_GRACE_MS) {
+-      // Persist expiry so moving the clock forward again cannot revive access.
+-      await AsyncStorage.removeItem(key);
++    // Write discovery first: interrupted/failed secure writes remain discoverable.
++    // Existing plaintext is never read as a license or copied into SecureStore.
++    await AsyncStorage.setItem(key, "pending:v1");
++    await SecureStore.setItemAsync(secureKeyFor(key), JSON.stringify({
++      version: 1, owner, noteId, checkedAt: now, lastSeenAt: now,
++    }), options);
++    await AsyncStorage.setItem(key, MARKER);
++    await AsyncStorage.removeItem(`medveda:note-denied:${owner}:${noteId}`);
++  });
++}
++
++export function clearNoteVerification(owner: string, noteId: string): Promise<void> {
++  return serialize(() => erase(keyFor(owner, noteId)));
++}
++
++export function clearAllNoteVerifications(): Promise<void> {
++  return serialize(async () => {
++    const keys = await AsyncStorage.getAllKeys();
++    for (const key of keys) {
++      if (key.startsWith(OFFLINE_NOTE_VERIFICATION_PREFIX)) await erase(key);
++    }
++  });
++}
++
++export function hasRecentNoteVerification(owner: string, noteId: string): Promise<boolean> {
++  return serialize(async () => {
++    if (Platform.OS === "web") return false;
++    const key = keyFor(owner, noteId);
++    try {
++      if (await AsyncStorage.getItem(key) !== MARKER) {
++        // Legacy timestamps are unauthenticated. Preserve the PDF, require one
++        // successful online check, and remove the old license on first use.
++        await erase(key);
++        return false;
++      }
++      const raw = await SecureStore.getItemAsync(secureKeyFor(key));
++      if (!raw) { await erase(key); return false; }
++      let record;
++      try { record = JSON.parse(raw); } catch { await invalidate(key); return false; }
++      const now = Date.now();
++      if (!record || record.version !== 1 || record.owner !== owner || record.noteId !== noteId ||
++          !Number.isSafeInteger(record.checkedAt) || !Number.isSafeInteger(record.lastSeenAt) ||
++          record.checkedAt <= 0 || record.lastSeenAt < record.checkedAt || now < record.lastSeenAt ||
++          now - record.checkedAt > OFFLINE_NOTE_GRACE_MS) {
++        // Persist expiry/rollback denial before returning, never renew checkedAt.
++        await invalidate(key);
++        return false;
++      }
++      await SecureStore.setItemAsync(secureKeyFor(key), JSON.stringify({ ...record, lastSeenAt: now }), options);
++      return true;
++    } catch {
++      // Locked/unavailable keystore and failed writes deny this open. Retain the
++      // recoverable record for retry; never downgrade to plaintext storage.
+       return false;
+     }
+-    await AsyncStorage.setItem(key, JSON.stringify({ checkedAt, lastSeenAt: now }));
+-    return true;
+-  } catch {
+-    await AsyncStorage.removeItem(key);
+-    return false;
+-  }
++  });
+ }
+diff --git a/mobile-app/src/utils/downloadManager.ts b/mobile-app/src/utils/downloadManager.ts
+index 4b8903c..54fff3e 100644
+--- a/mobile-app/src/utils/downloadManager.ts
++++ b/mobile-app/src/utils/downloadManager.ts
+@@ -37,7 +37,7 @@ import {
+ import { getSecureNoteUrl, NoteAccessError } from "../services/secureNotesService";
+ import { getCurrentUser } from "../services/authState";
+ 
+-import { recordNoteVerification, clearNoteVerification, OFFLINE_NOTE_VERIFICATION_PREFIX } from "../services/offlineNoteVerification";
++import { recordNoteVerification, clearNoteVerification, clearAllNoteVerifications } from "../services/offlineNoteVerification";
+ 
+ const ROOT_DIR = `${FileSystem.documentDirectory}medveda/`;
+ const RESUME_STATE_PREFIX = "medveda:resume:"; // AsyncStorage key per in-flight download
+@@ -358,8 +358,9 @@ export async function clearAllDownloads(): Promise<void> {
+   activeResumables.clear();
+   clearing = (async () => {
+     await Promise.allSettled(transfers.map((transfer) => transfer.cancelAsync()));
++    await clearAllNoteVerifications();
+     const keys = await AsyncStorage.getAllKeys();
+-    await AsyncStorage.multiRemove(keys.filter((key) => key.startsWith(RESUME_STATE_PREFIX) || key.startsWith(OFFLINE_NOTE_VERIFICATION_PREFIX)));
++    await AsyncStorage.multiRemove(keys.filter((key) => key.startsWith(RESUME_STATE_PREFIX)));
+     await FileSystem.deleteAsync(ROOT_DIR, { idempotent: true });
+     getDb().runSync(`DELETE FROM downloads;`);
+   })();

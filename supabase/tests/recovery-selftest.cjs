@@ -5,7 +5,8 @@ let handler, lookups = 0;
 const orderId = '00000000-0000-0000-0000-000000000001';
 let limiterDown = false;
 const order = { id: orderId, user_id: 'owner', razorpay_order_id: 'order_test', external_transaction_token: null };
-const query = { select() { return this; }, eq() { return this; }, maybeSingle: async () => ({ data: order, error: null }) };
+let ownerFilter;
+const query = { select() { ownerFilter=null; return this; }, eq(k,v) { if(k==='user_id')ownerFilter=v; return this; }, maybeSingle: async () => ({ data: ownerFilter && ownerFilter!==order.user_id ? null : order, error: null }) };
 const mocks = {
   '../_shared/cors.ts': { handleOptions: () => null, jsonResponse: (body, status=200) => new Response(JSON.stringify(body), { status }) },
   '../_shared/supabaseAdmin.ts': { supabaseAdmin: { from: () => query }, getUserFromAuthHeader: async req => {
@@ -25,7 +26,7 @@ async function call(token) { return handler(new Request('https://local/verify-pa
 (async()=>{
   for (const [name, actual, expected] of [
     ['unsigned recover denied', (await call(null)).status, 401],
-    ['wrong owner denied', (await call('other')).status, 403],
+    ['wrong owner denied', (await call('other')).status, 404],
   ]) { const ok=actual===expected; console.log(`${ok?'PASS':'FAIL'} ${name}: ${actual}`); if(!ok) process.exitCode=1; }
   limiterDown=true;
   const status=(await call('owner')).status;

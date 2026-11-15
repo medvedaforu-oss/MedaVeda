@@ -1,3 +1,4 @@
+import { fetchAllPages } from "../utils/filters";
 import { supabase } from "../config/supabase";
 import { toCamelCase, toSnakeCase } from "../utils/caseConvert";
 import type {
@@ -26,11 +27,13 @@ const LEGACY_SETTINGS_KEYS = ["rewardType", "referrerRewardValue", "refereeRewar
 
 export async function saveReferralSettings(data: ReferralSettingsInput) {
   const payload: Record<string, unknown> = { ...data };
+  // DB canonical no-expiry value is NULL (raw zero is intentionally rejected).
+  if (payload.creditExpiryDays === 0) payload.creditExpiryDays = null;
   for (const key of LEGACY_SETTINGS_KEYS) delete payload[key];
   const { error } = await supabase
     .from("referral_settings")
     .update(toSnakeCase(payload))
-    .eq("id", true);
+    .eq("id", true).select("id").single();
   if (error) throw error;
 }
 
@@ -49,16 +52,17 @@ export async function getReferralSettingsAudit(limit = 10): Promise<ReferralSett
 // Admins can read every profile (profiles_select_own_or_admin), so the
 // referrer/referred names and emails are joined live here.
 export async function getReferrals(status?: ReferralStatus): Promise<Referral[]> {
-  let query = supabase
+  const data = await fetchAllPages<any>(() => {
+    let query = supabase
     .from("referrals")
     .select(
       "*, referrer:profiles!referrals_referrer_id_fkey ( name, email ), referred:profiles!referrals_referred_id_fkey ( name, email )"
     )
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }).order("id");
   if (status) query = query.eq("status", status);
 
-  const { data, error } = await query;
-  if (error) throw error;
+    return query;
+  });
 
   return (data ?? []).map((row: any) => ({
     ...toCamelCase<Referral>(row),
@@ -72,10 +76,15 @@ export async function getReferrals(status?: ReferralStatus): Promise<Referral[]>
 // Rewards are issued by the payment system only (settlement), never by hand.
 // The one manual action left is rejecting a referral: the server cancels the
 // referrer's credit if it is still pending (admin_reject_referral).
-export async function rejectReferral(id: string, reason?: string) {
-  const { error } = await supabase.rpc("admin_reject_referral", {
+export async function rejectReferral(id: string, reason?: string): Promise<{creditCancelled: boolean; creditAlreadyReleased: boolean}> {
+  const { data, error } = await supabase.rpc("admin_reject_referral", {
     p_referral_id: id,
     p_reason: reason ?? "",
   });
   if (error) throw error;
+  if (!data || typeof data.credit_cancelled !== "boolean" || typeof data.credit_already_released !== "boolean"
+    || (data.credit_cancelled && data.credit_already_released)) {
+    throw new Error("Could not confirm the referral rejection result. Reload referrals before retrying.");
+  }
+  return {creditCancelled:data.credit_cancelled,creditAlreadyReleased:data.credit_already_released};
 }

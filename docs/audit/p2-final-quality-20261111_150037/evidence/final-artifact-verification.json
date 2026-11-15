@@ -1,0 +1,26 @@
+{
+  "required_reports": [
+    "ACCESSIBILITY_AUDIT.md",
+    "ADMIN_DASHBOARD_VERIFICATION.md",
+    "CI_AND_BUILD_VERIFICATION.md",
+    "CODE_QUALITY_FIXES.md",
+    "END_TO_END_TEST_RESULTS.md",
+    "FILE_CHANGE_INVENTORY.md",
+    "FINAL_PROJECT_READINESS.md",
+    "FULL_PROJECT_TEST_MATRIX.md",
+    "P2_EXECUTIVE_SUMMARY.md",
+    "PERFORMANCE_OPTIMIZATION.md",
+    "README.md",
+    "REMAINING_EXTERNAL_BLOCKERS.md",
+    "SECURITY_REGRESSION.md",
+    "UI_UX_FIXES.md"
+  ],
+  "report_count": 14,
+  "whitespace_command": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "exit_code": 0,
+  "source_secret_scan_exit_code": 0
+}

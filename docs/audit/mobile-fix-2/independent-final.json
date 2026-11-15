@@ -1,0 +1,82 @@
+[
+  {
+    "test": "mobile-app/__tests__/MOB-01.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-03.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-04-service.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-04.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-05.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-06.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-07.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-08.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-09.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-10.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-11.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-13.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-14-backoff.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-14.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-15.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-16.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-17.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-18.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-19.cjs",
+    "exit": 0
+  },
+  {
+    "test": "mobile-app/__tests__/MOB-20.cjs",
+    "exit": 0
+  }
+]

@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const ts = require(path.join(process.cwd(), 'mobile-app/node_modules/typescript'));
+const ts = require('typescript');
 function harness() {
   let slots = [], cursor = 0, pending = [];
   const react = {
@@ -22,9 +22,12 @@ function harness() {
 }
 function load(relative, mocks, globals = {}) {
   const mod = { exports: {} };
-  const source = fs.readFileSync(path.join(process.cwd(),relative),'utf8');
+  const source = fs.readFileSync(
+  path.resolve(__dirname, '../..', relative),
+  'utf8'
+);
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText,
-    { exports: mod.exports, module: mod, console, Error, setTimeout, clearTimeout, ...globals,
+    { exports: mod.exports, module: mod, console, Error, AbortController, AbortSignal, TextEncoder, TextDecoder, setTimeout, clearTimeout, ...globals,
       require: id => { assert.ok(id in mocks, `Unexpected import ${id}`); return mocks[id]; } });
   return mod.exports;
 }

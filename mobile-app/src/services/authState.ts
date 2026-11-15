@@ -6,11 +6,40 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "../config/supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { registerForPushNotifications, unregisterCurrentDeviceToken } from "./pushNotifications";
+import { registerForPushNotifications, unregisterCurrentDeviceToken, resumePushAfterFailedLogout, setPushNotificationUser } from "./pushNotifications";
 import { logDebug } from "../utils/logger";
 
 let currentUser: User | null = null;
 let receivedAuthEvent = false;
+let authEpoch = 0;
+let offlineReadyEpoch = -1;
+let ownershipOperations: Promise<void> = Promise.resolve();
+function serializeOwnership(action: () => Promise<void>): Promise<void> {
+  const pending = ownershipOperations.catch(() => {}).then(action);
+  ownershipOperations = pending;
+  return pending;
+}
+export function getAuthEpoch(): number { return authEpoch; }
+export async function waitForOfflineStorage(): Promise<boolean> {
+  const epoch = authEpoch;
+  await ownershipOperations;
+  return !!currentUser && epoch === authEpoch && offlineReadyEpoch === epoch;
+}
+const userListeners = new Set<() => void>();
+export function subscribeAuthUser(listener: () => void): () => void {
+  userListeners.add(listener);
+  return () => { userListeners.delete(listener); };
+}
+function updateCurrentUser(user: User | null): void {
+  const previousId = currentUser?.id;
+  if (previousId !== user?.id) {
+    authEpoch++;
+    offlineReadyEpoch = -1;
+  }
+  currentUser = user;
+  setPushNotificationUser(user);
+  if (previousId !== user?.id) userListeners.forEach(listener => listener());
+}
 
 // Paid notes are saved on the device for offline reading. They belong to whoever downloaded
 // them: they are wiped on every sign-out (Logout, blocked, session ended, account deletion),
@@ -31,14 +60,36 @@ async function purgeOfflineContent(): Promise<boolean> {
   }
 }
 
-async function claimOfflineStorage(user: User): Promise<void> {
-  try {
-    const owner = await AsyncStorage.getItem(OFFLINE_OWNER_KEY);
-    if (owner && owner !== user.id && !await purgeOfflineContent()) return;
-    if (owner !== user.id) await AsyncStorage.setItem(OFFLINE_OWNER_KEY, user.id);
-  } catch {
-    // storage unavailable: nothing to protect or claim
-  }
+function claimOfflineStorage(user: User): Promise<void> {
+  const epoch = authEpoch;
+  const current = () => epoch === authEpoch && currentUser?.id === user.id;
+  return serializeOwnership(async () => {
+    try {
+      if (!current()) return;
+      const owner = await AsyncStorage.getItem(OFFLINE_OWNER_KEY);
+      if (!current()) return;
+      if (owner && owner !== user.id) {
+        if (!current() || !await purgeOfflineContent() || !current()) return;
+      }
+      if (!current()) return;
+      if (owner !== user.id) await AsyncStorage.setItem(OFFLINE_OWNER_KEY, user.id);
+      if (current()) {
+        const { cleanupPaidNoteDownloads } = await import("../utils/downloadManager");
+        await cleanupPaidNoteDownloads(user.id, epoch);
+      }
+      if (current()) offlineReadyEpoch = epoch;
+    } catch {
+      // Admission stays closed until a later successful claim.
+    }
+  });
+}
+function cleanupOfflineStorage(): Promise<void> {
+  const epoch = authEpoch;
+  return serializeOwnership(async () => {
+    const current = () => epoch === authEpoch && currentUser === null;
+    if (!current() || !await purgeOfflineContent() || !current()) return;
+    await AsyncStorage.removeItem(OFFLINE_OWNER_KEY).catch(() => {});
+  });
 }
 
 /**
@@ -46,17 +97,30 @@ async function claimOfflineStorage(user: User): Promise<void> {
  * session, then deletes the offline copies of paid content.
  */
 export async function performSignOut(): Promise<void> {
+  const initiatingUserId = currentUser?.id;
+  const initiatingEpoch = authEpoch;
+  let logoutHandle: Awaited<ReturnType<typeof unregisterCurrentDeviceToken>> | undefined;
   try {
-    await unregisterCurrentDeviceToken(); // needs the session, so before signOut
+    logoutHandle = await unregisterCurrentDeviceToken(); // needs the session, so before signOut
   } catch {
     // never block a logout on push cleanup
   }
-  const { error } = await supabase.auth.signOut();
-  if (error) throw error;
-  currentUser = null;
+  if (currentUser?.id !== initiatingUserId || authEpoch !== initiatingEpoch) return;
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    if (currentUser?.id === initiatingUserId && authEpoch === initiatingEpoch &&
+        logoutHandle && resumePushAfterFailedLogout(logoutHandle)) {
+      pushRegisteredForUserId = null;
+      maybeRegisterForPush(currentUser);
+    }
+    throw error;
+  }
+  if (currentUser && (currentUser.id !== initiatingUserId || authEpoch !== initiatingEpoch)) return;
+  updateCurrentUser(null);
   pushRegisteredForUserId = null;
-  if (await purgeOfflineContent())
-    await AsyncStorage.removeItem(OFFLINE_OWNER_KEY).catch(() => {});
+  await cleanupOfflineStorage();
 }
 
 // BUG FIX: registerForPushNotifications() existed in pushNotifications.ts
@@ -74,7 +138,10 @@ let pushRegisteredForUserId: string | null = null;
 function maybeRegisterForPush(user: User | null): void {
   if (!user || pushRegisteredForUserId === user.id) return;
   pushRegisteredForUserId = user.id;
-  registerForPushNotifications(user);
+  // Leave Supabase's synchronous Auth callback before calling getSession.
+  void new Promise<void>(resolve => { setTimeout(resolve, 0); }).then(() => registerForPushNotifications(user)).then(token => {
+    if (!token && currentUser?.id === user.id) pushRegisteredForUserId = null;
+  }).catch(() => { if (currentUser?.id === user.id) pushRegisteredForUserId = null; });
 }
 
 // BUG FIX: the admin panel has a "Block User" toggle (profiles.blocked)
@@ -111,7 +178,7 @@ supabase.auth
   .getSession()
   .then(({ data }) => {
     if (receivedAuthEvent) return;
-    currentUser = data.session?.user ?? null;
+    updateCurrentUser(data.session?.user ?? null);
     if (currentUser) {
       claimOfflineStorage(currentUser);
       enforceNotBlocked(currentUser).catch(() => {});
@@ -122,10 +189,10 @@ supabase.auth
 
 supabase.auth.onAuthStateChange((event, session) => {
   receivedAuthEvent = true;
-  currentUser = session?.user ?? null;
+  updateCurrentUser(session?.user ?? null);
   if (event === "SIGNED_OUT") {
     pushRegisteredForUserId = null;
-    purgeOfflineContent();
+    void cleanupOfflineStorage();
   }
   if (currentUser) {
     claimOfflineStorage(currentUser);

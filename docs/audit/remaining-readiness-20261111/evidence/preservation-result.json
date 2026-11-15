@@ -1,0 +1,16 @@
+{
+  "checked_preexisting_files": 4432,
+  "expected_modified_files": [
+    ".github/workflows/ci.yml",
+    "admin-panel/package-lock.json",
+    "supabase/tests/run-all.sh"
+  ],
+  "observed_modified_files": [
+    "admin-panel/package-lock.json",
+    ".github/workflows/ci.yml",
+    "supabase/tests/run-all.sh"
+  ],
+  "missing_files": [],
+  "all_other_preexisting_files_unchanged": true,
+  "frozen_packages_and_previous_audit_artifacts_unchanged": true
+}

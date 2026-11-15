@@ -1,0 +1,11 @@
+{
+  "name": "test-admin-panel_scripts_list-retry-selftest.cjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "admin-panel/scripts/list-retry-selftest.cjs"
+  ],
+  "exit": 0,
+  "seconds": 1.33
+}

@@ -10,14 +10,18 @@
   if ((f.type === "signup" || f.type === "email_change" || f.type === "magiclink") && f.accessToken) {
     var client = A.newClient();
     var token = f.accessToken;
-    // Show success right away; enrich with the verified email if Supabase answers.
-    A.show("state-success");
-    if (client) {
-      client.auth.getUser(token).then(function (res) {
-        var email = res && res.data && res.data.user && res.data.user.email;
-        if (email) A.setText("verified-email", email);
-      }).catch(function () { /* neutral success is fine */ });
+    A.show("state-loading");
+    function failed() {
+      A.setText("error-msg", "We couldn't verify this link. Request a new one from the app and try again.");
+      A.show("state-error");
     }
+    if (!client) { failed(); return; }
+    client.auth.getUser(token).then(function (res) {
+      var user = res && res.data && res.data.user;
+      if (!res || res.error || !user || !user.email_confirmed_at) { failed(); return; }
+      if (user.email) A.setText("verified-email", user.email);
+      A.show("state-success");
+    }).catch(failed);
     token = null;
     return;
   }

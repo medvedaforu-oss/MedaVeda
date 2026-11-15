@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.primary,
     minHeight: 55,
+    minWidth: 48,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 12,
     borderRadius: 12,
     justifyContent: "center",
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   },
 
   buttonDisabled: {
-    opacity: 0.4,
+    backgroundColor: COLORS.primaryDark,
   },
 
   text: {

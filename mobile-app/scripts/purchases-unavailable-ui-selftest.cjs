@@ -31,7 +31,13 @@ for (const provider of ['disabled', 'razorpay']) {
   if (provider === 'disabled') {
     assert.match(JSON.stringify(tree), /Purchases unavailable/);
     assert.doesNotMatch(JSON.stringify(tree), /Buy Now|₹/);
-    assert.equal(notices, 1);
+    assert.equal(buttons[1].props.disabled, true);
+    assert.equal(buttons[1].props.accessibilityState.disabled, true);
+    assert.match(buttons[1].props.accessibilityLabel, /Purchases unavailable/);
+    assert.equal(notices, 0, 'Disabled UI does not invoke purchase handler');
+    assert.equal(navigated, 0);
+    buy({ id: 'notes', title: 'Notes' });
+    assert.equal(notices, 1, 'Existing hook still explains unavailable purchases to direct callers');
     assert.equal(navigated, 0);
   } else {
     assert.match(JSON.stringify(tree), /Buy Now/);

@@ -4,6 +4,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const { DatabaseSync } = require('node:sqlite');
 const ts = require('../node_modules/typescript');
+const { createHash } = require('node:crypto');
 let now = 1_800_000_000_000;
 class TestDate extends Date { static now() { return now; } }
 function load(relative, mocks) {
@@ -18,18 +19,21 @@ function load(relative, mocks) {
 const schema = fs.readFileSync(path.join(__dirname, '../src/config/database.ts'), 'utf8')
   .match(/CREATE TABLE IF NOT EXISTS downloads \([\s\S]*?\n    \);/)[0];
 function fixture() {
-  const sql = new DatabaseSync(':memory:'); sql.exec(schema); sql.exec("ALTER TABLE downloads ADD COLUMN course_id TEXT DEFAULT ''");
+  const sql = new DatabaseSync(':memory:'); sql.exec(schema); sql.exec('ALTER TABLE downloads ADD COLUMN is_free_preview INTEGER NOT NULL DEFAULT 0'); sql.exec("ALTER TABLE downloads ADD COLUMN course_id TEXT DEFAULT ''");
   const db = { runSync: (q, args = []) => sql.prepare(q).run(...args),
     getFirstSync: (q, args = []) => sql.prepare(q).get(...args), getAllSync: (q, args = []) => sql.prepare(q).all(...args) };
   const storage = new Map([['medveda:offline-owner', 'buyer']]);
   const files = new Map();
+  const secureStorage = new Map();
+  let secureDeleteError;
   const calls = [];
+  let authEpoch = 0;
   let user = { id: 'buyer' }, accessError, deleteError, refreshes = 0, transport = async () => ({ status: 200 }), header = 'JVBERi0=';
   class NoteAccessError extends Error { constructor(status) { super('access'); this.status = status; } }
-  const secure = { NoteAccessError, getSecureNoteUrl: async () => { refreshes++; if (accessError) throw accessError; return `https://fixture.invalid/fresh-${refreshes}`; } };
+  const secure = { NoteOfflineError: class extends Error {}, NoteAccessError, getSecureNoteUrl: async () => { refreshes++; if (accessError) throw accessError; return `https://fixture.invalid/fresh-${refreshes}`; } };
   const mocks = {
     '../services/courseState': { getCourseYear: () => ({ courseId: 'bams' }) },
-    '../services/authState': { getCurrentUser: () => user },
+    '../services/authState': { getCurrentUser: () => user, getAuthEpoch: () => authEpoch, waitForOfflineStorage: async () => !!user },
     '../services/secureNotesService': secure,
     '../config/database': { getDb: () => db, OFFLINE_DB_SUPPORTED: true },
     './logger': { logDebug() {} },
@@ -55,6 +59,14 @@ function fixture() {
     },
   };
   const verification = load(path.join(__dirname, '../src/services/offlineNoteVerification.ts'), {
+    'react-native': { Platform: { OS: 'android' } },
+    'js-sha256': { sha256: value => createHash('sha256').update(value).digest('hex') },
+    'expo-secure-store': {
+      WHEN_UNLOCKED_THIS_DEVICE_ONLY: 7,
+      getItemAsync: async key => secureStorage.get(key) ?? null,
+      setItemAsync: async (key, value) => { secureStorage.set(key, value); },
+      deleteItemAsync: async key => { if (secureDeleteError) throw secureDeleteError; secureStorage.delete(key); },
+    },
     '@react-native-async-storage/async-storage': mocks['@react-native-async-storage/async-storage'],
   });
   mocks['../services/offlineNoteVerification'] = verification;
@@ -64,12 +76,13 @@ function fixture() {
     './authState': mocks['../services/authState'], './secureNotesService': secure,
     './offlineNoteVerification': verification, '../utils/downloadManager': manager,
   });
-  return { manager, access, calls, files, storage, NoteAccessError,
-    setUser: value => { user = value; }, setError: value => { accessError = value; },
+  return { manager, access, calls, files, storage, secureStorage, NoteAccessError,
+    setSecureDeleteError: value => { secureDeleteError = value; },
+    setUser: value => { if (user?.id !== value?.id) authEpoch++; user = value; }, setError: value => { accessError = value; },
     setDeleteError: value => { deleteError = value; },
     setTransport: value => { transport = value; }, setHeader: value => { header = value; }, close: () => sql.close() };
 }
-const request = { id: 'note-1', contentType: 'note', title: 'Note', sourceUrl: 'https://fixture.invalid/expired-120-seconds-ago',
+const request = { id: 'note-1', isFreePreview: true, contentType: 'note', title: 'Note', sourceUrl: 'https://fixture.invalid/expired-120-seconds-ago',
   chapterId: 'c', chapterTitle: 'C', subjectId: 's', subjectTitle: 'S', yearId: 'y', yearTitle: 'Y' };
 const tick = () => new Promise(resolve => setImmediate(resolve));
 (async () => {
@@ -111,7 +124,8 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   for (const status of [undefined, 500, 429]) {
     f = fixture(); now = 1_800_000_000_000;
     await f.manager.enqueueDownload(request);
-    assert.equal(JSON.parse(f.storage.get(verifiedKey)).checkedAt, now);
+    assert.equal(JSON.parse([...f.secureStorage.values()][0]).checkedAt, now);
+    assert.equal(f.storage.get(verifiedKey), 'secure-store:v1');
     f.setError(status ? new f.NoteAccessError(status) : new Error('network'));
     now += 7 * day;
     assert.equal(await f.access.mayOpenOfflineNote('note-1'), true, 'seven-day boundary allowed');
@@ -146,13 +160,31 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   await f.manager.removeDownload('note-1'); assert.equal(f.storage.has(verifiedKey), false);
   await f.manager.enqueueDownload(request); await f.manager.clearAllDownloads(); assert.equal(f.storage.has(verifiedKey), false);
   f.close();
+  f = fixture(); await f.manager.enqueueDownload(request);
+  const retainedUri = f.manager.getDownload('note-1').localUri;
+  f.storage.set(verifiedKey, JSON.stringify({ checkedAt: now, lastSeenAt: now }));
+  f.setError(new Error('offline'));
+  assert.equal(await f.access.mayOpenOfflineNote('note-1'), false, 'Legacy plaintext requires online check');
+  assert.equal(f.files.has(retainedUri), true, 'Legacy recheck never deletes downloaded PDF');
+  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('note-1'), true);
+  f.setSecureDeleteError(new Error('keystore unavailable'));
+  await assert.rejects(f.manager.clearAllDownloads(), /keystore unavailable/);
+  assert.equal(f.files.has(retainedUri), true, 'Failed secure cleanup preserves content for retry');
+  assert.equal(f.storage.get(verifiedKey), 'secure-store:v1');
+  f.setSecureDeleteError(undefined); await f.manager.clearAllDownloads();
+  assert.equal(f.secureStorage.size, 0); assert.equal(f.files.size, 0);
+  f.close();
+  console.log('PASS secure bulk cleanup failure/retry and legacy PDF preservation');
   console.log('PASS seven-day grace/network/5xx/429, day eight, 401/403 deletion, persistent rollback expiry, future/corrupt timestamps, legacy recovery, cleanup');
   f = fixture();
+  assert.equal(await f.access.mayOpenOfflineNote('n'), false, 'unknown persisted file must fail closed');
+  await f.manager.enqueueDownload({...request,id:'n'});
   assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new Error('network')); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(403)); assert.equal(await f.access.mayOpenOfflineNote('n'), false);
   f.setError(new Error('network')); assert.equal(await f.access.mayOpenOfflineNote('n'), false);
-  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
+  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('n'), false, 'revoked file cannot reopen without redownload');
+  await f.manager.enqueueDownload({...request,id:'n'}); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(500)); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(401)); assert.equal(await f.access.mayOpenOfflineNote('n'), false);
   f.setUser({ id: 'other' }); assert.equal(await f.access.mayOpenOfflineNote('n'), false);

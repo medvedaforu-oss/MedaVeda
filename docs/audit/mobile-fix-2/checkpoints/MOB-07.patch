@@ -1,0 +1,69 @@
+diff -ruN docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/app.config.js docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/app.config.js
+--- docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/app.config.js	2026-11-12 15:15:29.245865820 +0000
++++ docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/app.config.js	2026-11-13 15:00:12.132819327 +0000
+@@ -56,6 +56,7 @@
+     next.name = "MedVeda Razorpay Test";
+     next.scheme = "medveda-razorpay-test";
+   }
++  next.extra.medvedaRecoveryScheme = next.scheme;
+   // Keep this native build separate from earlier Play Billing and Razorpay runtimes.
+   // EAS Update does not supply EAS_BUILD_PROFILE, so the profile check above
+   // cannot protect an update published to the wrong channel by itself.
+diff -ruN docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/src/features/auth/deepLinkStore.ts docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/src/features/auth/deepLinkStore.ts
+--- docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/src/features/auth/deepLinkStore.ts	2026-11-13 15:06:45.942427782 +0000
++++ docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/src/features/auth/deepLinkStore.ts	2026-11-13 15:06:45.944427866 +0000
+@@ -1,4 +1,17 @@
+ import { Linking } from "react-native";
++import Constants from "expo-constants";
++
++// The native manifest and navigator must target the same installed application.
++const configuredScheme = Constants.expoConfig?.scheme;
++const scheme = typeof configuredScheme === "string" ? configuredScheme :
++  Array.isArray(configuredScheme) ? configuredScheme[0] : "medveda";
++const allowedSchemes = ["medveda", "medveda-staging", "medveda-razorpay-test"];
++const declaredScheme = Constants.expoConfig?.extra?.medvedaRecoveryScheme ?? scheme;
++export const recoveryLinkPrefix = allowedSchemes.includes(scheme) && declaredScheme === scheme ? `${scheme}://` : "";
++function isRecoveryUrl(url: string | null): url is string {
++  if (!url || !recoveryLinkPrefix || !url.startsWith(recoveryLinkPrefix)) return false;
++  return /^reset-password(?:[?#]|$)/.test(url.slice(recoveryLinkPrefix.length));
++}
+ 
+ let lastUrl: string | null = null;
+ let revision = 0;
+@@ -14,7 +27,7 @@
+ function remember(url: string | null) {
+   readGeneration++;
+   // Only retain recovery links; never keep unrelated URLs in the auth store.
+-  lastUrl = url?.startsWith("medveda://reset-password") ? url : null;
++  lastUrl = isRecoveryUrl(url) ? url : null;
+   // Unrelated links must not retire an active recovery controller.
+   if (lastUrl) {
+     revision++;
+diff -ruN docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/src/navigation/AppNavigator.tsx docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/src/navigation/AppNavigator.tsx
+--- docs/audit/mobile-fix-2/checkpoints/MOB-07/before/mobile-app/src/navigation/AppNavigator.tsx	2026-11-13 14:33:55.753014054 +0000
++++ docs/audit/mobile-fix-2/checkpoints/MOB-07/after/mobile-app/src/navigation/AppNavigator.tsx	2026-11-13 15:00:12.132819327 +0000
+@@ -18,7 +18,7 @@
+ } from "../services/studyReminderService";
+ import usePreventScreenshot from "../hooks/usePreventScreenshot";
+ import ErrorBoundary from "../components/ErrorBoundary";
+-import { getInitialDeepLinkUrl, subscribeDeepLinks } from "../features/auth/deepLinkStore";
++import { getInitialDeepLinkUrl, subscribeDeepLinks, recoveryLinkPrefix } from "../features/auth/deepLinkStore";
+ 
+ import SplashScreen from "../screens/auth/SplashScreen";
+ import LoginScreen from "../screens/auth/LoginScreen";
+@@ -92,13 +92,9 @@
+   },
+ };
+ 
+-// ResetPassword IS live: Supabase's password-reset email links back to
+-// "medveda://reset-password" (see authService.PASSWORD_RESET_REDIRECT_URL).
+-//
+-// NOTE: the prefix below must match app.json's "scheme" field exactly
+-// ("medveda") or none of these deep links will open the app.
++// Use the recovery scheme declared by this installed native build.
+ const linking = {
+-  prefixes: ["medveda://"],
++  prefixes: recoveryLinkPrefix ? [recoveryLinkPrefix] : [],
+   getInitialURL: getInitialDeepLinkUrl,
+   subscribe: subscribeDeepLinks,
+   config: {

@@ -9,7 +9,7 @@ import {
   ScrollView,
   Animated,
   Easing,
-  Dimensions,
+  useWindowDimensions,
   Alert,
   Share,
   Linking,
@@ -36,7 +36,6 @@ import { fetchUserProfile, UserProfile } from "../services/usersService";
 import { fetchReferralSettings } from "../services/referralsService";
 import { logError } from "../utils/logger";
 
-const PANEL_WIDTH = Math.min(300, Dimensions.get("window").width * 0.8);
 
 // Only configured contact channels are shown.
 const SOCIAL_LINKS: Record<string, string> = {
@@ -56,6 +55,8 @@ type Props = {
 // rows, "Follow us" social icons pinned at the bottom.
 export default function SideDrawer({ visible, onClose }: Props) {
   const navigation = useNavigation<any>();
+  const { width } = useWindowDimensions();
+  const panelWidth = Math.min(300, width * 0.8);
 
   // Kept true a little longer than `visible` so the slide-out animation
   // gets to finish before the Modal actually unmounts.
@@ -66,7 +67,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
   // program is switched on.
   const [referralsEnabled, setReferralsEnabled] = useState(false);
 
-  const translateX = useRef(new Animated.Value(-PANEL_WIDTH)).current;
+  const translateX = useRef(new Animated.Value(-panelWidth)).current;
   const backdropOpacity = useRef(new Animated.Value(0)).current;
 
   const user = getCurrentUser();
@@ -104,7 +105,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
     } else {
       Animated.parallel([
         Animated.timing(translateX, {
-          toValue: -PANEL_WIDTH,
+          toValue: -panelWidth,
           duration: 220,
           easing: Easing.in(Easing.cubic),
           useNativeDriver: true,
@@ -117,7 +118,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
       ]).start(() => setModalVisible(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [visible, panelWidth]);
 
   function goTo(screen: string) {
     onClose();
@@ -173,7 +174,7 @@ export default function SideDrawer({ visible, onClose }: Props) {
           <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
         </Animated.View>
 
-        <Animated.View style={[styles.panel, { transform: [{ translateX }] }]}>
+        <Animated.View style={[styles.panel, { width: panelWidth, transform: [{ translateX }] }]}>
           <ScrollView
             style={styles.scroll}
             showsVerticalScrollIndicator={false}
@@ -274,7 +275,7 @@ function SocialButton({
   onPress: () => void;
 }) {
   return (
-    <TouchableOpacity style={styles.socialButton} activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Open ${icon === "youtube-play" ? "YouTube" : icon === "telegram" ? "Telegram" : "Instagram"}`} style={styles.socialButton} activeOpacity={0.8} onPress={onPress}>
       <FontAwesome name={icon} size={18} color={color} />
     </TouchableOpacity>
   );
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    width: PANEL_WIDTH,
+
     backgroundColor: COLORS.card,
     borderRightWidth: 1,
     borderRightColor: COLORS.border,
@@ -382,9 +383,9 @@ const styles = StyleSheet.create({
   },
 
   socialButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: COLORS.surfaceMuted,
     justifyContent: "center",
     alignItems: "center",

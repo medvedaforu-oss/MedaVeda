@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, BackHandler, Linking, Alert, Platform, AppState } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import { useFocusEffect, useNavigation, useRoute, CommonActions } from "@react-navigation/native";
@@ -7,10 +7,11 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { buildCheckoutHtml } from "./checkoutHtmlTemplate";
+import { getCurrentUser } from "../../services/authState";
 import { verifyPayment, recoverPaymentWithRetry } from "../../services/paymentService";
 import { markOrderStatus } from "../../services/ordersService";
 import { CHECKOUT_ORIGIN_WHITELIST, isAllowedCheckoutWebUrl } from "./checkoutNavigation";
-import { paymentProvider } from "../../config/paymentProvider";
+import { paymentProvider, userChoiceBillingEnabled, isNonplayTestBuild } from "../../config/paymentProvider";
 
 // Replaces the old "open the hosted checkout page in the external
 // browser" flow (Linking.openURL). Supabase Edge Functions don't serve
@@ -22,7 +23,7 @@ import { paymentProvider } from "../../config/paymentProvider";
 // Razorpay modal never opened.
 //
 // Fix: the app now builds the checkout HTML itself (checkoutHtmlTemplate)
-// and hands it straight to a WebView via source={{ html }} - the
+// and hands it straight to a WebView via source={source} - the
 // Razorpay checkout.js script comes from Razorpay's own CDN, not from
 // Supabase, so none of the above applies. create-order only ever returns JSON
 // (see supabase/functions/create-order/index.ts).
@@ -33,7 +34,7 @@ const ALLOWED_APP_SCHEMES = new Set([
 
 export default function PaymentCheckoutScreen() {
   // Defense in depth if a stale route or future caller bypasses navigator guards.
-  if (paymentProvider !== "razorpay") {
+  if (paymentProvider !== "razorpay" && !userChoiceBillingEnabled) {
     return <View style={styles.center}><Text style={styles.errorText}>New purchases are unavailable in this app version.</Text></View>;
   }
   return <RazorpayCheckoutScreen />;
@@ -55,7 +56,10 @@ function RazorpayCheckoutScreen() {
     timeoutSeconds,
   } = route.params ?? {};
 
+  const recoveryOwner = useRef(getCurrentUser()?.id);
   const [verifying, setVerifying] = useState(false);
+  const callbackNonce = useMemo(() => Array.from(crypto.getRandomValues(new Uint8Array(16)),
+    byte => byte.toString(16).padStart(2, "0")).join(""), []);
   // Guards against processing the *same* WebView message twice (e.g. a
   // dismiss event arriving right after a handler event) - separate from
   // settledRef below, which only becomes true once we've actually reached
@@ -70,7 +74,13 @@ function RazorpayCheckoutScreen() {
   const settledRef = useRef(false);
 
   const missingParams =
-    !keyId || !razorpayOrderId || !amountPaise || !internalOrderId || !verifyUrl;
+    typeof keyId !== "string" || !/^rzp_(test|live)_[a-zA-Z0-9]+$/.test(keyId) ||
+    typeof razorpayOrderId !== "string" || !/^order_[a-zA-Z0-9_]+$/.test(razorpayOrderId) ||
+    !Number.isSafeInteger(amountPaise) || amountPaise < 100 ||
+    typeof internalOrderId !== "string" || !internalOrderId ||
+    typeof verifyUrl !== "string" ||
+    verifyUrl !== `${process.env.EXPO_PUBLIC_SUPABASE_URL ?? ""}/functions/v1/${isNonplayTestBuild ? "verify-payment-nonplay-test" : "verify-payment"}` ||
+    (isNonplayTestBuild && (isLiveMode !== false || !keyId.startsWith("rzp_test_")));
 
   const resetTo = useCallback((screenName: string, params?: Record<string, unknown>) => {
     navigation.dispatch(
@@ -114,20 +124,23 @@ function RazorpayCheckoutScreen() {
   // will never update itself. The order is also NOT marked "failed" here,
   // since it may well still succeed.
   const goToPending = useCallback(
-    (paymentId?: string) => {
+    (paymentId?: string, authMessage?: string) => {
       resetTo("PaymentFailed", {
         title: productTitle,
         pending: true,
         verifyUrl,
         internalOrderId,
         paymentId,
+        authRequired: !!authMessage,
+        reason: authMessage,
       });
     },
     [productTitle, verifyUrl, internalOrderId, resetTo]
   );
 
   async function handleMessage(event: WebViewMessageEvent) {
-    if (messageHandledRef.current || settledRef.current) return;
+    if (messageHandledRef.current || settledRef.current || missingParams ||
+        event.nativeEvent.url !== "about:blank") return;
 
     let message: any;
     try {
@@ -136,7 +149,12 @@ function RazorpayCheckoutScreen() {
       return;
     }
 
+    if (!message || typeof message !== "object" || Array.isArray(message) ||
+        message.callbackNonce !== callbackNonce) return;
     if (message.type === "success") {
+      if (message.razorpay_order_id !== razorpayOrderId ||
+          typeof message.razorpay_payment_id !== "string" || !/^pay_[a-zA-Z0-9]+$/.test(message.razorpay_payment_id) ||
+          typeof message.razorpay_signature !== "string" || !/^[a-f0-9]{64}$/i.test(message.razorpay_signature)) return;
       messageHandledRef.current = true;
       setVerifying(true);
       try {
@@ -149,7 +167,7 @@ function RazorpayCheckoutScreen() {
 
         // Resume recovery may have confirmed this order while verification
         // was in flight. A late callback must not replace that destination.
-        if (settledRef.current) return;
+        if (settledRef.current || getCurrentUser()?.id !== recoveryOwner.current) return;
         if (result.success) {
           settledRef.current = true;
           resetTo("PaymentSuccess", {
@@ -202,7 +220,7 @@ function RazorpayCheckoutScreen() {
       messageHandledRef.current = true;
       settledRef.current = true;
       if (internalOrderId) {
-        markOrderStatus(internalOrderId, "failed").catch(() => {});
+        markOrderStatus(internalOrderId, isNonplayTestBuild ? "cancelled" : "failed").catch(() => {});
       }
       navigation.goBack();
     }
@@ -262,6 +280,11 @@ function RazorpayCheckoutScreen() {
       try {
         const result = await recoverPaymentWithRetry(verifyUrl, internalOrderId);
         if (settledRef.current) return true;
+        if (result.authRequired || getCurrentUser()?.id !== recoveryOwner.current) {
+          settledRef.current = true;
+          goToPending(undefined, result.message || "Sign in to the account used for this payment, then check My Purchases. Do not pay again.");
+          return true;
+        }
         if (result.success) {
           settledRef.current = true;
           resetTo("PaymentSuccess", {
@@ -287,7 +310,12 @@ function RazorpayCheckoutScreen() {
 
     recoveryInFlightRef.current = check;
     return check;
-  }, [verifyUrl, internalOrderId, productTitle, resetTo]);
+  }, [verifyUrl, internalOrderId, productTitle, resetTo, goToPending]);
+
+  useEffect(() => {
+    settledRef.current = false;
+    return () => { settledRef.current = true; };
+  }, []);
 
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
@@ -303,8 +331,13 @@ function RazorpayCheckoutScreen() {
   // ever arrive. Treat it the same as an app-resume: check with Razorpay
   // directly instead of leaving the student stuck on a dead WebView.
   const handleRenderProcessGone = useCallback(() => {
-    runRecoveryCheck();
-  }, [runRecoveryCheck]);
+    void runRecoveryCheck().then(recovered => {
+      if (!recovered && !settledRef.current) {
+        settledRef.current = true;
+        goToPending();
+      }
+    });
+  }, [runRecoveryCheck, goToPending]);
 
   // Hardware back button during an in-flight payment shouldn't leave a
   // half-finished order and a confusing state - treat it the same as the
@@ -353,6 +386,7 @@ function RazorpayCheckoutScreen() {
   // tampered/compromised checkout page cannot launch other apps or arbitrary sites.
   const handleShouldStartLoad = useCallback((request: { url: string }) => {
     const url = request.url;
+    if (settledRef.current || missingParams) return false;
     if (isAllowedCheckoutWebUrl(url)) return true;
     if (/^(https?:|about:)/i.test(url)) return false;
 
@@ -401,7 +435,13 @@ function RazorpayCheckoutScreen() {
       Linking.openURL(url).catch(notInstalled);
     }
     return false;
-  }, []);
+  }, [missingParams]);
+
+  const html = useMemo(() => missingParams ? "" : buildCheckoutHtml({
+    callbackNonce, keyId, razorpayOrderId, timeoutSeconds, amountPaise,
+    productTitle: productTitle || "MedVeda purchase", prefillName, prefillEmail,
+  }), [missingParams, callbackNonce, keyId, razorpayOrderId, timeoutSeconds, amountPaise, productTitle, prefillName, prefillEmail]);
+  const source = useMemo(() => ({ html }), [html]);
 
   if (missingParams) {
     return (
@@ -411,15 +451,6 @@ function RazorpayCheckoutScreen() {
     );
   }
 
-  const html = buildCheckoutHtml({
-    keyId,
-    razorpayOrderId,
-    timeoutSeconds,
-    amountPaise,
-    productTitle: productTitle || "MedVeda purchase",
-    prefillName,
-    prefillEmail,
-  });
 
   return (
     <View style={styles.container}>
@@ -434,10 +465,16 @@ function RazorpayCheckoutScreen() {
         </View>
       )}
       <WebView
-        source={{ html }}
+        source={source}
         onMessage={handleMessage}
         onShouldStartLoadWithRequest={handleShouldStartLoad}
         onRenderProcessGone={handleRenderProcessGone}
+        onContentProcessDidTerminate={handleRenderProcessGone}
+        onError={handleRenderProcessGone}
+        onOpenWindow={({ nativeEvent }) => { handleShouldStartLoad({ url: nativeEvent.targetUrl }); }}
+        setSupportMultipleWindows={false}
+        allowFileAccess={false}
+        mixedContentMode="never"
         style={styles.webview}
         startInLoadingState
         renderLoading={() => (

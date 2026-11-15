@@ -19,7 +19,7 @@ for(const [name,service] of specs) for(const state of ['loading','error','empty'
   '../../services/authState':{getCurrentUser:()=>null},'../../services/secureNotesService':{},'../../utils/videoLink':{},'../../utils/videoDiagnostics':{traceVideo(){}},'../../utils/logger':{logError(){}},
   ['../../services/'+service]:{},
  };
- for(const component of ['LoadError','YearCard','SubjectCard','ChapterCard','NoteCard','TestCard','VideoCard','EmptyState','ErrorState','SearchBar','UnlockOptionsPanel'])mocks['../../components/'+component]={__esModule:true,default:component};
+ for(const component of ['PurchaseOwnershipStatus','LoadError','YearCard','SubjectCard','ChapterCard','NoteCard','TestCard','VideoCard','EmptyState','ErrorState','SearchBar','UnlockOptionsPanel'])mocks['../../components/'+component]={__esModule:true,default:component};
  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING']])mocks['../../theme/'+file]={[key]:{}};
  const Screen=load('mobile-app/src/screens/'+name+'.tsx',mocks).default;
  const tree=nodes(Screen());

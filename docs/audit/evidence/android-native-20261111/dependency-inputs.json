@@ -1,0 +1,79 @@
+{
+  "dependencies_match_lock_root": true,
+  "devDependencies_match_lock_root": true,
+  "expo": {
+    "installed": "57.0.32",
+    "locked": "57.0.32",
+    "peerDependencies": {
+      "@expo/dom-webview": "*",
+      "@expo/metro-runtime": "*",
+      "react": "*",
+      "react-native": "*",
+      "react-dom": "*",
+      "react-native-web": "*",
+      "react-native-webview": "*"
+    }
+  },
+  "react": {
+    "installed": "19.2.3",
+    "locked": "19.2.3",
+    "peerDependencies": {}
+  },
+  "react-native": {
+    "installed": "0.86.3",
+    "locked": "0.86.3",
+    "peerDependencies": {
+      "@react-native/jest-preset": "0.86.3",
+      "@types/react": "^19.1.1",
+      "react": "^19.2.3"
+    }
+  },
+  "expo-iap": {
+    "installed": "3.4.4",
+    "locked": "3.4.4",
+    "peerDependencies": {
+      "expo": "*",
+      "react": "*",
+      "react-native": "*"
+    }
+  },
+  "react-native-webview": {
+    "installed": "13.16.1",
+    "locked": "13.16.1",
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*"
+    }
+  },
+  "react-native-pdf": {
+    "installed": "7.0.4",
+    "locked": "7.0.4",
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*",
+      "react-native-blob-util": ">=0.13.7"
+    }
+  },
+  "react-native-blob-util": {
+    "installed": "0.24.10",
+    "locked": "0.24.10",
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*"
+    }
+  },
+  "@react-native/gradle-plugin": {
+    "installed": "0.86.3",
+    "locked": "0.86.3",
+    "peerDependencies": {}
+  },
+  "expo-modules-core": {
+    "installed": "57.0.25",
+    "locked": "57.0.25",
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*",
+      "react-native-worklets": "^0.7.4 || ^0.8.0 || ^0.9.0 || ^0.10.0"
+    }
+  }
+}

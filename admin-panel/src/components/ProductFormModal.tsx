@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import Modal from "./Modal";
 import Input from "./Input";
@@ -66,6 +66,7 @@ export default function ProductFormModal({
   const [form, setForm] = useState<ProductInput>(buildEmptyForm());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const saveBusy = useRef(false);
 
   // Everything below the course picker is limited to the chosen course, so a
   // product can never point at another course's year/subject/chapter (the DB
@@ -231,6 +232,12 @@ export default function ProductFormModal({
     if (!Number.isFinite(form.price) || form.price < 0 || form.price > 99999999.99 ||
         Math.abs(form.price * 100 - Math.round(form.price * 100)) > 0.000001)
       newErrors.price = "Enter a nonnegative INR price with at most two decimal places";
+    if (form.originalPrice != null &&
+        (!Number.isFinite(form.originalPrice) || form.originalPrice < 0 ||
+         form.originalPrice > 99999999.99 ||
+         Math.abs(form.originalPrice * 100 - Math.round(form.originalPrice * 100)) > 0.000001)) {
+      newErrors.originalPrice = "Enter a nonnegative INR M.R.P. with at most two decimal places";
+    }
     if (
       form.originalPrice !== undefined &&
       form.originalPrice !== null &&
@@ -258,7 +265,8 @@ export default function ProductFormModal({
   }
 
   async function handleSubmit() {
-    if (!validate()) return;
+    if (saveBusy.current || !validate()) return;
+    saveBusy.current = true;
 
     try {
       setSaving(true);
@@ -273,6 +281,7 @@ export default function ProductFormModal({
             : "Something went wrong while saving. Please try again.",
       });
     } finally {
+      saveBusy.current = false;
       setSaving(false);
     }
   }
@@ -281,6 +290,7 @@ export default function ProductFormModal({
     <Modal
       open={open}
       onClose={onClose}
+      closeDisabled={saving}
       title={initialData ? "Edit Product" : "Create New Product"}
     >
       {lookupsReady && allYears.length === 0 && (
@@ -333,7 +343,7 @@ export default function ProductFormModal({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Description
         </label>
-        <textarea
+        <textarea aria-label="Product description"
           rows={3}
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -373,7 +383,7 @@ export default function ProductFormModal({
             <label className="mb-1.5 block text-sm font-medium text-gray-700">
               Year
             </label>
-            <select
+            <select aria-label="Year"
               value={pickerYearId}
               onChange={(e) => handlePickerYearChange(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
@@ -392,7 +402,7 @@ export default function ProductFormModal({
               <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Subject
               </label>
-              <select
+              <select aria-label="Subject"
                 value={form.subjectId}
                 onChange={(e) => handleSubjectChange(e.target.value)}
                 disabled={!pickerYearId}
@@ -413,7 +423,7 @@ export default function ProductFormModal({
               <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Chapter
               </label>
-              <select
+              <select aria-label="Chapter"
                 value={form.chapterId}
                 onChange={(e) => handleChapterChange(e.target.value)}
                 disabled={!form.subjectId}
@@ -450,12 +460,13 @@ export default function ProductFormModal({
           label="M.R.P. (₹) — optional"
           type="number"
           min={0}
+          step={0.01}
           placeholder="Leave blank for no discount"
           value={form.originalPrice ?? ""}
           onChange={(e) =>
             setForm({
               ...form,
-              originalPrice: e.target.value === "" ? undefined : Number(e.target.value),
+              originalPrice: e.target.value === "" ? null : Number(e.target.value),
             })
           }
           error={errors.originalPrice}
@@ -482,7 +493,7 @@ export default function ProductFormModal({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Product classification
         </label>
-        <select
+        <select aria-label="Product classification"
           value={form.productType}
           onChange={(e) => setForm({ ...form, productType: e.target.value as ProductType })}
           className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"

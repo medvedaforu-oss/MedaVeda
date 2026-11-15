@@ -50,6 +50,7 @@ export async function getOrders(filters: ContentFilters = {}): Promise<Order[]> 
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus) {
+  if (status !== "failed" && status !== "cancelled") throw new Error("Only unpaid cancellation or failure is permitted; payment status is provider managed.");
   // Direct UPDATEs on orders are no longer allowed for any client. Admins can
   // only cancel/fail an unpaid order, through this RPC (never mark it paid).
   const { error } = await supabase.rpc("admin_set_order_status", { p_order_id: id, p_status: status });

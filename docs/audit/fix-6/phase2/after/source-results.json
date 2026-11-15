@@ -1,0 +1,253 @@
+{
+  "admin-node-tsc": {
+    "command": [
+      "node",
+      "admin-panel/node_modules/typescript/bin/tsc",
+      "-p",
+      "admin-panel/tsconfig.node.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exit": 0,
+    "seconds": 4.68
+  },
+  "admin-tsc": {
+    "command": [
+      "node",
+      "admin-panel/node_modules/typescript/bin/tsc",
+      "-p",
+      "admin-panel/tsconfig.app.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exit": 0,
+    "seconds": 30.22
+  },
+  "password-recovery": {
+    "command": [
+      "npm",
+      "run",
+      "test:password-recovery",
+      "--prefix",
+      "mobile-app"
+    ],
+    "exit": 0,
+    "seconds": 4.78
+  },
+  "website-links": {
+    "command": [
+      "node",
+      "website/scripts/check-links.mjs"
+    ],
+    "exit": 0,
+    "seconds": 0.12
+  },
+  "deno-check": {
+    "command": [
+      "deno",
+      "check",
+      "--cached-only",
+      "--config",
+      "supabase/deno.json",
+      "supabase/functions/attach-external-token/index.ts",
+      "supabase/functions/create-order/index.ts",
+      "supabase/functions/create-order-nonplay-test/index.ts",
+      "supabase/functions/create-order-play-choice/index.ts",
+      "supabase/functions/create-play-order/index.ts",
+      "supabase/functions/delete-account/index.ts",
+      "supabase/functions/diagnose-play-matrix/index.ts",
+      "supabase/functions/diagnose-play-pricing/index.ts",
+      "supabase/functions/diagnose-play-service-account/index.ts",
+      "supabase/functions/get-note-url/index.ts",
+      "supabase/functions/get-note-url-nonplay-test/index.ts",
+      "supabase/functions/get-video-url/index.ts",
+      "supabase/functions/login-with-mobile/index.ts",
+      "supabase/functions/nonplay-test-catalog/index.ts",
+      "supabase/functions/play-payment-worker/index.ts",
+      "supabase/functions/razorpay-webhook/index.ts",
+      "supabase/functions/razorpay-webhook-nonplay-test/index.ts",
+      "supabase/functions/report-external-transaction/index.ts",
+      "supabase/functions/request-password-reset-by-mobile/index.ts",
+      "supabase/functions/send-push-notification/index.ts",
+      "supabase/functions/sync-play-catalog/index.ts",
+      "supabase/functions/upload-note-pdf/index.ts",
+      "supabase/functions/verify-payment/index.ts",
+      "supabase/functions/verify-payment-nonplay-test/index.ts",
+      "supabase/functions/verify-play-purchase/index.ts",
+      "supabase/workers/validate-note-pdf.ts",
+      "supabase/functions/report-external-transaction/index.fix3.ts",
+      "supabase/functions/_shared/paymentQueueFix3.ts"
+    ],
+    "exit": 0,
+    "seconds": 4.07
+  },
+  "admin-tests": {
+    "command": [
+      "npm",
+      "test",
+      "--prefix",
+      "admin-panel"
+    ],
+    "exit": 0,
+    "seconds": 34.75
+  },
+  "p2-quality-selftest": {
+    "command": [
+      "node",
+      "scripts/p2-quality-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 2.38
+  },
+  "p2-admin-labels-selftest": {
+    "command": [
+      "node",
+      "scripts/p2-admin-labels-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.11
+  },
+  "notification-preferences-selftest": {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.78
+  },
+  "notification-routing-selftest": {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-routing-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.63
+  },
+  "push-lifecycle-selftest": {
+    "command": [
+      "node",
+      "mobile-app/scripts/push-lifecycle-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.92
+  },
+  "deno-unit": {
+    "command": [
+      "deno",
+      "test",
+      "--cached-only",
+      "--config",
+      "supabase/deno.json",
+      "--allow-read",
+      "--allow-env",
+      "supabase/tests/pdf-validation-test.ts",
+      "supabase/tests/upload-body-test.ts",
+      "supabase/tests/quarantine-worker-test.ts",
+      "supabase/tests/note-pdf-hash-test.ts",
+      "supabase/tests/play_catalog_unit_test.ts",
+      "supabase/tests/play_diagnostic_sanitization_review_test.ts",
+      "supabase/tests/upload-note-pdf-test.ts",
+      "supabase/tests/play_catalog_api_test.ts",
+      "supabase/tests/play_catalog_patch_diagnostic_test.ts",
+      "supabase/functions/diagnose-play-pricing/handler_test.ts",
+      "supabase/functions/diagnose-play-pricing/sanitize_test.ts"
+    ],
+    "exit": 0,
+    "seconds": 6.79
+  },
+  "nonplay-test-isolation-selftest": {
+    "command": [
+      "node",
+      "mobile-app/scripts/nonplay-test-isolation-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.83
+  },
+  "MOB-08": {
+    "command": [
+      "node",
+      "mobile-app/__tests__/MOB-08.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.59
+  },
+  "p0-notification-selftest": {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 1.39
+  },
+  "p1-push-delivery-selftest": {
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 1.44
+  },
+  "mobile-tsc": {
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "-p",
+      "mobile-app/tsconfig.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exit": 0,
+    "seconds": 51.47
+  },
+  "p1-financial-ui-selftest": {
+    "command": [
+      "node",
+      "admin-panel/scripts/p1-financial-ui-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 1.2
+  },
+  "audit-push-policy-selftest": {
+    "command": [
+      "node",
+      "supabase/tests/audit-push-policy-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 2.38
+  },
+  "notification-contract": {
+    "command": [
+      "node",
+      "docs/audit/fix-6/tests/notification-contract.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.3
+  },
+  "scheduling-scanner": {
+    "command": [
+      "node",
+      "docs/audit/fix-6/tests/scheduling-scanner.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.27
+  },
+  "nonplay-sales-gate": {
+    "command": [
+      "node",
+      "docs/audit/fix-6/tests/nonplay-sales-gate.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.45
+  },
+  "closed-testing-selftest": {
+    "command": [
+      "node",
+      "mobile-app/scripts/closed-testing-selftest.cjs"
+    ],
+    "exit": 1,
+    "seconds": 29.81
+  }
+}

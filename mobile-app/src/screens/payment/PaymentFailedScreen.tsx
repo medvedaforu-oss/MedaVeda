@@ -8,7 +8,9 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
+import { getCurrentUser } from "../../services/authState";
 import { recoverPayment } from "../../services/paymentService";
+import { recheckPlayOrder } from "../../services/playBillingService";
 
 // Reached via normal in-app navigation - either from
 // PaymentCheckoutScreen (Razorpay reported a failure, or verify-payment
@@ -36,8 +38,11 @@ export default function PaymentFailedScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
-  const { title, reason, pending, verifyUrl, internalOrderId, paymentId } = route.params ?? {};
+  const { title, reason, pending, verifyUrl, internalOrderId, paymentId, provider, authRequired } = route.params ?? {};
 
+  const recoveryOwner = useRef(getCurrentUser()?.id);
+  const authPaused = useRef(!!authRequired);
+  const [authMessage, setAuthMessage] = useState<string | null>(authRequired ? reason : null);
   const [terminalReason, setTerminalReason] = useState<string | null>(null);
   const stillConfirming = !!pending && !terminalReason;
   const resolvedRef = useRef(false);
@@ -57,8 +62,8 @@ export default function PaymentFailedScreen() {
   }
 
   const checkStatus = useCallback(async () => {
-    if (!focused.current || checking.current || resolvedRef.current || !pending || !internalOrderId ||
-        !verifyUrl) return;
+    if (authPaused.current || !focused.current || checking.current || resolvedRef.current || !pending || !internalOrderId ||
+        (provider !== "play" && !verifyUrl)) return;
     // Give up quietly after MAX_POLL_MINUTES - the student can still see
     // it unlock on its own via My Purchases, or reach out to support with
     // the Payment ID shown below.
@@ -67,8 +72,19 @@ export default function PaymentFailedScreen() {
     checking.current = true;
     const run = focusGeneration.current;
     try {
-      const result = await recoverPayment(verifyUrl, internalOrderId);
+      if (provider !== "play" && getCurrentUser()?.id !== recoveryOwner.current) {
+        authPaused.current = true;
+        setAuthMessage("Sign in to the account used for this payment, then check My Purchases. Do not pay again.");
+        return;
+      }
+      const result = provider === "play" ? await recheckPlayOrder(internalOrderId)
+        : await recoverPayment(verifyUrl, internalOrderId, recoveryOwner.current);
       if (!focused.current || resolvedRef.current || run !== focusGeneration.current) return;
+      if (provider !== "play" && (("authRequired" in result && result.authRequired) || getCurrentUser()?.id !== recoveryOwner.current)) {
+        authPaused.current = true;
+        setAuthMessage(result.message || "Sign in to the account used for this payment, then check My Purchases. Do not pay again.");
+        return;
+      }
       if (!result.success && result.pending === false) {
         resolvedRef.current = true;
         setTerminalReason(result.message || "This payment could not unlock the Notes. Contact support before paying again.");
@@ -92,7 +108,7 @@ export default function PaymentFailedScreen() {
     } catch {
       // Transient - the next interval tick or app-resume will try again.
     } finally { checking.current = false; }
-  }, [pending, verifyUrl, internalOrderId, title, navigation]);
+  }, [pending, verifyUrl, internalOrderId, title, navigation, provider]);
 
   // Poll on an interval while this screen is focused.
   useFocusEffect(
@@ -123,17 +139,17 @@ export default function PaymentFailedScreen() {
           <Text style={styles.icon}>⏳</Text>
         </View>
 
-        <Text style={styles.title}>Confirming Your Payment</Text>
+        <Text style={styles.title}>{authMessage ? "Sign in to Check Payment" : "Confirming Your Payment"}</Text>
         <Text style={styles.subtitle}>
           {title
-            ? `We're still confirming your payment for "${title}". Notes will unlock after the server confirms a captured payment.`
-            : "We're still confirming your payment. Notes will unlock after the server confirms a captured payment."}
+            ? `We're still confirming your payment for "${title}". Notes will unlock after the server confirms your purchase and Notes access.`
+            : "We're still confirming your payment. Notes will unlock after the server confirms your purchase and Notes access."}
         </Text>
 
         <View style={styles.reasonCard}>
           <Text style={styles.reasonLabel}>Details</Text>
           <Text style={styles.reasonText}>
-            Payment may have succeeded but verification could not be confirmed yet
+            {authMessage || "Payment may have succeeded but verification could not be confirmed yet"}
             {paymentId ? `. Payment ID: ${paymentId}` : "."}
             {internalOrderId ? ` Order ID: ${internalOrderId}` : ""}
           </Text>

@@ -14,6 +14,7 @@ import Constants from "expo-constants";
 // not sit in plaintext AsyncStorage - see secureSessionStorage.ts for why
 // and what packages this requires.
 import { secureSessionStorage } from "./secureSessionStorage";
+import { authFetch } from "../features/auth/authFetch";
 
 const supabaseUrl =
   Constants.expoConfig?.extra?.supabaseUrl ?? process.env.EXPO_PUBLIC_SUPABASE_URL;
@@ -27,6 +28,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  global: { fetch: authFetch },
   auth: {
     storage: secureSessionStorage,
     autoRefreshToken: true,

@@ -5,10 +5,13 @@ import {
   getActiveChapters,
 } from "../repositories/chaptersRepository";
 import { logDebug } from "../utils/logger";
+import { isNonplayTestBuild } from "../config/paymentProvider";
 
 export type { Chapter } from "../types/chapter";
 
 export async function fetchChaptersBySubject(subjectId: string, onFallback?: () => void) {
+  // Synthetic metadata must never enter the unscoped offline catalog cache.
+  if (isNonplayTestBuild) return (await getChaptersBySubject(subjectId)).sort((a,b) => (a.order ?? 0)-(b.order ?? 0));
   return fetchWithCacheFallback(`chapters:${subjectId}`, async () => {
     const chapters = await getChaptersBySubject(subjectId);
 

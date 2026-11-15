@@ -21,7 +21,7 @@ export default function Notes() {
   const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
 
-  const { notes, loading, hasLoaded, error, reload, createNote, editNote, removeNote } =
+  const { notes, loading, hasLoaded, error, reload, refreshAfterMutation, createNote, editNote, removeNote } =
     useNotes({ courseId: courseFilter || undefined });
 
   const { years, loading: yearsLoading, error: yearsError, reload: reloadYears } = useYears();
@@ -70,7 +70,7 @@ export default function Notes() {
   async function handleSubmit(data: NoteInput, uploadRequestId?: string) {
     if (uploadRequestId) {
       await saveNoteWithUpload(data, uploadRequestId, editing?.id);
-      await reload();
+      await refreshAfterMutation();
       return;
     }
     if (editing) {
@@ -133,7 +133,7 @@ export default function Notes() {
 
         <SearchBar value={search} onChange={setSearch} />
 
-        <select
+        <select aria-label="Filter by chapter"
           value={chapterId}
           onChange={(e) => setChapterId(e.target.value)}
           className="border rounded-lg px-3 py-2"

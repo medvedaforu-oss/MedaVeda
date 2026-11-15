@@ -68,6 +68,13 @@ Deno.serve(async (req: Request) => {
       console.error("verify-play-purchase settlement failed", settleError?.code);
       return jsonResponse({ error: "Purchase confirmation pending. Please retry." }, 503);
     }
+    if (!settlement.duplicate) {
+      const { data: committed, error: proofError } = await supabaseAdmin.rpc("play_entitlement_committed", {
+        p_order_id: orderId, p_token: token,
+      });
+      if (proofError || committed !== true)
+        return jsonResponse({ success: false, pending: true, message: "Notes access confirmation pending. Please retry." }, 503);
+    }
     if (consumed) {
       await supabaseAdmin.from("orders").update({ play_consumption_status: "consumed" }).eq("id", orderId).eq("purchase_token", token);
     } else {

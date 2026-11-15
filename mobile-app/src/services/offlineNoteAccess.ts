@@ -1,15 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCurrentUser } from "./authState";
 import { getSecureNoteUrl, NoteAccessError } from "./secureNotesService";
-import { cancelDownload } from "../utils/downloadManager";
+import { cancelDownload, getDownload } from "../utils/downloadManager";
 import { clearNoteVerification, hasRecentNoteVerification, recordNoteVerification } from "./offlineNoteVerification";
 
 export async function mayOpenOfflineNote(noteId: string): Promise<boolean> {
+  if (getDownload(noteId)?.isFreePreview !== true) return false;
   const owner = getCurrentUser()?.id;
   if (!owner || await AsyncStorage.getItem("medveda:offline-owner") !== owner) return false;
   const key = `medveda:note-denied:${owner}:${noteId}`;
   try {
-    await getSecureNoteUrl(noteId);
+    await getSecureNoteUrl(noteId, "offline", true);
     if (getCurrentUser()?.id !== owner) return false;
     await recordNoteVerification(owner, noteId);
     return getCurrentUser()?.id === owner;

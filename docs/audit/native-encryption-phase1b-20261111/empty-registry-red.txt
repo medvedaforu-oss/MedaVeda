@@ -1,0 +1,14 @@
+Exception in thread "main" in.medveda.offline.VaultFailure: Offline vault unavailable
+	at in.medveda.offline.EncryptedRegistry$Companion.open(Registry.kt:114)
+	at in.medveda.offline.Phase1BTestKt.main$lambda$3(Phase1BTest.kt:27)
+	at in.medveda.offline.Phase1BTestKt.main$test(Phase1BTest.kt:21)
+	at in.medveda.offline.Phase1BTestKt.main(Phase1BTest.kt:22)
+	at in.medveda.offline.Phase1BTestKt.main(Phase1BTest.kt)
+Traceback (most recent call last):
+  File "/home/ganeshp8545/AyurPulse/mobile-app/modules/medveda-offline-vault/tests/phase1b/run-tests.py", line 16, in <module>
+    subprocess.run(['java','-Xmx48m','-cp',work+os.pathsep+compiler[1],'in.medveda.offline.Phase1BTestKt'],check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['java', '-Xmx48m', '-cp', '/tmp/medveda-phase1b-20phzzu2:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar', 'in.medveda.offline.Phase1BTestKt']' returned non-zero exit status 1.

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 
 import useReferrals from "../hooks/useReferrals";
 
@@ -72,13 +72,18 @@ function formatDateTime(value: string) {
 
 export default function Referrals() {
   const [statusFilter, setStatusFilter] = useState<ReferralStatus | "">("");
-  const { referrals, settings, audit, loading, error, saveSettings, reject } = useReferrals(
+  const { referrals, settings, audit, loading, error, reload, saveSettings, reject } = useReferrals(
     statusFilter || undefined
   );
 
   // null until the row is loaded from referral_settings: the form never shows
   // (or saves) numbers the admin did not set.
   const [form, setForm] = useState<ReferralSettingsInput | null>(null);
+  const edits = useRef(0);
+  const dirty = useRef(false);
+  const saving = useRef(false);
+  const pendingSettings = useRef<ReferralSettingsInput | null>(null);
+  const editForm = (next: ReferralSettingsInput) => { edits.current++; dirty.current = true; setForm(next); };
   const [confirmReasons, setConfirmReasons] = useState<string[] | null>(null);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<{ ok: boolean; text: string } | null>(
@@ -89,11 +94,12 @@ export default function Referrals() {
 
   const [rejecting, setRejecting] = useState<Referral | null>(null);
   const [rejectReason, setRejectReason] = useState("");
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (settings) setForm(settings);
+    if (settings && !dirty.current) setForm(settings);
   }, [settings]);
 
   const filtered = useMemo(() => {
@@ -113,8 +119,9 @@ export default function Referrals() {
   const hasErrors = Object.keys(errors).length > 0;
 
   function handleSaveClick() {
-    if (!form) return;
+    if (!form || saving.current) return;
     if (hasErrors) return;
+    pendingSettings.current = { ...form };
     setSettingsMessage(null);
     const reasons = confirmationReasons(form);
     if (reasons.length > 0) setConfirmReasons(reasons);
@@ -122,15 +129,20 @@ export default function Referrals() {
   }
 
   async function persistSettings() {
-    if (!form) return;
+    const payload = pendingSettings.current;
+    if (!payload || saving.current) return;
+    saving.current = true;
+    const revision = edits.current;
     setConfirmReasons(null);
     try {
       setSavingSettings(true);
-      await saveSettings(form);
+      await saveSettings(payload);
+      if (edits.current === revision) { dirty.current = false; setForm(payload); }
       setSettingsMessage({ ok: true, text: "Referral settings saved." });
     } catch (err: any) {
       setSettingsMessage({ ok: false, text: err?.message ?? "Could not save settings." });
     } finally {
+      saving.current = false;
       setSavingSettings(false);
     }
   }
@@ -138,9 +150,13 @@ export default function Referrals() {
   async function confirmReject() {
     if (!rejecting) return;
     setActionError(null);
+    setActionMessage(null);
     try {
       setBusyId(rejecting.id);
-      await reject(rejecting.id, rejectReason.trim() || undefined);
+      const result = await reject(rejecting.id, rejectReason.trim() || undefined);
+      setActionMessage(result.creditAlreadyReleased
+        ? "Referral rejected. The reward was already released and remains in the wallet. Rejecting this referral did not reverse that credit."
+        : result.creditCancelled ? "Referral rejected. The held reward was cancelled." : "Referral rejected.");
       setRejecting(null);
       setRejectReason("");
     } catch (err: any) {
@@ -182,7 +198,7 @@ export default function Referrals() {
           <input
             type="checkbox"
             checked={form.enabled}
-            onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
+            onChange={(e) => editForm({ ...form, enabled: e.target.checked })}
           />
           Referral program enabled (shows Refer &amp; Earn in the app, applies discount and credit)
         </label>
@@ -197,7 +213,7 @@ export default function Referrals() {
             step="any"
             error={fieldError("friendDiscountPercent")}
             value={numberValue(form.friendDiscountPercent)}
-            onChange={(e) => setForm({ ...form, friendDiscountPercent: toRequired(e.target.value) })}
+            onChange={(e) => editForm({ ...form, friendDiscountPercent: toRequired(e.target.value) })}
           />
           <Input
             label="Max discount (₹, blank = no cap)"
@@ -207,7 +223,7 @@ export default function Referrals() {
             step="any"
             error={fieldError("friendDiscountMax")}
             value={numberValue(form.friendDiscountMax)}
-            onChange={(e) => setForm({ ...form, friendDiscountMax: toNumberOrNull(e.target.value) })}
+            onChange={(e) => editForm({ ...form, friendDiscountMax: toNumberOrNull(e.target.value) })}
           />
           <Input
             label="Code usable for (days after signup)"
@@ -216,7 +232,7 @@ export default function Referrals() {
             max={30}
             error={fieldError("applyWindowDays")}
             value={numberValue(form.applyWindowDays)}
-            onChange={(e) => setForm({ ...form, applyWindowDays: toRequired(e.target.value) })}
+            onChange={(e) => editForm({ ...form, applyWindowDays: toRequired(e.target.value) })}
           />
         </div>
 
@@ -230,7 +246,7 @@ export default function Referrals() {
             step="any"
             error={fieldError("referrerCreditAmount")}
             value={numberValue(form.referrerCreditAmount)}
-            onChange={(e) => setForm({ ...form, referrerCreditAmount: toRequired(e.target.value) })}
+            onChange={(e) => editForm({ ...form, referrerCreditAmount: toRequired(e.target.value) })}
           />
           <Input
             label="Hold before credit is available (days)"
@@ -239,14 +255,17 @@ export default function Referrals() {
             max={90}
             error={fieldError("creditHoldDays")}
             value={numberValue(form.creditHoldDays)}
-            onChange={(e) => setForm({ ...form, creditHoldDays: toRequired(e.target.value) })}
+            onChange={(e) => editForm({ ...form, creditHoldDays: toRequired(e.target.value) })}
           />
           <Input
-            label="Credit expires after (days, blank = never)"
+            label="Credit expiry (days after availability; blank or 0 = no expiry)"
             type="number"
-            min={1}
+            min={0}
+            max={36500}
+            step={1}
+            error={fieldError("creditExpiryDays")}
             value={numberValue(form.creditExpiryDays)}
-            onChange={(e) => setForm({ ...form, creditExpiryDays: toNumberOrNull(e.target.value) })}
+            onChange={(e) => editForm({ ...form, creditExpiryDays: toNumberOrNull(e.target.value) })}
           />
           <Input
             label="Max referrals per user (blank = unlimited)"
@@ -255,10 +274,15 @@ export default function Referrals() {
             max={1000}
             error={fieldError("maxReferralsPerUser")}
             value={numberValue(form.maxReferralsPerUser)}
-            onChange={(e) => setForm({ ...form, maxReferralsPerUser: toNumberOrNull(e.target.value) })}
+            onChange={(e) => editForm({ ...form, maxReferralsPerUser: toNumberOrNull(e.target.value) })}
           />
         </div>
 
+        <p className="mb-4 text-xs text-gray-500">
+          Expiry applies to credits earned from now on; existing credits keep their dates.
+          For new rewards, the expiry clock starts when the reward actually becomes available,
+          including after any review or dispute hold. Choose 1–36,500 days, or blank / 0 for no expiry (saved as NULL).
+        </p>
         <h3 className="mb-2 mt-2 text-sm font-semibold text-gray-700">Wallet</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
@@ -269,12 +293,12 @@ export default function Referrals() {
             step="any"
             error={fieldError("walletMaxPercent")}
             value={numberValue(form.walletMaxPercent)}
-            onChange={(e) => setForm({ ...form, walletMaxPercent: toRequired(e.target.value) })}
+            onChange={(e) => editForm({ ...form, walletMaxPercent: toRequired(e.target.value) })}
           />
           <Input
             label="Referral terms URL (blank = built-in terms screen)"
             value={form.termsUrl ?? ""}
-            onChange={(e) => setForm({ ...form, termsUrl: e.target.value.trim() || null })}
+            onChange={(e) => editForm({ ...form, termsUrl: e.target.value.trim() || null })}
           />
         </div>
         <p className="mb-4 text-xs text-gray-500">
@@ -359,7 +383,7 @@ export default function Referrals() {
           placeholder="Search name, email or code..."
         />
 
-        <select
+        <select aria-label="Filter by referral status"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as ReferralStatus | "")}
           className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
@@ -373,7 +397,8 @@ export default function Referrals() {
       </div>
 
       {loading && <p className="text-gray-400">Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <div role="alert" className="text-red-500"><p>{error}</p><button type="button" onClick={() => void reload()}>Retry</button></div>}
+      {actionMessage && <p role="status" className="mb-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">{actionMessage}</p>}
       {actionError && (
         <p className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{actionError}</p>
       )}
@@ -448,6 +473,10 @@ export default function Referrals() {
           setRejectReason("");
         }}
       >
+        <p className="mb-3 text-sm text-gray-600">
+          Rejecting cancels a held reward. If the reward was already released, it remains in the wallet;
+          rejecting this referral does not reverse that credit.
+        </p>
         <Input
           label="Reason (optional)"
           placeholder="e.g. Suspected duplicate account"

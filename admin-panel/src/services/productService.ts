@@ -26,6 +26,8 @@ function nullifyEmptyIds(payload: Record<string, any>) {
   for (const key of idKeys) {
     if (cleaned[key] === "") cleaned[key] = null;
   }
+  // Blank/zero MRP means no advertised discount; JSON must carry null.
+  if ("originalPrice" in cleaned) cleaned.originalPrice = cleaned.originalPrice == null || cleaned.originalPrice === 0 ? null : cleaned.originalPrice;
   return cleaned;
 }
 

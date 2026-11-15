@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 
 import EmptyState from "../../components/EmptyState";
@@ -124,6 +125,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
   const [finished, setFinished] = useState(false);
   const [timeLeft, setTimeLeft] = useState(QUESTION_TIME_SECONDS);
   const submittedRef = useRef(false);
+  const latestAnswers = useRef(answers);
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [verificationStatus, setVerificationStatus] = useState("unverified");
   const [serverScore, setServerScore] = useState<number | null>(null);
@@ -160,7 +162,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
         userEmail: user?.email,
         score: 0, // Unverified placeholder; only the server knows the key.
         totalQuestions: questions.length,
-        answers,
+        answers: [...latestAnswers.current],
         questionRevision: test.questionRevision,
       });
       setAttemptId(id);
@@ -168,7 +170,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
       logError("QuizScreen: saving quiz attempt failed", error);
       setVerificationStatus("legacy");
     }
-  }, [test, subjectId, subjectTitle, questions.length, answers]);
+  }, [test, subjectId, subjectTitle, questions.length]);
 
   const handleSubmit = useCallback(() => {
     if (submittedRef.current) return;
@@ -200,12 +202,10 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
   };
 
   const handleAnswer = (index: number) => {
-    if (answers[currentQuestion] !== null && answers[currentQuestion] !== undefined) {
-      return;
-    }
-
-    const updated = [...answers];
+    if (submittedRef.current || finished || index < 0 || index >= questions[currentQuestion].options.length) return;
+    const updated = [...latestAnswers.current];
     updated[currentQuestion] = index;
+    latestAnswers.current = updated;
     setAnswers(updated);
   };
 
@@ -242,7 +242,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
 
   if (finished) {
     return (
-      <View style={styles.center}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.resultContent}>
         <View style={styles.resultCard}>
           {passed && <SuccessBurst play={finished && passed} />}
           <Text style={styles.resultEmoji}>{passed ? "🏆" : "📚"}</Text>
@@ -284,7 +284,12 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
             activeOpacity={0.8}
             style={styles.button}
             onPress={() => {
-              setAnswers(Array(questions.length).fill(null));
+              submittedRef.current = false;
+              latestAnswers.current = Array(questions.length).fill(null);
+              setAnswers(latestAnswers.current);
+              setAttemptId(null);
+              setServerScore(null);
+              setVerificationStatus("unverified");
               setCurrentQuestion(0);
               setMaxReached(0);
               setFinished(false);
@@ -302,16 +307,17 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
             <Text style={styles.previousButtonText}>Back to Tests</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.quizContent}>
       <Text style={styles.title}>{subjectTitle}</Text>
       <Text style={styles.subtitle}>{test.title}</Text>
 
       <Text style={styles.progressTitle}>Quiz Progress</Text>
+      <Text style={styles.subtitle}>You can change answers and use Previous before submitting.</Text>
 
       <ProgressBar
         progress={((currentQuestion + 1) / questions.length) * 100}
@@ -339,7 +345,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
         <OptionCard
           key={index}
           title={option}
-          disabled={selectedAnswer !== null}
+          disabled={finished}
           onPress={() => handleAnswer(index)}
           isSelected={selectedAnswer === index}
         />
@@ -369,11 +375,13 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  resultContent: { flexGrow: 1, justifyContent: "center", alignItems: "center", paddingBottom: SPACING.xl },
+  quizContent: { paddingBottom: SPACING.xl, maxWidth: 840, width: "100%", alignSelf: "center" },
   progressTitle: {
     fontSize: FONT.small,
     color: COLORS.subtitle,
@@ -382,6 +390,7 @@ const styles = StyleSheet.create({
   },
   resultCard: {
     width: "100%",
+    maxWidth: 840,
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,

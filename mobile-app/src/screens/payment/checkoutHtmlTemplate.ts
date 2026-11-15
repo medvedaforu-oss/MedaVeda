@@ -40,6 +40,7 @@ function jsonForScript(value: unknown): string {
 }
 
 export function buildCheckoutHtml(params: {
+  callbackNonce?: string;
   keyId: string;
   razorpayOrderId: string;
   timeoutSeconds?: number;
@@ -136,6 +137,7 @@ export function buildCheckoutHtml(params: {
   <script>
     function post(message) {
       if (window.ReactNativeWebView) {
+        message.callbackNonce = ${jsonForScript(params.callbackNonce ?? "")};
         window.ReactNativeWebView.postMessage(JSON.stringify(message));
       }
     }

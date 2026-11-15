@@ -44,7 +44,8 @@ function TabButton({
   };
 
   return (
-    <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.8}>
+    <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.8}
+      accessibilityRole="tab" accessibilityLabel={tab.label} accessibilityState={{ selected: isActive }}>
       <Animated.View style={{ transform: [{ scale }], alignItems: "center" }}>
         <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
           <Text style={styles.icon}>{tab.icon}</Text>
@@ -79,7 +80,8 @@ function HexTabButton({
   };
 
   return (
-    <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.85}>
+    <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.85}
+      accessibilityRole="tab" accessibilityLabel="Notes store" accessibilityState={{ selected: isActive }}>
       <Animated.View style={{ transform: [{ scale }], alignItems: "center" }}>
         <View style={styles.hexHalo} />
         <View style={styles.hexWrap}>
@@ -99,6 +101,7 @@ function HexTabButton({
             ]}
           />
         </View>
+        <Text style={[styles.label, isActive && styles.labelActive]}>{tab.label}</Text>
       </Animated.View>
     </TouchableOpacity>
   );
@@ -153,6 +156,8 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
+    minHeight: 48,
+    justifyContent: "center",
     alignItems: "center",
   },
   iconWrap: {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 
 import Modal from "./Modal";
 import Input from "./Input";
@@ -47,6 +47,14 @@ export default function ChapterFormModal({
   const [form, setForm] = useState<ChapterInput>(buildEmptyForm());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const saveBusy = useRef(false);
+  const lifetime = useRef(0);
+  const mounted = useRef(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => {
+    const scope = ++lifetime.current;
+    return () => { lifetime.current = scope + 1; };
+  }, [open, initialData]);
 
   const years = useMemo(
     () => allYears.filter((y) => y.courseId === form.courseId),
@@ -123,13 +131,16 @@ export default function ChapterFormModal({
   }
 
   async function handleSubmit() {
-    if (!validate()) return;
+    if (saveBusy.current || !validate()) return;
+    saveBusy.current = true;
+    const run = lifetime.current;
 
     try {
       setSaving(true);
       await onSubmit(form);
-      onClose();
+      if (run === lifetime.current) onClose();
     } catch (err: any) {
+      if (run !== lifetime.current) return;
       console.error(err);
       setErrors({
         form:
@@ -138,14 +149,16 @@ export default function ChapterFormModal({
             : "Something went wrong while saving. Please try again.",
       });
     } finally {
-      setSaving(false);
+      saveBusy.current = false;
+      if (mounted.current) setSaving(false);
     }
   }
 
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={() => { if (!saveBusy.current) onClose(); }}
+      closeDisabled={saving}
       title={initialData ? "Edit Chapter" : "Create New Chapter"}
     >
       {lookupsReady && allYears.length === 0 && (
@@ -172,7 +185,7 @@ export default function ChapterFormModal({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Year
         </label>
-        <select
+        <select aria-label="Year"
           value={form.yearId}
           onChange={(e) => handleYearChange(e.target.value)}
           disabled={!form.courseId}
@@ -194,7 +207,7 @@ export default function ChapterFormModal({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Subject
         </label>
-        <select
+        <select aria-label="Subject"
           value={form.subjectId}
           onChange={(e) => handleSubjectChange(e.target.value)}
           disabled={!form.yearId}

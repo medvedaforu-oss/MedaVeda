@@ -1,0 +1,5500 @@
+[
+  {
+    "path": "mobile-app/src/components/BottomNav.tsx",
+    "lines": 243,
+    "sha256": "c8e7e2b6db54191d9a79d5f66854ef73d79e764daedf1e2610cc5aaa60d6eb54",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/BrandLogo.tsx",
+    "lines": 63,
+    "sha256": "5a2ee000745e456b71561caad423043b5d53d867618323173f990eca16af3e29",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ChapterCard.tsx",
+    "lines": 86,
+    "sha256": "a1fcffcbfa20a55e0cbc356f02059aa155d7496fecdae8f5104d786ea7a07384",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ConfirmationDialog.tsx",
+    "lines": 153,
+    "sha256": "31ab1236837bb9f5b15c3bfd349b6232f99244e9db312f74a684e346e3dd8f84",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ContinueLearningCard.tsx",
+    "lines": 116,
+    "sha256": "92e3041dd232f4bcaa15825910b4a734f238db57db3ad64b73567f8ca1c9d545",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/CustomButton.tsx",
+    "lines": 61,
+    "sha256": "e6999f1542f432f8d17cb7e4613f498cbfff5db1f62784ac1404e5e73d9863de",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/CustomInput.tsx",
+    "lines": 73,
+    "sha256": "0711414ed2220617cd89dc12759cc10c7e768d6720a2d35a91c6a0ce7a813fac",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/DailyQuoteCard.tsx",
+    "lines": 49,
+    "sha256": "705a2f69e9fa704036b179a402c4f7be79d189881fcd1742c675f746efc55e2c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/EmptyState.tsx",
+    "lines": 43,
+    "sha256": "06b4b52bb71ae6ebe91d0b35c627989fade394a8bef3e9340374468eac717dd9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ErrorBoundary.tsx",
+    "lines": 100,
+    "sha256": "30edfe3fb4509a6652a782e10c7eee3ae24d479870b2f68132302e4f1c7e0aad",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ErrorState.tsx",
+    "lines": 83,
+    "sha256": "e798db0452f39139d7ed6a6b76b94f511c2915d5a9c76aefdc0d36f701b8de6d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/FeatureCard.tsx",
+    "lines": 69,
+    "sha256": "ed4d2391f070ce51a52894509459bf0fddc33a274423b05d96f8ac1d22824578",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/FilterChip.tsx",
+    "lines": 53,
+    "sha256": "fe7a43b635cfec7df9b54a53dc3cb0490946aed16e71b825e17aac83fe9450ad",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/GradientBackground.tsx",
+    "lines": 75,
+    "sha256": "4cedade46e82c7511035ff1124627c9fb74d06261dcb74ee5091fb9ba52098a1",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/HomeHeader.tsx",
+    "lines": 226,
+    "sha256": "02636f52a64b234b895104d0d2b30d8e32515ded6cebf5bb76ef138ff9f22d2f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/LoadError.tsx",
+    "lines": 26,
+    "sha256": "8b14f76f67d11041e5569e4985386c356397c7facf849988b1eaee2a8b8f8e68",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/MiniChapterCard.tsx",
+    "lines": 57,
+    "sha256": "8c30cf6bc4cc7c6e8ca493f9005c98230001d79e683ff43c6f882dbc5dc787a5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/NoteCard.tsx",
+    "lines": 254,
+    "sha256": "e78898f45c08a9f48560ea3415202f57100f3cb2b72a380d17db14b5b45af0ee",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/NotificationBell.tsx",
+    "lines": 64,
+    "sha256": "8187ff087884a2ab6833bd749e246bc6eb9163426ac7393023ad4a1fc55f8d75",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/NotificationRow.tsx",
+    "lines": 136,
+    "sha256": "fea5c665b4e3e1043bc957a12b51938cf8d760ea4623dd3570e1fda90730ba2b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/OptionCard.tsx",
+    "lines": 96,
+    "sha256": "f5cb29ace3b8d6e9e99d2fbe08398e9469995de91605505fb2e37e3e407ad5e5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProductCard.tsx",
+    "lines": 125,
+    "sha256": "a54a3ecee4083fce64098a1e7bca761a151a15bc0e4dba50ebba11c7686bc548",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProductPosterCard.tsx",
+    "lines": 213,
+    "sha256": "d9a6c6c573474b9b33c716164c530c1fae52a1ebb9b3b864303251d57219d426",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProfileAvatar.tsx",
+    "lines": 54,
+    "sha256": "ba9a0faf70b98ee0e4847c9a9a52c0a93398461c5f8883ad67cda2fdf578b602",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProfileMenuCard.tsx",
+    "lines": 80,
+    "sha256": "82508980466809b1b210ff16cd96c40b0aa84533b34515a30e23b00a18af221f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProgressBar.tsx",
+    "lines": 38,
+    "sha256": "f10ea3baee9e311242130eee1f0fb7932b1fb4e6fe7fe7bc837f906cae7339b7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/ProgressRing.tsx",
+    "lines": 139,
+    "sha256": "a400b7d044f2d64a7fb2c3231202d74f3f3e41c54d942961ced6ccf3a2de321c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/PurchaseOwnershipStatus.tsx",
+    "lines": 12,
+    "sha256": "4339744553d4db3454586c0a26f5e1fb3ff27108d3651c16699c5916cf264546",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/SearchBar.tsx",
+    "lines": 133,
+    "sha256": "0c1a2d9f8e310a524509ed4194643c0a4035b98ce195e9b5b81821b4e2a65775",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/SectionHeader.tsx",
+    "lines": 58,
+    "sha256": "0e7b7243f54792a298c6588ee783875a29255c0daefebba3f03e32be3dd0a46a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/SettingsItem.tsx",
+    "lines": 88,
+    "sha256": "60085f013cea00965681c69ee7c51a0a8a0d19f5e31f106cc39366c4d5cd7b98",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/SideDrawer.tsx",
+    "lines": 396,
+    "sha256": "db4ce3ad7f4398705d5f285c8cd30be9fda2d1784c0c98d5c3b27c89fbeea014",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/Skeleton.tsx",
+    "lines": 113,
+    "sha256": "f7bb72b1649e554ac5c662bad77c636aae1c629fab19e199844a56405257e525",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/StaggerItem.tsx",
+    "lines": 37,
+    "sha256": "0e9624c1a25136218b671173eee76e52d4d77ca931a9ec800648cc02edd37048",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/StatCard.tsx",
+    "lines": 77,
+    "sha256": "6366cd8b5dfbb64e64d93fb9407322aa294709731a88c565ecffa83ca66029a3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/StreakBadge.tsx",
+    "lines": 70,
+    "sha256": "7c89dc2fb562e52d06b599a18d9c1359fa77bf964bf90ecbf849c8bd1dc04948",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/StudentProfileCard.tsx",
+    "lines": 164,
+    "sha256": "38f46d40c5b5cdad708885bc16f3faf9bf05b465df5c37c61a806196da9d5bed",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/SubjectCard.tsx",
+    "lines": 65,
+    "sha256": "437757660b5d2c68867a0893c65d98f3b145e918cf79b46a80e323e0d87cff11",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/TestCard.tsx",
+    "lines": 158,
+    "sha256": "f5b5619865be5e6e1ecac6665e90c39f968b15e9b2d21597c0f4897bcbb64285",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/UnlockOptionsPanel.tsx",
+    "lines": 184,
+    "sha256": "2aea02a4f0526f1abb74772075d59a5597e33521700d16d0e8f394ab58ac6da6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/VideoCard.tsx",
+    "lines": 99,
+    "sha256": "07e69240ffa2d75956d7383c19273e83bc87501768229085cdd533f24ddc8e6d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/WebLink.tsx",
+    "lines": 33,
+    "sha256": "f7ab04e10d463942ccf9c0b93f2bf5d012eb42c7963dc210a64734ae28efa5f0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/YearCard.tsx",
+    "lines": 119,
+    "sha256": "aa7dbe9653a5a6902c363a615f864d4bed913f078ca00c8768ff13e390a9cddf",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/motion/AnimatedPressable.tsx",
+    "lines": 69,
+    "sha256": "c459906969296ad86fe594a0b8346570b1724e99f6c7b34ab9a4690e90d32928",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/motion/FadeSlideIn.tsx",
+    "lines": 75,
+    "sha256": "cf8795e998da8d30c309fe1618f22108ee58148451a7fa547bb4b7a71073ade5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/motion/SuccessBurst.tsx",
+    "lines": 121,
+    "sha256": "8a29c251df8af0717902ee6dac307c8c3e84ee238059f059998b309e3983dd82",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/search/HighlightedText.tsx",
+    "lines": 60,
+    "sha256": "46c74b46804fde273812f72edca3fe5b88c64a86d87768d7a35bbc10830e9ff7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/search/RecentSearchesRow.tsx",
+    "lines": 130,
+    "sha256": "63fe01b475e00923dc4dfb351760ab7e38b1c11d83fabba52d077df826611c82",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/search/SearchEmptyState.tsx",
+    "lines": 97,
+    "sha256": "058b14683089c52ceca3c7770f4fb91ae0eb60e79327b98595c66ef92c9c0c9d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/search/SearchFiltersSheet.tsx",
+    "lines": 233,
+    "sha256": "0657c2344d6d69df03e4339a9b4b9cbf7300ece669583e472e8f7b4056be5249",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/components/search/SearchResultRow.tsx",
+    "lines": 148,
+    "sha256": "bdcc46e397cdd541eeb84c87aae05a2d1fbd5846902cac15a6c638564677481c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/config/database.ts",
+    "lines": 160,
+    "sha256": "bb89f7fe77fe95da1d404ceaa73eb00bb23e7cbdcbe575bcbdc526c884c53fb6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/config/paymentProvider.ts",
+    "lines": 34,
+    "sha256": "38552b1c8f309a475a99dfdeb24a3a936eef6f2afb31773161aeb0034cfe7b4e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/config/secureSessionStorage.ts",
+    "lines": 117,
+    "sha256": "7710dcda7e99217295b76bca29b309cc0e7e018675c20dff283dd4363e3f77ef",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/config/sentry.ts",
+    "lines": 62,
+    "sha256": "b4606e61f2909508d04ca2b1777afde9a95cd41f12279f6529bcc53ade3677ec",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/config/supabase.ts",
+    "lines": 60,
+    "sha256": "9b0ee1dce1cba0871a414b0fb626b7cb45ae7b76523c985bc31cc259dbe0a014",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/constants/legal.ts",
+    "lines": 25,
+    "sha256": "16b07f36bd9ba76a742f7bf2ebb75ee4fa9eebefc20e8d0ddfb6fb9ab374880b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/constants/privacyInventory.ts",
+    "lines": 69,
+    "sha256": "53bb0c2fe34462cd77a41ba0669dfa00ccc6291ff536b22aa221c1b97d0b69b6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/authFetch.ts",
+    "lines": 27,
+    "sha256": "f9ebbb7f1b4b397a55d54b84ed066f4bd5ef00bd7ac1b69f1022cc191d58b59b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/authService.ts",
+    "lines": 123,
+    "sha256": "dcd225cf26804317760ebab953306bfadb8e39643bb55dac65178ad75a67a872",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/deepLinkStore.ts",
+    "lines": 42,
+    "sha256": "981d3f9a58ce9d203abcaee6c4e74e99b97ec7c91989f25029670ecd7df355d0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/identity.ts",
+    "lines": 18,
+    "sha256": "1f1f38b75e2e0370cf9dab4dffcbcac1ffa686ae63b32c8f8583997d5020b9cf",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/loginLockout.ts",
+    "lines": 155,
+    "sha256": "5b9a452a52624d795a59438937416cf48c1add872b633307acd34f65f98c4e63",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/recoveryFlow.d.ts",
+    "lines": 13,
+    "sha256": "7bc9ba7caf081837523b0950b4af3b6c04c9ffaf2ac1d0b73fd3d6d22a5cbfb2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/features/auth/recoveryFlow.js",
+    "lines": 124,
+    "sha256": "92d3187d1d510c877b436ddc74e906e4ab22f9d099d3ec87545149d70fcf974d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useBuyOptions.ts",
+    "lines": 83,
+    "sha256": "a3beae8445764b89e3adf77848cc92e7b4721be583ae21d8b89ea223ca2cfaa2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useCourseYear.ts",
+    "lines": 23,
+    "sha256": "4a0ca43fc309fef274ff0b481d946fa81c7a021309215037e30595975a5b06ab",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useDebounce.ts",
+    "lines": 20,
+    "sha256": "3726ae58566f406aa874bae3f0b3687af79e052229e18e84357fe0062d841bfa",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useDownloads.ts",
+    "lines": 109,
+    "sha256": "f6a7006a01762502b022a0d9a06f38edced4f0e9740e7e28a792bad35cc54785",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useForceUpdate.ts",
+    "lines": 33,
+    "sha256": "2335f0bb700f9221bea4929dedf6cc90326a8d8536709c44ba81b191f838ee34",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useGlobalSearch.ts",
+    "lines": 308,
+    "sha256": "01840f77bc7e086a431cbcabd643e2f3dee12a57479fce4054c6a1c9fd2121d0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useLoadResource.ts",
+    "lines": 32,
+    "sha256": "94e4f8cae611a1bc4042c41d63eb24dee86e277e75c8fff5233550209c198b31",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useMaintenanceMode.ts",
+    "lines": 33,
+    "sha256": "66c93d91e8bc7ac9a32e7ee9da3275e7bc6b7206ebee09d43880395316be3473",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useNetworkStatus.ts",
+    "lines": 16,
+    "sha256": "28415e413aa9460a84ea2ffc9629b193232279ebd728731e2e68a11ed6f84d8e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useNotificationRouting.ts",
+    "lines": 38,
+    "sha256": "7031d32cae928a0a1a620a4cb3aef002ace349070289259f05ca123ef2bfb7bb",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/usePreventScreenshot.ts",
+    "lines": 38,
+    "sha256": "882e4e777cc440d38a05e718fe477a2d26c1618344aa10f175a9ba5cfde8c9a9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/usePurchase.ts",
+    "lines": 29,
+    "sha256": "be7f425578d3a5f0a4ca0124e1b795ac5589b852e9cb79e4c522bf260ec423bd",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/usePurchaseResource.ts",
+    "lines": 77,
+    "sha256": "ecf0f3feac9b469ee4fa4c75e2f3d93b6b2c5ed6cafc6ae992a38c3a2844fc30",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/usePurchases.ts",
+    "lines": 31,
+    "sha256": "fe7b23bd6742e446ac8efeff85c56bdf3b5687ba24eb801eaa73ec60b70749f6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useQuizStats.ts",
+    "lines": 95,
+    "sha256": "db3a6dff60706b648f93919381b5aacc2ed42fa90e85d6cb521fee3775ed9673",
+    "database_tables": [
+      {
+        "name": "verified_quiz_attempts",
+        "line": 38
+      },
+      {
+        "name": "quiz_scores",
+        "line": 42
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useStoreCatalog.ts",
+    "lines": 83,
+    "sha256": "a76d116eb93598e778fff995992ccd92f5080bc19889b37d526ce10b46f8f311",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/hooks/useStreak.ts",
+    "lines": 27,
+    "sha256": "54c0292f1086643141662f7fea1ce2657e489f976f53b7bb9db7b59d617f5d75",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/navigation/AppNavigator.tsx",
+    "lines": 191,
+    "sha256": "f9dc99220adcb1d9107c5377a82820e695a93ad113ecd4708cff10d57834075b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/navigation/withRouteValidation.tsx",
+    "lines": 18,
+    "sha256": "b7d56d80f7bbf57918bcf98059a31b90257f47c8553553c0eb713e72303a29a3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/chaptersRepository.ts",
+    "lines": 53,
+    "sha256": "9be8c49b6fcce19877905e6ab3da466bfabfe9195a0c92db3f4890a377f12422",
+    "database_tables": [
+      {
+        "name": "chapters",
+        "line": 24
+      },
+      {
+        "name": "chapters",
+        "line": 40
+      },
+      {
+        "name": "chapters",
+        "line": 48
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/coursesRepository.ts",
+    "lines": 12,
+    "sha256": "77089621674f2d4d5cb6d1fe038b061c4614b376237fa2446cd13f263f6c6dad",
+    "database_tables": [
+      {
+        "name": "courses",
+        "line": 9
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/notesRepository.ts",
+    "lines": 18,
+    "sha256": "64da7ef71fd9216c2d4876116ca0da7cf1f70faa7b70e204a13c9ffc30f39fd2",
+    "database_tables": [
+      {
+        "name": "notes",
+        "line": 12
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/ordersRepository.ts",
+    "lines": 16,
+    "sha256": "193e23656ef340baec61bd68fe26fa505d7e33823347c391f9286ed10e3ba3b5",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 6
+      },
+      {
+        "name": "orders",
+        "line": 13
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/productsRepository.ts",
+    "lines": 84,
+    "sha256": "38d3689af05c043c67ab5450eb090e98313b5f60779d808a3ff29ec3c13a46e9",
+    "database_tables": [
+      {
+        "name": "products",
+        "line": 36
+      },
+      {
+        "name": "products",
+        "line": 48
+      },
+      {
+        "name": "products",
+        "line": 60
+      },
+      {
+        "name": "products",
+        "line": 71
+      },
+      {
+        "name": "products",
+        "line": 81
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/purchasesRepository.ts",
+    "lines": 16,
+    "sha256": "4c92ea5a9870ad03d5b0d074e760b0555e6216006f9b80871650d0a058b9d943",
+    "database_tables": [
+      {
+        "name": "purchases",
+        "line": 6
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/quizRepository.ts",
+    "lines": 55,
+    "sha256": "1f3bdc2be35a03ba5957f3dab7b2f83b4f034c5d350d748d7d16c801f830687b",
+    "database_tables": [
+      {
+        "name": "quiz_tests",
+        "line": 27
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "get_public_quiz_tests",
+        "line": 6
+      },
+      {
+        "name": "get_public_quiz_tests",
+        "line": 43
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/referralsRepository.ts",
+    "lines": 61,
+    "sha256": "1b192004e3a06e8607b0730e552ebc87c2f08c89faafc16ee8118cd4e47cb776",
+    "database_tables": [
+      {
+        "name": "referral_settings",
+        "line": 16
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "get_my_referrals",
+        "line": 29
+      },
+      {
+        "name": "apply_referral_code",
+        "line": 35
+      },
+      {
+        "name": "get_my_wallet",
+        "line": 41
+      },
+      {
+        "name": "get_my_referral_list",
+        "line": 48
+      },
+      {
+        "name": "quote_my_order",
+        "line": 55
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/searchCatalogRepository.ts",
+    "lines": 38,
+    "sha256": "a8fc2d54bd3f2d23585818b582b054a5fce02274db5665054f0329e93bdee58e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/searchPagination.ts",
+    "lines": 22,
+    "sha256": "04b388d40305718919e0b4892b7fc485c36709986c17272b22a56fa6f0bbec30",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/subjectsRepository.ts",
+    "lines": 19,
+    "sha256": "3a6bc4ed5b5445644b310875433a7fcac17faa66504ec77ceb07c4eea1c1ce5b",
+    "database_tables": [
+      {
+        "name": "subjects",
+        "line": 7
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/usersRepository.ts",
+    "lines": 41,
+    "sha256": "13bf33efce857e532890ec90fc84e4ddb11323a03cecac251a722eb58acc165a",
+    "database_tables": [
+      {
+        "name": "profiles",
+        "line": 22
+      },
+      {
+        "name": "profiles",
+        "line": 39
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/videosRepository.ts",
+    "lines": 43,
+    "sha256": "4f644dae7da62a84e7a2cf208a37b1c7afa32bef2c46fe7889f9f8c21f3b149b",
+    "database_tables": [
+      {
+        "name": "videos",
+        "line": 8
+      },
+      {
+        "name": "videos",
+        "line": 32
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/repositories/yearsRepository.ts",
+    "lines": 13,
+    "sha256": "86aa984887ab4ee6118c7c37f6c3042ad0e94e2f841b320f117393d4d7071009",
+    "database_tables": [
+      {
+        "name": "years",
+        "line": 8
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/about/AboutScreen.tsx",
+    "lines": 181,
+    "sha256": "247e664b749afdc84f9984d7eca9d11184947d1c8510c769b292fd925178fbe6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/auth/ForgotPasswordScreen.tsx",
+    "lines": 40,
+    "sha256": "518e0de6cc12d01d171851e0947502b3918b2e43202cdd3ed0bff66979702c8e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/auth/LoginScreen.tsx",
+    "lines": 468,
+    "sha256": "85d24d6a3c5f9a02215b1cba64e392a9211938a3b4a4100e96eb8196a6585199",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/auth/RegisterScreen.tsx",
+    "lines": 127,
+    "sha256": "389bd92da672461a15890c10efd5ccfed52c7a7bff45762d89150ab165ed6745",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/auth/ResetPasswordScreen.tsx",
+    "lines": 292,
+    "sha256": "b89e1d3eb42eac37a6d2da7a8768d1828ff364adbed35c429b081fdfc7f29f67",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/auth/SplashScreen.tsx",
+    "lines": 106,
+    "sha256": "8f4dab09a447f6169e2d8aadc2d79d56e37636bea2cabf4209f6df932984ef40",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/chapters/ChaptersScreen.tsx",
+    "lines": 167,
+    "sha256": "81e01f811c687e11cd4734c21ec02fe63a748a0cda183d10a18ad7bfa231c564",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/contact/ContactScreen.tsx",
+    "lines": 341,
+    "sha256": "375d16b16bf2f614a6a10f2035c06012cbd3de33abcd7ef92daa23117f497bc8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/details/ChapterDetailsScreen.tsx",
+    "lines": 147,
+    "sha256": "a92d00494b360891792f02f5e57520d5c02d1fc1f5637a9d4419b5cdd3544297",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/downloads/DownloadsScreen.tsx",
+    "lines": 380,
+    "sha256": "3c2935166a4fced7da0db05082b788334c1f92f207f565cb578d7c3a55400d30",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/home/HomeScreen.tsx",
+    "lines": 582,
+    "sha256": "58e31f655a0ef839253a3883e969faace15137ec94e76d1e13d1f286a17953d3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/maintenance/MaintenanceScreen.tsx",
+    "lines": 26,
+    "sha256": "8b1d69371d4053a38eb29cdc7b260f75e86b7bce63168ff983d47b77bf99da41",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/notes/NotesScreen.tsx",
+    "lines": 262,
+    "sha256": "94887e0f6c8df59b9f4b744bcaf0c0b15c572dc67c27a4adf0a117765acc99a9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/notifications/NotificationPreferencesScreen.tsx",
+    "lines": 107,
+    "sha256": "a4c2a6473e56ad4bf1ac4d72af32b9f3f079c8cdf2d4d479de50fd71e6b9900e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/notifications/NotificationsScreen.tsx",
+    "lines": 149,
+    "sha256": "c159ffe04a04ab2f41a7b7f87ce057f359ab73a0ee133ae47d4ed27ee41317db",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/onboarding/SelectCourseYearScreen.tsx",
+    "lines": 262,
+    "sha256": "86afee9a9de5e9b409a8c55e4606cc6c985da10b86c5ff01238fc59960c20e52",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+    "lines": 361,
+    "sha256": "af6b8c7d0278a51eead9a5f6ec0c07dca7bd9227c67ffe44cb3521f75ba50ef3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx",
+    "lines": 558,
+    "sha256": "d5914ebd16c3d558029ebc009c85e1eeacd853c7bb0d2d890327bf7495be47c3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/PaymentFailedScreen.tsx",
+    "lines": 332,
+    "sha256": "32b6c84b5845531ee057ec98031993b6ac72c05202835311c1882f073d637a85",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/PaymentSuccessScreen.tsx",
+    "lines": 232,
+    "sha256": "2e037ccfe87af9960418a93a171e7ffe36b6efac7abc6780260d967535c22a94",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 56
+      },
+      {
+        "name": "purchases",
+        "line": 59
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/checkoutHtmlTemplate.ts",
+    "lines": 185,
+    "sha256": "41e2e48d4fcb22686b386778812cb33630ebdf89bd3de574b68129b414d8047a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/payment/checkoutNavigation.ts",
+    "lines": 20,
+    "sha256": "60da0406e76162cec40686a2760f5a1d6047b05daad3532893e469e31d1120df",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/pdf/PdfViewerScreen.native.tsx",
+    "lines": 191,
+    "sha256": "bad5be63287b389c5252ecb2db00e3a0e52c7abd193ec630afa1f99192b9ad06",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/pdf/PdfViewerScreen.web.tsx",
+    "lines": 54,
+    "sha256": "f5a7938e2b214c2f3e67cda4265ed96ad0c4fb968055b150384a6d854ce55f79",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/privacy/PrivacyScreen.tsx",
+    "lines": 206,
+    "sha256": "8afdb09ee0bd3a1115ae1dc9eb37cd8635b565e9ebd006e7abdaa48dcb047737",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/profile/ChangePasswordScreen.tsx",
+    "lines": 222,
+    "sha256": "3c176090c499a8fe4ceb9efeeeb482ce7919b59be3a27edbeb6f07ae9a155b3c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/profile/EditProfileScreen.tsx",
+    "lines": 205,
+    "sha256": "f1575df51f4c1e23d3b28a4ac88ea0a19e29615de7c9be005b4b9fff62d47908",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/profile/ProfileScreen.tsx",
+    "lines": 256,
+    "sha256": "f1294959044dbfccade838ae57938606baac0360e669752bee9c5d3981d32c92",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/purchases/MyPurchasesScreen.tsx",
+    "lines": 239,
+    "sha256": "525db9984c5c5deb3c81f8e2718374eb7df056e68e170432e51532f1b3b0ef51",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/quiz/QuizScreen.tsx",
+    "lines": 537,
+    "sha256": "e1a0c7c60b57a7291f659fb6e18afceb0ea38b8fcdd1c4e3369e007108c18770",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/quiz/TestListScreen.tsx",
+    "lines": 137,
+    "sha256": "3966ac9ecb64dffb841f7d7cf189420fb38654d97f1b288fcbf0e386bddcc5db",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/referral/ReferralScreen.tsx",
+    "lines": 373,
+    "sha256": "4b837dc8d54a81634e1d9c12889290b29781d6614bf9f0f7aed2a4527f89f321",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/referral/ReferralTermsScreen.tsx",
+    "lines": 70,
+    "sha256": "7c5145c5c9c758273bf68ae7b15035ca7c72b60468066206063630b9536b3108",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/reminder/StudyReminderScreen.tsx",
+    "lines": 294,
+    "sha256": "0a02dd8e3df57651b12588c3a785e0a9c24d3b4236283b66664370a04dec92f8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/search/SearchScreen.tsx",
+    "lines": 384,
+    "sha256": "8a57eba7a60d438a4ded3c84255d068495824be43386f5058d92e6926eaf3ff0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/settings/SettingsScreen.tsx",
+    "lines": 214,
+    "sha256": "c5ae91746a18b45e974e5c35de6e5031ce47c5e47cd34c3dfae4eda7a3685300",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/store/StoreScreen.tsx",
+    "lines": 241,
+    "sha256": "613ad1b20dd2046ed82a613290401bd5723d87ec3025d655a7d67be29f5a0cd5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/subjects/SubjectsScreen.tsx",
+    "lines": 141,
+    "sha256": "418b6932d00ee0a012da0d110c0c22ad1fa728e32de72ce527fa52a8a6aae1ce",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/terms/TermsScreen.tsx",
+    "lines": 200,
+    "sha256": "7f1bcc93dd86f246410c0741c0b5117b1403d683f29ea80e3091ee18b3424968",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/update/UpdateRequiredScreen.tsx",
+    "lines": 55,
+    "sha256": "b79528f4b59d038cf5c4c150b3c31c9ae1fdded955a44260ad9b8e828abd57e9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/videos/VideosScreen.tsx",
+    "lines": 137,
+    "sha256": "1abf8160b1ee17ffcb370aa27bbf47ac2308e5f3af638caff9390c31a6087ea7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/screens/years/YearsScreen.tsx",
+    "lines": 133,
+    "sha256": "326c135c3d7f0bb9764f9a9a0461a360b393146d3285fbffde40323e795c5061",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/analyticsService.ts",
+    "lines": 55,
+    "sha256": "5107e6e21e62b3b456be76f3a570008d77990036bd59314c4d91f017d89e21a9",
+    "database_tables": [
+      {
+        "name": "analytics_events",
+        "line": 29
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/appConfigService.ts",
+    "lines": 90,
+    "sha256": "7933522ff7fced2ab49e9456586c10222615882088dafe3270010efdaf13eaa6",
+    "database_tables": [
+      {
+        "name": "app_config",
+        "line": 52
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/authState.ts",
+    "lines": 156,
+    "sha256": "6f66b50a6cdc1fa43ab8afda066d0f38154ece73f4cf81050ff29a4138b9f11d",
+    "database_tables": [
+      {
+        "name": "profiles",
+        "line": 106
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/chaptersService.ts",
+    "lines": 59,
+    "sha256": "86744d9e16b6419cc1dd1d25591a2b0446cd879d2b25100d79d7255fe18570bd",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/courseState.ts",
+    "lines": 168,
+    "sha256": "27e8974e8699aab50d0ed05d4a0ff3f2776f0752da5a2c52ce7503452f6b5fe5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/coursesService.ts",
+    "lines": 11,
+    "sha256": "55fc3efd924d2c82b42ee4abd50930748c0b25ca7d7c0c9768295cf95640a27b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/indiaBillingStates.ts",
+    "lines": 9,
+    "sha256": "2c979e0d3e1a5edfb873d4e09f4f7a9dd75164272daa75edebfaf9b0bc245fcd",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/maintenanceService.ts",
+    "lines": 33,
+    "sha256": "95b00e4a75c97e7e3b2c203d755118740215e2cef8062ec3ade6a7b271283817",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "get_maintenance_mode",
+        "line": 18
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/nonplayTestService.ts",
+    "lines": 267,
+    "sha256": "66e139a8f9cee856290028cc113e7a6e8a2d2a2538f43146b278edcaded54b4f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/notesService.ts",
+    "lines": 11,
+    "sha256": "95d772a705db1a3e03f5efe3d4f30ac499fe3c088d9df9b8dcfe41058bfa7ca6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/notificationRouting.ts",
+    "lines": 73,
+    "sha256": "8372057819efeceb5c38c24f0965d52b33488d5625ce1b536af658ef138f53f0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/notificationsService.ts",
+    "lines": 143,
+    "sha256": "a0a48fce1c878ccb6973a142ff01946209e05596aaacef7d1a831b6fa2405af4",
+    "database_tables": [
+      {
+        "name": "notifications",
+        "line": 36
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/offlineNoteAccess.ts",
+    "lines": 29,
+    "sha256": "79970c04f7e9b6eb8d3fd1a6529219907669a21c666884861b0cc9048a1d349d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/offlineNoteVerification.ts",
+    "lines": 37,
+    "sha256": "77683cf1996f9254a3cc13cacef9d2ee364fb012d32aa450bca7411d5b3a9a7f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/ordersService.ts",
+    "lines": 18,
+    "sha256": "f419c9346500107a041f48a3015e2d86a83ffe399112401cc7f9f3f7be0deca3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/paymentService.ts",
+    "lines": 374,
+    "sha256": "1bfeacfb3741d3031a3c6c5a9fc35c010723dcf7b5808bf87b16daa0d9b7fbb9",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 353
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/playBillingService.ts",
+    "lines": 517,
+    "sha256": "bff1cf3545dc53979444c23a382a7342165fa68dba6149fc76e66cab5c422af1",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "get_my_play_fulfillment",
+        "line": 491
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/playOfferSelection.ts",
+    "lines": 32,
+    "sha256": "c0996d1b7f7fc948769192c2a23076a2be49727b9a86c8fb02423b4a94f2c589",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/productsService.ts",
+    "lines": 54,
+    "sha256": "a6a26b58ef4c222b86d37ca43d1fe668344589b426a24b1f8b7af72319b80bae",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/purchasesService.ts",
+    "lines": 123,
+    "sha256": "4ae592ac56f78524bd14991bfaedc4236c3f1fc5ed32b987ff525b697989ce6a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/pushNotifications.ts",
+    "lines": 131,
+    "sha256": "d693d818789f45a9f313135109ca1b8346f9acef93e959d26f0b8ed205bd29d4",
+    "database_tables": [
+      {
+        "name": "push_tokens",
+        "line": 98
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "register_push_token",
+        "line": 76
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/quizAttempts.ts",
+    "lines": 92,
+    "sha256": "95aad83db2822c64eebe12fc9273a5cc7a0c59adbb14732a4e3fbddd37c330c0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/quizService.ts",
+    "lines": 20,
+    "sha256": "91013cecb11f621f324dce94217717c67e50cedf2db10be699f2dd76fceabc46",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/referralsService.ts",
+    "lines": 89,
+    "sha256": "316bedbb3d781d76a9da463fcfec88115f880617147f908645bb1be28cd152b3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/searchService.ts",
+    "lines": 422,
+    "sha256": "ae8c8a16006a5f6547c7e03bd9b4b19594ceea8730db5692c9460a0d5e759227",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/secureNotesService.ts",
+    "lines": 38,
+    "sha256": "eefe67def936193147fa06412227fdf89aeea01f41c6ef0dba8c938e26128ad3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/storeCatalogService.ts",
+    "lines": 30,
+    "sha256": "885d28cafe186a0d5ebb78ff6cb24038ae79ed150802c7c1c8d25ea2729d324b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/studyReminderService.ts",
+    "lines": 199,
+    "sha256": "6513b976477b080ac04a20fcdb8fe6afbe4c66fa4428b49f92e13dd18b9b5ab3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/subjectsService.ts",
+    "lines": 14,
+    "sha256": "c731da156a850811f5d65f224a80ae05e0424181e088293cc1ec95efa7f00442",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/syncEngine.ts",
+    "lines": 265,
+    "sha256": "6572f3233dcaccb31bcf463c4d1e80f6f0e484b862c8252c95b8b8239a10b5f4",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "submit_quiz_attempt",
+        "line": 146
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/usersService.ts",
+    "lines": 113,
+    "sha256": "fbdbeee4e7437ad30614160f226f81cc5282af502b8ca3ce0a987ea4acb8621c",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "set_my_course_year",
+        "line": 54
+      },
+      {
+        "name": "change_my_phone",
+        "line": 67
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/videosService.ts",
+    "lines": 11,
+    "sha256": "ef82b9133ba449f6a069aded98bbe8d3fa835eef3542460e997ee61a0410aee8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/services/yearsService.ts",
+    "lines": 40,
+    "sha256": "39eed3e43b6e27fc91e1d4bafded73ee774fe09a84ce7f7f8eb73b84a50e680b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/colors.ts",
+    "lines": 40,
+    "sha256": "1687ee4996ce6829a14b98a2a62bc3fd7b8571c65378ec5bf5947e6625bae193",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/fonts.ts",
+    "lines": 6,
+    "sha256": "a0cc7dca213ec6e7b46cb8485aaa828a6f60f6881d90ad4b64ad05582c8acb54",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/motion.ts",
+    "lines": 56,
+    "sha256": "3564e7b557a2f8509ddd2e01c3cafe668b596db99123ab4f917a7c03bf3dc785",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/radius.ts",
+    "lines": 7,
+    "sha256": "22aab92b3bf7e48e50126f384d67aed98ed96f9cb47459a65a2a296d70b3d35d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/shadows.ts",
+    "lines": 47,
+    "sha256": "2044dc05c7dc8774bd4004ba0a00272e4cf913a1d3f24ab703248a0945f1cf54",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/spacing.ts",
+    "lines": 7,
+    "sha256": "5a70c7a69cac912b7e0b492672fa5880480ae814d1934f65f8a4d312beebc4f6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/theme/typography.ts",
+    "lines": 46,
+    "sha256": "f3abacec711f63416a525cc4777b54711c25c6e28b8780af2c285310dc938874",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/chapter.ts",
+    "lines": 17,
+    "sha256": "4a874a33847bc296985c5d5882ee6d2d51c70822e77e7f8cc0c6823c39963190",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/course.ts",
+    "lines": 14,
+    "sha256": "f26f4aed98314bee05dc60828abd8e638460dde6622973fa2b065dca613a7a23",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/index.ts",
+    "lines": 18,
+    "sha256": "bc21aa23fdbd5880e51c76a58623bd359aa8686f1dce73ddd7bf36deaddb0bae",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/navigation.ts",
+    "lines": 148,
+    "sha256": "4274b97e3cb69d07794c70b289ef4fc6985ffbb4629542d7eb99cd80c2225566",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/note.ts",
+    "lines": 17,
+    "sha256": "398c978b3ea2feca5d045e714c692cca71fcb2751419ce2f6b94df373f3e63b2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/offline.ts",
+    "lines": 74,
+    "sha256": "bcc547ea34519e271a19ec6a9e966c9fff89fb2b37f2521e9ed4ecb8d243b51e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/order.ts",
+    "lines": 58,
+    "sha256": "7296264b46d2481c73ad4233f4c48abad9240fa2c571d524a65139541fbd01ff",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/product.ts",
+    "lines": 39,
+    "sha256": "ce60bce5fb128b6ff270fc4d98f4023d92d91f3b6106b5a8bb5c56cccf7280f7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/purchase.ts",
+    "lines": 33,
+    "sha256": "aa9547248a34861408efada53d6b94ea3c5ea634dd1dce2c2176026d3678544e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/quiz.ts",
+    "lines": 24,
+    "sha256": "cc2937bf109be191c39ba3b97d703c378784d789ed8623a23f367e8e48194c36",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/referral.ts",
+    "lines": 92,
+    "sha256": "bb1d96e515cc0be35713e505d8e3055d89a74ebf736d0cef44814b28f08e6367",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/search.ts",
+    "lines": 118,
+    "sha256": "454ff1035baa9e0b9a2136aea6d3efd8549f141ee58fe537c54beaca176173fd",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/subject.ts",
+    "lines": 13,
+    "sha256": "65c85a5b5e2ce5812b82ec6270f909b3e4f107d55013f46695cf85e1025d53f6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/user.ts",
+    "lines": 42,
+    "sha256": "e2ffb46e1d183de385c87832ce3fa75eae692fbbcfb780e6e0a03980c02577ab",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/video.ts",
+    "lines": 17,
+    "sha256": "7a782aee346a04a2056fe90c8cacc49aeefd6e7e41fce2a33cf1f3c407a1ae52",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/types/year.ts",
+    "lines": 11,
+    "sha256": "aa66ffc723b26674cd00dd0e287be7f1a440f9a47cfc2e877be84c3ee741d7b8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/caseConvert.ts",
+    "lines": 21,
+    "sha256": "69da8ce6bdb8c22fd66924d9cc8e9e5a05f8395ed38f9058f74950eb24d88f4b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/dailyQuote.ts",
+    "lines": 32,
+    "sha256": "9f31974159ca9f4bdc63ad15e4f1ae3bfa21c46a0c06ad869dc7d7c4e27d58a8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/downloadManager.ts",
+    "lines": 520,
+    "sha256": "5dd1f13449c6aaad1b92c9fc380ddc054e96b2e8951cf08ff66eac77471a9411",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/gradient.ts",
+    "lines": 56,
+    "sha256": "c62284eb98e82a2a878e30071de47ea336d996514852ce39913691cf34fb3a50",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/localCache.ts",
+    "lines": 71,
+    "sha256": "d8891d4b2b313a509a515222217b6e061fd452488f8387555e031b86ba0ab6b6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/logger.ts",
+    "lines": 30,
+    "sha256": "3e6b76e24675e31ee3143a0cd61d81dec37c51f9710b4e739f93fb6a0c022dbe",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/notificationPreferences.ts",
+    "lines": 58,
+    "sha256": "907f2702ff7a71586c07d79b5d257877f309b015a4fdbb8650bc4d4ef677e80a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/passwordStrength.ts",
+    "lines": 62,
+    "sha256": "c250f23ec0275926e6284c549f5140a20bc63cafe1dc09e7101e498581d717e4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/pendingReferral.ts",
+    "lines": 42,
+    "sha256": "7a9bd057529570bc6c69e02dcc2514b67f8e14cdae1339ad0d8669466f5e5d9b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/phone.ts",
+    "lines": 26,
+    "sha256": "f914eac626d39ec64c6b44ca913e56d40aa8d8d0debf2cec20285e0339428264",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/recentActivity.ts",
+    "lines": 78,
+    "sha256": "7eb273303fa48a9fc1a260c7b7b852506b3ff1fe44ef63fffc54e111b88ebb7e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/recentSearches.ts",
+    "lines": 69,
+    "sha256": "0647f6f9428a1edbca7401c5f036a7413d13fb105419a125e6a6a75d5e1ecc89",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/streakTracker.ts",
+    "lines": 67,
+    "sha256": "10e047467d2ef0151b6fe5413bcbc152c151182f958daaf894233f3ad813e817",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/textMatch.ts",
+    "lines": 109,
+    "sha256": "b4f8754e24d1cf8dd7ec76dfa4d54f07000903581544e5ee0bcc3a0aa314fe1b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/version.ts",
+    "lines": 24,
+    "sha256": "a87cadc3ae5723cb05653db3ca9917b81d3fa6a2f8e57d0913ded40f27964f4d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/videoDiagnostics.ts",
+    "lines": 16,
+    "sha256": "b245a049879b982364ad953d805ec36c56ab8f8eb5e34f3c2175af17d1b17257",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/videoLink.ts",
+    "lines": 75,
+    "sha256": "737c0a481926df180ac3c4c92f817208f95e71f3b8b00dd637f3b61d5c6a827f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/utils/videoUrl.ts",
+    "lines": 65,
+    "sha256": "b82ba96008f9e0e9d4963eea2c7e9595c90d1a5251b5b5a8d5c332f3e31fcf33",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/contactSchema.ts",
+    "lines": 21,
+    "sha256": "054730d109f6fe86a4207853b2600eb194c4fba3e0b37a0ec2d6939051ec500f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/forgotPasswordSchema.ts",
+    "lines": 10,
+    "sha256": "48088be2977d1d4bc6c518ea2503792f385104a8d963d7b3b2c83d5a90531b8e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/loginSchema.ts",
+    "lines": 18,
+    "sha256": "ac8c33b43eb550c7fd65960459e5b3c4e4c8407fb46c1043c0e1e9611d80c23f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/passwordPolicy.ts",
+    "lines": 12,
+    "sha256": "79e97af9c86f69eea1db0058fbe3de4588cbd2a4431e950b313ff249a5585f3e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/registerSchema.ts",
+    "lines": 54,
+    "sha256": "af60ab7b466376893a62623021f9976fce23685cf5a619ae6585b05617325863",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "mobile-app/src/validation/resetPasswordSchema.ts",
+    "lines": 18,
+    "sha256": "c08a6389021c94a9791400371ac3c74830410b9053f6a1357d3c29e157b947e3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/App.tsx",
+    "lines": 64,
+    "sha256": "0fa3a53ce1f0411cf256439924a0c091120799aa66aade9cf66b984f9eb9a66e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/Button.tsx",
+    "lines": 33,
+    "sha256": "fac7edd1c7e9f5e8b35a91b9735ee753e30d25c73c56d8db749e9ec9c0a900c6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ChapterFormModal.tsx",
+    "lines": 266,
+    "sha256": "0114cfb8fc93aa86f873642ee93260518ef674b0f40c3dedbc75f5f16ee3357b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ChapterPicker.tsx",
+    "lines": 164,
+    "sha256": "c63d9a71369582f7024786615301e4386b63777a13553f0565abe2a878b4a272",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ChapterTable.tsx",
+    "lines": 85,
+    "sha256": "505cb81497ab411365263fabe4e89c07261a1d74fd94df18007d7abddacebc9f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ConfirmDialog.tsx",
+    "lines": 53,
+    "sha256": "2b52fdb9dea146981cd69143082f09f47fa1505d88825a99f17aa9251178d9df",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/CourseFormModal.tsx",
+    "lines": 175,
+    "sha256": "0b8f2724672f208a5b58a7d0c7ee8e94302b5d0364b958d723fc91cb1b3fb4a0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/CoursePicker.tsx",
+    "lines": 54,
+    "sha256": "89f52db11529c2c40b8d7ba6eaa7caa327931c681c155b593967094e289dfe1a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/CourseTable.tsx",
+    "lines": 91,
+    "sha256": "0e62e3036b7c5412b6cc6b7e2fa3786d975586dac0ba3b40ec70b4f4c8b5d3ca",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/Header.tsx",
+    "lines": 51,
+    "sha256": "1874354f511f84abcff9f35a662eeb3859eaedd9dad75e7c87ce34740e6d0e43",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/Input.tsx",
+    "lines": 25,
+    "sha256": "19891fd2fd1c9c0039103b1acb199f8d92a4d306b5323bd4b53608fb8e9c60e6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/LookupStatus.tsx",
+    "lines": 20,
+    "sha256": "070ae945c766c27ae52cffbfbd5dbd7b117e0f666b196a39765b76ff952b3669",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/Modal.tsx",
+    "lines": 36,
+    "sha256": "1f578d040be4184d95506d3f7c9a49a3305f171d62c03d52a78f1f465d1b42ab",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/NoteFormModal.tsx",
+    "lines": 334,
+    "sha256": "5afe4a3bff3c9e506803adb4630289704be3820051f82de2e3820ede26bad84b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/NotesHeader.tsx",
+    "lines": 26,
+    "sha256": "9608b4bfc6ac0b29fea9b99d439be99fe99cb1c666f2830cd26d55ae2ecf74bb",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/NotesTable.tsx",
+    "lines": 71,
+    "sha256": "556388b2097e4c0e0f4d516672ce8e1f32ae1f89812d53ed2b8f5c3c7ec849dc",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/OrderFilter.tsx",
+    "lines": 20,
+    "sha256": "84b5b4f8ad2782f50ae79593264a91e78873d01e46a1aaef057a932dc8bfe0b3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/OrdersTable.tsx",
+    "lines": 90,
+    "sha256": "ea7b661ed25ea95bf63aafe74f6ef473968de5b54ede789707573658d3759852",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/PlayPricingDiagnostic.tsx",
+    "lines": 67,
+    "sha256": "d89640798a81bcc34f30ed28bf4c5d59c73a191d183c84385dbaaaa6eff64f0c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/PlayServiceAccountDiagnostic.tsx",
+    "lines": 68,
+    "sha256": "9fb52e7e7873dd54cd3a0ae5eabc350af8def9ee766dc5d575ec3e614d71d22d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ProductFilter.tsx",
+    "lines": 23,
+    "sha256": "c81e5ab2b39635e3cef9992544fffca699ef84c7e8fd1c75e663cdad2029f75c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ProductFormModal.tsx",
+    "lines": 529,
+    "sha256": "eb0c68b8f17fa2d3dee74656ad4d329353615a891cdd3e1fe55b6c02d48d5149",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ProductHeader.tsx",
+    "lines": 30,
+    "sha256": "024ebb60dd78ff7ee5f484079165d273f065584e6e2ac4d1dfc41414e1b09bf2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ProductTable.tsx",
+    "lines": 131,
+    "sha256": "a8e6c0e6110d8b4d999561b2d0cff9bf7789a12b2481d31318ea25f98f4d13a1",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/ProtectedRoute.tsx",
+    "lines": 22,
+    "sha256": "81607b98f5bd9fef64073f4747361f1a58d8f990af899f1c729e1ce36772da88",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/QuizFormModal.tsx",
+    "lines": 326,
+    "sha256": "a09b5190c79c4c3cce3cdd1859a9351e027a783fb018ca21d17495a8b2d5c0be",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/QuizHeader.tsx",
+    "lines": 26,
+    "sha256": "2efed900f6bc3f85e1e81b13689bbfed25a5990284afd2ff08faac7972132585",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/QuizTable.tsx",
+    "lines": 74,
+    "sha256": "72f2fa599026c0ef17936a399b44df56221c860f8a48cd182ff57b24ea04c3be",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/RouteErrorBoundary.tsx",
+    "lines": 28,
+    "sha256": "a2244e7b0c007b33ba717ad67ce3f71e6c2192a70ffb8ee0ccd41d8d87bfff20",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/SearchBar.tsx",
+    "lines": 21,
+    "sha256": "d811a4821943da053c113b6b8a9a8c270c34cb1056ce4a8a10e218aed09815e6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/Sidebar.tsx",
+    "lines": 53,
+    "sha256": "0a555fe65d4bb33fe6de3cc42aa1517456ad1d71fd4511f358e6d6ec84af08f0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/StatCard.tsx",
+    "lines": 41,
+    "sha256": "e03d1733370e54a8a751425c8fce6e309915300b922c3f61ec51766ac8d304ce",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/SubjectFormModal.tsx",
+    "lines": 233,
+    "sha256": "9aa761fa1a987e09fbcba57a3df612636bd8b97560327b8dfa6c58c716398c81",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/SubjectPicker.tsx",
+    "lines": 132,
+    "sha256": "f4ff43efb1a707deb73bbebdc47edecbd35cd67b78b07822a007e53f647f41c4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/SubjectTable.tsx",
+    "lines": 88,
+    "sha256": "78ee1c90465b39c271d6d0d13cc78d9d95e0b076da41e09d0dbd06f887864028",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/TopProductsTable.tsx",
+    "lines": 39,
+    "sha256": "1cbe189d4f9c9e91815212fae059df52f5d36d0d7c86982c843898a927a56335",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/UsersTable.tsx",
+    "lines": 90,
+    "sha256": "1266b05c9ecdff9dbafd1d9f43b615e265bbe2563a38936b07a36660c569484f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/VideoFormModal.tsx",
+    "lines": 201,
+    "sha256": "1e409a8df8c2918f382b60f52ead29b24dc7503ee9b21a97111c3840c245867c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/VideosHeader.tsx",
+    "lines": 26,
+    "sha256": "549af465c41994c3ef29afa2aec4c00ffa2472904acc86295e2cf09591e2789c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/VideosTable.tsx",
+    "lines": 68,
+    "sha256": "1ebec3ae1492a5622464f8bc00c6b6c649ccb8b3712916a97a954f8a6fe4bc6d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/YearFormModal.tsx",
+    "lines": 177,
+    "sha256": "fedaf8d4b82ab1c20c5c2861c9f16b96220a14c6059e615d950a172808316700",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/components/YearTable.tsx",
+    "lines": 84,
+    "sha256": "38bbc1cb12b9684e2c421ffd23630c9186d6f8783e21fb55ed296ffda196a158",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/config/supabase.ts",
+    "lines": 25,
+    "sha256": "a58f798817314d645d419b6111e9fb61e06a10ab0e97f31f82eaccd27517f520",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/context/AuthContext.tsx",
+    "lines": 123,
+    "sha256": "0d8289a830c38c566889d802743c22238ed690338d48eb679480dc44bf4e0faa",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "am_i_admin",
+        "line": 73
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useAnalytics.ts",
+    "lines": 49,
+    "sha256": "712205fd90768e1cce6c95c2b7a374537643f477c91b81f0ba6ee3d58c78be14",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useChapters.ts",
+    "lines": 67,
+    "sha256": "609d8a400bd1fb5f4739110ddd27b12a90b28945eff490c02b4011d36325966c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useCourses.ts",
+    "lines": 72,
+    "sha256": "6b38b9aea42444c81b7a1e210071f85dd98e8cff2852ad36efb56b9ee4346dd9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useDashboard.ts",
+    "lines": 48,
+    "sha256": "a3ce1f15cb25ccbd1d3c6a90b8dec4a62282e6d19a5d8e81d4399107682c74f5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useNotes.ts",
+    "lines": 92,
+    "sha256": "97e360f9ff060d76873eb96d8fed10f00eb6ee2f4cedb4624537a9b7f0f2a29b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useOrders.ts",
+    "lines": 56,
+    "sha256": "a1a28b99bfd1f1bf3dedebf3c76df1e860287ba3a0c89cff2a4a08acc18b03bc",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useProducts.ts",
+    "lines": 73,
+    "sha256": "755e06c84e10df5cf7923cc40956aaab5892774a3930dd4354cd977d6f5afdad",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useQuiz.ts",
+    "lines": 92,
+    "sha256": "8e8fd3cdad718c2dac8548cc83141228623eef9b47b8521d733cb3af3460c757",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useReferrals.ts",
+    "lines": 72,
+    "sha256": "441c28b8b4846441acf3d8c0043b9926c576774d2c69e9a93496aa5fb1da6bc1",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useRequestGuard.ts",
+    "lines": 18,
+    "sha256": "15a19a87ef74a784dda342453fac300046576d0220650d7f944cc5340bcfcf6a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useSettings.ts",
+    "lines": 49,
+    "sha256": "8a09051e8540bc1e2759e6e1183e79958aed76718648d8cdc3d81d9ea28053ba",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useSubjects.ts",
+    "lines": 67,
+    "sha256": "7a6d0c50b2b7681ea4b22067be0746f1b91acf6412bf2baea6570c75271bf6a0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useUsers.ts",
+    "lines": 56,
+    "sha256": "510159bf4f52995cc75050eab492d4b47057079f23df744f9a466ee9dab70fe6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useVideos.ts",
+    "lines": 92,
+    "sha256": "9915fbfeeafd9643c1c318eb5cd3430e3b7c1d14070970a1addb5d40e72af3b6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/hooks/useYears.ts",
+    "lines": 67,
+    "sha256": "353fa3eecfb6add0daf44d49a48aaad57e29f1643a77b4b1c7466c2cf776b929",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/layouts/AdminLayout.tsx",
+    "lines": 29,
+    "sha256": "04e6f3a37779e2e303a60d97b29158e77fff101a7260dd2c6edf716fc5b0417e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/main.tsx",
+    "lines": 10,
+    "sha256": "6e9e5807fcbd48b75a96db5cbef36c996262196be42e6d4760dc86babbe61ad2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Analytics.tsx",
+    "lines": 113,
+    "sha256": "4dc6b697254f5164a6d1ae39cab70d8ac148d632f7cbecb1a63aa21cb4a494a4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Chapters.tsx",
+    "lines": 215,
+    "sha256": "1826cc2de42f0b9cfd1aef3538ad4ea0089880a589d0884810a5e3574dd9ccf0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Courses.tsx",
+    "lines": 209,
+    "sha256": "cd93c6da02eaad35a614f08fbd006a0609f25374505f109f77d0a087030b72c9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Dashboard.tsx",
+    "lines": 102,
+    "sha256": "13f57fdb53084d10cf1132c50135a2593ea556fe5362b719b872e2bc52623a35",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Login.tsx",
+    "lines": 272,
+    "sha256": "c73cf3f2bb95daf053c9f43ad50bdf8e4835958450db32336e091176ae5342a8",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "is_admin_account",
+        "line": 68
+      },
+      {
+        "name": "am_i_admin",
+        "line": 89
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Notes.tsx",
+    "lines": 194,
+    "sha256": "3714fd594cfcc4cf42dc1c58fb6a4690f824af58ebbc6a16ea748a9c422dde32",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Notifications.tsx",
+    "lines": 119,
+    "sha256": "ff808a0b1ed7a70a2f13465f5824f9ac5d1027f184d1a4522cf9b46ae4949f94",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Orders.tsx",
+    "lines": 132,
+    "sha256": "bc955cb9ce3b73771f4f0e53527de947c86e1f1546e06e442049a639463f6ee5",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Products.tsx",
+    "lines": 193,
+    "sha256": "8f5ef759e60f934338f9f2d26a379310bc3cbea35c5283dcef08c5fc21202daa",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Quiz.tsx",
+    "lines": 184,
+    "sha256": "0a8b1a844a7945c55d6ec53bb10e9608595c0677971ade94eb4c09fe7e1052f9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Referrals.tsx",
+    "lines": 474,
+    "sha256": "e56787344aa75d121320fe45c420aa3fd999d25b3bff89bbe6bcae0f48b09541",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/ReviewFlags.tsx",
+    "lines": 179,
+    "sha256": "eb7e4b416fb14f9aba2fc2fb068a5fa7afa484d947c206e7c2ddbbb7f24424fc",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Settings.tsx",
+    "lines": 161,
+    "sha256": "9bf68e736741310c3209ea2353c1ca749bde8281555b342a503398bd783a9ab3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Subjects.tsx",
+    "lines": 163,
+    "sha256": "7d4553f8e442b7fb849fc298028835a681123e43276b5525ed29c3bdfe08335e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Users.tsx",
+    "lines": 117,
+    "sha256": "a0ee459da2e2927e7e4ee5bae89694eeab939ec2832f97129ca068275d66141a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Videos.tsx",
+    "lines": 184,
+    "sha256": "99fb945bc243e09bbf402f01b09f630613b607cd5f42e034b002713699d563e0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/pages/Years.tsx",
+    "lines": 124,
+    "sha256": "98127676de282f44797efaaf5ba4280681dca4034ab18d591ed21c031d1e3f13",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/analyticsService.ts",
+    "lines": 97,
+    "sha256": "797e550c33d45f7d5f5ca653a2dc7a146b44c3b37854f8793cb4954570ea58a8",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 28
+      },
+      {
+        "name": "profiles",
+        "line": 75
+      },
+      {
+        "name": "products",
+        "line": 81
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/chapterService.ts",
+    "lines": 40,
+    "sha256": "89b952bb79d8df035cf042277eb4306039f5b2097a7a40367d155ea4cbbdd9c0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/courseService.ts",
+    "lines": 65,
+    "sha256": "75790d4516267bcfe634a5bcaecad586b702f261b20bc63c7283209f98be8fb3",
+    "database_tables": [
+      {
+        "name": "years",
+        "line": 49
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/dashboardService.ts",
+    "lines": 44,
+    "sha256": "c413dc78e506db78fb003061b3d8f54dfe74a0b50e2238207a8ef10795724e06",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/noteService.ts",
+    "lines": 51,
+    "sha256": "56c1a460a028603e867999395e7b22b812394f22a1fe09a0303b31fd6ce48ad3",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "save_note_with_upload",
+        "line": 27
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/notificationService.ts",
+    "lines": 35,
+    "sha256": "98f49f98a7d27c6bc483ba0b5f74a09b1e5b8cba8a89688c646a5172ce6f2335",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/orderService.ts",
+    "lines": 57,
+    "sha256": "9aaaa546379b1be4bcf93ea4b80bb24ca1b5916ef780fc5972b82068eb9b7c2d",
+    "database_tables": [
+      {
+        "name": "profiles",
+        "line": 31
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "admin_set_order_status",
+        "line": 55
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/playBillingSyncService.ts",
+    "lines": 25,
+    "sha256": "c69b4ec52e5132682d7aa670c872ebc30575f6678b0603e037f0415b5f828767",
+    "database_tables": [
+      {
+        "name": "admin_play_billing_status",
+        "line": 16
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "retry_play_price_sync",
+        "line": 22
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/playPricingDiagnostic.ts",
+    "lines": 147,
+    "sha256": "75f1a02dbd07dad3a8781e9da243daacabb756ead0a650dfdebe6a883d6b92a4",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "am_i_admin",
+        "line": 111
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/playServiceAccountDiagnostic.ts",
+    "lines": 85,
+    "sha256": "e6e452eaa38c5e15d48259e4aacf1e2a9135de7fb45d46103e3ec532ddb68e89",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "am_i_admin",
+        "line": 42
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/productService.ts",
+    "lines": 66,
+    "sha256": "1bbe3f73ca2c3278edd09a3efaf5cff78b7fc03d7b75099ff914d45b61ee8af1",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/quizService.ts",
+    "lines": 36,
+    "sha256": "471ceb4ea72ee5a199b70219570d937b4f6e19a243fa435d1907d763e29ba812",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "get_admin_quiz_tests",
+        "line": 12
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/referralService.ts",
+    "lines": 81,
+    "sha256": "9ef57c9a62b37a29f30f34e713b32518a8030477d44dba77b59d5b28cd5be0e8",
+    "database_tables": [
+      {
+        "name": "referral_settings",
+        "line": 14
+      },
+      {
+        "name": "referral_settings",
+        "line": 31
+      },
+      {
+        "name": "referral_settings_audit",
+        "line": 41
+      },
+      {
+        "name": "referrals",
+        "line": 53
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "admin_reject_referral",
+        "line": 76
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/reviewFlagService.ts",
+    "lines": 37,
+    "sha256": "dff3945e5d47ef6a49c6d3fbb360a882541b7d1110b28fb73b25ddb0a5b5e1f8",
+    "database_tables": [
+      {
+        "name": "order_review_flags",
+        "line": 23
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "admin_resolve_order_flag",
+        "line": 32
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/settingsService.ts",
+    "lines": 73,
+    "sha256": "e4ce467dec9e1242b1172132c9d1e231af94d7e77b557bc9c37861cf4d6bfc9c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/storageService.ts",
+    "lines": 108,
+    "sha256": "0a7d6ab0b89e55918241949e686282058da95dfbcf37d425d8eb81f43d222ab7",
+    "database_tables": [
+      {
+        "name": "note-quarantine",
+        "line": 46
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/subjectService.ts",
+    "lines": 41,
+    "sha256": "3ba81266fcbd63261639da0255ad966974dc671d962cabcb8cff76c5d6f1f9e3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/uploadError.ts",
+    "lines": 20,
+    "sha256": "a5615d9e30b9eadbbc83bf976c41374c0de18dc0584e3afebb5cf607ac9aa1e6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/userService.ts",
+    "lines": 27,
+    "sha256": "2f95e9bcafb4c3f48779609912b0abae6a08e319195a27eab57160dc606b57df",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/videoService.ts",
+    "lines": 33,
+    "sha256": "5c3ce8ef52e165467bd085721460d83daf607fbf45e10bc86b5014020547d3ec",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/services/yearService.ts",
+    "lines": 38,
+    "sha256": "01fb2aed7b3687a53b0b99b0f936868100fb3b30e949486a0ae6d15801e61c14",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/src/vite-env.d.ts",
+    "lines": 1,
+    "sha256": "b440b802c2cfeac6a24eda510bd63c1f23c6ab5c52bcfe3a32a918dbad6b46c8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/chapter.ts",
+    "lines": 20,
+    "sha256": "7a5ee3bcd701b4673fbac5f960e7ed59a3addc231d1f7d6cc2f33a803f4ccdd3",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/course.ts",
+    "lines": 12,
+    "sha256": "8360d359da42ae3618dec66cee04f7452bafe7cb8a3af60504716e5e74fcfb3d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/filters.ts",
+    "lines": 6,
+    "sha256": "8cabcb3a38d5ba966687488a5285ca587eef949e62552edeefbf0e1dd6346b42",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/note.ts",
+    "lines": 23,
+    "sha256": "5ca02863dff41c658edaa7e2b3395a1d8a80e2b085dcfe53ed78c78219cc1026",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/order.ts",
+    "lines": 26,
+    "sha256": "ccb35509eb56cc37c8bcdae7c0b54f384a77e147ef1975f1f3b75706871a379f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/product.ts",
+    "lines": 58,
+    "sha256": "e856c2a5fa6b5191311d7e8e8f0a65f453f7548d68ffb58b96bd813b18cd5510",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/quiz.ts",
+    "lines": 32,
+    "sha256": "e7e613339aa3914adfd328e9411c005f733df6fe1c50071cabd6a1e9b779f842",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/referral.ts",
+    "lines": 66,
+    "sha256": "3811aaa4f49db3348e1d19d721d56c6f63e4aab04e6a7fbecb1fea9117c61601",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/settings.ts",
+    "lines": 14,
+    "sha256": "614e4f5b443369e4b6d76ba05a5c43b7988926f9819fc0b4578f0f19868a7025",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/subject.ts",
+    "lines": 17,
+    "sha256": "10acfb13553f0c8b9f222ada0a0275ebaad687c53f269bdbc5aa69457c21dd6e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/user.ts",
+    "lines": 21,
+    "sha256": "a82bca8d1351b9b808c218a1cd39c9337b523ccd294c77ced90147ae774774f9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/video.ts",
+    "lines": 25,
+    "sha256": "40d2b12c0f1b1e13e91610747d9b34945f2f1f3b3fb68dee0555ea18178abe33",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/types/year.ts",
+    "lines": 15,
+    "sha256": "81a6e7e9cae18a6d889d7fb1a83000303379931ed380d742ac1e3a50475cc414",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/appVersion.ts",
+    "lines": 26,
+    "sha256": "62b8fd51d2e304d21f181818214315af38b83c8a693e46b5ca4e0e423e145e8a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/caseConvert.ts",
+    "lines": 21,
+    "sha256": "69da8ce6bdb8c22fd66924d9cc8e9e5a05f8395ed38f9058f74950eb24d88f4b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/filters.ts",
+    "lines": 44,
+    "sha256": "372464708397bab0899ae6bacf4b1090603a9c77745f64dd5d341345006081a2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/pdfValidation.ts",
+    "lines": 13,
+    "sha256": "7756efae65f082ba43ec48708ee9dff16fba61ba42e3bfd226b4d52ea15cc71a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/quizValidation.ts",
+    "lines": 16,
+    "sha256": "bf66c9a32fe11f5cc984ce98d4b22fc0a932a94de34d8f11a9a97a0ac01c2d87",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/referralLimits.ts",
+    "lines": 80,
+    "sha256": "0dad55a21a1722e5210c96c0bab68027d61c2c9be21985f64a67a8b54dde43ea",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "admin-panel/src/utils/videoUrl.ts",
+    "lines": 13,
+    "sha256": "377a415708fc8ab26f771b27b405385aff32964ff1a6f106f899fd8644bdb162",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/boundedFormData.ts",
+    "lines": 46,
+    "sha256": "b3f61bbf436ee3294547a2c1f927f48ef110b3d429e7c6ef4bdd0780b8f2ed8d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/cors.ts",
+    "lines": 26,
+    "sha256": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/createOrderHandler.ts",
+    "lines": 189,
+    "sha256": "0614a6d262191a05c1f100e5d9647de091807f8f037453eaf73234c6aa80a377",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 61
+      },
+      {
+        "name": "profiles",
+        "line": 80
+      },
+      {
+        "name": "products",
+        "line": 90
+      },
+      {
+        "name": "orders",
+        "line": 123
+      },
+      {
+        "name": "orders",
+        "line": 137
+      },
+      {
+        "name": "orders",
+        "line": 143
+      },
+      {
+        "name": "orders",
+        "line": 149
+      },
+      {
+        "name": "orders",
+        "line": 159
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "create_priced_order",
+        "line": 101
+      },
+      {
+        "name": "bind_ucb_razorpay_order",
+        "line": 154
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/externalReporting.ts",
+    "lines": 247,
+    "sha256": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 27
+      },
+      {
+        "name": "orders",
+        "line": 35
+      },
+      {
+        "name": "orders",
+        "line": 134
+      },
+      {
+        "name": "orders",
+        "line": 142
+      },
+      {
+        "name": "orders",
+        "line": 147
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 161
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 178
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 184
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 192
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "mark_ucb_report_attempt",
+        "line": 68
+      },
+      {
+        "name": "mark_ucb_report_attempt",
+        "line": 126
+      },
+      {
+        "name": "claim_ucb_external_refund",
+        "line": 173
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/googlePlay.ts",
+    "lines": 400,
+    "sha256": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/nonPlayTestCheckout.ts",
+    "lines": 15,
+    "sha256": "7d9e5d478c372df96d0e3600af99cb041d6d772730e3869776dc2ebdb4b3a560",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestConfig.ts",
+    "lines": 60,
+    "sha256": "cec80f0d5da73288ba29b690bbacb200e27cd03ee5617e86a44ba67661f34300",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestHandlers.ts",
+    "lines": 550,
+    "sha256": "790bb057f793948ceb395fc689a148452b3e63046e1187f8ef1e3a57ca31f689",
+    "database_tables": [
+      {
+        "name": "nonplay_test_orders",
+        "line": 96
+      },
+      {
+        "name": "nonplay_test_checkouts",
+        "line": 265
+      },
+      {
+        "name": "nonplay_test_audit",
+        "line": 276
+      },
+      {
+        "name": "nonplay_test_orders",
+        "line": 330
+      },
+      {
+        "name": "nonplay_test_products",
+        "line": 344
+      },
+      {
+        "name": "nonplay_test_notes",
+        "line": 438
+      },
+      {
+        "name": "nonplay_test_webhooks",
+        "line": 487
+      },
+      {
+        "name": "nonplay_test_attempts",
+        "line": 517
+      },
+      {
+        "name": "nonplay_test_orders",
+        "line": 520
+      },
+      {
+        "name": "nonplay_test_webhooks",
+        "line": 536
+      },
+      {
+        "name": "nonplay_test_webhooks",
+        "line": 541
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestProvider.ts",
+    "lines": 186,
+    "sha256": "f458653a2df6f4414c497000f7bfe55a39cce9463b332bc238dda2ca2c9d9f14",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestRuntime.ts",
+    "lines": 8,
+    "sha256": "84a0507e41ac5bc08489562c2f1e95dd9f12e2dc156debb61870c60db46a07eb",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/notePdfHash.ts",
+    "lines": 13,
+    "sha256": "911113393876c5c91a5ecacd7752bd39896acc28404d34989ad49e9d57035fa4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/notePdfUpload.ts",
+    "lines": 36,
+    "sha256": "2d1f25bd969660cbb3a49b9834ab8ab4f96c8a39cbc7af4b20c998494a55f760",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/noteQuarantine.ts",
+    "lines": 118,
+    "sha256": "979f52a72ee5e1c5eb0b82d0d095b8431a217859ce7b8c538a381e8e2f598830",
+    "database_tables": [
+      {
+        "name": "notes",
+        "line": 51
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "reserve_note_pdf_validation",
+        "line": 57
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceAuthorization.ts",
+    "lines": 23,
+    "sha256": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 8
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "record_notes_choice_authorization",
+        "line": 17
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceGate.ts",
+    "lines": 12,
+    "sha256": "c2e5893b648583c99522ac4734f25a363c419919490f60e15b99fa6786753f33",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceOrder.ts",
+    "lines": 101,
+    "sha256": "5b1b0ce8f00dcea119a76601298c31ebe2267acc5a4b9493c411f40ac54974dd",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 35
+      },
+      {
+        "name": "orders",
+        "line": 68
+      },
+      {
+        "name": "orders",
+        "line": 73
+      },
+      {
+        "name": "notes_choice_checkouts",
+        "line": 76
+      },
+      {
+        "name": "notes_choice_checkouts",
+        "line": 82
+      },
+      {
+        "name": "profiles",
+        "line": 89
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "prepare_notes_choice_checkout",
+        "line": 29
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/pages.ts",
+    "lines": 187,
+    "sha256": "634f7ed43b2facf58477ab2035b738c73c8e9257a6f3641ee81dfbcfd766b017",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/paymentGate.ts",
+    "lines": 29,
+    "sha256": "751b17c1558b8dfdd23ededaf27575ff91e7a5d6c5b59cbd8ed92b50f935d762",
+    "database_tables": [
+      {
+        "name": "app_config",
+        "line": 23
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/paymentQueue.ts",
+    "lines": 15,
+    "sha256": "28c20b2eb6e8481f0cc658af9707f4c48e54c2fc7f360f4f34a032be82000714",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/phone.ts",
+    "lines": 14,
+    "sha256": "c37d77f78de90615b25e55011cc6d246cd84ec93e1772eee2304878349e2f476",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/playCatalog.ts",
+    "lines": 155,
+    "sha256": "d9e9ae8a593cbf09e8857ca1300b648d307ee2f6fd68d84f337b19e38609c091",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/playPurchaseValidation.ts",
+    "lines": 23,
+    "sha256": "cfa1a8af6c409fdc5f140f0379d17ffe554af4bf361e296ed0a600de273f1924",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/processNotePdfJob.ts",
+    "lines": 77,
+    "sha256": "c123b30e8f9df48e494ad0132db75754e08cd4a28ad42acccb2f276783e85cde",
+    "database_tables": [
+      {
+        "name": "note-quarantine",
+        "line": 13
+      },
+      {
+        "name": "notes",
+        "line": 30
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/rateLimit.ts",
+    "lines": 36,
+    "sha256": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "rate_limit_hit",
+        "line": 26
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/razorpay.ts",
+    "lines": 265,
+    "sha256": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/settle.ts",
+    "lines": 321,
+    "sha256": "2ea4f1c34c3d2126521cee0ea68455623527141b12ca48b78c6105d6d0276436",
+    "database_tables": [
+      {
+        "name": "payment_captures",
+        "line": 50
+      },
+      {
+        "name": "orders",
+        "line": 59
+      },
+      {
+        "name": "purchases",
+        "line": 68
+      },
+      {
+        "name": "payment_compensations",
+        "line": 77
+      },
+      {
+        "name": "payment_captures",
+        "line": 83
+      },
+      {
+        "name": "payment_captures",
+        "line": 137
+      },
+      {
+        "name": "payment_captures",
+        "line": 157
+      },
+      {
+        "name": "provider_events",
+        "line": 162
+      },
+      {
+        "name": "orders",
+        "line": 167
+      },
+      {
+        "name": "provider_events",
+        "line": 199
+      },
+      {
+        "name": "orders",
+        "line": 211
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 227
+      },
+      {
+        "name": "provider_events",
+        "line": 241
+      },
+      {
+        "name": "provider_events",
+        "line": 271
+      },
+      {
+        "name": "provider_events",
+        "line": 278
+      },
+      {
+        "name": "orders",
+        "line": 294
+      },
+      {
+        "name": "ucb_external_refunds",
+        "line": 305
+      },
+      {
+        "name": "provider_events",
+        "line": 316
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "record_payment_capture",
+        "line": 44
+      },
+      {
+        "name": "razorpay_entitlement_committed",
+        "line": 96
+      },
+      {
+        "name": "record_notes_choice_authorization",
+        "line": 104
+      },
+      {
+        "name": "settle_razorpay_payment",
+        "line": 117
+      },
+      {
+        "name": "handle_payment_refund",
+        "line": 203
+      },
+      {
+        "name": "handle_payment_dispute",
+        "line": 285
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/supabaseAdmin.ts",
+    "lines": 49,
+    "sha256": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/ucbAlert.ts",
+    "lines": 21,
+    "sha256": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/ucbStates.ts",
+    "lines": 9,
+    "sha256": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/_shared/validatePdfStructure.ts",
+    "lines": 27,
+    "sha256": "a246f0a436bfe864445383296cb094f699a4cffd6974ff7a0c17f8e379533917",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/attach-external-token/index.ts",
+    "lines": 27,
+    "sha256": "a0bd1030871a24676f44853eaf20fbc7a34b3ba40cba001ba1ce41fd1ad60ef2",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "attach_ucb_external_token",
+        "line": 21
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/create-order/index.ts",
+    "lines": 4,
+    "sha256": "3cc059b42ef38f2b2de2cd2729e0a4f9c246c6e78f9171cc1f198e88a68c577c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/create-order-nonplay-test/index.ts",
+    "lines": 3,
+    "sha256": "ec17a1fa5a8edc0c1b6e062bf1c967318f179768bd1da570809aace144c88143",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/create-order-play-choice/index.ts",
+    "lines": 2,
+    "sha256": "f73789269b4691af30cbc75cfee776305c9f3a3b8ffc30f92468e625e303ab08",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/create-play-order/index.ts",
+    "lines": 49,
+    "sha256": "da48e6d981419fe370a0808d64bccfe7df7f870a939c6c4e3b7d428fc55db231",
+    "database_tables": [
+      {
+        "name": "products",
+        "line": 19
+      },
+      {
+        "name": "products",
+        "line": 31
+      },
+      {
+        "name": "play_price_sync",
+        "line": 34
+      },
+      {
+        "name": "orders",
+        "line": 42
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "create_play_order",
+        "line": 25
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/delete-account/index.ts",
+    "lines": 80,
+    "sha256": "9c7410ad85caaaffa3ba805eefc4f9aa22bc73f916037ea96494308facc0a629",
+    "database_tables": [],
+    "rpc_calls": [
+      {
+        "name": "erase_user_data",
+        "line": 64
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/deno.d.ts",
+    "lines": 18,
+    "sha256": "cf74b2119fcf62ebeff5de1e846afe5f0f4f24a11e104aa096da78feb418ac0c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-matrix/handler.ts",
+    "lines": 123,
+    "sha256": "a60db5b6ba587f7e0891d41ff928676fe3e7ad81cedf21d1145b1d5bc69de70b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-matrix/index.ts",
+    "lines": 23,
+    "sha256": "943787dda770d9569be46c984b3ffa4e9441ab6aa526056f13a1e881aea8e8c0",
+    "database_tables": [
+      {
+        "name": "admins",
+        "line": 14
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-pricing/handler.ts",
+    "lines": 87,
+    "sha256": "62405259a902074962f57e188e0ae865da6c6017a1b344b80c130f4e04b468e0",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-pricing/handler_test.ts",
+    "lines": 178,
+    "sha256": "469f07acd26b51be85ef6f786c0e5ae2025aac5b6921f9d6aa0feeb432bf2f18",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-pricing/index.ts",
+    "lines": 23,
+    "sha256": "943787dda770d9569be46c984b3ffa4e9441ab6aa526056f13a1e881aea8e8c0",
+    "database_tables": [
+      {
+        "name": "admins",
+        "line": 14
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-pricing/sanitize.ts",
+    "lines": 97,
+    "sha256": "4042d9995eb15ebe062eacda204b7e1dcb918eabb81e6cec683be2b07660b275",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-pricing/sanitize_test.ts",
+    "lines": 78,
+    "sha256": "e55e27f6a07cc3aab1aec4d0361ac6fae14df3f9cb33e194091596e692223a6d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/diagnose-play-service-account/index.ts",
+    "lines": 71,
+    "sha256": "ac6d192c489a41540e574d8fcaa3e9bb6ce27a4f8ee74a0633e7c7eb08242e14",
+    "database_tables": [
+      {
+        "name": "admins",
+        "line": 44
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/get-note-url/index.ts",
+    "lines": 68,
+    "sha256": "ad6a62a388690af9268e2d94a3fab171ca545c7b43e8e6019d1ef9fa9b5ea5b0",
+    "database_tables": [
+      {
+        "name": "notes",
+        "line": 54
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "user_can_access_note_with_aal",
+        "line": 43
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/get-note-url-nonplay-test/index.ts",
+    "lines": 2,
+    "sha256": "031604069af8f5d7b7f78a69b79eca605dad8db2927b5a5d0f972f9de19bb739",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/get-video-url/index.ts",
+    "lines": 45,
+    "sha256": "91f02c674ee2f23259cffbac9e326287da9ec23e37410199af2ca763d08b6dc0",
+    "database_tables": [
+      {
+        "name": "videos",
+        "line": 38
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "user_can_access_video_with_aal",
+        "line": 27
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/login-with-mobile/index.ts",
+    "lines": 85,
+    "sha256": "a24e442469dc7b440451b82d5e064fa50d6f1662a03c08581a71edf96574d2dd",
+    "database_tables": [
+      {
+        "name": "profiles",
+        "line": 67
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/nonplay-test-catalog/index.ts",
+    "lines": 2,
+    "sha256": "668eb6ca175d892fadd51d7902bad677b676d242a392b0f4c86a2f8016b875a6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/play-payment-worker/index.ts",
+    "lines": 308,
+    "sha256": "d53528998caf0dd8ae7bdcc9a24ca53e912fbbb979460d63cbb867b0d68c0458",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 37
+      },
+      {
+        "name": "orders",
+        "line": 80
+      },
+      {
+        "name": "orders",
+        "line": 120
+      },
+      {
+        "name": "orders",
+        "line": 129
+      },
+      {
+        "name": "orders",
+        "line": 208
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "reverse_play_payment",
+        "line": 51
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/razorpay-webhook/index.ts",
+    "lines": 255,
+    "sha256": "bb18cc1c52714efd0a50697040518a7758e96b0fe6c1b430123148aa8c3fb7be",
+    "database_tables": [
+      {
+        "name": "provider_events",
+        "line": 206
+      },
+      {
+        "name": "provider_events",
+        "line": 214
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "record_provider_event",
+        "line": 153
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/razorpay-webhook-nonplay-test/index.ts",
+    "lines": 2,
+    "sha256": "b33c1ff43044160ff4f9b8e5fe6affec0bf84ae145714e9ffc52c8b4c575720b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/report-external-transaction/index.ts",
+    "lines": 223,
+    "sha256": "bebd295976f2b43311f801307a431e7b21b9d5c04321084614359cc0f427af92",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 53
+      },
+      {
+        "name": "orders",
+        "line": 60
+      },
+      {
+        "name": "orders",
+        "line": 64
+      },
+      {
+        "name": "orders",
+        "line": 67
+      },
+      {
+        "name": "orders",
+        "line": 77
+      },
+      {
+        "name": "payment_compensations",
+        "line": 81
+      },
+      {
+        "name": "payment_compensations",
+        "line": 87
+      },
+      {
+        "name": "payment_captures",
+        "line": 90
+      },
+      {
+        "name": "payment_captures",
+        "line": 98
+      },
+      {
+        "name": "provider_events",
+        "line": 100
+      },
+      {
+        "name": "provider_events",
+        "line": 116
+      },
+      {
+        "name": "orders",
+        "line": 165
+      },
+      {
+        "name": "play_void_sweep_state",
+        "line": 179
+      },
+      {
+        "name": "play_void_sweep_state",
+        "line": 191
+      },
+      {
+        "name": "play_void_sweep_metrics",
+        "line": 201
+      },
+      {
+        "name": "payment_queue_metrics",
+        "line": 213
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "enqueue_payment_jobs",
+        "line": 35
+      },
+      {
+        "name": "claim_payment_jobs",
+        "line": 39
+      },
+      {
+        "name": "reverse_play_payment",
+        "line": 72
+      },
+      {
+        "name": "finish_payment_job",
+        "line": 137
+      },
+      {
+        "name": "claim_play_void_sweep",
+        "line": 148
+      },
+      {
+        "name": "reverse_play_payment",
+        "line": 170
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/request-password-reset-by-mobile/index.ts",
+    "lines": 80,
+    "sha256": "ea8c11f2af0c072b8dee669c0b328d010f759c51b1e74f432b3f4b351381f605",
+    "database_tables": [
+      {
+        "name": "profiles",
+        "line": 57
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/send-push-notification/index.ts",
+    "lines": 134,
+    "sha256": "d36782a0c28be6ee485d4d9a3864333c303ea7876e5df5d86801da63c667a54f",
+    "database_tables": [
+      {
+        "name": "admins",
+        "line": 37
+      },
+      {
+        "name": "admin_settings",
+        "line": 48
+      },
+      {
+        "name": "notifications",
+        "line": 93
+      },
+      {
+        "name": "push_tokens",
+        "line": 100
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/sync-play-catalog/index.ts",
+    "lines": 95,
+    "sha256": "8a58e6b33fb5004fa40ad50cfef49b081f41f57f25d1a54825bfc272245bfc62",
+    "database_tables": [
+      {
+        "name": "play_price_tiers",
+        "line": 32
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "claim_play_price_sync",
+        "line": 64
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/upload-note-pdf/index.ts",
+    "lines": 147,
+    "sha256": "a4ab4ff0f1f3098470d0af41d2544f43d3a4a0cbf9673c05023efb289559bbf9",
+    "database_tables": [
+      {
+        "name": "notes",
+        "line": 78
+      },
+      {
+        "name": "notes",
+        "line": 108
+      },
+      {
+        "name": "notes",
+        "line": 114
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/verify-payment/index.ts",
+    "lines": 133,
+    "sha256": "6667e4b991d1bf6a87d36d35a3e7ce304859ad0caf008fe022745854e9c12c5a",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 101
+      }
+    ],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/verify-payment-nonplay-test/index.ts",
+    "lines": 2,
+    "sha256": "73a4f8d6ab1a3c5fc36dc577c3d36681565cbe6dfb4cac1133c59ea2706ed771",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/functions/verify-play-purchase/index.ts",
+    "lines": 104,
+    "sha256": "2fc9acec9d976d9c2d03cd5d6cc9096437433fdca4c648f96c7de6e7225f65db",
+    "database_tables": [
+      {
+        "name": "orders",
+        "line": 23
+      },
+      {
+        "name": "orders",
+        "line": 79
+      },
+      {
+        "name": "orders",
+        "line": 83
+      },
+      {
+        "name": "orders",
+        "line": 87
+      },
+      {
+        "name": "products",
+        "line": 91
+      }
+    ],
+    "rpc_calls": [
+      {
+        "name": "settle_play_purchase",
+        "line": 63
+      },
+      {
+        "name": "play_entitlement_committed",
+        "line": 72
+      }
+    ],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260701000000_baseline_live_schema.sql",
+    "lines": 1139,
+    "sha256": "c54f69ec9068abf37abb6cc5d6696bfa98636f19ecdd7bf529f1890f00a5170a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260718_payment_backend.sql",
+    "lines": 69,
+    "sha256": "d31758cab06e4ad51d7267bef6f79d824e490ba039f7ca286b06d8bd3c239f8d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260721_admin_orders_purchases_access.sql",
+    "lines": 44,
+    "sha256": "8bc2d53a156481d61965ddcc83627f958c2d813d917ae1e684098d3a36753c21",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql",
+    "lines": 148,
+    "sha256": "1713787078ebe465c30919af21860986e50d3f82296bd3e09788c3bb26d1e935",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260801_auth_verified_identities.sql",
+    "lines": 32,
+    "sha256": "7606baf859d9d44cae53ed8d67678f42f386b95c9ac259c1d19126723f7e42c2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260919120000_multi_course_and_referrals.sql",
+    "lines": 1412,
+    "sha256": "3efee2364e7cef4fe20135edecd27498bc22aa4daab875e13753132c0080febf",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": [
+      {
+        "line": 1381,
+        "text": "-- NOTE (documented TODO, not implemented here \u2014 see task ground rules):"
+      }
+    ]
+  },
+  {
+    "path": "supabase/migrations/20260919130000_referral_history_rpc.sql",
+    "lines": 43,
+    "sha256": "26da93a0544c023bddd37d6d8a235fd2913972134ec1184c1c80da29541cc8c8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260920120000_null_year_course_fallback.sql",
+    "lines": 55,
+    "sha256": "c8ecac2e3f309d1df83e6519fa9eca788d183d4a4627d341400e5d03f9334792",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260920130000_app_config.sql",
+    "lines": 62,
+    "sha256": "b2c06c94ae710a0d0edd12cf09e7a1f883717dc0de16e61f36c347cf6c4b85ab",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260920140000_default_new_profile_course.sql",
+    "lines": 38,
+    "sha256": "8b94b4e8184e8b424942503ff5b256404128725060145e04f57a176db4d24c7c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260921120000_analytics_retention.sql",
+    "lines": 91,
+    "sha256": "3ed98e21f30bee4f50c7b742a165dd7cf936cf11b55bf463b8dd4fb80bf3cc84",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260921130000_account_deletion_support.sql",
+    "lines": 187,
+    "sha256": "f2d20c78354f75211e68bac320e786ce113bacd3518883f9f830d085587eb920",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql",
+    "lines": 2344,
+    "sha256": "ff415faed591330e1f8ecf7fa83f1e847be63e0969a0a04f4fe93e3c8acde1e6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": [
+      {
+        "line": 1451,
+        "text": "-- NOTE (documented TODO, not implemented here \u2014 see task ground rules):"
+      }
+    ]
+  },
+  {
+    "path": "supabase/migrations/20260923100000_signup_profile_fields.sql",
+    "lines": 35,
+    "sha256": "bfb83bff5299d463fbc36b2ab357411a5cd755a0c50c51e9acfba51758aedde8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql",
+    "lines": 178,
+    "sha256": "cae39194acde0e196fd9835063170835c85bef5dce43a18dfd3e6cd060afa11c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924110000_critical2_orders_server_only.sql",
+    "lines": 288,
+    "sha256": "6ef49e39c6783ccfbb9a67588ec4d897fce7897441a039e17d4d796248178de1",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql",
+    "lines": 166,
+    "sha256": "25784b01969bd71edf4e74d2a163fbc5ac0a004f9b70b4bb13724d6666922eb8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924130000_signup_name_phone_and_backfill.sql",
+    "lines": 121,
+    "sha256": "832f96a542580fba4e14b6b1b257efb17f7bf5de1f9124c4d41b71a6b869dd97",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924140000_auth_rate_limits.sql",
+    "lines": 56,
+    "sha256": "6c9c13d2ca0ab9f088eeebeb811fe3a6b22bd3a31084ead7c86a0e85594b87cc",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260924150000_free_preview.sql",
+    "lines": 132,
+    "sha256": "9699ba9e0be6c72390e7a5f631d7dbe0b193273f4da29b85b25b0c9d9b315fcd",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260925100000_phase2_referral_config_and_product_type.sql",
+    "lines": 82,
+    "sha256": "8ebd7905ce31f87c93b7e7d732100d42e866c3828b465f852cc7fcf656ba6ac4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260925110000_phase2_wallet_ledger.sql",
+    "lines": 351,
+    "sha256": "fd9b6d6ab3add7ecc0578fe27ce28f49355a797f768078692f659442dd9bfb3b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260925120000_phase2_orders_pricing_and_settlement.sql",
+    "lines": 729,
+    "sha256": "03ce7f89d949a4e9c36a201f74cd10549afc0e37f256833aa099ca9cf259c612",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260925130000_drop_debug_whoami.sql",
+    "lines": 22,
+    "sha256": "2c349416e767fc1051196e06282230e00943afe2f92d857e80602eb050889e0a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260925140000_phase2_single_use_friend_discount.sql",
+    "lines": 227,
+    "sha256": "03a2d6bb93cc0fc18ae30714f44f04971f06dbbba8201671fa08162d36e02804",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260926100000_batch1_refund_dispute_revoke_access.sql",
+    "lines": 304,
+    "sha256": "b707c26cd1ecfdfda3e86109e8623f039a483e423043a4d612eaf1673a56da42",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260926110000_batch1_settle_wallet_and_flags.sql",
+    "lines": 300,
+    "sha256": "84b9040932565ca827191b0fe3306ba1997c0e7c39cd32b104cd515a7024835f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260926120000_batch1_block_owned_product.sql",
+    "lines": 188,
+    "sha256": "e7f1e33745ed27cda1c9d97ec9eabbcd88d7f7692f35f4dee0268a809eaa5c32",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260926130000_batch1_hygiene.sql",
+    "lines": 245,
+    "sha256": "04f20207e6dc75a74dbf35d64617e0e5f08ef70b9e4e4a145c735f89f10c0d7c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260927100000_f7_drop_legacy_admin_policies.sql",
+    "lines": 52,
+    "sha256": "34d682389853b29a99472daf8f6f809d571eb56a6ab02f4826d0844d6efb33d8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260927110000_f8_revoke_excess_grants.sql",
+    "lines": 43,
+    "sha256": "9efb84dd71873a9ba551b242806802e84d973307745515ea792f13cf774e5b5a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260927120000_batch3_referral_hardening.sql",
+    "lines": 485,
+    "sha256": "1114fa158aa83658281d143dabaa1a177cbdbcc0f2c7ff9734958a3c57047233",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260927130000_batch3b_antifarming.sql",
+    "lines": 772,
+    "sha256": "e84c7f72d63df7c733af2712d600ba978c18b7eead7e9f16dab06c5d6cab7373",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql",
+    "lines": 155,
+    "sha256": "1b732059b2fc3226090caf0cd85bcc4c911d0ae312af3ed582ae1f5c01e4f654",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260928110000_referral_off_blocks_wallet.sql",
+    "lines": 192,
+    "sha256": "187fdc5ad0e2c6ef430fb601a180e7dcbcd703f83fb4dfe9c72c132c8e264c73",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260929100000_high_phone_change_rpc_and_notes_storage.sql",
+    "lines": 149,
+    "sha256": "ec76860cd463ba1b97e665ddc3298bfe1d3dd4f9f9b3b36deb3124667a300a34",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260930100000_medium_db_hardening.sql",
+    "lines": 213,
+    "sha256": "d1850bab661cb23831ce444ea16b19929b84998eeb0c81eab31f714d094630bb",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20260930110000_low_grants_tightening.sql",
+    "lines": 59,
+    "sha256": "ff372c8af1c0491005e1df2c68df88a2b65b0ef9f152995d87ded6121ae7a9df",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261001100000_admin_mfa_aal2.sql",
+    "lines": 59,
+    "sha256": "c604a625526d6275c4e97fee0cfb1f08bd59ccfd69b796335feaa8c9b03edf6c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261012100000_google_play_ucb.sql",
+    "lines": 310,
+    "sha256": "b15a2c385e67f4a6a438adb7c9f32ab58e03e10907e3cc4d9b769c1cc47e298a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261012110000_google_play_refunds.sql",
+    "lines": 115,
+    "sha256": "3f130e6bcd3582d242b5b2595001b8629272d72ae7c4b0f3e9ddeb60b7d7d3ec",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261012120000_ucb_partial_refunds.sql",
+    "lines": 59,
+    "sha256": "713d48eea492477c50955d4fe7d97af9062b6596464bda1221f491641beedea2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261013090000_ucb_atomic_completion.sql",
+    "lines": 305,
+    "sha256": "d9b0e51d056bd4a4cac6d4f7d468975d8d42cafa46859a394b62e0e707e8a55e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261013100000_wallet_reservations.sql",
+    "lines": 435,
+    "sha256": "99f80314020f7fc546764fc14b2f03524867056cc74cab77ebbef78f3f37aa10",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261013110000_play_void_cursor.sql",
+    "lines": 41,
+    "sha256": "05b3e34b854a0079d114a28b0c6bdaf99aae8c6b0a3f38037b509c7db007638d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261014100000_payment_audit_capture_inbox.sql",
+    "lines": 260,
+    "sha256": "1ddeaeadbf485f5be5885fbc15e9fdcbc146d925ef1c9e135411288cc2d87555",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261014110000_payment_job_leases.sql",
+    "lines": 112,
+    "sha256": "cb27a47965e92dcb10febbb18606515e368dab0cee90b0a6d9589a2dbc7ce4ff",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261015100000_play_payment_jobs.sql",
+    "lines": 180,
+    "sha256": "d3d99eb64323e2b3fdda8b4ab8115c86e1c4e460cc856ab1be61ce84fced3df7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261015120000_play_entitlement_order_snapshot.sql",
+    "lines": 32,
+    "sha256": "dd4d9f41d5a8c0ecd2a41396268a3f796b33205336a2a5fbc57baee23cd63547",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261016090000_free_video_access.sql",
+    "lines": 13,
+    "sha256": "c6362f093c178932491c6b08493b74d3215d4e759e47fe74ec15e2bdde236f63",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261016100000_play_catalog_sync.sql",
+    "lines": 331,
+    "sha256": "08c7b195d00dd5ab009d5f87eac804542cd4f13bdc4ad613ff7ed73e833eb270",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261018100000_verified_quiz_attempts.sql",
+    "lines": 145,
+    "sha256": "7c81e686bbd423138187f03078a29acf8c5503643a30a8d6276c88f5e7041841",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261018110000_trusted_note_uploads.sql",
+    "lines": 97,
+    "sha256": "1e4af9e6252b51c8c24b93f4bc1d4a7c5b10ee0ad043afe2632bd496f4924b33",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261018120000_note_upload_deleted_retry.sql",
+    "lines": 63,
+    "sha256": "631d39719676cb2bbcb68f748431f370ad1c765a729fe7ef8beea19483f607a9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261018130000_note_pdf_quarantine.sql",
+    "lines": 97,
+    "sha256": "7a082d96f332e9063452209899f9e03c57442fe0a1f81ce5c89fb8e24356cead",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261019150000_play_catalog_queue_fences.sql",
+    "lines": 43,
+    "sha256": "f2b02b6aacb72b5da9e9e1fc60b7b9b05c7afccf7dd6913ed44d970eccd18cb9",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261019151000_play_duplicate_settlement_result.sql",
+    "lines": 97,
+    "sha256": "baf612e3528c6255c1c84ca767eae377304922249169ef0ed01811c73a99f146",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020100000_notes_service_reads.sql",
+    "lines": 17,
+    "sha256": "dcdbcb228e80f2367894769dfef364ed8908fb8a5e411a8b40c9c0b9db5d715c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020101000_maintenance_mode_read.sql",
+    "lines": 15,
+    "sha256": "274e973df03c9240a1bee8065c96ee462bdf104901ff477d740bf16094bd505a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020102000_correct_stale_store_url.sql",
+    "lines": 14,
+    "sha256": "5090b5cd3138aa51f8ca14593c04feec9951fd6755d7e6621a85d6bebf93cb1c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020103000_first_purchase_identity_retention.sql",
+    "lines": 42,
+    "sha256": "a3078abe64d7d48a4dbc9a75a72453b3ed4a9d314fbbf1b532b05a53f2f8eb88",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020104000_course_wide_content_browsing.sql",
+    "lines": 278,
+    "sha256": "5d7428d45beeffdbff1ee6bcb3ebdc21d56ed7cbea8111221578530f42aa2b49",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020105000_quiz_answer_read_boundary.sql",
+    "lines": 61,
+    "sha256": "813b202e45f31d030a5f003b115e413762b22fd7780a82a70487123b617852fe",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261020110000_admin_url_mfa.sql",
+    "lines": 97,
+    "sha256": "1e2a8139fbf192b8ea76cf5a4299305e61c4e9919703997bf9f4ee9f5ad49c4c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261104100000_razorpay_snapshot_discount_retry.sql",
+    "lines": 500,
+    "sha256": "6291a65ef76a90c6e8057e73fa6ccb60bef7145d67cddd4de5329da1623ada3b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261104110000_course_year_profile_confirmation.sql",
+    "lines": 96,
+    "sha256": "c7f73031abb665822613e9e524d8354f6d874826871ab71dc4d532f3984c1c3c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261108100000_notes_choice_checkout.sql",
+    "lines": 162,
+    "sha256": "bf0452bc97960bc15c7954d44303cb1009f7f8dfb66721ea627a6f952aff4427",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261109100000_billing_settlement_recovery.sql",
+    "lines": 259,
+    "sha256": "d62c8f4b17c75bf75df01d73460646381d8154916d835ec1acebe136dac90dee",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261109120000_isolated_nonplay_test.sql",
+    "lines": 358,
+    "sha256": "4dad6d8b92ee247bc2d399448e757dde1d3e898abf7ece2e8a4d19fbb2db1584",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261110100000_mv003_razorpay_entitlement_commitment.sql",
+    "lines": 56,
+    "sha256": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql",
+    "lines": 37,
+    "sha256": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql",
+    "lines": 65,
+    "sha256": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261111100000_phase_c_final_mv003_commitment.sql",
+    "lines": 58,
+    "sha256": "d47d7ee0e8d74e56752c16c034e38c996e7b6b81e029cbb2d309a43151b720f2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/migrations/20261111110000_phase_c_play_entitlement_snapshot.sql",
+    "lines": 53,
+    "sha256": "da4f56405f25e8e1a67f077d4ecce1e40ddbf2932efa16882e4ba8a2a2ed08c4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "supabase/workers/validate-note-pdf.ts",
+    "lines": 25,
+    "sha256": "072f696fcda429222095ab90ab82d9bbcd6a73d6ba8666060d670bf155d54567",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/faq.mjs",
+    "lines": 38,
+    "sha256": "c7cd9cdf738c45c15e4e726fd7cd8d2367df599d835dbf13d8c10c15702a303e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/icons.mjs",
+    "lines": 32,
+    "sha256": "83a2a4dcc94a398abc8dc3a7c3e5e164bcb57627b81623e7799fc5e45150f242",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/404.html",
+    "lines": 7,
+    "sha256": "c66250126bc4f5cab763cc0d2e6f262334f2f28a65f3cc2900e83e9b7ff3e2d8",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/about.html",
+    "lines": 19,
+    "sha256": "09ebafba96c036499654c1a87307ed9644780efe293404259842dcd88569f2e2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/account-verified.html",
+    "lines": 29,
+    "sha256": "c80f559eedc2122f8fffff83fc9dce5d9f9bd64618f5515f9a2ba9d259a8cb7e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/contact.html",
+    "lines": 15,
+    "sha256": "0fcefcf4606afd971d6ede462452ac9cafe1a4f9dbf6d3328e9ccf3a22f8e83c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/courses.html",
+    "lines": 23,
+    "sha256": "3027929ae5b625d548e51475b944a5cceb9a5baf8c49e8195c06ccf64bfa830a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/delete-account.html",
+    "lines": 18,
+    "sha256": "4ce27e31d2c58705d7e61c735cd5c9b73fbda7e56feff444713ed434d008a59a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/disclaimer.html",
+    "lines": 17,
+    "sha256": "f1963f55269c423411b7dd911df69b1124780fccd174b72f78c1d2b68b738517",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/download.html",
+    "lines": 12,
+    "sha256": "b1ea626482169ed5dde0e559c3c188440f2d14e2dc9cc0dac234f765c6a539ad",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/faq.html",
+    "lines": 5,
+    "sha256": "682907de8d18eb0bfddb7b6edf522139a257de0b3e7b63e90e1ab4e5806f624b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/features.html",
+    "lines": 24,
+    "sha256": "9a8350cde5a423be0c2ad7c2192e540a7a5455ff3b73b5471969115fdf9f2bea",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/how-it-works.html",
+    "lines": 29,
+    "sha256": "78d8430cab37c16abb38e091989fd96412120b91cd4dc552f24caa801e183cbc",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/index.html",
+    "lines": 75,
+    "sha256": "e8cde5c4afaaded6df83f37ea92b136f68b1b315cb1ae597fa9444a43b17c98f",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/privacy-policy.html",
+    "lines": 72,
+    "sha256": "e7a36f178dc5a1c11007fb321ac823887d825bf75ca93b9decaa3f6cc40ed23c",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/refund-policy.html",
+    "lines": 25,
+    "sha256": "6f17df6a64d04609a6b1f0e9f83da9dc7f1fe76e4631f4d9321ee2579f6333d4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/reset-password.html",
+    "lines": 59,
+    "sha256": "4df20df4e9b3f35ec00a8022f4bbef2b3a8dc4f88757b69d648fe020cdb8f490",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/shipping-policy.html",
+    "lines": 14,
+    "sha256": "3e36761713cd8a037328a679556390b11347edb52f979542307c1d772d5ce4e4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/_src/pages/terms.html",
+    "lines": 41,
+    "sha256": "d1185b7aa6c3bbfbd6ee92b757d919a9671a62bea13380489974b28a64e01eec",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/account-verified.js",
+    "lines": 25,
+    "sha256": "019d190b7504f6265437246f5d4841d1218ba4ef1c8440ededb3debce17fd10b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/auth-common.js",
+    "lines": 52,
+    "sha256": "bc45ee0521967129e7fffc9865ba39517b7dbc012e95a3c338c015da2ed0c1b7",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/config.js",
+    "lines": 7,
+    "sha256": "1a6369f6e9a02c45cdc06418e007e8bdc233cb8d9397ead023eb4293437da446",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/recovery-flow.js",
+    "lines": 124,
+    "sha256": "92d3187d1d510c877b436ddc74e906e4ab22f9d099d3ec87545149d70fcf974d",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/reset-password.js",
+    "lines": 181,
+    "sha256": "676ae5ae93e5a6caf0560710b18307c24980863acf28b69e0cad6618aacb1144",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "website/assets/js/site.js",
+    "lines": 32,
+    "sha256": "e94d408ae2224a835065454b67f943675753e34914f7c81da3fc300add090864",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/check-readiness-local.py",
+    "lines": 123,
+    "sha256": "15c933d99a2d683dfaec4bfadbb869dda487ae42020fdf6e3a9ed176745b9ed6",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/measure-mobile-size.py",
+    "lines": 164,
+    "sha256": "2c9834c9d8512c15317bb90015112906545e2580059820ecbe0bc5e3130111db",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/mobile-perf-probe.cjs",
+    "lines": 159,
+    "sha256": "438295f1df868c7c3e531d5a4e55789eb59a3b30935fc8630c754f8671351439",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/prepare-phase-c-release.py",
+    "lines": 70,
+    "sha256": "d26941ba90cc0571223941476aca8387c56cffc6d13620efba774bdc9c1c290b",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/scan-secrets.mjs",
+    "lines": 45,
+    "sha256": "51d20e585d64944015ea16a4f71ee16615a852ca16950401179f694571a8380a",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/secret-scan-selftest.mjs",
+    "lines": 19,
+    "sha256": "5060e343d936ec9e3a6a67ddc8fad5225bc0ab029e9d5877f785c5021f6f3134",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/ucb-deploy.sh",
+    "lines": 70,
+    "sha256": "6808dcb14722414bac67863219b420d30223436786ae6c965ed6f54ce8e9c7f2",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": "scripts/ucb-smoke-test.mjs",
+    "lines": 43,
+    "sha256": "ee4ccf834c051d3c58b766f49d04c7ceace914dcc228f8fa1ed0aa330726da4e",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "lines": 128,
+    "sha256": "d1cd842bc2aa95dcd3ce4622693e9adc1a42bb6ea8cf6e1f09a402e05a0938a4",
+    "database_tables": [],
+    "rpc_calls": [],
+    "imports": [],
+    "markers": []
+  }
+]

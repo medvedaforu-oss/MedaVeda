@@ -1,0 +1,6 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const ts=require('../mobile-app/node_modules/typescript');let checked=0;const errors=[];
+function visitFile(file){const text=fs.readFileSync(file,'utf8'),source=ts.createSourceFile(file,text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
+ function walk(n){if(ts.isJsxOpeningElement(n)||ts.isJsxSelfClosingElement(n)){const tag=n.tagName.getText(source);if(['input','select','textarea'].includes(tag)){checked++;const attrs=n.attributes.properties;const has=name=>attrs.some(a=>ts.isJsxAttribute(a)&&a.name.text===name);let nested=false,p=n.parent;while(p){if(ts.isJsxElement(p)&&p.openingElement.tagName.getText(source)==='label')nested=true;p=p.parent}if(!nested&&!has('aria-label')&&!has('aria-labelledby')&&!has('id'))errors.push(file+':'+(source.getLineAndCharacterOfPosition(n.getStart()).line+1)+' unnamed '+tag)}}ts.forEachChild(n,walk)}walk(source)}
+function scan(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())scan(p);else if(p.endsWith('.tsx'))visitFile(p)}}scan('admin-panel/src');
+console.log(`${checked} native HTML form controls inspected`);assert.equal(errors.length,0,errors.join('\n'));console.log('PASS admin HTML controls have explicit names/ids or enclosing labels; browser speech not certified');

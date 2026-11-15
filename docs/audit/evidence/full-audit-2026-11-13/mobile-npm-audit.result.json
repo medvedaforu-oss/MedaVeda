@@ -1,0 +1,11 @@
+{
+  "name": "mobile-npm-audit",
+  "cwd": "mobile-app",
+  "command": [
+    "npm",
+    "audit",
+    "--json"
+  ],
+  "exit": 1,
+  "seconds": 5.6
+}

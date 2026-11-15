@@ -24,7 +24,7 @@ import {
   clearRecentSearches as clearRecentSearchesStorage,
   RecentSearchEntry,
 } from "../utils/recentSearches";
-import { DEFAULT_FILTERS, ScoredResult, SearchFilters, SearchIndex, SearchSection } from "../types/search";
+import { DEFAULT_FILTERS, ScoredResult, SearchFilters, SearchIndex, SearchSection, SearchResult } from "../types/search";
 import { logError } from "../utils/logger";
 
 export default function useGlobalSearch() {
@@ -44,11 +44,11 @@ export default function useGlobalSearch() {
   const [error, setError] = useState<string | null>(null);
 
   const [recentSearches, setRecentSearches] = useState<RecentSearchEntry[]>([]);
-  const [discoverySections, setDiscoverySections] = useState<SearchSection[]>([]);
+  const [discovery, setDiscovery] = useState<{ source: SearchResult[]; sections: SearchSection[] } | null>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
 
   const isOnline = useNetworkStatus();
-  const { ownedScopes, isChapterOwned, refresh: refreshPurchases } = usePurchases();
+  const { ownedScopes, isChapterOwned, refresh: refreshPurchases, loading: purchasesLoading, error: purchasesError } = usePurchases();
   const { buy, purchasing } = usePurchase();
   const { downloads, refresh: refreshDownloads } = useDownloads();
 
@@ -109,13 +109,13 @@ export default function useGlobalSearch() {
 
   const sections: SearchSection[] = useMemo(() => {
     if (!index) return [];
-    const found = isSearching ? searchResults(enriched, debouncedQuery, filters) : discoverySections;
+    const found = isSearching ? searchResults(enriched, debouncedQuery, filters) : discovery?.source === enriched ? discovery.sections : [];
     if (Platform.OS === "android") return found;
     return found.map((section) => ({
       ...section,
       data: section.data.filter((result) => result.type !== "product" || result.owned),
     })).filter((section) => section.data.length > 0).map((section) => ({ ...section, totalCount: section.data.length }));
-  }, [index, enriched, isSearching, debouncedQuery, filters, discoverySections]);
+  }, [index, enriched, isSearching, debouncedQuery, filters, discovery]);
 
   // Discovery sections (Recently Viewed / Recommended / Recently Added)
   // read AsyncStorage themselves, so they're computed separately rather
@@ -123,7 +123,11 @@ export default function useGlobalSearch() {
   // index is ready and whenever ownership changes, not on every keystroke.
   useEffect(() => {
     if (!index) return;
-    getDiscoverySections(enriched, ownedScopes).then(setDiscoverySections);
+    let active = true;
+    void getDiscoverySections(enriched, ownedScopes).then(sections => {
+      if (active) setDiscovery({ source: enriched, sections });
+    }).catch(err => logError("Failed to load search discovery:", err));
+    return () => { active = false; };
   }, [index, enriched, ownedScopes]);
 
   const availableYears = useMemo(
@@ -138,7 +142,7 @@ export default function useGlobalSearch() {
   async function onRefresh() {
     if (!ready) return;
     setRefreshing(true);
-    await loadIndex(true);
+    await Promise.all([loadIndex(true), refreshPurchases()]);
   }
 
   async function commitSearch() {
@@ -272,6 +276,9 @@ export default function useGlobalSearch() {
   }
 
   return {
+    purchasesLoading,
+    purchasesError,
+    refreshPurchases,
     query,
     setQuery,
     isSearching,

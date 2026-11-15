@@ -1,0 +1,10 @@
+--- a/mobile-app/scripts/startup-availability-selftest.cjs
++++ b/mobile-app/scripts/startup-availability-selftest.cjs
+@@ -9,6 +9,7 @@
+   const App = load('mobile-app/App.tsx', {
+     react: h.react, 'react/jsx-runtime': jsx,
+     'react-native': { Platform: { OS: platform }, ActivityIndicator: 'Spinner', Text: 'Text', TouchableOpacity: 'Button', View: 'View' },
++    'react-native-gesture-handler': { GestureHandlerRootView: 'GestureRoot' },
+     'expo-status-bar': { StatusBar: 'Status' },
+     'react-native-safe-area-context': { SafeAreaProvider: 'Provider', SafeAreaView: 'SafeArea' },
+     './src/navigation/AppNavigator': { __esModule: true, default: 'Navigation' },

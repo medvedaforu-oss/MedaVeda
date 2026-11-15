@@ -1,0 +1,213 @@
+--- a/mobile-app/src/hooks/useQuizStats.ts
++++ b/mobile-app/src/hooks/useQuizStats.ts
+@@ -1,95 +1,126 @@
+-import { useEffect, useState } from "react";
++import { useCallback, useEffect, useRef, useState } from "react";
+ 
+ import { supabase } from "../config/supabase";
+-import { getCurrentUser } from "../services/authState";
++import { getAuthEpoch, getCurrentUser, subscribeAuthUser } from "../services/authState";
+ import { logError } from "../utils/logger";
++
++type Attempt = {
++  id: string;
++  percentage: number;
++  created_at: string;
++  test_id: string;
++  test_title: string;
++  score: number;
++  total: number;
++};
++const EMPTY = { totalAttempts: 0, averagePercentage: 0, bestScore: 0, recentQuiz: [] as Attempt[], legacyAttempts: 0 };
++const PAGE_SIZE = 250;
+ 
+ export default function useQuizStats() {
+   const [loading, setLoading] = useState(true);
++  const [stats, setStats] = useState(EMPTY);
++  const [error, setError] = useState<string | null>(null);
++  const lifecycle = useRef({ mounted: false, request: 0 });
+ 
+-  const [totalAttempts, setTotalAttempts] = useState(0);
+-
+-  const [averagePercentage, setAveragePercentage] = useState(0);
+-
+-  const [bestScore, setBestScore] = useState(0);
+-
+-  const [recentQuiz, setRecentQuiz] = useState<any[]>([]);
+-  const [legacyAttempts, setLegacyAttempts] = useState(0);
+-
+-  const [error, setError] = useState<string | null>(null);
++  const loadStats = useCallback(async () => {
++    const request = ++lifecycle.current.request;
++    const uid = getCurrentUser()?.id;
++    const epoch = getAuthEpoch();
++    const current = () => lifecycle.current.mounted && request === lifecycle.current.request &&
++      epoch === getAuthEpoch() && uid === getCurrentUser()?.id;
++    if (!current()) return;
++    setLoading(true);
++    setError(null);
++    if (!uid) {
++      setStats(EMPTY);
++      setLoading(false);
++      return;
++    }
++    try {
++      // IDs are immutable unique text keys. Freeze the upper key and use the
++      // same owner/boundary for count and every page; never rely on API row caps.
++      const { data: upperRows, error: upperError } = await supabase.from("verified_quiz_attempts")
++        .select("id").eq("user_id", uid).order("id", { ascending: false }).limit(1);
++      if (!current()) return;
++      if (upperError) throw upperError;
++      const upper = upperRows?.[0]?.id as string | undefined;
++      const countAttempts = () => supabase.from("verified_quiz_attempts")
++        .select("id", { count: "exact", head: true }).eq("user_id", uid).lte("id", upper!);
++      const [verified, legacy] = await Promise.all([
++        upper === undefined ? Promise.resolve({ count: 0, error: null }) : countAttempts(),
++        supabase.from("quiz_scores").select("id", { count: "exact", head: true }).eq("user_id", uid),
++      ]);
++      if (!current()) return;
++      if (verified.error) throw verified.error;
++      if (legacy.error) throw legacy.error;
++      const count = verified.count;
++      if (count === null || !Number.isSafeInteger(count) || count < 0) throw new Error("Missing verified attempt count");
++      let cursor: string | undefined;
++      let total = 0;
++      let sum = 0;
++      let best = 0;
++      let recent: Attempt[] = [];
++      const seen = new Set<string>();
++      while (total < count) {
++        let query = supabase.from("verified_quiz_attempts")
++          .select("id,percentage,created_at,test_id,test_title,score,total")
++          .eq("user_id", uid).lte("id", upper!).order("id", { ascending: true }).limit(PAGE_SIZE);
++        if (cursor !== undefined) query = query.gt("id", cursor);
++        const { data, error: pageError } = await query;
++        if (!current()) return;
++        if (pageError) throw pageError;
++        const rows = (data ?? []) as Attempt[];
++        if (!rows.length) throw new Error("Incomplete verified attempt scan");
++        for (const row of rows) {
++          if (seen.has(row.id)) throw new Error("Repeated verified attempt cursor");
++          seen.add(row.id);
++          total++;
++          sum += row.percentage;
++          best = Math.max(best, row.percentage);
++        }
++        // Only the five latest rows are retained, with a deterministic tie break.
++        recent = [...recent, ...rows].sort((a, b) => {
++          const time = Date.parse(b.created_at) - Date.parse(a.created_at);
++          return time || (a.id < b.id ? 1 : a.id > b.id ? -1 : 0);
++        }).slice(0, 5);
++        const next = rows[rows.length - 1].id;
++        if (next === cursor) throw new Error("Verified attempt cursor did not advance");
++        cursor = next;
++      }
++      if (total !== count) throw new Error("Verified attempt population changed");
++      if (upper !== undefined) {
++        const check = await countAttempts();
++        if (!current()) return;
++        if (check.error) throw check.error;
++        if (check.count !== count) throw new Error("Verified attempt population changed");
++      }
++      setStats({ totalAttempts: count, averagePercentage: count ? Math.round(sum / count) : 0,
++        bestScore: best, recentQuiz: recent, legacyAttempts: legacy.count ?? 0 });
++    } catch (err) {
++      if (!current()) return;
++      logError("useQuizStats: failed to load stats", err);
++      setError("Could not load your progress. Pull down to try again.");
++    } finally {
++      if (current()) setLoading(false);
++    }
++  }, []);
+ 
+   useEffect(() => {
+-    loadStats();
+-  }, []);
++    const state = lifecycle.current;
++    state.mounted = true;
++    const onOwnerChange = () => {
++      lifecycle.current.request++;
++      setStats(EMPTY);
++      void loadStats();
++    };
++    const unsubscribe = subscribeAuthUser(onOwnerChange);
++    void loadStats();
++    return () => {
++      state.mounted = false;
++      state.request++;
++      unsubscribe();
++    };
++  }, [loadStats]);
+ 
+-  const loadStats = async () => {
+-    try {
+-      setError(null);
+-
+-      const uid = getCurrentUser()?.id;
+-
+-      if (!uid) {
+-        setLoading(false);
+-        return;
+-      }
+-
+-      const [{ data, error: queryError }, { count: oldCount, error: oldError }] = await Promise.all([
+-        supabase
+-        .from("verified_quiz_attempts")
+-        .select("*")
+-        .eq("user_id", uid)
+-        .order("created_at", { ascending: false }),
+-        supabase.from("quiz_scores").select("id", { count: "exact", head: true }).eq("user_id", uid),
+-      ]);
+-
+-      if (queryError) throw queryError;
+-      if (oldError) throw oldError;
+-
+-      setLegacyAttempts(oldCount ?? 0);
+-
+-      const rows = data ?? [];
+-
+-      setTotalAttempts(rows.length);
+-
+-      if (rows.length > 0) {
+-        const totalPercentage = rows.reduce(
+-          (sum: number, item: any) => sum + item.percentage,
+-          0
+-        );
+-
+-        setAveragePercentage(
+-          Math.round(totalPercentage / rows.length)
+-        );
+-
+-        const highest = Math.max(
+-          ...rows.map((item: any) => item.percentage)
+-        );
+-
+-        setBestScore(highest);
+-
+-        setRecentQuiz(rows.slice(0, 5));
+-      } else {
+-        setAveragePercentage(0);
+-        setBestScore(0);
+-        setRecentQuiz([]);
+-      }
+-
+-      setLoading(false);
+-    } catch (err: any) {
+-      logError("useQuizStats: failed to load stats", err);
+-      setError("Could not load your progress. Pull down to try again.");
+-      setLoading(false);
+-    }
+-  };
+-
+-  return {
+-    loading,
+-    totalAttempts,
+-    averagePercentage,
+-    bestScore,
+-    recentQuiz,
+-    legacyAttempts,
+-    error,
+-    refresh: loadStats,
+-  };
++  return { loading, ...stats, error, refresh: loadStats };
+ }

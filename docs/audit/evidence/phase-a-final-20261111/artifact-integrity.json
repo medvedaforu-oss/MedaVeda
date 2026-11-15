@@ -1,0 +1,26 @@
+[
+  {
+    "path": "supabase/migrations/20261110100000_mv003_razorpay_entitlement_commitment.sql",
+    "expected": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b",
+    "source_sha256": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b",
+    "reviewed_sha256": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b",
+    "identical": true,
+    "pass_check": true
+  },
+  {
+    "path": "supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql",
+    "expected": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730",
+    "source_sha256": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730",
+    "reviewed_sha256": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730",
+    "identical": true,
+    "pass_check": true
+  },
+  {
+    "path": "supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql",
+    "expected": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c",
+    "source_sha256": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c",
+    "reviewed_sha256": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c",
+    "identical": true,
+    "pass_check": true
+  }
+]

@@ -10,7 +10,7 @@ export default function SearchBar({
   placeholder = "Search notes...",
 }: Props) {
   return (
-    <input
+    <input aria-label={placeholder}
       type="text"
       placeholder={placeholder}
       value={value}

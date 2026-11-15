@@ -1,0 +1,14 @@
+[
+  {
+    "name": "final-checks",
+    "exit_code": 1
+  },
+  {
+    "name": "final-static",
+    "exit_code": 0
+  },
+  {
+    "name": "final-ui",
+    "exit_code": 1
+  }
+]

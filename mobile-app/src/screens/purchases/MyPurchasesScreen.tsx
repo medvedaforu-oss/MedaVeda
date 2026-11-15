@@ -1,4 +1,8 @@
-import React, { useCallback, useState } from "react";
+import usePurchaseResource from "../../hooks/usePurchaseResource";
+import { getCurrentUser } from "../../services/authState";
+import React, { useCallback } from "react";
+import { restorePlayPurchases } from "../../services/playBillingService";
+import { playRestorationEnabled } from "../../config/paymentProvider";
 import {
   View,
   Text,
@@ -13,7 +17,7 @@ import EmptyState from "../../components/EmptyState";
 import ErrorState from "../../components/ErrorState";
 import BottomNav from "../../components/BottomNav";
 
-import { fetchMyPurchases, MyPurchase } from "../../services/purchasesService";
+import { fetchMyPurchases } from "../../services/purchasesService";
 import { ProductScope } from "../../services/productsService";
 import { recoverMyPendingPayments } from "../../services/paymentService";
 
@@ -22,7 +26,6 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
-import { logError } from "../../utils/logger";
 
 // SRS Part 4, section 4 - Orders & Purchase History:
 // Order ID, Package Name, Amount, Payment Date, Payment Status.
@@ -58,33 +61,22 @@ function formatDate(ms?: number) {
 }
 
 export default function MyPurchasesScreen() {
-  const [purchases, setPurchases] = useState<MyPurchase[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const load = useCallback(() => {
-    setLoading(true);
-    setError(null);
-
-    fetchMyPurchases()
-      .then(setPurchases)
-      .catch((err) => {
-        logError("Failed to load purchase history:", err);
-        setError("Could not load your purchase history. Please try again.");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  const { value: purchases, loading, error, refresh: load } = usePurchaseResource(fetchMyPurchases);
 
   // Refresh every time the screen is focused, so a purchase made just now
   // (via the external Razorpay checkout page) shows up on return.
   useFocusEffect(
     useCallback(() => {
       let active = true;
+      const owner = getCurrentUser()?.id;
       load();
+      if (playRestorationEnabled) void restorePlayPurchases().then(result => {
+        if (active && getCurrentUser()?.id === owner && result.confirmed) load();
+      }).catch(() => {});
       // History renders immediately; bounded recovery refreshes it if a recent
       // provider-captured attempt was lost when the app process ended.
       void recoverMyPendingPayments().then((recovered) => {
-        if (active && recovered) load();
+        if (active && getCurrentUser()?.id === owner && recovered) load();
       }).catch(() => {});
       return () => { active = false; };
     }, [load])

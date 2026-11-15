@@ -1,0 +1,25 @@
+{
+  "id": "6563492c-b997-4b1a-b46f-a13b5425db16",
+  "status": "FINISHED",
+  "platform": "ANDROID",
+  "appIdentifier": "in.medveda.app",
+  "appVersion": "1.2.2",
+  "appBuildVersion": "13",
+  "buildProfile": "production",
+  "distribution": "STORE",
+  "sdkVersion": "57.0.0",
+  "createdAt": "2026-11-08T12:05:31.422Z",
+  "completedAt": "2026-11-08T12:22:40.187Z",
+  "gitCommitHash": "54c33cbbc0c9c21eaa66f8bf2be285bd2e46e1f8",
+  "metrics": {
+    "buildWaitTime": 4653,
+    "buildQueueTime": 4361,
+    "buildDuration": 1019751
+  },
+  "runtime": {
+    "id": "01a1bae9-57b1-7326-99ca-26f6225bc14f",
+    "version": "1.2.2-disabled"
+  },
+  "buildPage": "https://expo.dev/accounts/ganeshp0305/projects/ayurpulse/builds/6563492c-b997-4b1a-b46f-a13b5425db16",
+  "artifactUrl": "https://expo.dev/artifacts/eas/J8cauo_dDTeJyyOSITEhxK4l8XyTssYyPVqNIqkIf3c.aab"
+}

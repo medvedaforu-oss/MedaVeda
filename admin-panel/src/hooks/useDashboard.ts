@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { ContentFilters } from "../types/filters";
 
-import { dashboardStatKeys, getDashboardStats } from "../services/dashboardService";
-import type { DashboardErrors, DashboardStats } from "../services/dashboardService";
+import { dashboardStatKeys, getDashboardStats, type DashboardErrors, type DashboardStats } from "../services/dashboardService";
 import useRequestGuard from "./useRequestGuard";
 
 export default function useDashboard(filters: ContentFilters = {}) {

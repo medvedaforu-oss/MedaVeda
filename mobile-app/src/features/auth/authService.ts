@@ -33,6 +33,7 @@ export async function signInWithIdentifier(identifier: AuthIdentifier, password:
   }
   const { data, error } = await supabase.functions.invoke("login-with-mobile", {
     body: { mobileNumber: identifier.value, password },
+    signal: AbortSignal.timeout(15_000),
   });
   if (error || !data?.session) return { data: { user: null, session: null }, error: error ?? new Error("Invalid credentials") };
   return supabase.auth.setSession({

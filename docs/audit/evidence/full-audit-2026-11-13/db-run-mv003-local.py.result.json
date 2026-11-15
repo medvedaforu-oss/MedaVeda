@@ -1,0 +1,10 @@
+{
+  "name": "db-run-mv003-local.py",
+  "cwd": ".",
+  "command": [
+    "python3",
+    "supabase/tests/run-mv003-local.py"
+  ],
+  "exit": 1,
+  "seconds": 56.26
+}

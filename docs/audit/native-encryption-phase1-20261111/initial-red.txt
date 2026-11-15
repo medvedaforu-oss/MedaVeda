@@ -1,0 +1,188 @@
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:13:28: error: unresolved reference 'VaultFailure'.
+  try { body() } catch (e: VaultFailure) { check(e.message == "Offline vault unavailable"); return }
+                           ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:13:52: error: unresolved reference 'message'.
+  try { body() } catch (e: VaultFailure) { check(e.message == "Offline vault unavailable"); return }
+                                                   ^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:16:20: error: unresolved reference 'OwnerKeyProvider'.
+private val keys = OwnerKeyProvider { owner, epoch ->
+                   ^^^^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:16:39: error: cannot infer type for this parameter. Specify it explicitly.
+private val keys = OwnerKeyProvider { owner, epoch ->
+                                      ^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:16:46: error: cannot infer type for this parameter. Specify it explicitly.
+private val keys = OwnerKeyProvider { owner, epoch ->
+                                             ^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:17:47: error: unresolved reference 'VaultFailure'.
+  if (owner != "owner-a" || epoch != 1) throw VaultFailure()
+                                              ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:17:47: error: type mismatch: inferred type is 'ERROR CLASS: Unresolved name: VaultFailure', but 'Throwable' was expected.
+  if (owner != "owner-a" || epoch != 1) throw VaultFailure()
+                                              ^^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:20:38: error: unresolved reference 'PdfMetadata'.
+private fun meta(n: Long = 262151) = PdfMetadata("owner-a", "note-1", 3, n, 1, "sha256:synthetic-v3")
+                                     ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:21:72: error: unresolved reference 'OwnerSession'.
+private class Synthetic(private val length: Long, private val session: OwnerSession? = null) : InputStream() {
+                                                                       ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:33:50: error: unresolved reference 'revoke'.
+    if (session != null && at >= 262144) session.revoke()
+                                                 ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:37:22: error: unresolved reference 'PdfMetadata'.
+private fun bytes(m: PdfMetadata, s: OwnerSession, t: Ticket): ByteArray = ByteArrayOutputStream().also {
+                     ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:37:38: error: unresolved reference 'OwnerSession'.
+private fun bytes(m: PdfMetadata, s: OwnerSession, t: Ticket): ByteArray = ByteArrayOutputStream().also {
+                                     ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:37:55: error: unresolved reference 'Ticket'.
+private fun bytes(m: PdfMetadata, s: OwnerSession, t: Ticket): ByteArray = ByteArrayOutputStream().also {
+                                                      ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:38:3: error: unresolved reference 'PdfContainer'.
+  PdfContainer.write(Synthetic(m.length), it, m, keys.key(m.owner, m.keyEpoch), t, s)
+  ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:38:34: error: unresolved reference 'length'.
+  PdfContainer.write(Synthetic(m.length), it, m, keys.key(m.owner, m.keyEpoch), t, s)
+                                 ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:38:61: error: unresolved reference 'owner'.
+  PdfContainer.write(Synthetic(m.length), it, m, keys.key(m.owner, m.keyEpoch), t, s)
+                                                            ^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:38:70: error: unresolved reference 'keyEpoch'.
+  PdfContainer.write(Synthetic(m.length), it, m, keys.key(m.owner, m.keyEpoch), t, s)
+                                                                     ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:40:37: error: unresolved reference 'PdfMetadata'.
+private fun verify(b: ByteArray, m: PdfMetadata, s: OwnerSession, t: Ticket) =
+                                    ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:40:53: error: unresolved reference 'OwnerSession'.
+private fun verify(b: ByteArray, m: PdfMetadata, s: OwnerSession, t: Ticket) =
+                                                    ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:40:70: error: unresolved reference 'Ticket'.
+private fun verify(b: ByteArray, m: PdfMetadata, s: OwnerSession, t: Ticket) =
+                                                                     ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:41:3: error: unresolved reference 'PdfContainer'.
+  PdfContainer.verify(ByteArrayInputStream(b), m, keys.key(m.owner, m.keyEpoch), t, s)
+  ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:41:62: error: unresolved reference 'owner'.
+  PdfContainer.verify(ByteArrayInputStream(b), m, keys.key(m.owner, m.keyEpoch), t, s)
+                                                             ^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:41:71: error: unresolved reference 'keyEpoch'.
+  PdfContainer.verify(ByteArrayInputStream(b), m, keys.key(m.owner, m.keyEpoch), t, s)
+                                                                      ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:50:11: error: unresolved reference 'OwnerSession'.
+  val s = OwnerSession(); val t = s.claim("owner-a"); val m = meta(); val valid = bytes(m, s, t)
+          ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:67:19: error: cannot infer type for this parameter. Specify it explicitly.
+    for (other in listOf(m.copy(owner="owner-b"), m.copy(note="note-2"), m.copy(version=4),
+                  ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:69:16: error: unresolved reference 'PdfContainer'.
+      denied { PdfContainer.verify(ByteArrayInputStream(valid), other,
+               ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:72:14: error: unresolved reference 'PdfContainer'.
+    denied { PdfContainer.verify(ByteArrayInputStream(valid), m, SecretKeySpec(ByteArray(32), "AES"), t, s) }
+             ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:95:17: error: cannot infer type for this parameter. Specify it explicitly.
+    for (bad in listOf(m.copy(length=0),m.copy(length=104857601),m.copy(version=0),
+                ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:98:15: error: cannot infer type for this parameter. Specify it explicitly.
+    for (n in listOf(m.length-1,m.length+1)) denied {
+              ^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:99:7: error: unresolved reference 'PdfContainer'.
+      PdfContainer.write(Synthetic(n), ByteArrayOutputStream(),m,keys.key(m.owner,1),t,s)
+      ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:101:14: error: unresolved reference 'PdfContainer'.
+    denied { PdfContainer.write(ByteArrayInputStream(ByteArray(m.length.toInt())),
+             ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:114:15: error: unresolved reference 'OwnerSession'.
+    val local=OwnerSession();val a=local.claim("owner-a")
+              ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:116:22: error: unresolved reference 'OwnerSession'.
+    denied { bytes(m,OwnerSession(),t) }
+                     ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:118:14: error: unresolved reference 'PdfContainer'.
+    denied { PdfContainer.write(Synthetic(m.length,local),ByteArrayOutputStream(),m,keys.key(m.owner,1),fresh,local) }
+             ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:122:48: error: unresolved reference 'AtomicVault'.
+    val root=parent.resolve("vault");val vault=AtomicVault.create(root,keys,s)
+                                               ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:131:16: error: unresolved reference 'AtomicVault'.
+      denied { AtomicVault.create(root,keys,s) }
+               ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:15: error: unresolved reference 'AtomicVault'.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+              ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:60: error: unresolved reference 'OwnerKeyProvider'.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+                                                           ^^^^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:79: error: cannot infer type for this parameter. Specify it explicitly.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+                                                                              ^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:81: error: cannot infer type for this parameter. Specify it explicitly.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+                                                                                ^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:90: error: unresolved reference 'VaultFailure'.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+                                                                                         ^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:136:90: error: type mismatch: inferred type is 'ERROR CLASS: Unresolved name: VaultFailure', but 'Throwable' was expected.
+      val bad=AtomicVault.create(parent.resolve("missing"),OwnerKeyProvider { _,_->throw VaultFailure() },s)
+                                                                                         ^^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:139:19: error: unresolved reference 'AtomicVault'.
+      val failing=AtomicVault.create(parent.resolve("short"),keys,s)
+                  ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:148:23: error: unresolved reference 'Durability'.
+        val io=object:Durability by JvmDurability {
+                      ^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:148:37: error: unresolved reference 'JvmDurability'.
+        val io=object:Durability by JvmDurability {
+                                    ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:150:11: error: 'forceFile' overrides nothing.
+          override fun forceFile(channel:java.nio.channels.FileChannel) {
+          ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:151:67: error: unresolved reference 'JvmDurability'.
+            if(armed && stage=="file") throw IOException("full"); JvmDurability.forceFile(channel)
+                                                                  ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:153:11: error: 'linkNew' overrides nothing.
+          override fun linkNew(part:Path,target:Path) {
+          ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:154:66: error: unresolved reference 'JvmDurability'.
+            if(armed && stage=="link") throw IOException("full");JvmDurability.linkNew(part,target)
+                                                                 ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:156:11: error: 'forceDirectory' overrides nothing.
+          override fun forceDirectory(path:Path) {
+          ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:157:71: error: unresolved reference 'JvmDurability'.
+            if(armed && stage=="directory") throw IOException("full");JvmDurability.forceDirectory(path)
+                                                                      ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:160:15: error: unresolved reference 'AtomicVault'.
+        val v=AtomicVault.create(dir,keys,s,io);io.armed=true
+              ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:169:21: error: unresolved reference 'Durability'.
+      val io=object:Durability by JvmDurability {
+                    ^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:169:35: error: unresolved reference 'JvmDurability'.
+      val io=object:Durability by JvmDurability {
+                                  ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:170:9: error: 'linkNew' overrides nothing.
+        override fun linkNew(part:Path,target:Path) {
+        ^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:172:11: error: unresolved reference 'JvmDurability'.
+          JvmDurability.linkNew(part,target)
+          ^^^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:175:13: error: unresolved reference 'AtomicVault'.
+      val v=AtomicVault.create(dir,keys,s,io);denied { v.seal(Synthetic(m.length),m,t) }
+            ^^^^^^^^^^^
+mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt:182:16: error: unresolved reference 'AtomicVault'.
+      denied { AtomicVault.open(link,keys,s) }
+               ^^^^^^^^^^^
+Traceback (most recent call last):
+  File "/home/ganeshp8545/AyurPulse/mobile-app/modules/medveda-offline-vault/tests/run-host-tests.py", line 27, in <module>
+    subprocess.run(['java', '-Xmx512m', '-cp', os.pathsep.join(compiler),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    'org.jetbrains.kotlin.cli.jvm.K2JVMCompiler', '-no-stdlib', '-no-reflect',
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '-jvm-target', '17', '-classpath', stdlib, '-d', work,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    *map(str, sources)], check=True)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['java', '-Xmx512m', '-cp', '/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/2.1.20/4ef56b3316798316bfac7a0ae443391c9e900ea1/kotlin-compiler-embeddable-2.1.20.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/2.1.20/f7c623d7f7bdb01f5ccd6b437bc0a937fcd7c57e/kotlin-script-runtime-2.1.20.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/2.1.20/3c1003045c4f2a72f987a147abac8e7058be1183/kotlin-reflect-2.1.20.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20200330/3afb14d5f9ceb459d724e907a21145e8ff394f02/trove4j-1.0.20200330.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.8.0/ac1dc37a30a93150b704022f8d895ee1bd3a36b3/kotlinx-coroutines-core-jvm-1.8.0.jar:/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar', 'org.jetbrains.kotlin.cli.jvm.K2JVMCompiler', '-no-stdlib', '-no-reflect', '-jvm-target', '17', '-classpath', '/home/ganeshp8545/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar', '-d', '/tmp/medveda-vault-host-f1o_gsxx', '/home/ganeshp8545/AyurPulse/mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt']' returned non-zero exit status 1.

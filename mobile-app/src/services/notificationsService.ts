@@ -54,7 +54,7 @@ function readNotificationRows(): Promise<any[]> {
 // created_at }) if the admin panel has created any. Fails soft - the
 // Notifications section on the dashboard should never block the rest of
 // the screen from loading.
-export async function fetchNotifications(): Promise<AppNotification[]> {
+export async function fetchNotifications(options: { strict?: boolean } = {}): Promise<AppNotification[]> {
   try {
     const data = await readNotificationRows();
 
@@ -72,6 +72,7 @@ export async function fetchNotifications(): Promise<AppNotification[]> {
     const preferences = await getNotificationPreferences();
     return all.filter(item => !item.type || preferences[item.type] !== false);
   } catch (error) {
+    if (options.strict) throw error;
     logDebug("fetchNotifications: no notifications available yet", error);
     return [];
   }
@@ -112,11 +113,11 @@ async function getReadIds(): Promise<Set<string>> {
   }
 }
 
-export async function fetchNotificationsWithReadState(): Promise<{
+export async function fetchNotificationsWithReadState(options: { strict?: boolean } = {}): Promise<{
   notifications: (AppNotification & { read: boolean })[];
 }> {
   const [notifications, readIds, archivedIds] = await Promise.all([
-    fetchNotifications(),
+    fetchNotifications(options),
     getReadIds(),
     getArchivedIds(),
   ]);

@@ -3,7 +3,8 @@ import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { reportExternalRefundEvent, reportExternalOrder } from "../_shared/externalReporting.ts";
 import { consumeProductPurchase, getProductPurchase, getVoidedPurchasesPage } from "../_shared/googlePlay.ts";
 import { alertUcb } from "../_shared/ucbAlert.ts";
-import { settleRefund, settleDispute } from "../_shared/settle.ts";
+import { settleCapturedPayment, settleRefund, settleDispute } from "../_shared/settle.ts";
+import { reportNotesChoiceAuthorization } from "../_shared/notesChoiceAuthorization.ts";
 import { refundCapturedPayment } from "../_shared/razorpay.ts";
 import { runBounded, WORK_BATCH_SIZE, WORK_CONCURRENCY } from "../_shared/paymentQueue.ts";
 
@@ -21,7 +22,9 @@ function authorized(req: Request): boolean {
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
   if (!authorized(req)) return jsonResponse({ error: "Unauthorized." }, 401);
-  const body = await req.json().catch(() => ({})) as { orderId?: unknown; phase?: unknown };
+  const input: unknown = await req.json().catch(() => null);
+  if (!input || typeof input !== "object" || Array.isArray(input)) return jsonResponse({ error: "Invalid sweep request." }, 400);
+  const body = input as { orderId?: unknown; phase?: unknown };
   const orderId = typeof body.orderId === "string" ? body.orderId : "";
   if (orderId && !UUID.test(orderId)) return jsonResponse({ error: "Invalid orderId." }, 400);
   const phase = typeof body.phase === "string" ? body.phase : (orderId ? "reports" : "");
@@ -42,9 +45,10 @@ Deno.serve(async (req: Request) => {
     let reason = "";
     try {
       if (phase === "reports") {
-        if (await reportExternalOrder(id) === "reported") reported++;
+        if (await reportExternalOrder(id) !== "reported") throw new Error("External report not completed");
+        reported++;
       } else if (phase === "refunds") {
-        await reportExternalRefundEvent(id);
+        if (await reportExternalRefundEvent(id) !== "reported") throw new Error("External refund report not completed");
       } else if (phase === "consume") {
         const { data: item, error } = await supabaseAdmin.from("orders")
           .select("id,play_sku,purchase_token").eq("id", id).maybeSingle();
@@ -83,14 +87,36 @@ Deno.serve(async (req: Request) => {
         const { error: updateError } = await supabaseAdmin.from("payment_compensations")
           .update({ status: "refunded", provider_refund_id: refund.id }).eq("payment_id", id);
         if (updateError) throw new Error("Could not record provider refund");
-        await supabaseAdmin.from("payment_captures").update({ status: "compensated" }).eq("payment_id", id);
+        const { error: captureError } = await supabaseAdmin.from("payment_captures")
+          .update({ status: "compensated" }).eq("payment_id", id);
+        if (captureError) throw new Error("Could not record compensated capture");
         const handled = await settleRefund({ razorpayPaymentId: id, razorpayRefundId: refund.id });
         if (!handled.ok) throw new Error(handled.reason);
       } else if (phase === "events") {
-        const { data: event, error } = await supabaseAdmin.from("provider_events")
-          .select("event_id,event_type,payment_id,provider_object_id").eq("event_id", id).maybeSingle();
+        const captureRetry = id.startsWith("capture:");
+        const { data: eventRow, error } = captureRetry
+          ? await supabaseAdmin.from("payment_captures")
+            .select("payment_id,razorpay_order_id,provider_time").eq("payment_id", id.slice(8)).maybeSingle()
+          : await supabaseAdmin.from("provider_events")
+            .select("event_id,event_type,payment_id,provider_object_id,razorpay_order_id,provider_time").eq("event_id", id).maybeSingle();
+        const event = eventRow as { event_type?: string; payment_id?: string;
+          razorpay_order_id?: string; provider_time?: string; provider_object_id?: string } | null;
         if (error || !event) throw new Error("Provider event unavailable");
-        if (event.event_type === "refund.processed") {
+        if (captureRetry || event.event_type === "payment.captured") {
+          if (!event.payment_id || !event.razorpay_order_id) throw new Error("Capture event incomplete");
+          const outcome = await settleCapturedPayment({ eventId: id,
+            razorpayPaymentId: event.payment_id, razorpayOrderId: event.razorpay_order_id,
+            providerTime: event.provider_time });
+          if (!outcome.ok && !(outcome.status === 409 &&
+              ["payment captured; refund queued", "payment already refunded", "payment reversed"].includes(outcome.reason)))
+            throw new Error("Capture settlement pending");
+        } else if (event.event_type === "payment.authorized") {
+          if (!event.payment_id || !event.razorpay_order_id) throw new Error("Authorization event incomplete");
+          await reportNotesChoiceAuthorization(event.payment_id, event.razorpay_order_id);
+          const { error: appliedError } = await supabaseAdmin.from("provider_events")
+            .update({ status: "applied" }).eq("event_id", id);
+          if (appliedError) throw new Error("Authorization inbox update failed");
+        } else if (event.event_type === "refund.processed") {
           if (!event.payment_id || !event.provider_object_id) throw new Error("Refund event incomplete");
           const outcome = await settleRefund({ eventId: id,
             razorpayPaymentId: event.payment_id, razorpayRefundId: event.provider_object_id });
@@ -112,7 +138,7 @@ Deno.serve(async (req: Request) => {
         p_kind: phase, p_target_id: id, p_lease_id: job.lease_id,
         p_success: success, p_error: reason || null,
       });
-      if (finishError) failed.push(id);
+      if (finishError || state === "lease_lost") failed.push(id);
       if (state === "parked") await alertUcb("Payment job permanently parked", id);
     }
   };

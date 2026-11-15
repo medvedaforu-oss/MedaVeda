@@ -1,0 +1,16 @@
+{
+  "sdkInstalled": true,
+  "sdkPath": "/home/ganeshp8545/Android",
+  "java": "21.0.12.1",
+  "gradle": "9.3.1",
+  "nativeCompilation": "BLOCKED / NOT VERIFIED",
+  "firstCompletedFailure": "shared Gradle file hash cache lock timeout",
+  "privateOnlineExit": 124,
+  "privateOfflineExit": 1,
+  "latestAttempt": "interrupted before source compilation; daemon exited",
+  "sourceCompilerDiagnostics": false,
+  "sourceOrDependencyFixes": [],
+  "encryptionEnabled": false,
+  "apkBuilt": false,
+  "productionReleaseBuilt": false
+}

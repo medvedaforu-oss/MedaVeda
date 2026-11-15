@@ -1,0 +1,7 @@
+{
+  "artifact": "payment-disabled-mobile-source.tar.gz",
+  "sha256": "0f5e55da061c3288b33bbe4c20dc0968ca9bd46202ab628d17ee21180ace0748",
+  "source_files": 322,
+  "identity": "reviewable source only; no compiled Android artifact",
+  "excluded": "node_modules, generated native trees, environment files, credentials, Firebase files, signing keys, build output; inputs require owner acceptance"
+}

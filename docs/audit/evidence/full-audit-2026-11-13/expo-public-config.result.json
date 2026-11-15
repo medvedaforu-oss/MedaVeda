@@ -1,0 +1,15 @@
+{
+  "name": "expo-public-config",
+  "cwd": "mobile-app",
+  "command": [
+    "npx",
+    "--no-install",
+    "expo",
+    "config",
+    "--type",
+    "public",
+    "--json"
+  ],
+  "exit": 0,
+  "seconds": 7.22
+}

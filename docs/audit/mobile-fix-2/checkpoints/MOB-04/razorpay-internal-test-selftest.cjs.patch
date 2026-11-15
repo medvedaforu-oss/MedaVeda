@@ -1,0 +1,29 @@
+--- a/mobile-app/scripts/razorpay-internal-test-selftest.cjs
++++ b/mobile-app/scripts/razorpay-internal-test-selftest.cjs
+@@ -115,7 +115,7 @@
+   const Summary = load('mobile-app/src/screens/payment/OrderSummaryScreen.tsx', {
+     react: h.react, 'react/jsx-runtime': jsx, 'react-native': native,
+     '@react-navigation/native': { useRoute: () => ({ params: summaryRoute.params }),
+-      useNavigation: () => ({ replace: (name, params) => { checkoutRoute = { name, params }; } }) },
++      useNavigation: () => ({ isFocused:()=>true,addListener:()=>()=>{},replace: (name, params) => { checkoutRoute = { name, params }; } }) },
+     '../../components/CustomButton': { __esModule: true, default: 'PayButton' },
+     '../../components/ErrorState': { __esModule: true, default: 'Error' },
+     '../../services/referralsService': { fetchOrderQuote: async id => {
+@@ -123,7 +123,7 @@
+     }, fetchReferralSettings: async () => ({ enabled: false }), formatRupees: String, walletProductsText: () => '' },
+     '../../services/playBillingService': {}, '../../config/supabase': {},
+     '../../services/indiaBillingStates': { INDIA_ADMINISTRATIVE_AREAS: [] },
+-    '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/paymentService': service, '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
++    '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/paymentService': service, '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
+     '../../utils/logger': { logError() {} }, ...themes('../../theme/'),
+   }).default;
+   h.render(Summary); await tick();
+@@ -149,7 +149,7 @@
+       useNavigation: () => ({ dispatch: value => { destination = value.routes[1]; }, goBack: () => back++ }),
+       useFocusEffect() {}, CommonActions: { reset: value => value } },
+     '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
+-    '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/paymentService': { verifyPayment: async () => { verifies++; return verdict; }, recoverPaymentWithRetry: async () => ({ success: false, pending: true }) },
++    '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/paymentService': { verifyPayment: async () => { verifies++; return verdict; }, recoverPaymentWithRetry: async () => ({ success: false, pending: true }) },
+     '../../services/ordersService': { markOrderStatus: async () => {} },
+     './checkoutHtmlTemplate': { buildCheckoutHtml: p => JSON.stringify(p) },
+     './checkoutNavigation': { CHECKOUT_ORIGIN_WHITELIST: [], isAllowedCheckoutWebUrl: () => true },

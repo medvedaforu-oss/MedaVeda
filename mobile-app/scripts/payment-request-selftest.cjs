@@ -4,7 +4,7 @@ let user='buyer', calls=[], timers=new Map(), rows=[], filters=[], queryCount=0;
 let transport=async()=>Response.json({success:true,amount:49});
 const query={abortSignal(){return this;},select(){return this;},eq(k,v){filters.push([k,v]);return this;},in(){return this;},not(){return this;},gte(){return this;},order(){return this;},limit(){return this;},then(resolve){queryCount++;resolve({data:rows,error:null});}};
 const api=load('mobile-app/src/services/paymentService.ts',{
- '../config/supabase':{supabase:{auth:{getSession:async()=>({data:{session:{access_token:'synthetic-token'}}})},from:()=>query}},
+ '../config/supabase':{supabase:{auth:{getSession:async()=>({data:{session:{access_token:'synthetic-token',user:{id:user}}}})},from:()=>query}},
  'react-native':{Platform:{OS:'android'}},'expo-application':{nativeApplicationVersion:'1.2.1'},
  '../config/paymentProvider':{paymentProvider:'razorpay'},'./authState':{getCurrentUser:()=>user?{id:user}:null},
 },{process:{env:{EXPO_PUBLIC_SUPABASE_URL:'https://fixture.invalid'}},Request,Response,AbortController,
@@ -16,12 +16,19 @@ const payload={internalOrderId:'order',razorpay_order_id:'rzp_order',razorpay_pa
 function stall(_url,init){return new Promise((_,reject)=>init.signal.addEventListener('abort',()=>reject(new Error('deadline'))));}
 function fire(){assert.equal(timers.size,1);[...timers.values()][0]();}
 (async()=>{
- transport=async()=>Response.json({amountPaise:4900,internalOrderId:'order'});
+ const validOrder={keyId:'rzp_test_fixture',isLiveMode:false,amountPaise:4900,internalOrderId:'order',razorpayOrderId:'order_fixture',productTitle:'Notes',verifyUrl:endpoint};
+ transport=async()=>Response.json(validOrder);
  await api.purchaseProduct('notes',true);
  assert.deepEqual(JSON.parse(calls[0].init.body),{productId:'notes',useWallet:true});
  assert.equal(calls[0].init.headers.Authorization,'Bearer synthetic-token');
  assert.equal(timers.size,0);assert.ok(calls[0].init.signal);
+ assert.ok(calls[0].url.endsWith('/create-order-nonplay-test'));
  console.log('PASS create sends product/wallet only and cleans request deadline');
+ for(const change of [{keyId:'rzp_live_fixture'},{isLiveMode:true},{amountPaise:NaN},{amountPaise:0},{internalOrderId:''},{razorpayOrderId:''},{productTitle:''},{verifyUrl:'https://foreign.invalid/verify'}]) {
+  transport=async()=>Response.json({...validOrder,...change});
+  await assert.rejects(api.purchaseProduct('notes'),/Invalid/);
+ }
+ console.log('PASS malformed, live-mode and foreign verification checkout responses cannot open checkout');
  transport=stall;let result=api.purchaseProduct('notes');const rejected=assert.rejects(result,/deadline/);
  await tick();fire();await rejected;assert.equal(timers.size,0);
  console.log('PASS stalled create request aborts without automatic duplicate order retry');

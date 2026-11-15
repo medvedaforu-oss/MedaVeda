@@ -36,6 +36,7 @@ function formatTime(hour: number, minute: number) {
 export default function StudyReminderScreen() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   const [enabled, setEnabled] = useState(false);
   const [hour, setHour] = useState(19);
@@ -44,15 +45,18 @@ export default function StudyReminderScreen() {
   const [showPicker, setShowPicker] = useState(false);
   const supported = isStudyReminderSupported();
 
-  useEffect(() => {
-    getStudyReminderSettings()
-      .then((settings) => {
-        setEnabled(settings.enabled);
-        setHour(settings.hour);
-        setMinute(settings.minute);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  async function loadSettings() {
+    setLoading(true);
+    setLoadError(false);
+    try {
+      const settings = await getStudyReminderSettings();
+      setEnabled(settings.enabled);
+      setHour(settings.hour);
+      setMinute(settings.minute);
+    } catch { setLoadError(true); }
+    finally { setLoading(false); }
+  }
+  useEffect(() => { void loadSettings(); }, []);
 
   async function handleToggle(value: boolean) {
     if (!supported) {
@@ -63,31 +67,35 @@ export default function StudyReminderScreen() {
       return;
     }
 
+    if (saving) return;
     setSaving(true);
+    try {
+      if (value) {
+        const result = await enableStudyReminder(hour, minute);
 
-    if (value) {
-      const result = await enableStudyReminder(hour, minute);
+        if (!result.success && result.permissionDenied) {
+          Alert.alert(
+            "Notifications Disabled",
+            "Please allow notifications for MedVeda in your phone's Settings to receive the daily study reminder.",
+            [
+              { text: "Cancel", style: "cancel" },
+              { text: "Open Settings", onPress: () => Linking.openSettings() },
+            ]
+          );
+          setSaving(false);
+          return;
+        }
 
-      if (!result.success && result.permissionDenied) {
-        Alert.alert(
-          "Notifications Disabled",
-          "Please allow notifications for MedVeda in your phone's Settings to receive the daily study reminder.",
-          [
-            { text: "Cancel", style: "cancel" },
-            { text: "Open Settings", onPress: () => Linking.openSettings() },
-          ]
-        );
-        setSaving(false);
-        return;
+        if (!result.success) throw new Error("Reminder unavailable");
+        setEnabled(true);
+      } else {
+        await disableStudyReminder();
+        setEnabled(false);
       }
 
-      setEnabled(true);
-    } else {
-      await disableStudyReminder();
-      setEnabled(false);
-    }
-
-    setSaving(false);
+    } catch {
+      Alert.alert("Reminder Not Saved", "Please try again. Your previous choice is still shown.");
+    } finally { setSaving(false); }
   }
 
   async function handleTimeChange(event: any, selectedDate?: Date) {
@@ -98,16 +106,18 @@ export default function StudyReminderScreen() {
     const newHour = selectedDate.getHours();
     const newMinute = selectedDate.getMinutes();
 
-    setHour(newHour);
-    setMinute(newMinute);
-
-    // If the reminder is already on, re-schedule it immediately at the
-    // new time rather than waiting for a separate "Save" step.
-    if (enabled) {
-      setSaving(true);
-      await enableStudyReminder(newHour, newMinute);
-      setSaving(false);
-    }
+    if (saving) return;
+    setSaving(true);
+    try {
+      if (enabled) {
+        const result = await enableStudyReminder(newHour, newMinute);
+        if (!result.success) throw new Error("Reminder unavailable");
+      }
+      setHour(newHour);
+      setMinute(newMinute);
+    } catch {
+      Alert.alert("Reminder Not Saved", "Please try again. Your previous time is still shown.");
+    } finally { setSaving(false); }
   }
 
   if (loading) {
@@ -117,6 +127,15 @@ export default function StudyReminderScreen() {
       </View>
     );
   }
+
+  if (loadError) return (
+    <View style={styles.center}>
+      <Text accessibilityRole="alert" style={styles.subtitle}>Could not load reminder settings. Please try again.</Text>
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Retry reminder settings" onPress={loadSettings}>
+        <Text style={styles.rowTitle}>Retry</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   const pickerValue = new Date();
   pickerValue.setHours(hour, minute, 0, 0);
@@ -153,6 +172,7 @@ export default function StudyReminderScreen() {
             <ActivityIndicator size="small" color={COLORS.accent} />
           ) : (
             <Switch
+              accessibilityLabel="Daily study reminder"
               value={enabled}
               onValueChange={handleToggle}
               disabled={!supported}
@@ -165,6 +185,9 @@ export default function StudyReminderScreen() {
         <View style={styles.divider} />
 
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel={`Change reminder time, ${formatTime(hour, minute)}`}
+          disabled={saving}
           style={styles.row}
           activeOpacity={0.7}
           onPress={() => setShowPicker(true)}

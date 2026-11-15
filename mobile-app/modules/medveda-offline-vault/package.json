@@ -1,0 +1,7 @@
+{
+  "name": "medveda-offline-vault",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dormant MEDVEDA native vault control foundation",
+  "main": "index.ts"
+}

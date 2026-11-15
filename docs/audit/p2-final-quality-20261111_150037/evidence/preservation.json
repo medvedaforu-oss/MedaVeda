@@ -1,0 +1,25 @@
+{
+  "protected_files": 2781,
+  "altered_or_missing": [],
+  "changed_existing_source_files": [
+    "mobile-app/src/components/ConfirmationDialog.tsx",
+    "mobile-app/src/components/SettingsItem.tsx",
+    "mobile-app/src/services/notificationsService.ts",
+    "mobile-app/src/screens/contact/ContactScreen.tsx",
+    "mobile-app/src/screens/notifications/NotificationsScreen.tsx",
+    "mobile-app/src/screens/pdf/PdfViewerScreen.web.tsx",
+    "mobile-app/src/screens/settings/SettingsScreen.tsx",
+    "admin-panel/src/components/CoursePicker.tsx",
+    "admin-panel/src/components/Input.tsx",
+    "admin-panel/src/components/Modal.tsx",
+    "admin-panel/src/components/NotesTable.tsx",
+    "admin-panel/src/components/TopProductsTable.tsx",
+    "admin-panel/src/components/ConfirmDialog.tsx",
+    "admin-panel/src/components/ProductFormModal.tsx",
+    "admin-panel/src/pages/Analytics.tsx",
+    "admin-panel/src/services/analyticsService.ts",
+    "admin-panel/src/services/referralService.ts",
+    "mobile-app/scripts/notification-preferences-selftest.cjs",
+    ".github/workflows/ci.yml"
+  ]
+}

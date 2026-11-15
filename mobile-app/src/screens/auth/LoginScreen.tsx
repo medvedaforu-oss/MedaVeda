@@ -34,6 +34,7 @@ import { COLORS } from "../../theme/colors";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
 import { SPACING } from "../../theme/spacing";
+import { getCurrentUser } from "../../services/authState";
 import { resolvePostLoginRoute } from "../../services/courseState";
 import BrandLogo from "../../components/BrandLogo";
 
@@ -48,6 +49,11 @@ export default function LoginScreen() {
   const [hidePassword, setHidePassword] = useState(true);
   const [loading, setLoading] = useState(false);
   const submitting = useRef(false);
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => { alive.current = false; };
+  }, []);
   const [lockStatus, setLockStatus] = useState<LockStatus>(NOT_LOCKED);
   // Set on EVERY failed sign-in attempt (any cause, email or mobile) so the
   // neutral hint below never reveals whether an account exists.
@@ -132,6 +138,7 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const freshLock = await getLockStatus(lockKey);
+      if (!alive.current) return;
       if (freshLock.locked) {
         setLockStatus(freshLock);
         setLoginFailed(true);
@@ -140,9 +147,13 @@ export default function LoginScreen() {
         return;
       }
       const { data: authData, error } = await signInWithIdentifier(parsedIdentifier, data.password);
+      if (!alive.current) return;
       const user = authData?.user;
 
       if (error || !user) {
+        const rejection = error as { code?: string; status?: number; context?: { status?: number } } | null;
+        const invalidCredentials = rejection?.code === "invalid_credentials" || rejection?.context?.status === 401;
+        if (!invalidCredentials) throw new Error("Sign-in unavailable");
         const status = await recordFailedAttempt(lockKey);
         setLockStatus(status);
         logDebug("Login rejected");
@@ -158,7 +169,7 @@ export default function LoginScreen() {
         return;
       }
 
-      await clearLoginAttempts(lockKey);
+      await clearLoginAttempts(lockKey).catch(() => {});
       setLockStatus(NOT_LOCKED);
       logDebug("Login success");
 
@@ -179,17 +190,22 @@ export default function LoginScreen() {
         logDebug("profile backfill failed:", profileError);
       }
 
-      navigation.replace(await resolvePostLoginRoute());
+      const destination = await resolvePostLoginRoute();
+      if (alive.current && navigation.isFocused?.() !== false) {
+        if (getCurrentUser()?.id !== user.id) throw new Error("Session changed during sign-in");
+        navigation.replace(destination);
+      }
     } catch (error: any) {
       // Unexpected/network errors are distinct from wrong credentials -
       // don't count them against the lockout counter, and don't imply
       // anything about whether the identifier or password was correct.
-      logDebug("Login error", error);
+      if (!alive.current) return;
+      logDebug("Login request failed");
       setLoginFailed(true);
       Alert.alert("Something Went Wrong", "Please check your connection and try again.");
     } finally {
       submitting.current = false;
-      setLoading(false);
+      if (alive.current) setLoading(false);
     }
   };
 
@@ -344,6 +360,9 @@ const styles = StyleSheet.create({
 
   content: {
     flexGrow: 1,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center",
     padding: 25,
     justifyContent: "center",
   },

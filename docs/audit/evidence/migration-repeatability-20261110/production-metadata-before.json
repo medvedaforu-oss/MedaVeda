@@ -1,0 +1,200 @@
+{
+  "observed_at": "2026-11-10T09:41:49.945405+00:00",
+  "method": "GET",
+  "production_sql_calls": 0,
+  "mutations": 0,
+  "identity": {
+    "id": "xbvenkfmesugrbjuufyw",
+    "name": "MedVeda",
+    "status": "ACTIVE_HEALTHY",
+    "region": "ap-northeast-2"
+  },
+  "functions": [
+    {
+      "slug": "create-order",
+      "version": 23,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1790106841912
+    },
+    {
+      "slug": "create-play-order",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792259108507
+    },
+    {
+      "slug": "delete-account",
+      "version": 19,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1789896585559
+    },
+    {
+      "slug": "diagnose-play-matrix",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792486574836
+    },
+    {
+      "slug": "diagnose-play-pricing",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792481330217
+    },
+    {
+      "slug": "diagnose-play-service-account",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792470057269
+    },
+    {
+      "slug": "get-note-url",
+      "version": 20,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792781231359
+    },
+    {
+      "slug": "get-video-url",
+      "version": 20,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792781236152
+    },
+    {
+      "slug": "login-with-mobile",
+      "version": 18,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789990093212
+    },
+    {
+      "slug": "play-payment-worker",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792259132736
+    },
+    {
+      "slug": "razorpay-webhook",
+      "version": 50,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1790106854078
+    },
+    {
+      "slug": "request-password-reset-by-mobile",
+      "version": 18,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789990100784
+    },
+    {
+      "slug": "send-push-notification",
+      "version": 51,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789993120363
+    },
+    {
+      "slug": "sync-play-catalog",
+      "version": 6,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793128973060
+    },
+    {
+      "slug": "upload-note-pdf",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792338990701
+    },
+    {
+      "slug": "verify-payment",
+      "version": 68,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1790106848094
+    },
+    {
+      "slug": "verify-play-purchase",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792259116603
+    }
+  ],
+  "secrets": [
+    {
+      "name": "GOOGLE_PLAY_PACKAGE_NAME",
+      "digest_fingerprint": "885b1745d3ef531c8201c884ecce9dd116cce445f2874d108d6d5231ea490fdb"
+    },
+    {
+      "name": "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON",
+      "digest_fingerprint": "610dd51234fe26b8f1ff17a759a650c22a1665342f965ca6acb495a67d753f91"
+    },
+    {
+      "name": "PLAY_CATALOG_CRON_SECRET",
+      "digest_fingerprint": "6511f2e8aa53cb9d2f47ab61e0d85a81682afb2de2f099baf4d560b9aeb6946c"
+    },
+    {
+      "name": "PLAY_CATALOG_REGIONS_VERSION",
+      "digest_fingerprint": "e358f1515b754ee2cf3f783a23c71ad874c7988a1dad7bb36cbb8b84119e9c4f"
+    },
+    {
+      "name": "PLAY_PAYMENT_CRON_SECRET",
+      "digest_fingerprint": "0737125342a3a012c4d091283ac028fca008549d8ce9244957cd23343084b97a"
+    },
+    {
+      "name": "RAZORPAY_KEY_ID",
+      "digest_fingerprint": "17ee13027af8740d65d296295e65eaa686fcf4ac00012c9b9381de90621e6464"
+    },
+    {
+      "name": "RAZORPAY_KEY_SECRET",
+      "digest_fingerprint": "81d965ebdf7e27e8c6f2d6c9d84aaeb4a9dabce5bfb51f8219c1f0f27a909f8e"
+    },
+    {
+      "name": "RAZORPAY_WEBHOOK_SECRET",
+      "digest_fingerprint": "988cb7e38fd836d3891f28067152b545f6fa468626f05eb823b131288ce66a02"
+    },
+    {
+      "name": "SUPABASE_ANON_KEY",
+      "digest_fingerprint": "bf6ed303b5ed38f5e6669c5683be62d4ce7cab11933bef6393dd44752c7f5467"
+    },
+    {
+      "name": "SUPABASE_DB_URL",
+      "digest_fingerprint": "ed2e0e6b9b1a71bf8da2071c715218c2ec3a0139ddf3b56fe9be15c3db855763"
+    },
+    {
+      "name": "SUPABASE_JWKS",
+      "digest_fingerprint": "aaea5bb411fcba8405be4c003c3573070fcefe20a772aadb50fc5771757acac0"
+    },
+    {
+      "name": "SUPABASE_PUBLISHABLE_KEYS",
+      "digest_fingerprint": "b8597d3eb056f579ffd64e6cef630d93d50c923fd5e84ccff431d2e0a01c0166"
+    },
+    {
+      "name": "SUPABASE_SECRET_KEYS",
+      "digest_fingerprint": "94bab489eac5eb704d71b2ef2bc88b00c38c96467fb77042fe9a2db036a3029f"
+    },
+    {
+      "name": "SUPABASE_SERVICE_ROLE_KEY",
+      "digest_fingerprint": "54fbbc2604fc9a972328bd54eedab10b23d253f36c9770e7235b0a9808798776"
+    },
+    {
+      "name": "SUPABASE_URL",
+      "digest_fingerprint": "9dbb53266de2e04afadb2d15a3f2c1cb4604e73b1e47319fc3d988f5076257bd"
+    }
+  ],
+  "dedicated_functions_absent": true,
+  "nonplay_secrets_absent": true,
+  "matches_prior_functions": true,
+  "matches_prior_secret_fingerprints": true,
+  "database_state": "NOT REFRESHED: production SQL prohibited by task; historical evidence only"
+}

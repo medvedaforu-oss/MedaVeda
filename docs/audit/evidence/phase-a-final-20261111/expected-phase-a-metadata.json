@@ -1,0 +1,47 @@
+{
+  "triggers": [
+    "CREATE TRIGGER orders_03_razorpay_transition BEFORE UPDATE OF status ON public.orders FOR EACH ROW EXECUTE FUNCTION guard_razorpay_order_transition()",
+    "CREATE TRIGGER purchases_zz_success_ownership BEFORE INSERT OR UPDATE ON public.purchases FOR EACH ROW EXECUTE FUNCTION guard_purchase_success_ownership()"
+  ],
+  "functions": [
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "",
+      "name": "guard_purchase_success_ownership",
+      "owner": "postgres",
+      "config": [
+        "search_path=pg_catalog, public, pg_temp"
+      ],
+      "result": "trigger",
+      "volatility": "v",
+      "definition_md5": "eb30b1cf1653f4329b9741705fb68bf9",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "",
+      "name": "guard_razorpay_order_transition",
+      "owner": "postgres",
+      "config": [
+        "search_path=pg_catalog, public, pg_temp"
+      ],
+      "result": "trigger",
+      "volatility": "v",
+      "definition_md5": "e6a7ff4b405381c6e996b941ed238cd8",
+      "security_definer": true
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_order_id text, p_payment_id text",
+      "name": "razorpay_entitlement_committed",
+      "owner": "postgres",
+      "config": [
+        "search_path=pg_catalog, public, pg_temp"
+      ],
+      "result": "boolean",
+      "volatility": "s",
+      "definition_md5": "4f63d2cbdb0a7981d24a1396ed19e574",
+      "security_definer": true
+    }
+  ]
+}

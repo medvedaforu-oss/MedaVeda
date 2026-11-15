@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import { useRoute, useNavigation, CommonActions } from "@react-navigation/native";
@@ -9,6 +9,8 @@ import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
 import { supabase } from "../../config/supabase";
+import { isNonplayTestBuild } from "../../config/paymentProvider";
+import { getCurrentUser, subscribeAuthUser } from "../../services/authState";
 
 type ConfirmedPurchase = { title: string; amount: number; orderId: string };
 
@@ -19,33 +21,56 @@ export default function PaymentSuccessScreen() {
   const orderId = typeof route.params?.orderId === "string" ? route.params.orderId : "";
   const [confirmed, setConfirmed] = useState<ConfirmedPurchase | null>(null);
   const [checking, setChecking] = useState(true);
+  const generation = useRef(0);
+  const [authVersion, setAuthVersion] = useState(0);
+
+  useEffect(() => subscribeAuthUser(() => {
+    generation.current++;
+    setConfirmed(null);
+    setChecking(true);
+    setAuthVersion(version => version + 1);
+  }), []);
 
   useEffect(() => {
     let mounted = true;
+    const run = ++generation.current;
+    const ownerId = getCurrentUser()?.id;
+    const current = () => mounted && generation.current === run && getCurrentUser()?.id === ownerId;
+    // A stalled Auth/readback must not leave an endless success-screen spinner.
+    const timer = setTimeout(() => {
+      if (current()) setChecking(false);
+      mounted = false;
+    }, 15_000);
     setChecking(true);
     setConfirmed(null);
     void (async () => {
       try {
-        if (!/^[0-9a-f-]{36}$/i.test(orderId)) return;
+        if (!ownerId || !/^[0-9a-f-]{36}$/i.test(orderId)) return;
+        if (isNonplayTestBuild) {
+          const purchase=await (await import("../../services/nonplayTestService")).confirmedTestPurchase(orderId);
+          if (current()) setConfirmed(purchase);
+          return;
+        }
         const { data: auth, error: authError } = await supabase.auth.getUser();
-        if (authError || !auth.user) return;
+        if (authError || auth.user?.id !== ownerId || !current()) return;
         const { data: order, error: orderError } = await supabase.from("orders")
           .select("id,user_id,status,amount").eq("id", orderId).eq("user_id", auth.user.id).maybeSingle();
-        if (orderError || order?.status !== "paid") return;
+        if (!current() || orderError || order?.status !== "paid") return;
         const { data: purchase, error: purchaseError } = await supabase.from("purchases")
           .select("product_title,amount").eq("order_id", orderId).eq("user_id", auth.user.id)
           .eq("status", "success").maybeSingle();
-        if (purchaseError || !purchase || Number(purchase.amount) !== Number(order.amount)) return;
-        if (mounted) setConfirmed({ title: purchase.product_title || "Your content",
+        if (!current() || purchaseError || !purchase || Number(purchase.amount) !== Number(order.amount)) return;
+        if (current()) setConfirmed({ title: purchase.product_title || "Your content",
           amount: Number(order.amount), orderId });
       } catch {
         // A network failure must not turn route parameters into success.
       } finally {
-        if (mounted) setChecking(false);
+        clearTimeout(timer);
+        if (current()) setChecking(false);
       }
     })();
-    return () => { mounted = false; };
-  }, [orderId]);
+    return () => { mounted = false; clearTimeout(timer); };
+  }, [orderId, authVersion]);
 
   function goTo(screenName: string) {
     // Reset to a stable destination after viewing the purchase status.

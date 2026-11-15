@@ -34,10 +34,10 @@ import {
   DownloadRequest,
   StorageStats,
 } from "../types/offline";
-import { getSecureNoteUrl, NoteAccessError } from "../services/secureNotesService";
-import { getCurrentUser } from "../services/authState";
+import { getSecureNoteUrl, NoteAccessError, NoteOfflineError, PAID_NOTES_OFFLINE_ALLOWED, isFreePreviewNote } from "../services/secureNotesService";
+import { getCurrentUser, getAuthEpoch, waitForOfflineStorage } from "../services/authState";
 
-import { recordNoteVerification, clearNoteVerification, OFFLINE_NOTE_VERIFICATION_PREFIX } from "../services/offlineNoteVerification";
+import { recordNoteVerification, clearNoteVerification, clearAllNoteVerifications } from "../services/offlineNoteVerification";
 
 const ROOT_DIR = `${FileSystem.documentDirectory}medveda/`;
 const RESUME_STATE_PREFIX = "medveda:resume:"; // AsyncStorage key per in-flight download
@@ -50,6 +50,32 @@ const activeResumables = new Map<string, FileSystem.DownloadResumable>();
 // callbacks must not recreate another account's rows after logout or removal.
 const operations = new Map<string, symbol>();
 const pausedOperations = new Set<symbol>();
+const controlOperations = new Map<string, Promise<void>>();
+function serializeControl(id: string, action: () => Promise<void>): Promise<void> {
+  const pending = (controlOperations.get(id) ?? Promise.resolve()).catch(() => {}).then(action);
+  controlOperations.set(id, pending);
+  void pending.finally(() => {
+    if (controlOperations.get(id) === pending) controlOperations.delete(id);
+  }).catch(() => {});
+  return pending;
+}
+// Accept only a direct filename in this content type's directory. A prefix alone
+// permits ../ traversal (including percent-encoded traversal) outside our files.
+function ownsFile(uri: unknown, contentType: DownloadItem["contentType"]): uri is string {
+  if (typeof uri !== "string" || !uri.startsWith(dirFor(contentType))) return false;
+  const filename = uri.slice(dirFor(contentType).length);
+  return !!filename && !/[\\/%?#]/.test(filename) && filename !== "." && filename !== "..";
+}
+// A valid directory alone is insufficient: a corrupt paid row must never point
+// cleanup at a different note's free-preview PDF. Single-owner storage is claimed
+// under authState's lock; file names must also bind to the exact content id.
+function ownsNoteFile(uri: unknown, id: string): uri is string {
+  if (!/^[a-zA-Z0-9_-]+$/.test(id) || !ownsFile(uri, "note")) return false;
+  const filename = uri.slice(dirFor("note").length);
+  if (filename === `${id}.pdf`) return true;
+  const suffix = filename.startsWith(`${id}-`) ? filename.slice(id.length + 1) : "";
+  return /^\d+(?:-\d+)?\.pdf$/.test(suffix);
+}
 let clearing: Promise<void> | null = null;
 let storageGeneration = 0;
 let fileSequence = 0;
@@ -81,6 +107,7 @@ async function ensureDir(path: string): Promise<void> {
 function rowToItem(row: any): DownloadItem {
   return {
     id: row.id,
+    isFreePreview: row.is_free_preview === 1,
     contentType: row.content_type,
     title: row.title,
     chapterId: row.chapter_id,
@@ -115,7 +142,7 @@ export function getAllDownloads(courseId?: string): DownloadItem[] {
         [courseId]
       )
     : db.getAllSync(`SELECT * FROM downloads ORDER BY updated_at DESC;`);
-  return rows.map(rowToItem);
+  return rows.map(rowToItem).filter(item => item.contentType !== "note" || PAID_NOTES_OFFLINE_ALLOWED || item.isFreePreview === true);
 }
 
 export function getDownload(id: string): DownloadItem | null {
@@ -186,29 +213,42 @@ function upsertRow(item: Partial<DownloadItem> & { id: string }): void {
     );
   }
 
+  if (item.isFreePreview !== undefined) db.runSync(`UPDATE downloads SET is_free_preview = ? WHERE id = ?;`, [item.isFreePreview ? 1 : 0, item.id]);
   const fresh = getDownload(item.id);
   if (fresh) emit(fresh);
 }
 
 /** Every note transfer obtains a fresh URL through the entitlement-checking backend. */
 export async function enqueueDownload(request: DownloadRequest): Promise<void> {
-  await transferDownload(request);
+  await controlOperations.get(request.id);
+  try { await transferDownload(request); } catch (error) {
+    if (!(error instanceof NoteOfflineError)) throw error;
+  }
 }
 
 async function transferDownload(request: DownloadRequest, saved?: FileSystem.DownloadPauseState): Promise<void> {
+  if (!/^[a-zA-Z0-9_-]+$/.test(request.id)) throw new Error("Invalid download identifier");
+  const admissionEpoch = getAuthEpoch();
+  if (!await waitForOfflineStorage() || admissionEpoch !== getAuthEpoch()) return;
   if (!OFFLINE_DB_SUPPORTED || clearing || operations.has(request.id)) return;
   const operation = Symbol(request.id);
   const generation = storageGeneration;
   const owner = getCurrentUser()?.id;
   operations.set(request.id, operation);
   const current = () => operations.get(request.id) === operation &&
-    storageGeneration === generation && getCurrentUser()?.id === owner;
+    storageGeneration === generation && getCurrentUser()?.id === owner && admissionEpoch === getAuthEpoch();
+  // Admission precedes destination selection, URL acquisition and native file creation.
+  if (request.contentType === "note" && !PAID_NOTES_OFFLINE_ALLOWED && request.isFreePreview !== true) {
+    operations.delete(request.id);
+    await discardPaidDownload(request.id);
+    throw new NoteOfflineError();
+  }
   const dir = dirFor(request.contentType);
   const fileUri = saved?.fileUri ?? `${dir}${request.id}-${Date.now()}-${++fileSequence}.${request.contentType === "note" ? "pdf" : "json"}`;
   let resumable: FileSystem.DownloadResumable | undefined;
   try {
     if (!owner) throw new Error("Sign in again to download this note.");
-    const sourceUrl = request.contentType === "note" ? await getSecureNoteUrl(request.id) : request.sourceUrl;
+    const sourceUrl = request.contentType === "note" ? await getSecureNoteUrl(request.id, "offline", request.isFreePreview === true) : request.sourceUrl;
     if (!current()) return;
     if (request.contentType === "note") await recordNoteVerification(owner, request.id);
     if (!current()) return;
@@ -246,9 +286,13 @@ async function transferDownload(request: DownloadRequest, saved?: FileSystem.Dow
     if (!current()) return;
     upsertRow({ id: request.id, localUri: result.uri, fileSizeBytes: info.size,
       bytesWritten: info.size, status: "completed", downloadedAt: Date.now(), errorMessage: null });
-    if (existing?.localUri && existing.localUri !== result.uri)
+    if (existing?.localUri && existing.localUri !== result.uri && ownsFile(existing.localUri, existing.contentType))
       await FileSystem.deleteAsync(existing.localUri, { idempotent: true });
   } catch (error) {
+    if (current() && error instanceof NoteOfflineError) {
+      await discardPaidDownload(request.id, true);
+      throw error;
+    }
     if (current() && owner && request.contentType === "note" && error instanceof NoteAccessError &&
         (error.status === 401 || error.status === 403)) {
       await AsyncStorage.setItem(`medveda:note-denied:${owner}:${request.id}`, "1");
@@ -262,13 +306,16 @@ async function transferDownload(request: DownloadRequest, saved?: FileSystem.Dow
   } finally {
     const completed = getDownload(request.id)?.localUri === fileUri;
     const paused = pausedOperations.delete(operation) && generation === storageGeneration && getCurrentUser()?.id === owner;
-    if (!completed && !paused) await FileSystem.deleteAsync(fileUri, { idempotent: true }).catch(() => {});
+    if (!completed && !paused && ownsFile(fileUri, request.contentType)) await FileSystem.deleteAsync(fileUri, { idempotent: true }).catch(() => {});
     if (operations.get(request.id) === operation) operations.delete(request.id);
     if (activeResumables.get(request.id) === resumable) activeResumables.delete(request.id);
   }
 }
 
-export async function pauseDownload(id: string): Promise<void> {
+export function pauseDownload(id: string): Promise<void> {
+  return serializeControl(id, () => pauseDownloadInternal(id));
+}
+async function pauseDownloadInternal(id: string): Promise<void> {
   const resumable = activeResumables.get(id);
   if (!resumable) return;
   const generation = storageGeneration;
@@ -288,8 +335,16 @@ export async function pauseDownload(id: string): Promise<void> {
 }
 
 export async function resumeDownload(id: string): Promise<void> {
+  const admissionEpoch = getAuthEpoch();
+  if (!await waitForOfflineStorage() || admissionEpoch !== getAuthEpoch()) return;
+  await controlOperations.get(id);
+  if (admissionEpoch !== getAuthEpoch()) return;
   const existing = getDownload(id);
   if (!existing) return;
+  if (existing.contentType === "note" && !PAID_NOTES_OFFLINE_ALLOWED && existing.isFreePreview !== true) {
+    await discardPaidDownload(id);
+    throw new NoteOfflineError();
+  }
   const generation = storageGeneration;
   const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + id);
   if (generation !== storageGeneration) return;
@@ -299,8 +354,8 @@ export async function resumeDownload(id: string): Promise<void> {
   // validator, stitching bytes from a refreshed signed URL can corrupt the PDF.
   // Notes restart with a fresh authorized URL; other identical requests can resume.
   if (existing.contentType === "note" || saved?.url !== existing.sourceUrl ||
-      !saved?.fileUri?.startsWith(dirFor(existing.contentType))) {
-    if (saved?.fileUri?.startsWith(dirFor(existing.contentType)))
+      !ownsFile(saved?.fileUri, existing.contentType)) {
+    if (ownsFile(saved?.fileUri, existing.contentType))
       await FileSystem.deleteAsync(saved.fileUri, { idempotent: true });
     saved = undefined;
     await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
@@ -313,20 +368,69 @@ export async function retryDownload(id: string): Promise<void> {
   await resumeDownload(id);
 }
 
-/** Cancels + fully removes a download (queued, downloading, or paused). */
-export async function cancelDownload(id: string): Promise<void> {
+/** Retain a denied row as a retry journal until all owned partial bytes are gone. */
+async function discardPaidDownload(id: string, confirmedPaid = false): Promise<void> {
+  const owner = getCurrentUser()?.id;
+  const epoch = getAuthEpoch();
+  const current = () => !!owner && getCurrentUser()?.id === owner && getAuthEpoch() === epoch;
   operations.delete(id);
-  const resumable = activeResumables.get(id);
-  if (resumable) {
-    try {
-      await resumable.cancelAsync();
-    } catch {
-      /* best-effort */
+  return serializeControl(id, async () => {
+    if (!current()) return;
+    // A legacy default flag is not proof that the underlying note is paid.
+    // Never delete a free preview (or unclassified file) due to missing metadata.
+    if (!confirmedPaid) {
+      try {
+        const free = await isFreePreviewNote(id);
+        if (!current()) return;
+        if (free) {
+          const existing = getDownload(id);
+          if (existing) upsertRow({ id, isFreePreview: true });
+          return;
+        }
+      } catch { return; } // retry after trustworthy metadata becomes available
     }
-    activeResumables.delete(id);
-  }
-  await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
-  await removeDownload(id);
+    const active = activeResumables.get(id);
+    if (active) { await active.cancelAsync(); activeResumables.delete(id); }
+    const row = getDownload(id);
+    const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + id);
+    if (!current()) return;
+    const saved = raw ? JSON.parse(raw) : null;
+    for (const uri of [row?.localUri, saved?.fileUri]) {
+      if (!uri) continue;
+      if (!ownsNoteFile(uri, id)) throw new Error("Invalid partial download path");
+      if (!current()) return;
+      await FileSystem.deleteAsync(uri, { idempotent: true });
+    }
+    if (!current()) return;
+    await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
+    if (row && current()) upsertRow({ id, isFreePreview: false, status: "failed", localUri: null, bytesWritten: 0,
+      fileSizeBytes: 0, errorMessage: "Paid notes are online-only in this release." });
+  });
+}
+
+/** Cancels + fully removes a download (queued, downloading, or paused). */
+export function cancelDownload(id: string): Promise<void> {
+  // Invalidate immediately, even when an earlier pause is still awaiting native IO.
+  operations.delete(id);
+  return serializeControl(id, async () => {
+    const resumable = activeResumables.get(id);
+    if (resumable) {
+      await resumable.cancelAsync();
+      activeResumables.delete(id);
+    }
+    const existing = getDownload(id);
+    const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + id);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (!existing || !ownsFile(saved?.fileUri, existing.contentType) ||
+          (existing.contentType === "note" && !ownsNoteFile(saved?.fileUri, id)))
+        throw new Error("Invalid partial download path");
+      // Keep the durable pointer and row when deletion fails, so cancellation can retry.
+      await FileSystem.deleteAsync(saved.fileUri, { idempotent: true });
+    }
+    await removeDownload(id);
+    await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
+  });
 }
 
 /** Deletes a completed download's file + row (used by the trash icon in DownloadsScreen). */
@@ -337,6 +441,8 @@ export async function removeDownload(id: string): Promise<void> {
   if (owner) await clearNoteVerification(owner, id);
   const existing = getDownload(id);
   if (existing?.localUri) {
+    if (!ownsFile(existing.localUri, existing.contentType) ||
+        (existing.contentType === "note" && !ownsNoteFile(existing.localUri, id))) throw new Error("Invalid download path");
     await FileSystem.deleteAsync(existing.localUri, { idempotent: true });
   }
   const db = getDb();
@@ -358,9 +464,11 @@ export async function clearAllDownloads(): Promise<void> {
   activeResumables.clear();
   clearing = (async () => {
     await Promise.allSettled(transfers.map((transfer) => transfer.cancelAsync()));
+    await clearAllNoteVerifications();
+    await Promise.allSettled([...controlOperations.values()]);
     const keys = await AsyncStorage.getAllKeys();
-    await AsyncStorage.multiRemove(keys.filter((key) => key.startsWith(RESUME_STATE_PREFIX) || key.startsWith(OFFLINE_NOTE_VERIFICATION_PREFIX)));
     await FileSystem.deleteAsync(ROOT_DIR, { idempotent: true });
+    await AsyncStorage.multiRemove(keys.filter((key) => key.startsWith(RESUME_STATE_PREFIX)));
     getDb().runSync(`DELETE FROM downloads;`);
   })();
   try { await clearing; } finally { clearing = null; }
@@ -459,20 +567,21 @@ export async function saveQuizForOffline(params: {
   quizData: unknown; // the full QuizTest object (with questions[])
 }): Promise<void> {
   if (!OFFLINE_DB_SUPPORTED) return;
-  if (clearing) return;
+  const admissionEpoch = getAuthEpoch();
+  if (!await waitForOfflineStorage() || admissionEpoch !== getAuthEpoch() || clearing) return;
   const generation = storageGeneration;
   const owner = getCurrentUser()?.id;
   const dir = dirFor("quiz");
   await ensureDir(dir);
-  if (!owner || generation !== storageGeneration || getCurrentUser()?.id !== owner) return;
+  if (!owner || generation !== storageGeneration || getCurrentUser()?.id !== owner || admissionEpoch !== getAuthEpoch()) return;
 
-  const fileUri = `${dir}${params.id}.json`;
+  const fileUri = `${dir}${params.id}-${Date.now()}-${++fileSequence}.json`;
   const json = JSON.stringify(publicQuizData(params.quizData));
   await FileSystem.writeAsStringAsync(fileUri, json);
 
   const fileInfo = await FileSystem.getInfoAsync(fileUri);
   const size = fileInfo.exists ? (fileInfo.size ?? json.length) : json.length;
-  if (generation !== storageGeneration || getCurrentUser()?.id !== owner) {
+  if (generation !== storageGeneration || getCurrentUser()?.id !== owner || admissionEpoch !== getAuthEpoch()) {
     await FileSystem.deleteAsync(fileUri, { idempotent: true });
     return;
   }
@@ -516,5 +625,72 @@ export async function loadOfflineQuiz<T = unknown>(localUri: string): Promise<T>
 }
 
 export function isDownloaded(id: string): boolean {
-  return getDownload(id)?.status === "completed";
+  const item = getDownload(id);
+  return !!item && (item.contentType !== "note" || PAID_NOTES_OFFLINE_ALLOWED || item.isFreePreview === true) && item.status === "completed";
+}
+
+/** Called inside authState's serialized owner claim, before download admission opens.
+ * No durable completion marker: any metadata/deletion failure retries next claim/start.
+ */
+export async function cleanupPaidNoteDownloads(owner: string, epoch: number): Promise<void> {
+  if (!OFFLINE_DB_SUPPORTED || PAID_NOTES_OFFLINE_ALLOWED) return;
+  if (clearing) await clearing;
+  const current = () => getCurrentUser()?.id === owner && getAuthEpoch() === epoch;
+  if (!current() || await AsyncStorage.getItem("medveda:offline-owner") !== owner || !current()) return;
+  clearing = (async () => {
+    const rows = getDb().getAllSync(`SELECT * FROM downloads WHERE content_type = 'note';`) as any[];
+    const dir = dirFor("note");
+    const info = await FileSystem.getInfoAsync(dir);
+    if (!current()) return;
+    const files = info.exists ? await FileSystem.readDirectoryAsync(dir) : [];
+    const candidates = new Map<string, Set<string>>();
+    const claimedPaths = new Set<string>();
+    for (const row of rows) {
+      const paths = new Set<string>(row.local_uri ? [row.local_uri] : []);
+      if (row.local_uri) claimedPaths.add(row.local_uri);
+      // Durable row/resume associations outrank guesses from legacy filenames.
+      // Otherwise free-1.pdf could be mistaken for another note with ID free-1.
+      try {
+        const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + row.id);
+        if (!current()) return;
+        const saved = raw ? JSON.parse(raw) : null;
+        if (ownsNoteFile(saved?.fileUri, row.id)) {
+          paths.add(saved.fileUri);
+          claimedPaths.add(saved.fileUri);
+        }
+      } catch { /* corrupt pointers stay pending for repair */ }
+      candidates.set(row.id, paths);
+    }
+    for (const filename of files) {
+      // Both legacy <id>.pdf and current <id>-<milliseconds>-<sequence>.pdf.
+      if (claimedPaths.has(dir + filename) || !ownsFile(dir + filename, "note")) continue;
+      const id = filename.replace(/-\d{13}-\d+\.pdf$/, "").replace(/\.pdf$/, "");
+      if (!/^[a-zA-Z0-9_-]+$/.test(id) || !filename.endsWith(".pdf")) continue;
+      if (!candidates.has(id)) candidates.set(id, new Set());
+      candidates.get(id)!.add(dir + filename);
+    }
+    for (const [id, paths] of candidates) {
+      if (!current()) return;
+      try {
+        const free = await isFreePreviewNote(id);
+        if (!current()) return;
+        if (free) {
+          getDb().runSync(`UPDATE downloads SET is_free_preview = 1 WHERE id = ?;`, [id]);
+          continue;
+        }
+        // cancelDownload validates partial/completed paths and retains pointers on failure.
+        await discardPaidDownload(id, true);
+        if (!current()) return;
+        for (const path of paths) {
+          if (!ownsNoteFile(path, id)) throw new Error("Invalid download path");
+          if (!current()) return;
+          await FileSystem.deleteAsync(path, { idempotent: true });
+        }
+        if (current()) getDb().runSync(`DELETE FROM downloads WHERE id = ?;`, [id]);
+      } catch {
+        // Preserve failed rows/files for another startup. Offline readers deny them.
+      }
+    }
+  })();
+  try { await clearing; } finally { clearing = null; }
 }

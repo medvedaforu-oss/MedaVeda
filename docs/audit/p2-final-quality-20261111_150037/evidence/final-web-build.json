@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "node_modules/expo/bin/cli",
+    "export",
+    "--platform",
+    "web",
+    "--output-dir",
+    "/tmp/medveda-p2-web-dist-exact"
+  ],
+  "exit_code": 0,
+  "seconds": 15.58,
+  "source_inventory": "mobile-source-inventory.json"
+}

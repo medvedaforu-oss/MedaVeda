@@ -1,0 +1,12 @@
+[
+  "supabase/tests/play_catalog_migration_legacy_selftest.sh",
+  "supabase/functions/_shared/settle.ts",
+  "supabase/tests/play-body-selftest.cjs",
+  "supabase/tests/batch1_checks.sql",
+  "supabase/tests/webhook-harness/run.mjs",
+  "supabase/tests/support/nonplay_test_db.ts",
+  "supabase/tests/run-all.sh",
+  "supabase/functions/razorpay-webhook/index.ts",
+  "supabase/functions/send-push-notification/index.ts",
+  "supabase/tests/notes-choice-concurrency.py"
+]

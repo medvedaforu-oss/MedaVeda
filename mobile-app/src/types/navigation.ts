@@ -101,6 +101,7 @@ export type RootStackParamList = {
 
   PdfViewer: {
     pdfUrl: string;
+    noteId?: string;
   };
 
   Search: undefined;
@@ -115,6 +116,7 @@ export type RootStackParamList = {
     orderId?: string;
   };
   PaymentFailed: {
+    provider?: "play" | "razorpay";
     title?: string;
     reason?: string;
     pending?: boolean;

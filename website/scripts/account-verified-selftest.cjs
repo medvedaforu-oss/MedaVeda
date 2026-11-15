@@ -1,0 +1,7 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const file=(process.env.AUDIT_BASELINE||'')+'website/assets/js/account-verified.js';
+async function run(result,{client=true,reject=false,fragment={type:'signup',accessToken:'synthetic'}}={}){const states=[],text={};vm.runInNewContext(fs.readFileSync(file,'utf8'),{window:{MedVedaAuth:{readFragment:()=>fragment,friendlyError:()=> 'Invalid link',newClient:()=>client?{auth:{getUser:async()=>{if(reject)throw Error('offline');return result}}}:null,show:x=>states.push(x),setText:(k,v)=>text[k]=v}}});await new Promise(r=>setImmediate(r));return {states,text}}
+(async()=>{
+for(const [value,opts]of [[{data:{user:null},error:{message:'bad token'}},{}],[{},{}],[null,{}],[{}, {reject:true}],[{}, {client:false}],[{data:{user:{email:'synthetic@invalid'}}},{}]]){const r=await run(value,opts);assert.ok(!r.states.includes('state-success'),'unverified result must not claim success');assert.equal(r.states.at(-1),'state-error')}
+const r=await run({data:{user:{email:'synthetic@invalid',email_confirmed_at:'2026-11-12T00:00:00Z'}},error:null});assert.equal(r.states.at(-1),'state-success');assert.equal(r.text['verified-email'],'synthetic@invalid');
+assert.equal((await run(null,{fragment:{}})).states.at(-1),'state-empty');console.log('PASS AUD-020 token rejection, outage, absent SDK/user/confirmation fail visibly; confirmed user succeeds');})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,0 +1,19 @@
+{
+  "full_sql": {
+    "log": "full-sql-accepted.log",
+    "exit": 0,
+    "summary": "ALL SUITES PASSED"
+  },
+  "source_commands": 22,
+  "source_failures": 0,
+  "target_commands": 34,
+  "target_failures": 0,
+  "optional_legacy_executed": false,
+  "production_rows_read": false,
+  "commits": false,
+  "pushes": false,
+  "deployments": false,
+  "fix4_concurrency_exit": 0,
+  "artifact_links_missing": 0,
+  "ready_paths_checked": 56
+}

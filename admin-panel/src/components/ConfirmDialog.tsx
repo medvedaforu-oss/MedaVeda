@@ -1,3 +1,6 @@
+import { useId } from "react";
+import useDialogFocus from "../hooks/useDialogFocus";
+
 type Props = {
   open: boolean;
   title: string;
@@ -21,12 +24,14 @@ export default function ConfirmDialog({
   onCancel,
   onConfirm,
 }: Props) {
+  const titleId = useId();
+  const card = useDialogFocus(open, onCancel, loading);
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+      <div ref={card} role="alertdialog" aria-modal="true" aria-labelledby={titleId} aria-busy={loading} tabIndex={-1} className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+        <h3 id={titleId} className="text-lg font-semibold text-gray-800">{title}</h3>
         <p className="mt-2 text-sm text-gray-500">{message}</p>
         {error && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}
 

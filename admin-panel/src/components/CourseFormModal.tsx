@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Modal from "./Modal";
 import Input from "./Input";
@@ -30,6 +30,14 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
   const [id, setId] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const saveBusy = useRef(false);
+  const lifetime = useRef(0);
+  const mounted = useRef(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => {
+    const scope = ++lifetime.current;
+    return () => { lifetime.current = scope + 1; };
+  }, [open, initialData]);
 
   useEffect(() => {
     if (open) {
@@ -65,7 +73,9 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
   }
 
   async function handleSubmit() {
-    if (!validate()) return;
+    if (saveBusy.current || !validate()) return;
+    saveBusy.current = true;
+    const run = lifetime.current;
 
     try {
       setSaving(true);
@@ -77,8 +87,9 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
         icon: form.icon?.trim() || undefined,
       };
       await onSubmit(!initialData && id ? { ...payload, id } : payload);
-      onClose();
+      if (run === lifetime.current) onClose();
     } catch (err: any) {
+      if (run !== lifetime.current) return;
       console.error(err);
       setErrors({
         form:
@@ -87,14 +98,16 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
             : "Something went wrong while saving. Please try again.",
       });
     } finally {
-      setSaving(false);
+      saveBusy.current = false;
+      if (mounted.current) setSaving(false);
     }
   }
 
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={() => { if (!saveBusy.current) onClose(); }}
+      closeDisabled={saving}
       title={initialData ? "Edit Course" : "Create New Course"}
     >
       <Input
@@ -127,7 +140,7 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Description
         </label>
-        <textarea
+        <textarea aria-label="Course description"
           rows={2}
           value={form.description ?? ""}
           onChange={(e) => setForm({ ...form, description: e.target.value })}

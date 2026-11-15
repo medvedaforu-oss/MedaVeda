@@ -1,0 +1,19 @@
+{
+  "verified_at_utc": "2026-11-11T20:04:59.498424+00:00",
+  "decision": "NO-GO",
+  "local_rehearsal_checks_passed": 19,
+  "engine": "PostgreSQL 17.11",
+  "archive_count": 22,
+  "frozen_release_packages_checked": 4,
+  "original_migration_hashes_preserved": 10,
+  "production_sql_executed": false,
+  "production_or_provider_operations": false,
+  "full_managed_recovery_proven": false,
+  "open_gates": [
+    "private case membership/overlap and provider/finance disposition",
+    "approved fresh live drift and original source arrays",
+    "complete DB/Auth/Storage bytes/runtime/key restore and accepted RPO/RTO",
+    "hosted runtime/security/cache/provider compatibility",
+    "operator/observer/quiescence/capacity/window approvals"
+  ]
+}

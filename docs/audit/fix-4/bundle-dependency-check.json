@@ -1,0 +1,6 @@
+{
+  "verified": false,
+  "reason": "Completed Android export logged, but /tmp source maps lost after interruption; immediate inspection rerun timed out. Package exclusion remains an owner check.",
+  "completed_export_log": "final-bundle-export.log",
+  "incomplete_inspection_log": "final-bundle-and-dependency-check.log"
+}

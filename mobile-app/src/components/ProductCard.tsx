@@ -33,7 +33,10 @@ export default function ProductCard({
   onPress,
 }: Props) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={1}
+      accessibilityRole="button"
+      accessibilityLabel={`Open ${title}, ${SCOPE_LABEL[scope]}, ${owned ? "Owned" : `₹${price}`}`}
+      accessibilityState={{ disabled: false }}>
       <View style={styles.content}>
         <View style={styles.scopeTag}>
           <Text style={styles.scopeTagText}>{SCOPE_LABEL[scope]}</Text>
@@ -64,6 +67,9 @@ export default function ProductCard({
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    minHeight: 48,
+    minWidth: 48,
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: COLORS.card,
@@ -75,7 +81,10 @@ const styles = StyleSheet.create({
     ...SHADOW.card,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 160,
+    minWidth: 0,
     paddingRight: SPACING.md,
   },
   scopeTag: {
@@ -103,12 +112,13 @@ const styles = StyleSheet.create({
     fontSize: FONT.small,
   },
   badge: {
+    maxWidth: "100%",
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 30,
   },
   badgeText: {
-    color: COLORS.white,
+    color: COLORS.background,
     fontWeight: "700",
     fontSize: FONT.small,
   },

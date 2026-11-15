@@ -1,0 +1,11 @@
+{
+  "name": "admin-npm-audit",
+  "cwd": "admin-panel",
+  "command": [
+    "npm",
+    "audit",
+    "--json"
+  ],
+  "exit": 0,
+  "seconds": 2.89
+}

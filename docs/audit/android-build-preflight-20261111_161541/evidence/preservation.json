@@ -1,0 +1,7 @@
+{
+  "scope": "4325 pre-existing regular workspace files; excludes .git/node_modules/.expo/.cache/dist/build/.next and symlinks. Includes protected audit and release packages.",
+  "baseline_file_count": 4325,
+  "changed": [],
+  "missing": [],
+  "status": "PASS"
+}

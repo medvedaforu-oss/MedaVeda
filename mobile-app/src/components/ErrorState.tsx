@@ -12,11 +12,13 @@ import { SPACING } from "../theme/spacing";
 type Props = {
   message: string;
   onRetry?: () => void;
+  busy?: boolean;
 };
 
 export default function ErrorState({
   message,
   onRetry,
+  busy = false,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -24,14 +26,18 @@ export default function ErrorState({
         ⚠️
       </Text>
 
-      <Text style={styles.message}>
+      <Text style={styles.message} accessibilityLiveRegion="polite">
         {message}
       </Text>
 
       {onRetry && (
         <TouchableOpacity
           style={styles.button}
-          onPress={onRetry}
+          onPress={() => { if (!busy) onRetry(); }}
+          disabled={busy}
+          accessibilityRole="button"
+          accessibilityLabel="Try again"
+          accessibilityState={{ disabled: busy, busy }}
         >
           <Text style={styles.buttonText}>
             Try Again
@@ -60,6 +66,9 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    minHeight: 48,
+    minWidth: 48,
+    justifyContent: "center",
     marginTop: 25,
     backgroundColor: COLORS.primary,
     paddingHorizontal: 25,

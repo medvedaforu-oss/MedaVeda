@@ -1,0 +1,332 @@
+[
+  {
+    "version": "20260701000000",
+    "name": "baseline_live_schema",
+    "recorded_statements_md5": "a6d4ea5464a0212a5d9d4d068d72e8b9"
+  },
+  {
+    "version": "20260718",
+    "name": "payment_backend",
+    "recorded_statements_md5": "538afc2570cf1402f397ba7d3e5bded0"
+  },
+  {
+    "version": "20260721",
+    "name": "admin_orders_purchases_access",
+    "recorded_statements_md5": "cfee9fb4cdfd9df397e890ada6bcff0b"
+  },
+  {
+    "version": "20260801",
+    "name": "razorpay_webhook_atomic_grant",
+    "recorded_statements_md5": "1e319f5043f977dc3b085482565c0255"
+  },
+  {
+    "version": "20260801150000",
+    "name": "razorpay_webhook_atomic_grant",
+    "recorded_statements_md5": "1e319f5043f977dc3b085482565c0255"
+  },
+  {
+    "version": "20260919120000",
+    "name": "multi_course_and_referrals",
+    "recorded_statements_md5": "86a47aa0138b77728bd5cc8672041dd2"
+  },
+  {
+    "version": "20260919130000",
+    "name": "referral_history_rpc",
+    "recorded_statements_md5": "5bc4794f3d5010c48f2c30233162cf29"
+  },
+  {
+    "version": "20260920120000",
+    "name": "null_year_course_fallback",
+    "recorded_statements_md5": "348e279e490be37396cfdb3dd1e637fa"
+  },
+  {
+    "version": "20260920130000",
+    "name": "app_config",
+    "recorded_statements_md5": "478dacd7d2673dbbaae4392e506b2a3d"
+  },
+  {
+    "version": "20260920140000",
+    "name": "default_new_profile_course",
+    "recorded_statements_md5": "b767bb41e5adc48c299d27be22204b82"
+  },
+  {
+    "version": "20260921120000",
+    "name": "analytics_retention",
+    "recorded_statements_md5": "1bfa8ebb19fd53edbe55ca0e08746000"
+  },
+  {
+    "version": "20260921130000",
+    "name": "account_deletion_support",
+    "recorded_statements_md5": "669bed33dbb30f4ddfbe1468cb614f1f"
+  },
+  {
+    "version": "20260922100000",
+    "name": "phase1a_sync_and_order_security",
+    "recorded_statements_md5": "4856f4092a08995f6fc873ce77ac5b54"
+  },
+  {
+    "version": "20260923100000",
+    "name": "signup_profile_fields",
+    "recorded_statements_md5": "09d595c7232a497d1eff2af08bc115fd"
+  },
+  {
+    "version": "20260924100000",
+    "name": "critical1_lock_settlement_functions",
+    "recorded_statements_md5": "6eef3258c68b9ccb31b8c4a5363de226"
+  },
+  {
+    "version": "20260924110000",
+    "name": "critical2_orders_server_only",
+    "recorded_statements_md5": "3590a25d7ddbc46ae3501698776c8b7d"
+  },
+  {
+    "version": "20260924120000",
+    "name": "critical3_storage_profiles_rls",
+    "recorded_statements_md5": "030cdc0001cdb07fb00cb5772f7ba4d5"
+  },
+  {
+    "version": "20260924130000",
+    "name": "signup_name_phone_and_backfill",
+    "recorded_statements_md5": "b5a28dd84f53c4648d2aa5b8b3cdd1ea"
+  },
+  {
+    "version": "20260924140000",
+    "name": "auth_rate_limits",
+    "recorded_statements_md5": "960117b068d4f1e6e5e234419fb0ef7c"
+  },
+  {
+    "version": "20260924150000",
+    "name": "free_preview",
+    "recorded_statements_md5": "95e78a4eaea951c07259ef43d4411541"
+  },
+  {
+    "version": "20260925100000",
+    "name": "phase2_referral_config_and_product_type",
+    "recorded_statements_md5": "0a03bfce4f792f91648dce6e193d0d00"
+  },
+  {
+    "version": "20260925110000",
+    "name": "phase2_wallet_ledger",
+    "recorded_statements_md5": "9363940d63c727b1048f5cdf74ed70ec"
+  },
+  {
+    "version": "20260925120000",
+    "name": "phase2_orders_pricing_and_settlement",
+    "recorded_statements_md5": "6a40e93ea15f534f8e9c1799843643f8"
+  },
+  {
+    "version": "20260925130000",
+    "name": "drop_debug_whoami",
+    "recorded_statements_md5": "46a758639d6d25c4a9ebc15931e598cc"
+  },
+  {
+    "version": "20260925140000",
+    "name": "phase2_single_use_friend_discount",
+    "recorded_statements_md5": "2b319a0c0c3d952f83148e06fd92a613"
+  },
+  {
+    "version": "20260926100000",
+    "name": "batch1_refund_dispute_revoke_access",
+    "recorded_statements_md5": "c3c4d4fc62aa37360534962a25485845"
+  },
+  {
+    "version": "20260926110000",
+    "name": "batch1_settle_wallet_and_flags",
+    "recorded_statements_md5": "7c04eb6c3429c43cdc4f08e64608f49c"
+  },
+  {
+    "version": "20260926120000",
+    "name": "batch1_block_owned_product",
+    "recorded_statements_md5": "a451c237c4d90c8d60c6cbc59aeb962e"
+  },
+  {
+    "version": "20260926130000",
+    "name": "batch1_hygiene",
+    "recorded_statements_md5": "94c31b07e456fe7e0923b074e6a1ab56"
+  },
+  {
+    "version": "20260927100000",
+    "name": "f7_drop_legacy_admin_policies",
+    "recorded_statements_md5": "7704055736cac20320bcbacba1ee9b0e"
+  },
+  {
+    "version": "20260927110000",
+    "name": "f8_revoke_excess_grants",
+    "recorded_statements_md5": "d6ccbd7cf2f20f51c0c29df9bb1d8cc2"
+  },
+  {
+    "version": "20260927120000",
+    "name": "batch3_referral_hardening",
+    "recorded_statements_md5": "6bbe6e2c70b24d7a89fea9ce6e92ed9e"
+  },
+  {
+    "version": "20260927130000",
+    "name": "batch3b_antifarming",
+    "recorded_statements_md5": "302dd039506f576e20b8d0665f3b8418"
+  },
+  {
+    "version": "20260928100000",
+    "name": "referral_settings_limits_and_audit",
+    "recorded_statements_md5": "86c8a63d37a83fedcd6c3f5eac18c6e9"
+  },
+  {
+    "version": "20260928110000",
+    "name": "referral_off_blocks_wallet",
+    "recorded_statements_md5": "0c10695aaccdd5dc7e9c05b01810c869"
+  },
+  {
+    "version": "20260929100000",
+    "name": "high_phone_change_rpc_and_notes_storage",
+    "recorded_statements_md5": "09425b13d9300909f2e415b68046001e"
+  },
+  {
+    "version": "20260930100000",
+    "name": "medium_db_hardening",
+    "recorded_statements_md5": "1fdc942ad91e1f2ccf97bdabc54564c4"
+  },
+  {
+    "version": "20260930110000",
+    "name": "low_grants_tightening",
+    "recorded_statements_md5": "35c6e03d721b281c39c67fc74b369549"
+  },
+  {
+    "version": "20261001100000",
+    "name": "admin_mfa_aal2",
+    "recorded_statements_md5": "fef82952797b5bde4994508649fd4885"
+  },
+  {
+    "version": "20261012100000",
+    "name": "google_play_ucb",
+    "recorded_statements_md5": "40338e95a306e0981a635134c8701ddc"
+  },
+  {
+    "version": "20261012110000",
+    "name": "google_play_refunds",
+    "recorded_statements_md5": "2333ea794e1c0ab7964c6ddd75b1f90f"
+  },
+  {
+    "version": "20261012120000",
+    "name": "ucb_partial_refunds",
+    "recorded_statements_md5": "9a1e42643e1a9d13623ec16d45867a68"
+  },
+  {
+    "version": "20261013090000",
+    "name": "ucb_atomic_completion",
+    "recorded_statements_md5": "dbedfe5f112f77bf50eb65af09417397"
+  },
+  {
+    "version": "20261013100000",
+    "name": "wallet_reservations",
+    "recorded_statements_md5": "50ae28f281d157ccadb860c6f3c17be0"
+  },
+  {
+    "version": "20261013110000",
+    "name": "play_void_cursor",
+    "recorded_statements_md5": "31cd8d0bd178f1ffafcb37f5548c9137"
+  },
+  {
+    "version": "20261014100000",
+    "name": "payment_audit_capture_inbox",
+    "recorded_statements_md5": "02531c9367cd1dd6cdce2a2652d2db27"
+  },
+  {
+    "version": "20261014110000",
+    "name": "payment_job_leases",
+    "recorded_statements_md5": "daabaf457323f6e0f7c2b362b85954da"
+  },
+  {
+    "version": "20261015100000",
+    "name": "play_payment_jobs",
+    "recorded_statements_md5": "2b630799bc97f502cb6edf6795088464"
+  },
+  {
+    "version": "20261015120000",
+    "name": "play_entitlement_order_snapshot",
+    "recorded_statements_md5": "b79bc51d292bb29469c860f8737561b7"
+  },
+  {
+    "version": "20261016090000",
+    "name": "free_video_access",
+    "recorded_statements_md5": "3ba299d26eae0c6cfdf04bd9e91c21ee"
+  },
+  {
+    "version": "20261016100000",
+    "name": "play_catalog_sync",
+    "recorded_statements_md5": "f3f54fae8bda2247b97fbc1c843a093e"
+  },
+  {
+    "version": "20261018100000",
+    "name": "verified_quiz_attempts",
+    "recorded_statements_md5": "5098a839dc47f013a129f01228236527"
+  },
+  {
+    "version": "20261018110000",
+    "name": "trusted_note_uploads",
+    "recorded_statements_md5": "e2cd788012f2e03aaa101a08f50fb18b"
+  },
+  {
+    "version": "20261018120000",
+    "name": "note_upload_deleted_retry",
+    "recorded_statements_md5": "4e3bebaec5b8032dd8d400f60c1005f9"
+  },
+  {
+    "version": "20261018130000",
+    "name": "note_pdf_quarantine",
+    "recorded_statements_md5": "01f4c32c90a84960595a940cb6a75f30"
+  },
+  {
+    "version": "20261019150000",
+    "name": "play_catalog_queue_fences",
+    "recorded_statements_md5": "b445c38f0b9901b5013485e2c75b67b9"
+  },
+  {
+    "version": "20261019151000",
+    "name": "play_duplicate_settlement_result",
+    "recorded_statements_md5": "782bbe60fa47215bf7d677e6153c5bc6"
+  },
+  {
+    "version": "20261020100000",
+    "name": "notes_service_reads",
+    "recorded_statements_md5": "c3191a0703e91f36e1dd8818acab44ad"
+  },
+  {
+    "version": "20261020101000",
+    "name": "maintenance_mode_read",
+    "recorded_statements_md5": "762e33e94f52ba97a54245861769ee98"
+  },
+  {
+    "version": "20261020102000",
+    "name": "correct_stale_store_url",
+    "recorded_statements_md5": "8281eed54f45322d04fadd3d061e2766"
+  },
+  {
+    "version": "20261020103000",
+    "name": "first_purchase_identity_retention",
+    "recorded_statements_md5": "6fd771c305f1b3f495d3677240a9723b"
+  },
+  {
+    "version": "20261020104000",
+    "name": "course_wide_content_browsing",
+    "recorded_statements_md5": "a9ea80585f157d734aabf7c7daa9a2ef"
+  },
+  {
+    "version": "20261020105000",
+    "name": "quiz_answer_read_boundary",
+    "recorded_statements_md5": "efea23b6bf3ce6a712e12a2a640b66ab"
+  },
+  {
+    "version": "20261020110000",
+    "name": "admin_url_mfa",
+    "recorded_statements_md5": "feb54f0e02cdc957293be7c933f57675"
+  },
+  {
+    "version": "20261104100000",
+    "name": "razorpay_snapshot_discount_retry",
+    "recorded_statements_md5": "2da4373dec1db7af24d885e48c40d715"
+  },
+  {
+    "version": "20261104110000",
+    "name": "course_year_profile_confirmation",
+    "recorded_statements_md5": "aca970de13b640ede02a11a3020dca9e"
+  }
+]

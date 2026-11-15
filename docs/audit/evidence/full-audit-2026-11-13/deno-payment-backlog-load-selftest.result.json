@@ -1,0 +1,16 @@
+{
+  "name": "deno-payment-backlog-load-selftest",
+  "cwd": ".",
+  "command": [
+    "deno",
+    "run",
+    "--cached-only",
+    "--config",
+    "supabase/deno.json",
+    "--allow-read",
+    "--allow-env",
+    "supabase/tests/payment-backlog-load-selftest.ts"
+  ],
+  "exit": 0,
+  "seconds": 0.71
+}

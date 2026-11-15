@@ -1,0 +1,19 @@
+--- a/mobile-app/src/config/paymentProvider.ts
++++ b/mobile-app/src/config/paymentProvider.ts
+@@ -29,14 +29,13 @@
+ // Only the isolated test package or dedicated native live-testing build may
+ // opt Android into checkout. Stale/OTA extras cannot enable a Play binary.
+ // Keep historical receipt restoration independent of permission to start sales.
+-export const playRestorationEnabled = configuredProvider === "play" &&
+-  Platform.OS === "android" && Application.applicationId === "in.medveda.app";
++export const playRestorationEnabled = Platform.OS === "android" && Application.applicationId === "in.medveda.app";
+ const approvedUserChoice = extra?.medvedaIndiaUcbEnrolled === true &&
+   (extra?.medvedaUcbTestAccepted === true ||
+     (extra?.medvedaDistribution === "play-alpha-validation" &&
+      process.env.EXPO_PUBLIC_SUPABASE_URL === "https://nsmsqsogedzohwboripd.supabase.co"));
+ export const paymentProvider: PaymentProvider =
+-  playRestorationEnabled && approvedUserChoice
++  configuredProvider === "play" && playRestorationEnabled && approvedUserChoice
+     ? "play" : configuredProvider === "razorpay" && (Platform.OS !== "android" || isNonplayTestBuild || isStandaloneRazorpayLiveBuild)
+     ? "razorpay" : "disabled";
+ 

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "deno",
+    "test",
+    "--cached-only",
+    "--allow-env",
+    "supabase/tests/quarantine-worker-test.ts",
+    "supabase/tests/upload-note-pdf-test.ts",
+    "supabase/tests/play_catalog_patch_diagnostic_test.ts",
+    "supabase/tests/play_diagnostic_sanitization_review_test.ts"
+  ],
+  "exit_code": 0
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-reversal-selftest.cjs"
+    ],
+    "exit_code": 1,
+    "source": "byte-identical initial source; corrected relative injected path",
+    "expected": "regression assertion fails before correction"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "exit_code": 1,
+    "source": "byte-identical initial source; corrected relative injected path",
+    "expected": "regression assertion fails before correction"
+  }
+]

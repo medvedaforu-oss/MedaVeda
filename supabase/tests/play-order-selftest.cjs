@@ -8,6 +8,8 @@ const code = ts.transpileModule(fs.readFileSync('supabase/functions/create-play-
 function setup(status, lookupError = false) {
   let handler;
   const mocks = {
+ '../_shared/newOrderGate.ts':{newOrdersEnabled:async()=>true},
+    '../_shared/notesChoiceGate.ts': { notesChoiceAllowed: () => true },
     '../_shared/cors.ts': { handleOptions: () => null, jsonResponse: (body, status=200) => new Response(JSON.stringify(body), { status }) },
     '../_shared/rateLimit.ts': { withinLimit: async () => true },
     '../_shared/supabaseAdmin.ts': {

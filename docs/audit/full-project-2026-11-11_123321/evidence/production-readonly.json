@@ -1,0 +1,4130 @@
+{
+  "observed_at": "2026-11-11T12:37:42.621010+00:00",
+  "project": "xbvenkfmesugrbjuufyw",
+  "identity": {
+    "id": "xbvenkfmesugrbjuufyw",
+    "name": "MedVeda",
+    "status": "ACTIVE_HEALTHY",
+    "region": "ap-northeast-2"
+  },
+  "database": {
+    "rls": [
+      {
+        "table": "orders",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "payment_captures",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "payment_compensations",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "payment_jobs",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "payments",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "provider_events",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "purchases",
+        "forced": false,
+        "enabled": true
+      },
+      {
+        "table": "ucb_external_refunds",
+        "forced": false,
+        "enabled": true
+      }
+    ],
+    "cron": [
+      {
+        "name": "purge-analytics-events-12m",
+        "active": true
+      },
+      {
+        "name": "purge-payment-sessions-30d",
+        "active": true
+      },
+      {
+        "name": "release-wallet-credits",
+        "active": true
+      },
+      {
+        "name": "play-consume",
+        "active": false
+      },
+      {
+        "name": "play-reconcile",
+        "active": false
+      },
+      {
+        "name": "play-voids",
+        "active": false
+      },
+      {
+        "name": "play-catalog-sync",
+        "active": false
+      }
+    ],
+    "rpcs": [
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_a uuid, p_b uuid",
+        "name": "accounts_share_network",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "c5dcb898ca3ee23dfa27091df203b47fb7256013a2c23bd0337969f14650a778",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "admin_mfa_required",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "9aa26f57c18f9f97fe0e423a7a061102a436289e7abf9f98fcef5a8e557ed4a7",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_referral_id uuid, p_reason text",
+        "name": "admin_reject_referral",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "913db6eab49a3c8d277da5d21312def4571a3df2fb7231ccf226712299257fe9",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_flag_id uuid, p_note text",
+        "name": "admin_resolve_order_flag",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "f8586ffc930dc155441cf71026a26518d1b48b141fa094f03584d0702813d736",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_ledger_id uuid, p_note text",
+        "name": "admin_reverse_wallet_credit",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "df6316cd54d6d81fd750ddbb17a73bb8d424492871053febb7dfd875cfdf51e3",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_order_id text, p_status text",
+        "name": "admin_set_order_status",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "71f4d4bed1948517637cef8bb50ac9997f2c2a4f94e6b629b8a7eca1be157a90",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{=X/postgres,postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "am_i_admin",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "05d081e06c023ac173c0f862c7297a42999848a7f52133916047c598116b5cc5",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "analytics_events_rate_limit",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "f64fed8fdbbfb189d66c2ce7a3f7548499393aa837e4457fd69599ebfcf7f781",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "app_config_touch_updated_at",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "2fc4cc4026ab4bd838e5965777e82a9220e39492393c5cee6224603ef0006482",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "p_code text",
+        "name": "apply_referral_code",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "001cbb78dd0f9fdb0b06c4f55f338795b2073dd077223d230271f7b6b25a2240",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_order_id text, p_token text",
+        "name": "attach_ucb_external_token",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "00a1d182f32a8a93caef347e4c456a332d51a2891dd765dda1c369024f84ef8c",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "args": "p_user_id uuid",
+        "name": "backfill_auth_user_profile",
+        "owner": "postgres",
+        "config": [
+          "search_path=\"\""
+        ],
+        "result": "void",
+        "definition_sha256": "a8b3fa89eb5b564962c736fb5edffe0f6adad0806234006914095f237c0bc2f4",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_choice_id text, p_razorpay_id text, p_buyer_state text",
+        "name": "bind_ucb_razorpay_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "85b1d0937c080dced76270f9a1beb16a919801d2f5ac7fb65ec55c728b87a067",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "block_client_writes",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "e9daf600226c49c46bb44de8d92768bb337a8883db19c32f68589cdde309971d",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "bump_quiz_question_revision",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "0c28bee74b1b3e011f22535a74c965ce1f402e2233f7c5cf92aee18617cd3fb5",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_phone text",
+        "name": "change_my_phone",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "faec6a2c0b0b8b686ca9c08d152df48a1152b2d0f5d356bb6d6fcfbdb69b085a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "chapters_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "f03f2f0bff7fa2de5b87f5c4f11179cba409aa29f416bbc9b381c8f3483aae51",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "chapters_propagate_course_move",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "7433b574b2ec59b4d9b557343573b47b804922d9f30b99193d72b2ac35cf60c4",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "claim_note_pdf_validation",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "TABLE(request_id uuid, lease_id uuid, expected_bytes bigint, sha256 text, object_path text)",
+        "definition_sha256": "49a14d699eec069b21ba4eeb04ef6bedbc545e4d03a0b0b8df8bd26b9c521c53",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_kind text, p_limit integer",
+        "name": "claim_payment_jobs",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(target_id text, lease_id uuid, attempts integer)",
+        "definition_sha256": "0221e68fa34e83867d77b011ae0cb0f6f22c7db11a588b39ecd85db394ca7570",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_kind text, p_limit integer",
+        "name": "claim_play_payment_jobs",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(order_id text, lease_id uuid, attempts integer)",
+        "definition_sha256": "be6a6ab3c4dfd92903d11b27cf9fa5052826a119a896890d4644854acfbbf551",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "claim_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(price_inr numeric, candidate_sku text, purchase_option_id text, lease_id uuid)",
+        "definition_sha256": "0add63d3c25395d7b448e309232ea840c691a889dbb0ba54f0348a7771409ecc",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "claim_play_recovery_cursor",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "9ec2a525f27c2c4cb28db7e2240c2a6bb0801be252e755881642c8920b492957",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "claim_play_void_sweep",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "d7e068d5ea22a9043e40ec103093618fcea8fbc809f58b65a6eb3e98f4cafd3f",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_refund_id text",
+        "name": "claim_ucb_external_refund",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "6122e8288416ff68c5a18e427473e3a761a8e7a603b379476ad9143d277b03f8",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_course_id text, p_year_id text, p_subject_id text, p_chapter_id text",
+        "name": "content_is_published",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "a124d0f8c632d154c603071ba0a1fa833b70f3ad3a9be22d87ebc9f92e9793ac",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_product_id text",
+        "name": "create_play_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "df84e02eb0accdb200e68a1d47c503f0844076da8e42b7bc9e32b5678486caa5",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_product_id text, p_use_wallet boolean",
+        "name": "create_priced_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "9e986431c18784459a8ea9e55f7f55079fe9a133ce5216c808a0f42efc7070f6",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "args": "p_user_id uuid, p_product_id text, p_use_wallet boolean",
+        "name": "create_priced_order_legacy",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "c1e7fbe6a2686ac547a68b237d0529225e89b72f31754177f9595b66d0547f17",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "delete_my_account",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "fb0f51323d3fe4b2ab30ea4400fa08f0fe7bf1c40224a39323cc13abc48b87fe",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "enqueue_payment_jobs",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "4b72c6aeae04c8e7e3800b297c7b83ce567bb6a663c28c4776810ac73cc5b080",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "enqueue_play_payment_jobs",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "e6526437fc175d950cb5a1e01af4f6c7cadc2e00ff79380deccb1f073d7b2a54",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid",
+        "name": "erase_user_data",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "a30810487ac9bd1845ce1c442b4b42cce4e10a44e15809b887fcb28198a1b28a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_price numeric, p_lease uuid, p_reason text, p_retry boolean",
+        "name": "fail_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "9864887719aa67a2e82577f2eabe7306ae616a7dfbf9b40c917a60e1f9178db7",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_request_id uuid, p_lease uuid, p_outcome text, p_error text",
+        "name": "finish_note_pdf_validation",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "boolean",
+        "definition_sha256": "933586ffdb68f004b97d84eb30984bd3bc5371d9cd6b4d8c110c6d1e9c1c080a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_kind text, p_target_id text, p_lease_id uuid, p_success boolean, p_error text",
+        "name": "finish_payment_job",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "222196f5f426d057f1248c8bd97f27f05b0c10e72972bdf27a8e66f8dfca4683",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_kind text, p_order_id text, p_lease_id uuid, p_success boolean, p_error text",
+        "name": "finish_play_payment_job",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "305c8ca9c338c5bb1a06f7e0603c662a8295f14b52cbcc782d54581eacdd4eec",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_price numeric, p_lease uuid, p_sku text, p_option text",
+        "name": "finish_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "61aef2481cebd16581b09245d7ba21bc668b76464299080c749ed5eabec1eaf4",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_lease_id uuid, p_success boolean, p_next_page_token text, p_error text",
+        "name": "finish_play_recovery_cursor",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "b3109abe5d9ebffab1784496011748c50c3b1d778f8c77cef537dd056a17fdfd",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_length integer",
+        "name": "generate_unique_referral_code",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "f87fbda1d97cfb9b98521cb8a3b53c303b092428cfc32f64e8e5adfbc094134e",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_course_id text, p_year_id text",
+        "name": "get_admin_quiz_tests",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "SETOF quiz_tests",
+        "definition_sha256": "54ce42f675417b943265397de38e13c918af2a73210198b00e37fad53009ac3a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,anon=X/postgres,authenticated=X/postgres}",
+        "args": "",
+        "name": "get_maintenance_mode",
+        "owner": "postgres",
+        "config": [
+          "search_path=\"\""
+        ],
+        "result": "boolean",
+        "definition_sha256": "17cdebdd376bcffbc769b4918ac37baa3fdc74c72dc0113241b29a1fc21bf2db",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "",
+        "name": "get_my_referral_list",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(id uuid, friend_name text, joined_at timestamp with time zone, status text, amount numeric, available_at timestamp with time zone)",
+        "definition_sha256": "95b41c018dc9d41675081b8ff3d137e9dfff968a28314d9a2a50edb503c7110c",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "get_my_referrals",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(id uuid, referrer_id uuid, referred_id uuid, referred_name text, code_used text, status text, created_at timestamp with time zone, qualified_at timestamp with time zone, rewarded_at timestamp with time zone)",
+        "definition_sha256": "3f12c0c0076eb335bfa1ac49daf83fbf5affcfbdf25da5b7c61f9f5ace06442e",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "",
+        "name": "get_my_wallet",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(available numeric, pending numeric, total_earned numeric, next_available_at timestamp with time zone)",
+        "definition_sha256": "20179a1aa6c5a874407008ebf8889a003e3ed01b531e8a2f70c97633935a846f",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_subject_id text, p_test_id text",
+        "name": "get_public_quiz_tests",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "SETOF jsonb",
+        "definition_sha256": "acb580a5c4fe1c3f11eeaeb06b43eb7b25a568f613ad24be46e64797f688672d",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint",
+        "name": "grant_razorpay_payment",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "f5ba28431a0afed1208e6cce26989f79204e44d9c7adc0b7a99c3680f8db7dce",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "handle_new_user",
+        "owner": "postgres",
+        "config": [
+          "search_path=\"\""
+        ],
+        "result": "trigger",
+        "definition_sha256": "b9add355be3c2a238e4b5d37b0aafaaa9533d6da998028c9644a41b3fe186671",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_razorpay_payment_id text, p_outcome text",
+        "name": "handle_payment_dispute",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "31693ec89f4cc79b1c6c3b084242e7151de9ffc1b9c775bb0237a04d05cc735b",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_razorpay_payment_id text, p_full_refund boolean",
+        "name": "handle_payment_refund",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "fbfd4bdd21004a8f08d70c155fe5518ffcc741e812eb88298d22b1bcfb20f4bd",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "p_course_id text, p_year_id text",
+        "name": "has_content_access",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "fc2882b08c8b6aefd48ab409837c1d8543f8c094830b1a7901aab28b646c373b",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_uid uuid",
+        "name": "has_prior_purchase_identity",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "64a5abfdc2328f029aabc595621b5fba32c744f380454c0051e5f42fe3419962",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_kind text, p_value text",
+        "name": "identity_hash",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "84a39e6289cc055ec6f07854277f8c0d449b116fab8d3cdf2fd18711cdec4cf1",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "",
+        "name": "is_admin_account",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "4ba33e2dfdb4503f74b9e43bb8330567181b721deb8a018f69a84ccf0c78c260",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "log_referral_settings_change",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "adaeecd96946c2a6adcc662fa62327dc47da47fb92c53018140410f0534bad82",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_order_id text, p_refund boolean",
+        "name": "mark_ucb_report_attempt",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "f789ba6c469cad652c33c494137a2c1a8fbc2bc0c6f0deaca46573e9fedfe5c2",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "my_course_id",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "1d9d2abb4014be3dda8798f59d7679bf16bb172976fe25cff25e7f5feae5d3a0",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "my_year_id",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "4eb7595a01172a21ccad892b6c2a955928af9f5414ddc89bd8ba4cb2f787d3b9",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{=X/postgres,postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "input text",
+        "name": "normalize_phone",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "text",
+        "definition_sha256": "7c53a8366a69b5c2fc42adbb7fe8e534ce9426737158e2d685a27c3eb78d0291",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "notes_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "842f1ae6d608dfe41cc0e10eed5cdd530f1cdf3f68f3eb50053adca73cc021c7",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "a79f7a54673a212e1eee2ed9cfef3eae5753b6c77b8c79375169ce4b3e46b005",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_entitlement_immutable",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "bdf415ce41b943547e54166d0cf9ec6b961ebd217d3b9ee3a177d53d61b9bd05",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_guard_client_writes",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "bbf1c02e5de6412a142dafcc35d2376a310b7b9edcb9aee2d4b281a84df0a99f",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_immutable_columns",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "f855ef44c44460b832597e78cdd735c5929649f0708cf6287f62e0eb1930eadb",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_play_option_immutable",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "5a3c2f5000c3781e2679f0e57f17f46927b05f73a8be75a56099e3d5c21bc955",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_reserve_first_discount",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "0afc0919d47c5be813f765271c7f50921e7f669ebcb5d65c3b8b368c3c14ed4c",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": true
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "orders_snapshot_tax",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "e584e63277a790d338742ce7b3907a3972e3a9e798da66d1b09555071e50d415",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p products",
+        "name": "play_notes_product_eligible",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "7ee96689917c2ceb96fd4aecb9e561604e0449e5897516184943bfae85807661",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_price numeric",
+        "name": "play_price_has_eligible_product",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "763ba3d2ae331bb95f1257e7a7af235030e5ee8a31f1513edb9ce0fdf5685923",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "play_purchase_entitlement_from_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "78c61c2656561d05b8ef0ee1ccc05ce4edd9dc3937389bbf20b9cd091edd08a2",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "products_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "adfdf554179559bca6ed2abdafa00b9f5015c5984576c2b4f46e1b95dcba38af",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "profiles_before_write",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "c8090a5684169d3904940220426d4742c17cb8e2a6f0457badc7a7cf91c7be5e",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "profiles_generate_referral_code",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "7c24338a680afb5f6c578184e22911556bf162cf0393c9451a75a7ea666a9d32",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "profiles_temp_default_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "c46fe082ae52fa2961d900bd7ddb0107adf85a948a392370ac1055ba0b67e129",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "purge_expired_first_purchase_identities",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "bigint",
+        "definition_sha256": "00dc7277b2788f7ad215a88d6d6e2e2d4e0815ae4137e8cadc5bb461e134483e",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "purge_old_analytics_events",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "bigint",
+        "definition_sha256": "d0fcb7db70dfb398dbb5a9bf9e37d51172fd783d73ece10d1915ee86df106194",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "purge_old_payment_sessions",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "bigint",
+        "definition_sha256": "b27e9c48d26ef87fd1928e35d9fe1aa48b96270f838c91f22a31f64883e37b0d",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "push_tokens_cap",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "3b738391f14beb1372aa600e9cbaebe96c15805ed65bd640947fe6c5870cba57",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "queue_notes_play_price",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "5d502b97c52013ced3ee614aa30e3e2661ae55f981356dedf56aa9c7721cbfff",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_price numeric",
+        "name": "queue_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "7ccd521c225188da96a65370a093b56bfa67e9a303c04c886b0296525eb384a5",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "queue_product_play_price",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "05ac79ff85866f2a6e952d7185b19dfd846cc3f0f4c7c5be85e42d1b5221ebb5",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "quiz_scores_own_email",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "987a98ae92bffe4f4ebcae57e4b0866fae14ad4922d5e26722df3f2f3fdc1a03",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "quiz_scores_rate_limit",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "3fac4175e7c7bfcf17cba2066ce269c47f30c3c9b2519af9109a1aeedb48db76",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "quiz_tests_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "033dc951275dc542c9d316bad316f0b05129e828359980320d9e5446782bd6ea",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_product_id text, p_use_wallet boolean",
+        "name": "quote_my_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "98e717512e9365d000bfdf4632bbadacc8ef9bb1b5bdffbd8c67e34bfd1c2627",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "args": "p_product_id text, p_use_wallet boolean",
+        "name": "quote_my_order_legacy",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "0edb949cb92652f14ae6160b3dad73bb8e1c70bb5733be58330f449d99eee3fb",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_key text, p_limit integer, p_window_seconds integer",
+        "name": "rate_limit_hit",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "675f1a6597d092d8222916333e3c0bf63ea2544f74538c9e51cfea4437a8f031",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "razorpay_purchase_entitlement_from_order",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "0fb068a7aa8e53ef1ff1c41c24558a327ac4e532d0076ef0636d3c08439f9ebf",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_payment_id text, p_razorpay_order_id text, p_amount_paise bigint, p_provider_time timestamp with time zone",
+        "name": "record_payment_capture",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "c28455d0a821d0945a33a5a94d9d8f66681a70ada477568605b16176369ef2c3",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_tokens text[]",
+        "name": "record_play_void_tokens",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "fb06e9f9f473588c4343ea664e3ad37f29fcb0aca7f6c640f91c5d45e9ba3651",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_event_id text, p_event_type text, p_razorpay_order_id text, p_payment_id text, p_provider_object_id text, p_payload_hash text, p_provider_time timestamp with time zone",
+        "name": "record_provider_event",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "3fa7c132c527532c50050a79c78a0943cb9f213a0e93d367654b5acc470fe6b8",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_uid uuid",
+        "name": "record_purchase_identity",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "91af31b38e53d8dedb5fa3da9a4598cd491a65d2ef9ceb68fe13a914f06fe53f",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_token text, p_platform text",
+        "name": "register_push_token",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "void",
+        "definition_sha256": "921f0920646aa415ef7dc98d18cfac7784048a0ef84da598c4af307587fbd4f5",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid",
+        "name": "release_due_wallet_credits",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "integer",
+        "definition_sha256": "7b3301df6ddf7aff0a7075f6746f630aa60105bb93bbda8bf11ce095a58c3db0",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "requeue_stale_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "integer",
+        "definition_sha256": "534cbecdae4635ebb21b98c7c178a4dae8aee7d8c87bf2f4173d0c3cf7e18adb",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_request_id uuid, p_admin uuid, p_hash text, p_bytes bigint, p_url text",
+        "name": "reserve_note_pdf_validation",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "void",
+        "definition_sha256": "53eef6e3601dffa37210db65cbd538ee1334a399c097d93290f0102a619b9add",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_price numeric",
+        "name": "retry_play_price_sync",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "7d6048427d53f5c8168b1385afbff2927e7397ced5c4144005f19102cc8710ae",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_razorpay_payment_id text, p_purchase_status text, p_restore_wallet boolean",
+        "name": "reverse_payment",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "e387f1878b834e0c4084aa8f066b8d242d8ba66a6db9965fd0cf05a889730704",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_purchase_token text",
+        "name": "reverse_play_payment",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "1575e2ce057b356b1e93696317356552b4899c3227f7f0d54b86627161faf9e4",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "rls_auto_enable",
+        "owner": "postgres",
+        "config": [
+          "search_path=pg_catalog"
+        ],
+        "result": "event_trigger",
+        "definition_sha256": "62e77d28f3013a8047bb431be5f8b174ad51cdde883dcc3b0d6c6c0a84e954a3",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_price numeric, p_lease uuid, p_reason text",
+        "name": "rotate_play_price_sku",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "706fa67c8482cd72e065b6912f3c5542dc99916efb6d84de2d55bf8df5cf9dee",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_request_id uuid, p_note_id text, p_title text, p_description text, p_chapter_id text, p_order integer, p_active boolean, p_is_free_preview boolean",
+        "name": "save_note_with_upload",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "text",
+        "definition_sha256": "fc4445581a7ca394fe4847f3303142d2b7b76db7615ebe56becce54f2ea7005b",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_required boolean",
+        "name": "set_admin_mfa_required",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "text",
+        "definition_sha256": "8d3133f9db18b7aefa6b3fbaa870a43114794298fd84426093cc0d6be2cd2b82",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "p_course_id text, p_year_id text",
+        "name": "set_my_course_year",
+        "owner": "postgres",
+        "config": [
+          "search_path=\"\""
+        ],
+        "result": "void",
+        "definition_sha256": "e20d0b7b901c479e474f649675492c1b2f8bbb71d2c4956d72efeb8efbdc12dc",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user_id uuid, p_order_id text, p_product_id text, p_play_sku text, p_purchase_token text, p_paid_at timestamp with time zone",
+        "name": "settle_play_purchase",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "f786a68cf69e37e83645e546175abf4f20e066dd6a976cd7c322e421c286446c",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+        "name": "settle_razorpay_payment",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "25457888b99e1ee22dd93f6d2ad939c5cddd86916349f46d229846437d85e0da",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": true
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+        "name": "settle_razorpay_payment_legacy",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "void",
+        "definition_sha256": "0b2c18c2c81cd289b711441919c6dec32daf869b6b673c92612c4fa2a4d8c5f4",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "subjects_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "cc957ed054d90ef31f3a982ce394b61337491d04402eb30f85f987f1e909ed6a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "subjects_propagate_course_move",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "e4e8122ec6b380fc238d9e99de624188d015ea81219d95de7ec07f86e121408d",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+        "args": "p_attempt_id text, p_test_id text, p_question_revision bigint, p_answers jsonb",
+        "name": "submit_quiz_attempt",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "jsonb",
+        "definition_sha256": "0f46cd39c8b99e0d47e3106969ec991b45fe944ce264e3cfbb1d6d9b7b925cbf",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "sync_profile_email",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "27084de61a8221a4c5df294b05927c4c099490c0441ac7eff7b3da2695cd3c9e",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "sync_profile_mobile_verified",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "05e74d8bd98f779b6c4052d2288972460bbedbfc5370350058081d745cea5b3d",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "sync_profile_phone_normalized",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "6cd8ea88f6ec43b26106c4976d38cea1e356d528d69d301705dc72eb2b81fffc",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "touch_profile_updated_at",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "b3c8ce2c299d4bc0beeed8b1938c532d9e75579445943abb4a79d9116f7dc549",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid, p_note_id text",
+        "name": "user_can_access_note",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "859cef94e3ebc9d0367c0e548248777ca4088206e32990c217fe0d639142a25b",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid, p_note_id text, p_aal text",
+        "name": "user_can_access_note_with_aal",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "8a00351f5ccdc0e64a828d4085560a0739092fb713ab101b3c3677b1171c495a",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid, p_video_id text",
+        "name": "user_can_access_video",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "0087129a306667e084a77315756dc048db7035a751cc28269177a1ec8afbc91f",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid, p_video_id text, p_aal text",
+        "name": "user_can_access_video_with_aal",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "03fb0169221b4360f55d61cb388914a71ccfbb0c7a930c23bc68a7b57e18fe15",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{=X/postgres,postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+        "args": "p_chapter_id text",
+        "name": "user_owns_chapter",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "boolean",
+        "definition_sha256": "e09bfbd94921e5a0c9f9d04973f163db4d2708a39c538c2b0178a826b9fb35ff",
+        "checks_success_purchase": true,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "videos_derive_course",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "68b5675d024ca118254303d6c9e58f63d6cac4c6e971b8436874fc43e4bbf45c",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "p_user uuid",
+        "name": "wallet_balance_of",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "TABLE(available numeric, pending numeric, total_earned numeric, next_available_at timestamp with time zone)",
+        "definition_sha256": "7dd6ecf779f6fb91a61bfa7a2b21f9084b3adaf1365ade74b940d663b23ac265",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "wallet_ledger_append_only",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "d8e2eea5d1c83ef01ebfb7adb6108b9c6e48e28e5a4039abb429680d252ffd32",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "wallet_ledger_no_overdraw",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "87bf8c216ef034fc90b213ea91a2689d49b2d8728e600d99fb860b1624618d67",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": true,
+          "wallet:": true,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "wallet_ledger_no_truncate",
+        "owner": "postgres",
+        "config": [
+          "search_path=public, pg_temp"
+        ],
+        "result": "trigger",
+        "definition_sha256": "2df356aafbd60c72e86c450f765a44e3d27b6ee0b26294970919bae931ae0ddd",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": false
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "years_before_write",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "9265d7201a16aed729e16d82baedc4e2236ca3c4004a45140934223e7c7453e0",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      },
+      {
+        "acl": "{postgres=X/postgres,service_role=X/postgres}",
+        "args": "",
+        "name": "years_propagate_course_move",
+        "owner": "postgres",
+        "config": [
+          "search_path=public"
+        ],
+        "result": "trigger",
+        "definition_sha256": "994983750b0fce582235c3650ce54fb25a14f05d98ebb379617e4caaeae872ee",
+        "checks_success_purchase": false,
+        "features": {
+          "pg_advisory_xact_lock": false,
+          "wallet:": false,
+          "purchases_one_success": false,
+          "blocks_entitlement": false,
+          "compensation_pending": false
+        },
+        "service_definer": true
+      }
+    ],
+    "prices": [
+      {
+        "count": 4,
+        "price": 1
+      },
+      {
+        "count": 7,
+        "price": 2
+      },
+      {
+        "count": 2,
+        "price": 5
+      }
+    ],
+    "tables": [
+      "payment_captures",
+      "payment_compensations",
+      "payment_jobs",
+      "provider_events",
+      "ucb_external_refunds"
+    ],
+    "columns": [
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "id",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "orders",
+        "column": "user_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "product_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "amount",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "razorpay_order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "razorpay_payment_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "created_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "updated_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "scope",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "chapter_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "subject_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "year_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "ARRAY",
+        "table": "orders",
+        "column": "year_ids",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "course_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "list_price",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "referral_discount",
+        "nullable": "NO"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "wallet_amount",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "orders",
+        "column": "referral_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "expires_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "provider",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "play_sku",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "purchase_token",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "play_consumption_status",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_transaction_token",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_choice_bound_order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_transaction_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_report_status",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "external_reported_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_report_error",
+        "nullable": "YES"
+      },
+      {
+        "type": "integer",
+        "table": "orders",
+        "column": "external_report_attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "external_report_attempted_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_refund_status",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "external_refund_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "external_refund_error",
+        "nullable": "YES"
+      },
+      {
+        "type": "integer",
+        "table": "orders",
+        "column": "external_refund_attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "external_refund_attempted_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "tax_pre_amount",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "tax_amount",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "orders",
+        "column": "gst_rate_percent",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "tax_region_code",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "tax_administrative_area",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "payment_completed_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "play_last_checked_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "payment_provider_time",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "payment_received_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "boolean",
+        "table": "orders",
+        "column": "payment_time_fallback",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "orders",
+        "column": "play_last_attempt_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "orders",
+        "column": "play_purchase_option_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payment_captures",
+        "column": "payment_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_captures",
+        "column": "razorpay_order_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_captures",
+        "column": "order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "bigint",
+        "table": "payment_captures",
+        "column": "amount_paise",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_captures",
+        "column": "provider_time",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_captures",
+        "column": "received_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_captures",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_captures",
+        "column": "failure_reason",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "payment_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "bigint",
+        "table": "payment_compensations",
+        "column": "amount_paise",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "reason",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "refund_request_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "provider_refund_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "integer",
+        "table": "payment_compensations",
+        "column": "attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_compensations",
+        "column": "next_attempt_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_compensations",
+        "column": "lease_until",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payment_compensations",
+        "column": "last_error",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_compensations",
+        "column": "created_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_jobs",
+        "column": "kind",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_jobs",
+        "column": "target_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payment_jobs",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_jobs",
+        "column": "deadline_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_jobs",
+        "column": "next_attempt_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "integer",
+        "table": "payment_jobs",
+        "column": "attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "payment_jobs",
+        "column": "lease_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_jobs",
+        "column": "lease_until",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payment_jobs",
+        "column": "last_error",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payment_jobs",
+        "column": "created_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "payments",
+        "column": "id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "order_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "payments",
+        "column": "user_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "product_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "payments",
+        "column": "amount",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "razorpay_order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "razorpay_payment_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "payments",
+        "column": "verified_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "provider",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "purchase_token",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "payments",
+        "column": "play_sku",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "event_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "event_type",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "razorpay_order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "payment_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "provider_object_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "payload_hash",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "provider_events",
+        "column": "provider_time",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "provider_events",
+        "column": "received_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "provider_events",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "provider_events",
+        "column": "next_attempt_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "integer",
+        "table": "provider_events",
+        "column": "attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "provider_events",
+        "column": "lease_until",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "id",
+        "nullable": "NO"
+      },
+      {
+        "type": "uuid",
+        "table": "purchases",
+        "column": "user_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "product_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "product_title",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "scope",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "chapter_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "subject_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "year_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "ARRAY",
+        "table": "purchases",
+        "column": "year_ids",
+        "nullable": "YES"
+      },
+      {
+        "type": "numeric",
+        "table": "purchases",
+        "column": "amount",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "purchases",
+        "column": "created_at",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "razorpay_order_id",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "purchases",
+        "column": "course_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "ucb_external_refunds",
+        "column": "refund_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "ucb_external_refunds",
+        "column": "order_id",
+        "nullable": "NO"
+      },
+      {
+        "type": "bigint",
+        "table": "ucb_external_refunds",
+        "column": "amount_paise",
+        "nullable": "NO"
+      },
+      {
+        "type": "bigint",
+        "table": "ucb_external_refunds",
+        "column": "pre_tax_paise",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "ucb_external_refunds",
+        "column": "refund_time",
+        "nullable": "NO"
+      },
+      {
+        "type": "boolean",
+        "table": "ucb_external_refunds",
+        "column": "is_full",
+        "nullable": "NO"
+      },
+      {
+        "type": "text",
+        "table": "ucb_external_refunds",
+        "column": "status",
+        "nullable": "NO"
+      },
+      {
+        "type": "integer",
+        "table": "ucb_external_refunds",
+        "column": "attempts",
+        "nullable": "NO"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "ucb_external_refunds",
+        "column": "attempted_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "ucb_external_refunds",
+        "column": "reported_at",
+        "nullable": "YES"
+      },
+      {
+        "type": "text",
+        "table": "ucb_external_refunds",
+        "column": "error",
+        "nullable": "YES"
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "ucb_external_refunds",
+        "column": "created_at",
+        "nullable": "NO"
+      }
+    ],
+    "history": {
+      "success_on_nonpaid": 2,
+      "duplicate_success_groups": 1
+    },
+    "indexes": [
+      {
+        "name": "orders_pkey",
+        "table": "orders",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "orders_user_id_idx",
+        "table": "orders",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "orders_razorpay_order_id_unique",
+        "table": "orders",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_orders_course_id",
+        "table": "orders",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_orders_product_id",
+        "table": "orders",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_orders_referral_id",
+        "table": "orders",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "orders_play_purchase_token_unique",
+        "table": "orders",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": "b54be247f2091e8c6ee2f494b6d8a3e9"
+      },
+      {
+        "name": "orders_external_token_unique",
+        "table": "orders",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": "3c51066a8ffdbe69b5271729446c573f"
+      },
+      {
+        "name": "orders_external_id_unique",
+        "table": "orders",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": "9f67afdbaa0090d7e2a433a0c124fae2"
+      },
+      {
+        "name": "purchases_pkey",
+        "table": "purchases",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "purchases_order_id_unique",
+        "table": "purchases",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_purchases_course_id",
+        "table": "purchases",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "purchases_one_success_per_product",
+        "table": "purchases",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": "b9394a5e7aed8c8d20adbac710c9ea63"
+      },
+      {
+        "name": "idx_purchases_product_id",
+        "table": "purchases",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_purchases_chapter_id",
+        "table": "purchases",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_purchases_subject_id",
+        "table": "purchases",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_purchases_year_id",
+        "table": "purchases",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "payments_pkey",
+        "table": "payments",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "payments_razorpay_payment_id_key",
+        "table": "payments",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_payments_product_id",
+        "table": "payments",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_payments_user_id",
+        "table": "payments",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "idx_payments_order_id",
+        "table": "payments",
+        "valid": true,
+        "unique": false,
+        "predicate_hash": null
+      },
+      {
+        "name": "payments_play_purchase_token_unique",
+        "table": "payments",
+        "valid": true,
+        "unique": true,
+        "predicate_hash": "b54be247f2091e8c6ee2f494b6d8a3e9"
+      }
+    ],
+    "policies": [
+      {
+        "name": "orders_select_own_or_admin",
+        "check": null,
+        "roles": [
+          "public"
+        ],
+        "table": "orders",
+        "using": "((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())",
+        "command": "SELECT"
+      },
+      {
+        "name": "Users can view own payments",
+        "check": null,
+        "roles": [
+          "public"
+        ],
+        "table": "payments",
+        "using": "(( SELECT auth.uid() AS uid) = user_id)",
+        "command": "SELECT"
+      },
+      {
+        "name": "payments_admin_read",
+        "check": null,
+        "roles": [
+          "public"
+        ],
+        "table": "payments",
+        "using": "am_i_admin()",
+        "command": "SELECT"
+      },
+      {
+        "name": "purchases_select_own_or_admin",
+        "check": null,
+        "roles": [
+          "public"
+        ],
+        "table": "purchases",
+        "using": "((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())",
+        "command": "SELECT"
+      }
+    ],
+    "migrations": [
+      "20260701000000",
+      "20260718",
+      "20260721",
+      "20260801",
+      "20260801150000",
+      "20260919120000",
+      "20260919130000",
+      "20260920120000",
+      "20260920130000",
+      "20260920140000",
+      "20260921120000",
+      "20260921130000",
+      "20260922100000",
+      "20260923100000",
+      "20260924100000",
+      "20260924110000",
+      "20260924120000",
+      "20260924130000",
+      "20260924140000",
+      "20260924150000",
+      "20260925100000",
+      "20260925110000",
+      "20260925120000",
+      "20260925130000",
+      "20260925140000",
+      "20260926100000",
+      "20260926110000",
+      "20260926120000",
+      "20260926130000",
+      "20260927100000",
+      "20260927110000",
+      "20260927120000",
+      "20260927130000",
+      "20260928100000",
+      "20260928110000",
+      "20260929100000",
+      "20260930100000",
+      "20260930110000",
+      "20261001100000",
+      "20261012100000",
+      "20261012110000",
+      "20261012120000",
+      "20261013090000",
+      "20261013100000",
+      "20261013110000",
+      "20261014100000",
+      "20261014110000",
+      "20261015100000",
+      "20261015120000",
+      "20261016090000",
+      "20261016100000",
+      "20261018100000",
+      "20261018110000",
+      "20261018120000",
+      "20261018130000",
+      "20261019150000",
+      "20261019151000",
+      "20261020100000",
+      "20261020101000",
+      "20261020102000",
+      "20261020103000",
+      "20261020104000",
+      "20261020105000",
+      "20261020110000",
+      "20261104100000",
+      "20261104110000"
+    ],
+    "constraints": [
+      {
+        "name": "orders_amount_positive",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK ((amount > (0)::numeric))"
+      },
+      {
+        "name": "orders_course_id_fkey",
+        "type": "f",
+        "table": "orders",
+        "validated": true,
+        "definition": "FOREIGN KEY (course_id) REFERENCES courses(id)"
+      },
+      {
+        "name": "orders_phase2_amounts",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK (((referral_discount >= (0)::numeric) AND (wallet_amount >= (0)::numeric) AND ((list_price IS NULL) OR (((list_price - referral_discount) - wallet_amount) = amount))))"
+      },
+      {
+        "name": "orders_pkey",
+        "type": "p",
+        "table": "orders",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "orders_product_id_fkey",
+        "type": "f",
+        "table": "orders",
+        "validated": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id)"
+      },
+      {
+        "name": "orders_referral_id_fkey",
+        "type": "f",
+        "table": "orders",
+        "validated": true,
+        "definition": "FOREIGN KEY (referral_id) REFERENCES referrals(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "orders_status_check",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK ((status = ANY (ARRAY['created'::text, 'paid'::text, 'failed'::text, 'cancelled'::text, 'pending'::text, 'refunded'::text])))"
+      },
+      {
+        "name": "orders_ucb_choice_check",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK (((provider <> 'play'::text) OR ((play_sku IS NOT NULL) AND (razorpay_order_id IS NULL))))"
+      },
+      {
+        "name": "orders_ucb_consumption_check",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK (((play_consumption_status IS NULL) OR (play_consumption_status = ANY (ARRAY['pending'::text, 'failed'::text, 'consumed'::text]))))"
+      },
+      {
+        "name": "orders_ucb_provider_check",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK ((provider = ANY (ARRAY['razorpay'::text, 'play'::text])))"
+      },
+      {
+        "name": "orders_ucb_report_check",
+        "type": "c",
+        "table": "orders",
+        "validated": true,
+        "definition": "CHECK (((external_report_status IS NULL) OR (external_report_status = ANY (ARRAY['pending'::text, 'failed'::text, 'reported'::text]))))"
+      },
+      {
+        "name": "orders_user_id_fkey",
+        "type": "f",
+        "table": "orders",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "purchases_chapter_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "purchases_course_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (course_id) REFERENCES courses(id)"
+      },
+      {
+        "name": "purchases_order_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id)"
+      },
+      {
+        "name": "purchases_pkey",
+        "type": "p",
+        "table": "purchases",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "purchases_product_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id)"
+      },
+      {
+        "name": "purchases_scope_check",
+        "type": "c",
+        "table": "purchases",
+        "validated": true,
+        "definition": "CHECK ((scope = ANY (ARRAY['chapter'::text, 'subject'::text, 'year'::text, 'bundle'::text])))"
+      },
+      {
+        "name": "purchases_status_check",
+        "type": "c",
+        "table": "purchases",
+        "validated": true,
+        "definition": "CHECK ((status = ANY (ARRAY['success'::text, 'refunded'::text, 'disputed'::text, 'chargeback'::text, 'duplicate'::text])))"
+      },
+      {
+        "name": "purchases_subject_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "purchases_user_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "name": "purchases_year_id_fkey",
+        "type": "f",
+        "table": "purchases",
+        "validated": true,
+        "definition": "FOREIGN KEY (year_id) REFERENCES years(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "payments_order_id_fkey",
+        "type": "f",
+        "table": "payments",
+        "validated": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "payments_pkey",
+        "type": "p",
+        "table": "payments",
+        "validated": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "payments_product_id_fkey",
+        "type": "f",
+        "table": "payments",
+        "validated": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL"
+      },
+      {
+        "name": "payments_razorpay_payment_id_key",
+        "type": "u",
+        "table": "payments",
+        "validated": true,
+        "definition": "UNIQUE (razorpay_payment_id)"
+      },
+      {
+        "name": "payments_ucb_provider_check",
+        "type": "c",
+        "table": "payments",
+        "validated": true,
+        "definition": "CHECK ((((provider = 'razorpay'::text) AND (razorpay_order_id IS NOT NULL) AND (razorpay_payment_id IS NOT NULL) AND (purchase_token IS NULL)) OR ((provider = 'play'::text) AND (razorpay_order_id IS NULL) AND (razorpay_payment_id IS NULL) AND (purchase_token IS NOT NULL) AND (play_sku IS NOT NULL))))"
+      },
+      {
+        "name": "payments_user_id_fkey",
+        "type": "f",
+        "table": "payments",
+        "validated": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+      }
+    ],
+    "safe_config": [
+      {
+        "key": "min_app_version",
+        "value": "1.1.0"
+      },
+      {
+        "key": "require_ucb_for_razorpay",
+        "value": "false"
+      }
+    ],
+    "table_grants": null,
+    "order_triggers": [
+      "CREATE TRIGGER orders_00_guard_client_writes BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_guard_client_writes()",
+      "CREATE TRIGGER orders_01_discount_reserve BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_reserve_first_discount()",
+      "CREATE TRIGGER orders_01_immutable_columns BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_immutable_columns()",
+      "CREATE TRIGGER orders_02_entitlement_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_entitlement_immutable()",
+      "CREATE TRIGGER orders_02_tax_snapshot BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_snapshot_tax()",
+      "CREATE TRIGGER orders_before_write BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_derive_course()",
+      "CREATE TRIGGER orders_play_option_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_play_option_immutable()"
+    ],
+    "purchase_triggers": [
+      "CREATE TRIGGER purchases_00_block_client_writes BEFORE INSERT OR DELETE OR UPDATE ON public.purchases FOR EACH ROW EXECUTE FUNCTION block_client_writes()",
+      "CREATE TRIGGER purchases_play_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION play_purchase_entitlement_from_order()",
+      "CREATE TRIGGER purchases_razorpay_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION razorpay_purchase_entitlement_from_order()"
+    ]
+  },
+  "functions": [
+    {
+      "slug": "verify-payment",
+      "version": 68,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1790106848094
+    },
+    {
+      "slug": "send-push-notification",
+      "version": 51,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789993120363
+    },
+    {
+      "slug": "razorpay-webhook",
+      "version": 50,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1790106854078
+    },
+    {
+      "slug": "delete-account",
+      "version": 19,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1789896585559
+    },
+    {
+      "slug": "create-order",
+      "version": 23,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1790106841912
+    },
+    {
+      "slug": "get-note-url",
+      "version": 20,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792781231359
+    },
+    {
+      "slug": "get-video-url",
+      "version": 20,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792781236152
+    },
+    {
+      "slug": "login-with-mobile",
+      "version": 18,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789990093212
+    },
+    {
+      "slug": "request-password-reset-by-mobile",
+      "version": 18,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1789990100784
+    },
+    {
+      "slug": "create-play-order",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792259108507
+    },
+    {
+      "slug": "verify-play-purchase",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792259116603
+    },
+    {
+      "slug": "sync-play-catalog",
+      "version": 6,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793128973060
+    },
+    {
+      "slug": "play-payment-worker",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792259132736
+    },
+    {
+      "slug": "upload-note-pdf",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792338990701
+    },
+    {
+      "slug": "diagnose-play-service-account",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1792470057269
+    },
+    {
+      "slug": "diagnose-play-pricing",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792481330217
+    },
+    {
+      "slug": "diagnose-play-matrix",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1792486574836
+    }
+  ],
+  "bundles": [
+    {
+      "slug": "verify-payment",
+      "sha256": "58de9c73ac117519954b14424ca8423ca0e73040bd4a734f17ead149c1956389",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": true,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": true,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "razorpay-webhook",
+      "sha256": "26deb8b909151f385bc91d09d2be7a466e47376bc6e15689d0a876b192cf4c51",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": true,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": true,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "create-order",
+      "sha256": "3e793ac2aa958fc77b8210d5b154c9fe555a5825016d5dd7b695ef6dad2e7677",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": true,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": false,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "get-note-url",
+      "sha256": "f7da13cfbe309f862924d6579b67e9f711a5f94eee1754a3e5e0cb4f3493480e",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": false,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": false,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "create-play-order",
+      "sha256": "a17e7637424053def5a714ab9c5518caf972c229e5c0808d17ea22e1f7a45556",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": false,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": false,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "verify-play-purchase",
+      "sha256": "2029d2e962a6f8c9ed3af80480a53d5136367729a8e891f1b07b9cf95229478b",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": false,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": false,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    },
+    {
+      "slug": "play-payment-worker",
+      "sha256": "1825202efec2c9b965f233ffd76cd98af04c8fd96900ce26c5ffa180848dcea1",
+      "razorpay_entitlement_committed": false,
+      "recoveryUser": false,
+      "getUserFromAuthHeader": true,
+      "prepare_notes_choice_checkout": false,
+      "record_notes_choice_authorization": false,
+      "HMAC": false,
+      "reportExternalOrder": false,
+      "settleCapturedPayment": false,
+      "blocks_entitlement": false,
+      "get_my_play_fulfillment": false
+    }
+  ]
+}

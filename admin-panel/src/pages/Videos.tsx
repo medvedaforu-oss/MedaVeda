@@ -124,7 +124,7 @@ export default function Videos() {
 
         <SearchBar value={search} onChange={setSearch} />
 
-        <select
+        <select aria-label="Filter by subject"
           value={subjectId}
           onChange={(e) => setSubjectId(e.target.value)}
           className="border rounded-lg px-3 py-2"

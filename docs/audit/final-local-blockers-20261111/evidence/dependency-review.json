@@ -1,0 +1,52 @@
+{
+  "source": "Registry read-only npm view and npm diff commands executed in this session; no installation",
+  "observations": [
+    {
+      "command": "npm view minimatch@10 version --json",
+      "latest_returned": "10.2.6",
+      "advisory_patched_minimum": "11.0.1",
+      "decision": "No unaffected version in parent ^10 ranges"
+    },
+    {
+      "command": "npm view glob@13 version --json",
+      "latest_returned": "13.0.7",
+      "advisory_affected": ">=9.0.0 <=14.0.1",
+      "decision": "No unaffected version in parent ^13 range or blob-util exact 13.0.6 pin"
+    },
+    {
+      "command": "npm view expo@~57.0.32 version dependencies.@expo/fingerprint engines --json",
+      "output": {
+        "version": "57.0.32",
+        "dependencies.@expo/fingerprint": "^0.20.15"
+      },
+      "decision": "No newer patch returned in supported Expo range"
+    },
+    {
+      "command": "npm view react-native-blob-util@0.24.11 version dependencies peerDependencies engines --json",
+      "output": {
+        "version": "0.24.11",
+        "dependencies": {
+          "base-64": "1.0.0"
+        },
+        "peerDependencies": {
+          "react": "*",
+          "react-native": "*"
+        }
+      },
+      "decision": "Removes its glob edge but changes native code; deferred pending native/PDF acceptance"
+    },
+    {
+      "command": "npm diff --diff=react-native-blob-util@0.24.10 --diff=react-native-blob-util@0.24.11 --diff-name-only --ignore-scripts",
+      "changed_files": [
+        "index.js.flow",
+        "android/src/main/java/com/ReactNativeBlobUtil/Response/ReactNativeBlobUtilDefaultResp.java",
+        "android/src/main/java/com/ReactNativeBlobUtil/Response/ReactNativeBlobUtilFileResp.java",
+        "android/src/main/java/com/ReactNativeBlobUtil/ReactNativeBlobUtilReq.java",
+        "fetch.js",
+        "package.json",
+        "index.d.ts",
+        "utils/byteCount.js"
+      ]
+    }
+  ]
+}

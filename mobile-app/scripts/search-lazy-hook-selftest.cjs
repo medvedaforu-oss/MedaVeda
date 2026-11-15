@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const discoveryRequests = []; let delayDiscovery = false;
 const slots = [], effects = []; let cursor = 0, builds = 0;
 const changed = (a, b) => !a || a.length !== b.length || a.some((v, i) => !Object.is(v, b[i]));
 const react = {
@@ -25,7 +26,7 @@ const mocks = {
   '../services/searchService': {
     getCachedSearchIndex: async () => null,
     getSearchIndex: async () => { builds++; return empty; },
-    applyOwnership: () => [], searchResults: () => [], getDiscoverySections: async () => [],
+    applyOwnership: () => [], searchResults: () => [], getDiscoverySections: () => delayDiscovery ? new Promise(resolve => discoveryRequests.push(resolve)) : Promise.resolve([]),
   },
   '../services/quizService': {},
   '../utils/recentSearches': { getRecentSearches: async () => [] },
@@ -47,6 +48,15 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   state.setQuery('anatomy chapter'); render(); await tick(); state = render();
   assert.equal(builds, 1, 'additional keystrokes reuse the index');
   await state.onRefresh(); render(); assert.equal(builds, 2);
+  state.setQuery(''); delayDiscovery = true;
+  stable.ownedScopes = [{ status: 'success', scope: 'year', yearId: 'y' }]; render();
+  stable.ownedScopes = []; state = render();
+  assert.equal(state.sections.length, 0, 'discovery from previous ownership must be masked');
+  discoveryRequests[1]([{ title: 'current', data: [], totalCount: 0 }]); await tick(); state = render();
+  assert.equal(state.sections[0].title, 'current');
+  discoveryRequests[0]([{ title: 'obsolete', data: [], totalCount: 0 }]); await tick(); state = render();
+  assert.equal(state.sections[0].title, 'current', 'late discovery cannot restore old ownership badges');
+  console.log('PASS search discovery masks previous ownership and rejects obsolete async completion');
   slots.filter(slot => slot.cleanup).forEach(slot => slot.cleanup());
   console.log('PASS actual search hook opens without build, lazily builds on first query, reuses on typing and explicitly refreshes');
 })().catch(error => { console.error(error); process.exitCode = 1; });

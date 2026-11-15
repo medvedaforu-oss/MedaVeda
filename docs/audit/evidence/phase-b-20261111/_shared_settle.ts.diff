@@ -1,0 +1,150 @@
+--- reviewed/_shared/settle.ts
++++ candidate/_shared/settle.ts
+@@ -8,7 +8,6 @@
+ // the wallet.
+ import { supabaseAdmin } from "./supabaseAdmin.ts";
+ import { fetchDispute, fetchPayment, fetchRazorpayOrder, fetchRefund } from "./razorpay.ts";
+-import { reportExternalOrder, reportExternalRefundEvent } from "./externalReporting.ts";
+ import { alertUcb } from "./ucbAlert.ts";
+ 
+ export type SettleResult =
+@@ -100,12 +99,6 @@
+   if (initialCommitment.error)
+     return { ok: false, status: 503, reason: "entitlement verification unavailable" };
+   if (initialCommitment.data !== true) {
+-    if (order?.external_transaction_token && Number.isSafeInteger(payment.created_at) && (payment.created_at ?? 0) > 0) {
+-      const { error: authorizationError } = await supabaseAdmin.rpc("record_notes_choice_authorization", {
+-        p_order_id: order.id, p_provider_time: new Date(payment.created_at! * 1000).toISOString(),
+-      });
+-      if (authorizationError) return { ok: false, status: 503, reason: "authorization reporting queue unavailable" };
+-    }
+     // 4. Atomic, idempotent grant of the product stored on the order row. The
+     //    payment's own creation time (from Razorpay, not from the client) lets the
+     //    database tell a payment started inside the order's 30-minute life from
+@@ -141,10 +134,6 @@
+       return { ok: false, status: 503, reason: "entitlement pending" };
+     if (["compensation_pending", "compensated", "reversed"].includes(capture.status)) {
+       await alertUcb("Captured Razorpay payment requires compensation or reversal", order.id);
+-      if (order.external_transaction_token) {
+-        try { await reportExternalOrder(order.id); }
+-        catch (reportError) { console.error("settle: UCB rejected capture report queued", String(reportError)); }
+-      }
+       return { ok: false, status: 409, reason: capture.status === "reversed" ? "payment reversed"
+         : capture.status === "compensated" ? "payment already refunded" : "payment captured; refund queued" };
+     }
+@@ -162,18 +151,6 @@
+     const { error: inboxError } = await supabaseAdmin.from("provider_events")
+       .update({ status: "applied" }).eq("event_id", eventId).eq("event_type", "payment.captured");
+     if (inboxError) return { ok: false, status: 503, reason: "capture inbox update failed" };
+-  }
+-  if (order.external_transaction_token) {
+-    const { data: completed, error: timestampError } = await supabaseAdmin.from("orders")
+-      .select("payment_completed_at,payment_provider_time,payment_time_fallback").eq("id", order.id).maybeSingle();
+-    if (timestampError || !completed?.payment_completed_at) {
+-      console.error("settle: UCB completion timestamp missing", timestampError?.code);
+-      return { ok: false, status: 500, reason: "completion timestamp missing" };
+-    }
+-    if (!completed.payment_provider_time || completed.payment_time_fallback)
+-      await alertUcb("UCB capture time missing; using receipt-time fallback", order.id);
+-    try { await reportExternalOrder(order.id); }
+-    catch (reportError) { console.error("settle: UCB report queued for retry", String(reportError)); }
+   }
+   return { ok: true, orderId: order.id, amountRupees: Number(order.amount) };
+ }
+@@ -196,10 +173,6 @@
+   const fullRefund = payment.refund_status === "full"
+     || (Number.isSafeInteger(payment.amount_refunded) && (payment.amount_refunded as number) >= payment.amount);
+ 
+-  const { error: factError } = await supabaseAdmin.from("provider_events")
+-    .update({ blocks_entitlement: fullRefund }).eq("payment_id", params.razorpayPaymentId)
+-    .eq("event_type", "refund.processed");
+-  if (factError) return { ok: false, status: 503, reason: "Refund fact persistence failed" };
+   const { data, error } = await supabaseAdmin.rpc("handle_payment_refund", {
+     p_razorpay_payment_id: params.razorpayPaymentId,
+     p_full_refund: fullRefund,
+@@ -208,36 +181,10 @@
+     console.error("settle: refund handling failed", { code: error.code });
+     return { ok: false, status: 500, reason: "refund handling failed" };
+   }
+-  const { data: order, error: orderError } = await supabaseAdmin.from("orders")
+-    .select("id,amount,tax_pre_amount,external_transaction_token")
+-    .eq("razorpay_payment_id", params.razorpayPaymentId).maybeSingle();
+-  if (orderError) return { ok: false, status: 500, reason: "Refund order lookup failed" };
+-  if (order?.external_transaction_token) {
+-    if (refund.payment_id !== payment.id || refund.status !== "processed" || refund.currency !== "INR"
+-        || !Number.isSafeInteger(refund.amount) || refund.amount <= 0 || refund.amount > payment.amount
+-        || !Number.isSafeInteger(refund.created_at) || refund.created_at <= 0)
+-      return { ok: false, status: 400, reason: "Razorpay refund mismatch" };
+-    const originalPaise = Math.round(Number(order.amount) * 100);
+-    const originalPrePaise = Math.round(Number(order.tax_pre_amount) * 100);
+-    const preTaxPaise = Math.round(refund.amount * originalPrePaise / originalPaise);
+-    if (!Number.isSafeInteger(preTaxPaise) || preTaxPaise <= 0 ||
+-        !Number.isSafeInteger(originalPaise) || originalPaise <= 0) {
+-      return { ok: false, status: 500, reason: "Refund tax snapshot unavailable" };
+-    }
+-    const { error: queueError } = await supabaseAdmin.from("ucb_external_refunds").upsert({
+-      refund_id: refund.id, order_id: order.id, amount_paise: refund.amount,
+-      pre_tax_paise: preTaxPaise, refund_time: new Date(refund.created_at * 1000).toISOString(),
+-      // A payment may already have several processed partial refunds when an
+-      // older webhook arrives. Mark only this event's own amount as full;
+-      // reportExternalRefundEvent adds the earlier reported amounts itself.
+-      is_full: refund.amount >= originalPaise,
+-    }, { onConflict: "refund_id", ignoreDuplicates: true });
+-    if (queueError) return { ok: false, status: 500, reason: "Cannot queue Google refund report" };
+-    try { await reportExternalRefundEvent(refund.id); }
+-    catch (reportError) { console.error("settle: UCB refund report queued for retry", String(reportError)); }
+-  }
+   const outcome = String((data as { status?: string } | null)?.status ?? "unknown");
+-  if (params.eventId && outcome !== "unknown_payment") {
++  if (["unknown", "unknown_payment"].includes(outcome))
++    return { ok: false, status: 503, reason: "refund settlement pending" };
++  if (params.eventId) {
+     const { error: inboxError } = await supabaseAdmin.from("provider_events")
+       .update({ status: "applied" }).eq("event_id", params.eventId);
+     if (inboxError) return { ok: false, status: 500, reason: "refund inbox update failed" };
+@@ -267,12 +214,6 @@
+     return { ok: false, status: 400, reason: "dispute has no payment" };
+   }
+   const outcome = disputeOutcome(dispute.status);
+-  if (outcome) {
+-    const { error: factError } = await supabaseAdmin.from("provider_events")
+-      .update({ blocks_entitlement: outcome !== "won" }).eq("payment_id", dispute.payment_id)
+-      .eq("provider_object_id", params.disputeId);
+-    if (factError) return { ok: false, status: 503, reason: "Dispute fact persistence failed" };
+-  }
+   if (!outcome) {
+     if (params.eventId) {
+       const { error: inboxError } = await supabaseAdmin.from("provider_events")
+@@ -290,29 +231,10 @@
+     console.error("settle: dispute handling failed", { code: error.code });
+     return { ok: false, status: 500, reason: "dispute handling failed" };
+   }
+-  if (outcome === "lost") {
+-    const { data: order, error: orderError } = await supabaseAdmin.from("orders")
+-      .select("id,amount,tax_pre_amount,external_transaction_token")
+-      .eq("razorpay_payment_id", dispute.payment_id).maybeSingle();
+-    if (orderError) return { ok: false, status: 500, reason: "Dispute order lookup failed" };
+-    if (order?.external_transaction_token) {
+-      const amountPaise = Math.round(Number(order.amount) * 100);
+-      const preTaxPaise = Math.round(Number(order.tax_pre_amount) * 100);
+-      if (!Number.isSafeInteger(amountPaise) || amountPaise <= 0 ||
+-          !Number.isSafeInteger(preTaxPaise) || preTaxPaise <= 0)
+-        return { ok: false, status: 500, reason: "Dispute tax snapshot unavailable" };
+-      const refundId = `dispute_${dispute.id}`;
+-      const { error: queueError } = await supabaseAdmin.from("ucb_external_refunds").upsert({
+-        refund_id: refundId, order_id: order.id, amount_paise: amountPaise,
+-        pre_tax_paise: preTaxPaise, refund_time: new Date().toISOString(), is_full: true,
+-      }, { onConflict: "refund_id", ignoreDuplicates: true });
+-      if (queueError) return { ok: false, status: 500, reason: "Cannot queue dispute report" };
+-      try { await reportExternalRefundEvent(refundId); }
+-      catch (reportError) { console.error("settle: UCB dispute report queued for retry", String(reportError)); }
+-    }
+-  }
+   const applied = String((data as { status?: string } | null)?.status ?? "unknown");
+-  if (params.eventId && applied !== "unknown_payment") {
++  if (["unknown", "unknown_payment"].includes(applied))
++    return { ok: false, status: 503, reason: "dispute settlement pending" };
++  if (params.eventId) {
+     const { error: inboxError } = await supabaseAdmin.from("provider_events")
+       .update({ status: "applied" }).eq("event_id", params.eventId);
+     if (inboxError) return { ok: false, status: 500, reason: "dispute inbox update failed" };

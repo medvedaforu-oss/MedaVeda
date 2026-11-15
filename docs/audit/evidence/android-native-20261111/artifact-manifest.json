@@ -1,0 +1,577 @@
+{
+  "files": [
+    {
+      "path": "docs/audit/MEDVEDA_ANDROID_NATIVE_RELEASE_READINESS_2026-11-11.md",
+      "bytes": 34324,
+      "sha256": "11eb755de525de15f432185ae659447f791031c8a0be536b54f8f3a0cc11936a"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/autolinking.json",
+      "bytes": 11826,
+      "sha256": "b09340cf10c746498147318de75e8a6b6c81046b95eb27e2b9894e1d3c931034"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/autolinking.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/billing-inputs.json",
+      "bytes": 2954,
+      "sha256": "db4fe766b6f60667c860860df05065a9a36c6089e0212d41b14c38cd95b96088"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-00.log",
+      "bytes": 104,
+      "sha256": "72a09cced34bd9148b0ca38b04f25ea856651ae8303c9dfa35b6b380b93a6b2c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-01.log",
+      "bytes": 168,
+      "sha256": "978f129ee7b47122a679aa98e6fff8c6c46dc5eae1132c5c8c94babbbd58a413"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-02.log",
+      "bytes": 135,
+      "sha256": "233a14b2fdcfea8cb037856d1fa90c120d87634b91c30d580775e5451d3e3ca9"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-03.log",
+      "bytes": 95,
+      "sha256": "651f7be97a55415b03afe094fa50c95d02efa0f9de6e6c61c014865a582bbca4"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-04.log",
+      "bytes": 411,
+      "sha256": "d9fc0b9991f0db0491b2e606ecfdd78c708281afa7ce8123b46b6586503f9bc5"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-05.log",
+      "bytes": 775,
+      "sha256": "f6bcd862fa017ad9c7041a53dc4ae13ce72344448c69983e64c051f9021adda1"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-06.log",
+      "bytes": 1233,
+      "sha256": "e1c9cbca302a36989201fe7e17896dddc655021406fb88373d0e08d296b03790"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-07.log",
+      "bytes": 520,
+      "sha256": "7b01d69a750a769f7c0fa75cfacffed95c34c5bbd975b1d8dde94b8c28a5e5ab"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-08.log",
+      "bytes": 812,
+      "sha256": "1b955e6f8e5229b56247702cc2a7719d989c0485ba2d3c52806331def4be21b9"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-09.log",
+      "bytes": 76,
+      "sha256": "869f1061bfa8273f13c712371188acb1a694cd44e1cc36cfa4b34d06b41109af"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-10.log",
+      "bytes": 95,
+      "sha256": "48234f1df7755dad2edf841f669b6c2f829a2fae3ebdf37d1fe77293706b6559"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-11.log",
+      "bytes": 98,
+      "sha256": "ec71973b6e3cf1d855615ad1a2c47b8829243326be66639d1fd98616db5b2e9d"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-12.log",
+      "bytes": 106,
+      "sha256": "699e4186fc3c36f94da65c0038dc806bce4e78b882afa728d7e11dc35dd2581d"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-13.log",
+      "bytes": 156,
+      "sha256": "8218ac72fae36e8658212c1741bb8e0d7a76b21424ee9ba8eecb6367fbb594c7"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-14.log",
+      "bytes": 83,
+      "sha256": "5622f043f9362e90332a2fa2d4d278a03351fb7af62092d5b1c2fe3196c2ab25"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-15.log",
+      "bytes": 599,
+      "sha256": "0e433f48a62330cc43b38343c254c51c314614a5897804bc858a4ccb6df11e97"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-16.log",
+      "bytes": 231,
+      "sha256": "aaa482d77e1a12c1229238b559eb4b09eae33584263829ef37883241213f7045"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-17.log",
+      "bytes": 1480,
+      "sha256": "db88e79c42d87338fe8e82bb6bfec1b108ad0a0e9023a4ee92fc094e1237b440"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-18.log",
+      "bytes": 2296,
+      "sha256": "f2950004b2e43583a16158c88c4b1b08eedc330f562987ead4eb7f5f8a768b4d"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-19.log",
+      "bytes": 2376,
+      "sha256": "fc3d0db1c10f30e89b0fb98aab4d42bc7196d2075cdf9127fddd0f95c783df39"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-20.log",
+      "bytes": 1477,
+      "sha256": "4567f0a4d29dcbc7c5aeefa3d0c8951c143939f6698b6c1a07e0768d8296ef8c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-21.log",
+      "bytes": 1711,
+      "sha256": "fbe9332944e1a82f37ab5c3fb154e44e3413cee62a29dc430543354b8fd51666"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-22.log",
+      "bytes": 348,
+      "sha256": "48cbe9121b3d7487af66c3944da20f504c9af5cadd73eda14c459e967eb88f0e"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-23.log",
+      "bytes": 395,
+      "sha256": "7af95a82a38b41f1f9880bc546eb20580703eb466bda0c2a421d4ae2010d8638"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-24.log",
+      "bytes": 848,
+      "sha256": "657043f38a604916c45c5d9807d86a696ca8fb63fcf6e2cf4531ed070d9edd50"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-25.log",
+      "bytes": 144,
+      "sha256": "f6f38167beb46c8183e7d078de65c43670f0b0e2bbf90fd8e05d3968f81247cd"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-26.log",
+      "bytes": 85,
+      "sha256": "3edfd2cfddf10d25dcb6eb0acf542a067d030aa96e3d8501765407204b2b10c6"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-27.log",
+      "bytes": 121,
+      "sha256": "e96d3f13cc4efe4d85eb530fe1030e81068ea901fe5b405f0b1fe11dde115198"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-28.log",
+      "bytes": 100,
+      "sha256": "37741b5fbae4d50de80d76cf61a847d044fac400f6d46aae6ad8e73c4870320d"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-29.log",
+      "bytes": 69,
+      "sha256": "21ea3bfc30ab85c8335d5d74e3ea0ae917a61a1d8b0b78ecb5e8d683c5f43f29"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-30.log",
+      "bytes": 109,
+      "sha256": "796fe541e872746155e784c0d47735b16d86e0f2bff33f9c90d496e5aacbff9c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-31.log",
+      "bytes": 909,
+      "sha256": "a436daaeb6aa25a958884a439ab14319570ff90f3604574c2d48f32ddf327a38"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-32.log",
+      "bytes": 202,
+      "sha256": "d94d07d926f72c881a4b9ccfdc921667cc506f2c697c6dc4c6305dbbbea2eaa0"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-33.log",
+      "bytes": 114,
+      "sha256": "6e04f010fd62e9c8a3e78fcccada6514dbffa7a48e136dd0597f422b71cb4620"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-34.log",
+      "bytes": 58,
+      "sha256": "91281911bab5698c80abd4b56823a0459ca2ab449dff21bbc37740ac849e319c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-35.log",
+      "bytes": 612,
+      "sha256": "520a6b48a54a6c3cc52722f1956b3b9b6d6269a4dc0e6e8253a516d83760e224"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-36.log",
+      "bytes": 89,
+      "sha256": "19781cc03e55f712864f0788500c93f4b34c3aa41add94b8a3c9eb9cf32e8138"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-37.log",
+      "bytes": 212,
+      "sha256": "94b5678c98519f5075daa0426bc7084da9f9f210e85ffabceb5b125ead162d48"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-38.log",
+      "bytes": 440,
+      "sha256": "25daee6f5f618cdaa7d64f1d84f0d5e2124132b4d5a86d56a2e18f705ee071b3"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-39.log",
+      "bytes": 102,
+      "sha256": "68b35efbbc967d50b490682537d89342a5ca6d8ffac3cf9af372be798c278acb"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-40.log",
+      "bytes": 170,
+      "sha256": "dae5ee551afe1a72e6fc1cbdcc7b8d8173c775fd3a11bd3f2d40be2b211e3918"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-41.log",
+      "bytes": 97,
+      "sha256": "35591af729c287b3c6478b5fe9c1345d392d7e1525c6c4b90547bb2e2494926b"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-42.log",
+      "bytes": 248,
+      "sha256": "4f6ab261bd65397b0c8342448f1bbf2c19c59746372251b3338ed86092548b14"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-43.log",
+      "bytes": 99,
+      "sha256": "739876346747a6f373f767e41ec9d80f17eee3699a225053a7737fb3bf7debbb"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-44.log",
+      "bytes": 125,
+      "sha256": "8d057e6105856a6bbcfcb1f62e123f093fd0314200c368319ccefb332d600b72"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-45.log",
+      "bytes": 98,
+      "sha256": "e8d3ff1bd8ab03a1a4e0dd191508794816d803299b8e4881f543a01384235af1"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-46.log",
+      "bytes": 80,
+      "sha256": "5865e5431a9ce0404154b7f7368ec1e2976ffe32e04dc847d226a0f079a51f9a"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-47.log",
+      "bytes": 391,
+      "sha256": "e0a0d37b3c4e45b6ba7606b3852a2a88652558b9d9ae18a455caad49ef6b6b49"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-48.log",
+      "bytes": 223,
+      "sha256": "96d050f4fc7ed44ed1936d6ea6b49a61908f87d4f88fdfeaa8ebd4b553f04818"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-49.log",
+      "bytes": 142,
+      "sha256": "d44768d14b5e687a71ccc372ff672af4558f15b42b815850ddc2338fac798f72"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-50.log",
+      "bytes": 104,
+      "sha256": "0436b34c470da7edd1df62f9727795a226e8ad8657ea39940e30dd2dec654570"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-51.log",
+      "bytes": 79,
+      "sha256": "e644569e44d1ed55ccc3ec763d2725abf66df43729e4309b7c9bb812aa6968e8"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-52.log",
+      "bytes": 299,
+      "sha256": "86b42cf87428b48447be028e8b834cc70a12bfeec31ff5109b5d1c3936480177"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-53.log",
+      "bytes": 202,
+      "sha256": "2f8bd3cf2590a85e70f492e900e02eef75892fb610c05e6e61940e7d18570b4c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-54.log",
+      "bytes": 154,
+      "sha256": "1a7976b50dde085448b24d2c967658df8ce3949f26034bc355ac09de10ca1668"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-55.log",
+      "bytes": 90,
+      "sha256": "9480ce7f79855012604327bdbee76466749734c724bc254c183e65d7e2e0a9cc"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-56.log",
+      "bytes": 241,
+      "sha256": "c79c912d34c2ce49d8de69bd7aac184ea12a2435c102544068cc7c9b17b2c797"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-57.log",
+      "bytes": 83,
+      "sha256": "5375b9ecd113c3507ec236ce9157e8dccc09a0d38a78ac8f7a29a6ff16f69152"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-58.log",
+      "bytes": 130,
+      "sha256": "bfe3960dda3f0b93f20c0aef4ffea2816e13c4238ff310895317125a866d2545"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-59.log",
+      "bytes": 128,
+      "sha256": "ff1ef2285e2fa82f5fa4857a22e7348eeb0de99b54917eb2fe5877f71b61457b"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-60.log",
+      "bytes": 136,
+      "sha256": "7e8ef499ea9a34633c201b67cb3047ac7ad2a077ba06b40f89af4e78dc15ab42"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-61.log",
+      "bytes": 121,
+      "sha256": "9f4a9e1685d1bfd8d228e5b1049199910e518175e77ad861fe882b0e7c5bfe92"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-62.log",
+      "bytes": 6088,
+      "sha256": "e652f81634adc5d18e1e7cd221faf0e10add5533255c4513cd471286c414ec58"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-63.log",
+      "bytes": 140,
+      "sha256": "724cb770704ddae3c93fd3780a6461f0308d2bdbc8702df861b19ac8fdfc7266"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-64.log",
+      "bytes": 902,
+      "sha256": "a63478896fce83af4c72bc2b8a91d83c8c3a157067446b84069128a369f134e5"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-65.log",
+      "bytes": 270,
+      "sha256": "d734a5d8688cf01399bec0f540cb954fe9b5a2c700b279d6b3a558e980b6c742"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-66.log",
+      "bytes": 199,
+      "sha256": "1cc8eeee5f51a20b317cab1378a78a898cd044946a5011795cb8173877ae62a9"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-67.log",
+      "bytes": 1130,
+      "sha256": "8ef275287669b52707d4e189ee97bfa9f2a2f006c15d24245402724241839cf9"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-68.log",
+      "bytes": 115,
+      "sha256": "81a5e8898bfdf4ade92d0eb172a7d432d72c9ab29733080088fab996a7e0049b"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-69.log",
+      "bytes": 137,
+      "sha256": "47fd37bc3f36acdbf8bdd9abc9c69a4806289863121ac55a8ce536cee4810a32"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-70.log",
+      "bytes": 475,
+      "sha256": "0111a37027439eb02cce927df4b828a7103430367da8c509b209e4e545eb6607"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-71.log",
+      "bytes": 1286,
+      "sha256": "16c4afb4ff659e42c541f8377e9c8af96bea81b4c2cb84f65e707dc3fb397942"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-72.log",
+      "bytes": 622,
+      "sha256": "1bd663334d2170b49a3a78326e54511924a92d3862a750c6546b218a87a27eaa"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-73.log",
+      "bytes": 908,
+      "sha256": "47ef404a80740dbe6493f1b22d113a8c1f1c9852c67a27ac9fdc18d399a7ea09"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-74.log",
+      "bytes": 135,
+      "sha256": "fa1de609067a3a62800880902b4bd700828cd86f7f19d2b6e89f2341c660f364"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-75.log",
+      "bytes": 1163,
+      "sha256": "a115af4e6f1a7ce4e347055b0ecc2047c65f256a609774c9ed81f51106499b7f"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-76.log",
+      "bytes": 217,
+      "sha256": "fb2112fdc70073aa8f62ed4a90133cebd5f761382d65f810d6c5b9bb78631649"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-77.log",
+      "bytes": 381,
+      "sha256": "9e1eebfe789db83661959cec0c5f818270e8044e086d7a22e22b2e66ae5d9597"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-78.log",
+      "bytes": 113,
+      "sha256": "e0baf830b93247143998b3394d3fe3c9f89bcfa609f444454ca46f4ee66cf2fc"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-79.log",
+      "bytes": 1380,
+      "sha256": "5d60c9def24952488d8d6150baf7b80c728f3d68a153384a5abf71c5fac39d84"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-80.log",
+      "bytes": 311,
+      "sha256": "b9f3a159d864b7887534d7193efb06d042ff8c1cf5cd1c71af5c77386634591b"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-81.log",
+      "bytes": 752,
+      "sha256": "3a7f73d0970600ecda327916fead903f673c43c79460f47ab562870e05027772"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-82.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-83.log",
+      "bytes": 1539,
+      "sha256": "a6092bb91a4e047951dc9dd009b30e4b7d8d17b31d02fa955bb7e7757bae0a42"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-84.log",
+      "bytes": 162,
+      "sha256": "ca4ba770a663f3a175255b2554c8453285b91be3eb1e5a2e9aacf5675a4f5dab"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-85.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/check-results.json",
+      "bytes": 14315,
+      "sha256": "a93c9bc058c997154002f13ea0860dd25b794a5ee394a5b1b671db8373ae8993"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/dependency-inputs.json",
+      "bytes": 1745,
+      "sha256": "c392ce947239d03cb0171f4daa101886deb401b57a228093abbd8bc77cee07af"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/eas-access.json",
+      "bytes": 460,
+      "sha256": "e9eff2ccb522734f2fcd2391a6bbc40502d1c5f6841ec84ab254d6045193ca66"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/eas-production-config.json",
+      "bytes": 1732,
+      "sha256": "30dde0a4907f4ce26d2d2a8b9de4a328aad7fdd57dd2235e44608206b56423f0"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/eas-project-info.log",
+      "bytes": 239,
+      "sha256": "c08ae07b34a2cdcb9eda9a38abc40ab8c854cbe39b192b9baf9bf6e13dd320d6"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/eas-remote-metadata.json",
+      "bytes": 1050,
+      "sha256": "058caf32437c762b37502d9285e6e0b63aa98b1a30d4ac03d9848f98051ed159"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/eas-whoami.log",
+      "bytes": 239,
+      "sha256": "c08ae07b34a2cdcb9eda9a38abc40ab8c854cbe39b192b9baf9bf6e13dd320d6"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/environment.log",
+      "bytes": 680,
+      "sha256": "c2603ed70d239cd69651f0afbc333a7b69aa3fc65ee5e2f0b3958b4b6e907c5c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/expo-introspect.json",
+      "bytes": 39553,
+      "sha256": "48ea4574ad468b906c4b96266d2c92085077109650f758c19600589d9703ad4e"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/expo-introspect.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/expo-public.json",
+      "bytes": 2720,
+      "sha256": "edf7fa1d7747ea78acaf8be12b4c34ec890b12256c778a069da9dedf8755a85f"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/expo-public.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/final-diff-check.log",
+      "bytes": 12,
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/final-git-status.txt",
+      "bytes": 11864,
+      "sha256": "98781949744fe224e965e211a781f0bf3bc1d42a46d415a37dcc635aa75b44ea"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/gradle-version.log",
+      "bytes": 807,
+      "sha256": "09fa4188da2a78ceec22bee451b7e9ae201a9be6b855975a2c1d97bf6591eb07"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/initial-git-status.txt",
+      "bytes": 11795,
+      "sha256": "9c2b2991e182aaa7903cba72438318b491514edcbae2bcd8d070b8523ac7accc"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/initial-sha256.json",
+      "bytes": 198018,
+      "sha256": "9dc2d48783e0397ce455fa963041c7414df994c27156e769133f591f4d5e0f76"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/nonplay-fixture-diagnostic.log",
+      "bytes": 834,
+      "sha256": "f1262525a0c3616fb7b412db3c5c9c16072e18b103c267a94936cbb9ea00b20c"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/preservation.json",
+      "bytes": 211,
+      "sha256": "0cea1d02695653ecb16ea21e4c03a14b8e5e54a784227dd00a90f5546796571b"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/prior-report-inventory.json",
+      "bytes": 19416,
+      "sha256": "7ed6fb2cb35f9c35d6dd4f00bba1999fb86a1069f58c1b55739d165208a32cba"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/read-eas-metadata.py",
+      "bytes": 2134,
+      "sha256": "d41852003278ec36ae0adf83bc938cd6e1c885c22af8096614ce04cb55cef741"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/rn-autolinking.json",
+      "bytes": 16154,
+      "sha256": "d7c788d26f57db4a60f4a9e0ea80008b9e345244324234171c4ce5363b439b9e"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/rn-autolinking.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/android-native-20261111/run-checks.py",
+      "bytes": 2484,
+      "sha256": "c0eec7bc3c0663ce4fee19250e253c31dd88e0e3955f1306496448fffffbfff4"
+    }
+  ],
+  "self_hash": "excluded",
+  "preexisting_files_modified": [],
+  "preexisting_files_deleted": []
+}

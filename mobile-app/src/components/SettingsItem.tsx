@@ -31,6 +31,8 @@ export default function SettingsItem({
       style={styles.container}
       activeOpacity={0.8}
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={title}
     >
       <View style={styles.left}>
         <Text style={styles.icon}>{icon}</Text>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
   },
 
   left: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -72,6 +75,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    flexShrink: 1,
     fontSize: FONT.body,
     color: COLORS.text,
     fontWeight: "600",

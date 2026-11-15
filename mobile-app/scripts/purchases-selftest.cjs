@@ -27,7 +27,7 @@ function load(name, mocks) {
   return module.exports;
 }
 const repository = load('repositories/purchasesRepository.ts', {
-  '../config/supabase': { supabase }, '../utils/caseConvert': { toCamelCase: row => ({
+  '../config/supabase': { supabase }, '../config/paymentProvider': { isNonplayTestBuild: false }, '../utils/caseConvert': { toCamelCase: row => ({
     ...row, chapterId: row.chapter_id,
   }) },
 });

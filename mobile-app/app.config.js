@@ -19,22 +19,34 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = ({ config }) => {
-  require("./scripts/check-staging-build.cjs").checkStagingBuild(process.env);
-  // Legacy build environments may still specify Play; they now disable purchases.
   const configuredProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "disabled";
   if (!["play", "razorpay", "disabled"].includes(configuredProvider)) {
-    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be play (legacy/disabled), razorpay or disabled.");
+    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be play, razorpay or disabled.");
   }
-  const paymentProvider = configuredProvider === "play" ? "disabled" : configuredProvider;
+  const paymentProvider = configuredProvider;
+  // MV007: paid Play distribution remains closed pending owner-specific policy
+  // verification. Environment overrides must not activate either provider.
+  if (["production", "internal-testing", "shrink-test"].includes(process.env.EAS_BUILD_PROFILE) &&
+      paymentProvider !== "disabled") {
+    throw new Error("Production Play profiles require disabled payments pending policy verification. Direct Razorpay checkout requires the isolated non-Play test profile.");
+  }
+  require("./scripts/check-staging-build.cjs").checkStagingBuild(process.env);
   const razorpayTest = process.env.MEDVEDA_DISTRIBUTION === "non-play-internal-test";
-  if (paymentProvider !== "disabled" &&
+  const razorpayLiveTesting = process.env.MEDVEDA_DISTRIBUTION === "non-play-live-testing";
+  const playValidation = process.env.MEDVEDA_DISTRIBUTION === "play-alpha-validation";
+  if (paymentProvider === "razorpay" &&
       (["production", "internal-testing"].includes(process.env.EAS_BUILD_PROFILE) ||
-       (process.env.EAS_BUILD_PLATFORM === "android" && !razorpayTest))) {
-    throw new Error("Android release builds must keep new purchases disabled.");
+       (process.env.EAS_BUILD_PLATFORM === "android" && !razorpayTest && !razorpayLiveTesting))) {
+    throw new Error("Direct Razorpay checkout requires the isolated non-Play test profile.");
   }
   const next = { ...config };
   next.extra = { ...next.extra, medvedaPaymentProvider: paymentProvider,
-    medvedaDistribution: razorpayTest ? "non-play-internal-test" : "standard",
+    medvedaIndiaUcbEnrolled: process.env.MEDVEDA_INDIA_UCB_ENROLLED === "true",
+    medvedaUcbTestAccepted: process.env.MEDVEDA_UCB_TEST_ACCEPTED === "true",
+    medvedaDistribution: razorpayLiveTesting ? "non-play-live-testing" : razorpayTest ? "non-play-internal-test" : playValidation ? "play-alpha-validation" : "standard",
+    ...(razorpayLiveTesting ? { medvedaBuildProfile: "razorpay-live-testing" } : {}),
+    ...(razorpayTest ? { medvedaNonplayTestEnvironment: process.env.MEDVEDA_NONPLAY_TEST_ENVIRONMENT,
+      medvedaBuildProfile: "razorpay-internal-test" } : {}),
     medvedaBuildTarget: process.env.MEDVEDA_BUILD_TARGET || "production" };
   if (process.env.MEDVEDA_BUILD_TARGET === "staging") {
     next.name = "MedVeda Staging";
@@ -50,37 +62,45 @@ module.exports = ({ config }) => {
   // cannot protect an update published to the wrong channel by itself.
   next.android = {
     ...next.android,
-    ...(process.env.MEDVEDA_BUILD_TARGET === "staging" ? { package: "in.medveda.staging" } : {}),
+    ...(process.env.MEDVEDA_BUILD_TARGET === "staging" && !playValidation ? { package: "in.medveda.staging" } : {}),
     ...(razorpayTest ? { package: "in.medveda.razorpaytest" } : {}),
-    runtimeVersion: razorpayTest ? `${next.version}-razorpay-internal-test` : `${next.version}-${paymentProvider}`,
+    runtimeVersion: razorpayLiveTesting ? `${next.version}-razorpay-live-testing` : razorpayTest ? `${next.version}-razorpay-internal-test` : playValidation ? `${next.version}-play-alpha-validation` : `${next.version}-${paymentProvider}-notes-choice-v1`,
   };
+  if (razorpayLiveTesting) {
+    next.updates = { ...next.updates, requestHeaders: {
+      ...next.updates?.requestHeaders, "expo-channel-name": "razorpay-live-testing",
+    } };
+  }
 
   const local = path.join(__dirname, "google-services.json");
   if (process.env.MEDVEDA_BUILD_TARGET === "staging" && fs.existsSync(local)) {
     throw new Error("Staging build cannot include the local production Google services file.");
   }
-  const googleServicesFile = process.env.GOOGLE_SERVICES_JSON || (fs.existsSync(local) ? "./google-services.json" : undefined);
-  if (googleServicesFile) next.android = { ...next.android, googleServicesFile };
-
-  // Android build hardening. Cleartext (http://) traffic is off for release builds: the app only
-  // talks to https endpoints. R8 code shrinking + resource shrinking is OPT-IN (ANDROID_SHRINK=1,
-  // used only by the "shrink-test" EAS profile): it cannot be exercised without a device, so it is
-  // never on for the production profile until a shrink-test build has been run through
-  // login, notes viewing/download, checkout and a push.
-  const android = { usesCleartextTraffic: false };
-  if (process.env.ANDROID_SHRINK === "1") {
-    android.enableMinifyInReleaseBuilds = true;
-    android.enableShrinkResourcesInReleaseBuilds = true;
-    android.extraProguardRules = [
-      "-keep class com.github.barteksc.pdfviewer.** { *; }",   // react-native-pdf
-      "-keep class com.shockwave.pdfium.** { *; }",
-      "-keep class com.ReactNativeBlobUtil.** { *; }",         // react-native-blob-util
-      "-keep class com.RNFetchBlob.** { *; }",
-      "-keep class io.sentry.** { *; }",
-      "-dontwarn io.sentry.**",
-    ].join("\n");
+  // EAS supplies GOOGLE_SERVICES_JSON as a file path on the builder. Secret file
+  // variables are unavailable to local `eas config`, even for the production profile.
+  // Omit the field when neither input exists so local config evaluation stays safe.
+  // The test file is genuine local input and ignored by git. Cloud builds still
+  // require the matching GOOGLE_SERVICES_JSON EAS file variable; never package
+  // a production client as the isolated test app.
+  const googleServicesFile = process.env.GOOGLE_SERVICES_JSON || (razorpayTest ? "./firebase-test/google-services.json" : fs.existsSync(local) ? "./google-services.json" : undefined);
+  if (googleServicesFile) {
+    require("./scripts/firebase-config.cjs").validateFirebaseConfig(
+      path.resolve(__dirname, googleServicesFile), next.android.package
+    );
+    next.android = { ...next.android, googleServicesFile };
   }
-  next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }], "./plugins/withOptionalSentry.cjs"];
+
+  // Prebuild is the source of the release Gradle configuration (android/ is generated).
+  // R8 optimizes/shrinks/obfuscates DEX; resource shrinking removes unused Android resources.
+  // Dependency consumer rules protect RN modules, JNI and SDK reflection. Do not keep entire SDKs.
+  const android = {
+    usesCleartextTraffic: false,
+    enableMinifyInReleaseBuilds: true,
+    enableShrinkResourcesInReleaseBuilds: true,
+    extraProguardRules: fs.readFileSync(path.join(__dirname, "release-rules.pro"), "utf8"),
+  };
+  next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }], "./plugins/withAndroidRelease.js", "./plugins/withOptionalSentry.cjs"];
+  if (paymentProvider === "play") next.plugins.push("expo-iap");
 
   const cert = path.join(__dirname, "code-signing", "certificate.pem");
   if (fs.existsSync(cert)) {

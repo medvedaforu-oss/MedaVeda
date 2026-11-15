@@ -27,7 +27,8 @@ jobs:
           VITE_SUPABASE_URL: https://example.supabase.co
           VITE_SUPABASE_ANON_KEY: ci-placeholder
       - run: npm test
-      - run: npm audit --omit=dev --audit-level=high
+      - run: node scripts/p1-financial-ui-selftest.cjs
+      - run: npm audit --audit-level=high
 
   mobile-app:
     runs-on: ubuntu-latest
@@ -38,16 +39,27 @@ jobs:
         with: { node-version: 22, cache: npm, cache-dependency-path: mobile-app/package-lock.json }
       - run: npm ci
       - run: npx tsc --noEmit
+      - run: node scripts/p2-quality-selftest.cjs && node scripts/p2-performance-selftest.cjs && node mobile-app/scripts/p2-registration-selftest.cjs && node scripts/p2-admin-labels-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/closed-testing-selftest.cjs
+        working-directory: .
       - run: node --experimental-strip-types scripts/checkout-html-selftest.mjs
       - run: node --experimental-strip-types scripts/password-policy-selftest.mjs
       - run: node scripts/verify-signature-selftest.js
       - run: node scripts/same-project-build-selftest.cjs
       - run: node scripts/staging-build-selftest.cjs
+      - run: node scripts/firebase-config-selftest.cjs && node scripts/push-lifecycle-selftest.cjs && node scripts/notification-routing-selftest.cjs && node scripts/notification-account-hook-selftest.cjs
+      - run: node scripts/play-catalog-contract-selftest.cjs
+      - run: python3 scripts/android-bundle-validator-selftest.py
+      - run: node supabase/tests/p1-push-delivery-selftest.cjs && node supabase/tests/p0-notification-selftest.cjs
+        working-directory: .
       - run: node scripts/payment-provider-selftest.cjs
       - run: node scripts/payment-routing-selftest.cjs
       - run: node mobile-app/scripts/release-payments-disabled-selftest.cjs
         working-directory: .
       - run: node mobile-app/scripts/razorpay-internal-test-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/nonplay-test-isolation-selftest.cjs
         working-directory: .
       - run: node mobile-app/scripts/purchases-unavailable-ui-selftest.cjs
         working-directory: .
@@ -55,11 +67,20 @@ jobs:
         working-directory: .
       - run: node mobile-app/scripts/payment-request-selftest.cjs
         working-directory: .
+      - run: node mobile-app/scripts/startup-availability-selftest.cjs && node mobile-app/scripts/readiness-selftest.cjs
+        working-directory: .
+      - run: node supabase/tests/razorpay-routing-selftest.cjs && node supabase/tests/razorpay-security-selftest.cjs
+        working-directory: .
+      - run: node mobile-app/scripts/checkout-security-selftest.cjs
+        working-directory: .
       - run: node mobile-app/scripts/payment-verdict-selftest.cjs
         working-directory: .
       - run: node mobile-app/scripts/payment-summary-selftest.cjs
         working-directory: .
+      - run: node mobile-app/scripts/notes-billing-choice-selftest.cjs && node supabase/tests/notes-choice-order-selftest.cjs
+        working-directory: .
       - run: node scripts/navigation-lazy-selftest.cjs
+      - run: node scripts/offline-license-storage-selftest.cjs
       - run: node scripts/offline-download-selftest.cjs
       - run: node scripts/offline-owner-selftest.cjs
       - run: node scripts/quiz-hooks-selftest.cjs

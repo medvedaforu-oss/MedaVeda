@@ -1,0 +1,202 @@
+{
+  "production_ref": "xbvenkfmesugrbjuufyw",
+  "scope": "local source only; localhost PostgreSQL with mocked provider HTTP",
+  "backend_calls": 0,
+  "deployments": 0,
+  "payment_enablement": false,
+  "apk_builds": 0,
+  "physical_acceptance": "NOT VERIFIED",
+  "baseline_isolation_cases": 9,
+  "full_database_runner": "PASS",
+  "mobile_suites": [
+    {
+      "test": "same-project-build",
+      "exit": 0
+    },
+    {
+      "test": "payment-provider",
+      "exit": 0
+    },
+    {
+      "test": "payment-routing",
+      "exit": 0
+    },
+    {
+      "test": "release-payments-disabled",
+      "exit": 0
+    },
+    {
+      "test": "razorpay-internal-test",
+      "exit": 0
+    },
+    {
+      "test": "nonplay-test-isolation",
+      "exit": 0
+    },
+    {
+      "test": "payment-request",
+      "exit": 0
+    },
+    {
+      "test": "payment-poll",
+      "exit": 0
+    },
+    {
+      "test": "payment-verdict",
+      "exit": 0
+    },
+    {
+      "test": "payment-summary",
+      "exit": 0
+    },
+    {
+      "test": "checkout-security",
+      "exit": 0
+    },
+    {
+      "test": "notes-billing-choice",
+      "exit": 0
+    },
+    {
+      "test": "notes-entitlement",
+      "exit": 0
+    },
+    {
+      "test": "notes-open",
+      "exit": 0
+    },
+    {
+      "test": "purchases",
+      "exit": 0
+    },
+    {
+      "test": "navigation-lazy",
+      "exit": 0
+    },
+    {
+      "test": "offline-download",
+      "exit": 0
+    },
+    {
+      "test": "offline-owner",
+      "exit": 0
+    }
+  ],
+  "edge_entrypoints": [
+    {
+      "entrypoint": "supabase/functions/attach-external-token/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/create-order/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/create-order-nonplay-test/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/create-order-play-choice/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/create-play-order/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/delete-account/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/diagnose-play-matrix/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/diagnose-play-pricing/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/diagnose-play-service-account/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/get-note-url/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/get-note-url-nonplay-test/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/get-video-url/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/login-with-mobile/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/nonplay-test-catalog/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/play-payment-worker/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/razorpay-webhook/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/razorpay-webhook-nonplay-test/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/report-external-transaction/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/request-password-reset-by-mobile/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/send-push-notification/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/sync-play-catalog/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/upload-note-pdf/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/verify-payment/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/verify-payment-nonplay-test/index.ts",
+      "exit": 0
+    },
+    {
+      "entrypoint": "supabase/functions/verify-play-purchase/index.ts",
+      "exit": 0
+    }
+  ],
+  "mobile_types": "PASS",
+  "mobile_lint": "PASS",
+  "android_js_export": "PASS",
+  "secret_scan": "PASS",
+  "whitespace": "PASS",
+  "repository_lint": {
+    "result": "FAIL",
+    "unchanged_admin_files": [
+      "admin-panel/src/components/RouteErrorBoundary.tsx:2",
+      "admin-panel/src/hooks/useDashboard.ts:5"
+    ],
+    "reason": "duplicate imports; outside task scope"
+  },
+  "future_apk_profile": "razorpay-internal-test",
+  "hosted_readiness": "Not deployed; default OFF"
+}

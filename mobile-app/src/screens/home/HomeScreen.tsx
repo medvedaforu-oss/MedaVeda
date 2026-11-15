@@ -1,3 +1,5 @@
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
+import usePurchaseResource from "../../hooks/usePurchaseResource";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
@@ -16,7 +18,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { fetchYears, Year } from "../../services/yearsService";
 import { fetchProductsByYear, Product } from "../../services/productsService";
-import { fetchMyPurchases, MyPurchase } from "../../services/purchasesService";
+import { fetchMyPurchases } from "../../services/purchasesService";
 import { fetchNotifications, getUnreadNotificationCount, AppNotification } from "../../services/notificationsService";
 import { fetchLatestChapters, fetchRecommendedChapters, Chapter } from "../../services/chaptersService";
 import { getLastViewedChapter, getRecentChapters, RecentChapterEntry } from "../../utils/recentActivity";
@@ -86,11 +88,10 @@ export default function HomeScreen() {
   >([]);
   const [yearProductsLoading, setYearProductsLoading] = useState(true);
 
-  const { isOwned, refresh: refreshPurchases2 } = usePurchases();
+  const { isOwned, refresh: refreshPurchases2, loading: purchasesOwnershipLoading, error: purchasesOwnershipError } = usePurchases();
   const { buy, purchasing } = usePurchase();
 
-  const [purchases, setPurchases] = useState<MyPurchase[]>([]);
-  const [purchasesLoading, setPurchasesLoading] = useState(true);
+  const { value: purchases, loading: purchasesLoading, error: purchasesError, refresh: loadPurchases } = usePurchaseResource(fetchMyPurchases);
 
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [notificationsLoading, setNotificationsLoading] = useState(true);
@@ -141,14 +142,6 @@ export default function HomeScreen() {
       .catch((err) => logError("Failed to load year notes products:", err))
       .finally(() => setYearProductsLoading(false));
   }, [courseId]);
-
-  const loadPurchases = useCallback(() => {
-    setPurchasesLoading(true);
-    return fetchMyPurchases()
-      .then(setPurchases)
-      .catch((err) => logError("Failed to load purchases:", err))
-      .finally(() => setPurchasesLoading(false));
-  }, []);
 
   const loadNotifications = useCallback(() => {
     setNotificationsLoading(true);
@@ -318,6 +311,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.screen}>
+      <PurchaseOwnershipStatus loading={purchasesOwnershipLoading || purchasesLoading} error={purchasesOwnershipError || purchasesError} refresh={() => { void refreshPurchases2(); void loadPurchases(); }} />
       <HomeHeader unreadNotificationCount={unreadNotificationCount} />
 
       <ScrollView

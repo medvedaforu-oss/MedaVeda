@@ -1,0 +1,3 @@
+11-11 19:15:15.982    27    27 W adb     : network.cpp:149 failed to connect to '127.0.0.1:5037': Operation not permitted
+* cannot start server on remote host
+adb: failed to check server version: cannot connect to daemon at tcp:127.0.0.1:5037: failed to connect to '127.0.0.1:5037': Operation not permitted

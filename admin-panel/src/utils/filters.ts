@@ -19,12 +19,23 @@ export function applyContentFilters(
 // PostgREST caps a single response at the project's configured max rows.
 // Create a fresh builder for each page so filters and ordering stay identical.
 export async function fetchAllPages<T>(makeQuery: () => any, pageSize = 500): Promise<T[]> {
+  if (!Number.isSafeInteger(pageSize) || pageSize < 1) throw new Error("Invalid page size");
   const rows: T[] = [];
+  const seen = new Set<unknown>();
   for (let offset = 0; ; offset += pageSize) {
     const { data, error } = await makeQuery().range(offset, offset + pageSize - 1);
     if (error) throw error;
     const page = (data ?? []) as T[];
-    rows.push(...page);
+    let added = 0;
+    for (const row of page) {
+      const key = (row as any)?.id ?? (row as any)?.product_id;
+      if (key !== undefined && seen.has(key)) continue;
+      if (key !== undefined) seen.add(key);
+      rows.push(row);
+      added++;
+    }
+    if (page.length === pageSize && !added) throw new Error("Incomplete pagination: page did not advance");
+    if (offset / pageSize >= 9999) throw new Error("Incomplete pagination: too many pages");
     if (page.length < pageSize) return rows;
   }
 }

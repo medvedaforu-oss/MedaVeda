@@ -1,0 +1,47 @@
+{
+  "environment": "Expo Web production export / headless Chromium; backend transports mocked",
+  "results": [
+    {
+      "name": "signed-out normal launch",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Login"
+    },
+    {
+      "name": "signed-out delayed maintenance opens login before response",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Login"
+    },
+    {
+      "name": "signed-out failed maintenance remains usable",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Login"
+    },
+    {
+      "name": "signed-out maintenance timeout remains usable",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Login"
+    },
+    {
+      "name": "confirmed maintenance survives error and verified false reopens login",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Login"
+    },
+    {
+      "name": "restored signed-in session routes Home",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/Home"
+    },
+    {
+      "name": "restored session with missing course routes onboarding",
+      "status": "PASS",
+      "backend": "intercepted synthetic fixtures",
+      "url": "http://127.0.0.1:8082/SelectCourseYear"
+    }
+  ]
+}

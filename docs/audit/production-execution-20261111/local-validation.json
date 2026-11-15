@@ -1,0 +1,19 @@
+{
+  "validation": "offline only; no SQL execution, production connection, deployment, worker, backup or restore",
+  "release_checksums": [
+    {
+      "check": "supabase/releases/phase-b-20261111/checksums.sha256",
+      "exit_code": 0,
+      "ok_entries": 16,
+      "errors": []
+    },
+    {
+      "check": "supabase/releases/phase-c-20261111/checksums.sha256",
+      "exit_code": 0,
+      "ok_entries": 50,
+      "errors": []
+    }
+  ],
+  "preexisting_preservation_pass": true,
+  "sql_runtime_rehearsal": "NOT RUN; execution prerequisite"
+}

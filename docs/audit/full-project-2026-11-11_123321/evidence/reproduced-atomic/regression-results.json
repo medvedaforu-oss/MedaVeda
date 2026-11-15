@@ -1,0 +1,391 @@
+[
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv007-billing-boundary-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-00.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-01.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv009-store-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-02.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv010-options-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-03.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv011-accessibility-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-04.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv012-history-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-05.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/accessibility-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-06.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-07.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-entitlement-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-08.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-open-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-09.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/list-states-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-10.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/search-lazy-hook-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-11.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv004-recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-12.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-request-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-13.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-poll-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-14.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-15.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/checkout-security-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-16.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-17.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-18.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-19.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-billing-choice-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-20.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-lifecycle-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-21.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-remote-retry-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-22.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-summary-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-23.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-24.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-25.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/android-release-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-26.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-27.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/login-network-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-28.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/phase-c-gates-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-29.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv006-restoration-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-30.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-31.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/mv005-create-order-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-32.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/recovery-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-33.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/settle-timestamp-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-34.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/razorpay-security-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-35.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/notes-choice-order-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-36.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/billing-recovery-worker-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-37.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-consumption-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-38.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-reconcile-fairness-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-39.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/compensation-worker-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-40.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-verification-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-41.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-order-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-42.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/play-payment-worker-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-43.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/razorpay-routing-selftest.cjs"
+    ],
+    "exit_code": 0,
+    "log": "regression-44.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/google-reporting-selftest.cjs",
+      "--production-only"
+    ],
+    "exit_code": 0,
+    "log": "regression-45.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "mobile-app/tsconfig.json"
+    ],
+    "exit_code": 0,
+    "log": "regression-46.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "regression-47.log"
+  }
+]

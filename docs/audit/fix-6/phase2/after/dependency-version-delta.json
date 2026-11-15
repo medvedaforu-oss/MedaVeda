@@ -1,0 +1,22 @@
+{
+  "node_modules/@isaacs/nonrecursive-glob-match": {
+    "before": null,
+    "after": "1.1.0"
+  },
+  "node_modules/@eslint/config-array/node_modules/minimatch": {
+    "before": null,
+    "after": "11.0.8"
+  },
+  "node_modules/eslint/node_modules/minimatch": {
+    "before": null,
+    "after": "11.0.8"
+  },
+  "node_modules/@eslint/config-array": {
+    "before": "0.23.5",
+    "after": "0.23.6"
+  },
+  "node_modules/eslint": {
+    "before": "10.13.0",
+    "after": "10.15.0"
+  }
+}

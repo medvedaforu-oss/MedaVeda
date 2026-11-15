@@ -1,0 +1,36 @@
+{
+  "packages": {
+    "expo": {
+      "installed": "57.0.32",
+      "locked": "57.0.32"
+    },
+    "expo-modules-core": {
+      "installed": "57.0.25",
+      "locked": "57.0.25"
+    },
+    "react-native": {
+      "installed": "0.86.3",
+      "locked": "0.86.3"
+    },
+    "expo-secure-store": {
+      "installed": "57.0.4",
+      "locked": "57.0.4"
+    },
+    "expo-sqlite": {
+      "installed": "57.0.4",
+      "locked": "57.0.4"
+    },
+    "react-native-pdf": {
+      "installed": "7.0.4",
+      "locked": "7.0.4"
+    },
+    "react-native-blob-util": {
+      "installed": "0.24.10",
+      "locked": "0.24.10"
+    }
+  },
+  "sqliteActivated": false,
+  "newRuntimeDependencies": [],
+  "node": "v22.23.1",
+  "openssl": "3.5.7"
+}

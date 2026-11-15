@@ -1,0 +1,89 @@
+{
+  "create-order": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/createOrderHandler.ts",
+    "supabase/functions/_shared/nonPlayTestCheckout.ts",
+    "supabase/functions/_shared/notesChoiceGate.ts",
+    "supabase/functions/_shared/paymentGate.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbStates.ts",
+    "supabase/functions/create-order/index.ts"
+  ],
+  "verify-payment": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/externalReporting.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/_shared/settle.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbAlert.ts",
+    "supabase/functions/_shared/ucbStates.ts",
+    "supabase/functions/verify-payment/index.ts"
+  ],
+  "razorpay-webhook": [
+    "supabase/functions/_shared/externalReporting.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/notesChoiceAuthorization.ts",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/_shared/settle.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbAlert.ts",
+    "supabase/functions/_shared/ucbStates.ts",
+    "supabase/functions/razorpay-webhook/index.ts"
+  ],
+  "create-order-play-choice": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/notesChoiceGate.ts",
+    "supabase/functions/_shared/notesChoiceOrder.ts",
+    "supabase/functions/_shared/paymentGate.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbStates.ts",
+    "supabase/functions/create-order-play-choice/index.ts"
+  ],
+  "create-play-order": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/create-play-order/index.ts"
+  ],
+  "verify-play-purchase": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/playPurchaseValidation.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/verify-play-purchase/index.ts"
+  ],
+  "attach-external-token": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/rateLimit.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/attach-external-token/index.ts"
+  ],
+  "report-external-transaction": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/externalReporting.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/notesChoiceAuthorization.ts",
+    "supabase/functions/_shared/paymentQueue.ts",
+    "supabase/functions/_shared/razorpay.ts",
+    "supabase/functions/_shared/settle.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbAlert.ts",
+    "supabase/functions/_shared/ucbStates.ts",
+    "supabase/functions/report-external-transaction/index.ts"
+  ],
+  "play-payment-worker": [
+    "supabase/functions/_shared/cors.ts",
+    "supabase/functions/_shared/googlePlay.ts",
+    "supabase/functions/_shared/paymentQueue.ts",
+    "supabase/functions/_shared/supabaseAdmin.ts",
+    "supabase/functions/_shared/ucbAlert.ts",
+    "supabase/functions/play-payment-worker/index.ts"
+  ]
+}

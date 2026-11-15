@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo } from "react";
+import usePurchaseResource from "./usePurchaseResource";
+import { getCourseYear } from "../services/courseState";
 
 import {
   fetchOwnedScopes,
   isChapterUnlocked,
   isProductOwned,
-  OwnedScope,
 } from "../services/purchasesService";
 import { Product } from "../services/productsService";
-import { logError } from "../utils/logger";
 
 /**
  * Tracks everything the current user owns (as purchase "scopes" - chapter,
@@ -15,23 +15,9 @@ import { logError } from "../utils/logger";
  * chapter/product unlocked?" without re-fetching on every check.
  */
 export default function usePurchases() {
-  const [ownedScopes, setOwnedScopes] = useState<OwnedScope[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const refresh = useCallback(async () => {
-    try {
-      const scopes = await fetchOwnedScopes();
-      setOwnedScopes(scopes);
-    } catch (err) {
-      logError("Failed to load purchases:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  const { value, loading, error, refresh } = usePurchaseResource(fetchOwnedScopes);
+  const courseId = getCourseYear().courseId;
+  const ownedScopes = useMemo(() => value.filter(scope => !!courseId && scope.courseId === courseId), [value, courseId]);
 
   function isChapterOwned(chapter: { id: string; subjectId: string; yearId: string }) {
     return isChapterUnlocked(ownedScopes, chapter);
@@ -41,5 +27,5 @@ export default function usePurchases() {
     return isProductOwned(ownedScopes, product);
   }
 
-  return { ownedScopes, isChapterOwned, isOwned, refresh, loading };
+  return { ownedScopes, isChapterOwned, isOwned, refresh, loading, error };
 }

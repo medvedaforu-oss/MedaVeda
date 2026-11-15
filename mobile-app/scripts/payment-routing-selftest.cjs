@@ -41,9 +41,9 @@ function load(file, mocks, extra = {}) {
       'expo-application': { nativeApplicationVersion: '1.2.0' },
       '../config/paymentProvider': { paymentProvider: provider },
       './authState': { getCurrentUser: () => null },
-    }, { fetch: async () => { requests++; return { ok: true, json: async () => ({ internalOrderId: 'fixture' }) }; } });
+    }, { fetch: async () => { requests++; return { ok: true, json: async () => ({ internalOrderId: 'fixture', keyId:'rzp_test_fixture', isLiveMode:false, amountPaise:4900, razorpayOrderId:'order_fixture', productTitle:'Notes', verifyUrl:'https://fixture.invalid/functions/v1/verify-payment' }) }; } });
     if (provider === 'disabled') {
-      await assert.rejects(service.purchaseProduct('notes'), /New purchases are unavailable/);
+      await assert.rejects(service.purchaseProduct('notes'), /Start with the Google Play payment choice/);
       assert.equal(sessions, 0); assert.equal(requests, 0);
     } else {
       assert.equal((await service.purchaseProduct('notes')).internalOrderId, 'fixture');
@@ -55,7 +55,7 @@ function load(file, mocks, extra = {}) {
       'react-native': { StyleSheet: { create: x => x }, View: 'View', Text: 'Text' },
       'react-native-webview': {}, '@react-navigation/native': {},
       '../../theme/colors': { COLORS: {} }, '../../theme/fonts': { FONT: {} }, '../../theme/spacing': { SPACING: {} },
-      './checkoutHtmlTemplate': {}, '../../services/paymentService': {}, '../../services/ordersService': {},
+      '../../services/authState': {}, './checkoutHtmlTemplate': {}, '../../services/paymentService': {}, '../../services/ordersService': {},
       './checkoutNavigation': {}, '../../config/paymentProvider': { paymentProvider: provider },
     }).default();
     if (provider === 'disabled') {

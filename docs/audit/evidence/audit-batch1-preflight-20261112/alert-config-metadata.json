@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-12T14:44:07.061851+00:00",
+  "project": "xbvenkfmesugrbjuufyw",
+  "scope": "names only; no value persisted; no delivery test",
+  "configured_name_present": {
+    "UCB_SENTRY_DSN": false,
+    "UCB_REPORT_CRON_SECRET": false,
+    "PLAY_PAYMENT_CRON_SECRET": true,
+    "PLAY_CATALOG_CRON_SECRET": true
+  }
+}

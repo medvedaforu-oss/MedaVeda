@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { sendPushNotification } from "../services/notificationService";
 
 export default function Notifications() {
@@ -7,37 +7,52 @@ export default function Notifications() {
   const [type, setType] = useState("announcement");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const sending = useRef(false);
+  const request = useRef<{ composition: string; id: string } | null>(null);
+  const [needsReconciliation, setNeedsReconciliation] = useState(false);
+  const uncertain = useRef(false);
 
   const sendNotification = async () => {
+    if (sending.current || uncertain.current) return;
     if (!title.trim() || !message.trim()) {
       alert("Please enter notification title and message.");
       return;
     }
 
+    sending.current = true;
+    let dispatched = false;
     try {
+      const composition = JSON.stringify([title.trim(), message.trim(), type]);
+      if (request.current?.composition !== composition) request.current = { composition, id: crypto.randomUUID() };
       setLoading(true);
       setStatus("");
 
+      dispatched = true;
       const data = await sendPushNotification({
-        title,
-        body: message,
+        title: title.trim(),
+        body: message.trim(),
         type,
+        requestId: request.current.id,
       });
 
       setStatus(
-        `✅ Notification sent successfully to ${data?.pushed ?? 0} device(s).`
+        `Notification saved. Push service accepted ${data?.pushed ?? 0}; rejected ${Math.max(0, (data?.failed ?? 0) - (data?.unknown ?? 0))}; outcome unknown ${data?.unknown ?? 0}. Device delivery is not yet confirmed.`
       );
 
+      request.current = null;
       setTitle("");
       setMessage("");
       setType("announcement");
     } catch (err: any) {
       console.error("Notification Error:", err);
+      uncertain.current = dispatched;
+      setNeedsReconciliation(dispatched);
 
       setStatus(
-        `❌ ${err?.message || "Failed to send notification."}`
+        dispatched ? "Send outcome uncertain. Check the notification feed before retrying to avoid a duplicate broadcast." : "Could not prepare the notification. Please try again."
       );
     } finally {
+      sending.current = false;
       setLoading(false);
     }
   };
@@ -58,7 +73,7 @@ export default function Notifications() {
             Notification Title
           </label>
 
-          <input
+          <input aria-label="Notification title"
             type="text"
             value={title}
             placeholder="Enter notification title"
@@ -72,7 +87,7 @@ export default function Notifications() {
             Notification Message
           </label>
 
-          <textarea
+          <textarea aria-label="Notification message"
             rows={5}
             value={message}
             placeholder="Enter notification message"
@@ -86,7 +101,7 @@ export default function Notifications() {
             Notification Type
           </label>
 
-          <select
+          <select aria-label="Notification type"
             value={type}
             onChange={(e) => setType(e.target.value)}
             className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-green-600"
@@ -102,11 +117,13 @@ export default function Notifications() {
 
         <button
           onClick={sendNotification}
-          disabled={loading}
+          disabled={loading || needsReconciliation}
           className="bg-green-700 hover:bg-green-800 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-semibold transition"
         >
           {loading ? "Sending Notification..." : "Send Notification"}
         </button>
+
+        {needsReconciliation && <button type="button" onClick={() => { uncertain.current = false; setNeedsReconciliation(false); }}>I checked the notification feed. Allow another send; it may create a duplicate.</button>}
 
         {status && (
           <div className="rounded-lg border bg-gray-50 p-4">

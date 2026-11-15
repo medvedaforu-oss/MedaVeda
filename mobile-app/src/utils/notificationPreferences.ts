@@ -41,14 +41,22 @@ export async function getNotificationPreferences(): Promise<Preferences> {
   }
 }
 
-export async function setNotificationPreference(
+let preferenceWrite: Promise<unknown> = Promise.resolve();
+
+export function setNotificationPreference(
   type: NotificationType,
   enabled: boolean
 ): Promise<Preferences> {
-  const current = await getNotificationPreferences();
-  const updated = { ...current, [type]: enabled };
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  return updated;
+  const result = preferenceWrite.catch(() => {}).then(async () => {
+    // Do not turn a failed read into defaults that overwrite saved choices.
+    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    const current = raw ? { ...DEFAULT_PREFERENCES, ...JSON.parse(raw) } : DEFAULT_PREFERENCES;
+    const updated = { ...current, [type]: enabled };
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    return updated;
+  });
+  preferenceWrite = result;
+  return result;
 }
 
 export async function isCategoryEnabled(type?: NotificationType): Promise<boolean> {

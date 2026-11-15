@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -32,35 +32,45 @@ export default function NotificationsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const sequence = useRef(0);
   const load = useCallback(() => {
+    const run = ++sequence.current;
     setLoading(true);
     setError(null);
 
-    fetchNotificationsWithReadState()
+    fetchNotificationsWithReadState({ strict: true })
       .then(async ({ notifications: items }) => {
+        if (run !== sequence.current) return;
         setNotifications(items);
         if (items.some((item) => !item.read)) {
           await markAllNotificationsRead(items.map((item) => item.id));
+          if (run !== sequence.current) return;
           setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
         }
       })
       .catch((err) => {
+        if (run !== sequence.current) return;
         logError("Failed to load notifications:", err);
         setError("Could not load notifications. Please try again.");
       })
-      .finally(() => setLoading(false));
+      .finally(() => { if (run === sequence.current) setLoading(false); });
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       load();
+      return () => { sequence.current++; };
     }, [load])
   );
 
   async function handleArchive(id: string) {
-    // Optimistic - archive locally instantly, persist in the background.
-    setNotifications((prev) => prev.filter((item) => item.id !== id));
-    await archiveNotification(id);
+    const run = sequence.current;
+    try {
+      await archiveNotification(id);
+      if (run === sequence.current) setNotifications((prev) => prev.filter((item) => item.id !== id));
+    } catch {
+      if (run === sequence.current) setError("Could not archive this notification. Please try again.");
+    }
   }
 
   return (
@@ -72,6 +82,7 @@ export default function NotificationsScreen() {
         </View>
         <TouchableOpacity
           style={styles.settingsButton}
+          accessibilityRole="button" accessibilityLabel="Notification preferences"
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           onPress={() => navigation.navigate("NotificationPreferences")}
         >
@@ -131,8 +142,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   settingsButton: {
-    width: 40,
-    height: 40,
+    minWidth: 48,
+    minHeight: 48,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",

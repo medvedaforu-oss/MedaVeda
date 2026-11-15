@@ -44,6 +44,7 @@ function setup() {
       getUserFromAuthHeader: async () => state.user ? { id: state.user } : null,
       supabaseAdmin: {
         rpc: async (name, args) => {
+          if (name === 'play_entitlement_committed') return {data:state.committed !== false,error:null};
           assert.equal(name, 'settle_play_purchase'); state.settled++;
           assert.equal(args.p_user_id, 'buyer'); assert.equal(args.p_play_sku, 'sku');
           return { data: { ok: true, amount: 49, duplicate: state.duplicate }, error: state.settlementError ? { code: 'fixture' } : null };
@@ -76,6 +77,9 @@ function setup() {
   let t=setup(), result=await t.invoke();
   assert.equal(result.body.success, true); assert.equal(t.state.settled, 1); assert.equal(t.state.consumed, 1);
   console.log('PASS real verification handler validates v2 receipt then settles and consumes');
+  t=setup();t.state.committed=false;result=await t.invoke();
+  assert.equal(result.status,503);assert.equal(result.body.pending,true);assert.equal(t.state.consumed,0);
+  console.log('PASS paid Play RPC without committed Notes entitlement remains pending and unconsumed');
   for (const [label, change, status] of [
     ['unauthenticated', s => { s.user=null; }, 401],
     ['wrong owner', s => { s.user='other'; }, 403],

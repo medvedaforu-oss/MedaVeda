@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const {load}=require('../../../../mobile-app/scripts/ui-harness.cjs');
+const source=process.env.FIX3_QUEUE_SOURCE||'supabase/functions/_shared/paymentQueue.ts';let now=0;
+const api=load(source,{}, {Date:class extends Date{static now(){return now;}}});
+(async()=>{let starts=0;const result=await api.runBounded(Array.from({length:40},(_,i)=>i),8,async()=>{starts++;now+=30000;},{deadline:80000,minRemainingMs:45000,now:()=>now});assert.ok(starts<40,'expired budget must defer unstarted jobs');assert.ok(result.deferred>0);assert.equal(starts+result.deferred,40);assert.equal(await api.runBounded([],8,async()=>{}).then(x=>x.deferred),0);console.log('PASS BACK09 remaining invocation budget defers unstarted leased jobs, no false completion');})().catch(e=>{console.error(e);process.exitCode=1;});

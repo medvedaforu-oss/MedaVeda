@@ -1,3 +1,4 @@
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
 import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
@@ -33,7 +34,7 @@ function ChaptersScreen() {
 
   const [search, setSearch] = useState("");
 
-  const { isChapterOwned, refresh: refreshPurchases } = usePurchases();
+  const { isChapterOwned, refresh: refreshPurchases, loading: purchasesOwnershipLoading, error: purchasesOwnershipError } = usePurchases();
 
 
 
@@ -93,6 +94,7 @@ function ChaptersScreen() {
 
   return (
     <View style={styles.container}>
+      <PurchaseOwnershipStatus loading={purchasesOwnershipLoading} error={purchasesOwnershipError} refresh={refreshPurchases} />
       {mode && <Text style={styles.modeLabel}>{MODE_LABEL[mode]}</Text>}
       <Text style={styles.title}>{subjectTitle}</Text>
       <Text style={styles.subtitle}>Chapters</Text>
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     padding: SPACING.lg,
-    paddingTop: 60,
+    paddingTop: SPACING.md,
   },
   title: {
     fontSize: FONT.title,

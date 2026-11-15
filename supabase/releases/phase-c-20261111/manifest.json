@@ -1,0 +1,595 @@
+{
+  "status": "LOCAL REVIEW ONLY; purchases disabled; deployment and worker execution prohibited",
+  "project": "xbvenkfmesugrbjuufyw",
+  "package": "in.medveda.app",
+  "functions": {
+    "create-play-order": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/notesChoiceGate.ts": "c2e5893b648583c99522ac4734f25a363c419919490f60e15b99fa6786753f33",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/create-play-order/index.ts": "da48e6d981419fe370a0808d64bccfe7df7f870a939c6c4e3b7d428fc55db231"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "f7b4d7acc84d0b280a7fbe3236e49324a93dd5f4928bfc41a80dcc6ea614e21b",
+      "archive": "artifacts/create-play-order-source.tar",
+      "archive_sha256": "20436d5eb887d14878b78f91d3f5b1890704abd1d47a7c88d9f138c103f7ba33"
+    },
+    "attach-external-token": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/notesChoiceGate.ts": "c2e5893b648583c99522ac4734f25a363c419919490f60e15b99fa6786753f33",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/attach-external-token/index.ts": "a0bd1030871a24676f44853eaf20fbc7a34b3ba40cba001ba1ce41fd1ad60ef2"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "d0ad8bb83e794cb7159f2c4aa31efc632f447bfebf54fa5c7945082b0ac08781",
+      "archive": "artifacts/attach-external-token-source.tar",
+      "archive_sha256": "e102a6ef2495a94ec30b99eda7dfa97c1d2bcd1d7e2ff976d729f508a38fc7ee"
+    },
+    "create-order-play-choice": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/notesChoiceGate.ts": "c2e5893b648583c99522ac4734f25a363c419919490f60e15b99fa6786753f33",
+        "functions/_shared/notesChoiceOrder.ts": "5b1b0ce8f00dcea119a76601298c31ebe2267acc5a4b9493c411f40ac54974dd",
+        "functions/_shared/paymentGate.ts": "751b17c1558b8dfdd23ededaf27575ff91e7a5d6c5b59cbd8ed92b50f935d762",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/create-order-play-choice/index.ts": "f73789269b4691af30cbc75cfee776305c9f3a3b8ffc30f92468e625e303ab08"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "8c96fad036670e4091804eb2915a2bfade1f0949c238d1d42f4b6edcc3186046",
+      "archive": "artifacts/create-order-play-choice-source.tar",
+      "archive_sha256": "8a6d7ce2c383b4671c491ad0b7b0691ff216567c47ec7cb330a001bc7bb7909b"
+    },
+    "verify-payment": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "2ea4f1c34c3d2126521cee0ea68455623527141b12ca48b78c6105d6d0276436",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/verify-payment/index.ts": "6667e4b991d1bf6a87d36d35a3e7ce304859ad0caf008fe022745854e9c12c5a"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "e4cd38aca9415e02e5af8914600c69f38cd2f86b68e92f19c7f0061de761560f",
+      "archive": "artifacts/verify-payment-source.tar",
+      "archive_sha256": "0dc03c1b898c45effd39976de3d8f119b300818c5a17fd281f2e7112e6db8813"
+    },
+    "razorpay-webhook": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/notesChoiceAuthorization.ts": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "2ea4f1c34c3d2126521cee0ea68455623527141b12ca48b78c6105d6d0276436",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/razorpay-webhook/index.ts": "bb18cc1c52714efd0a50697040518a7758e96b0fe6c1b430123148aa8c3fb7be"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "079ce9e874ba29020fd3867024d9c62269acffff9af9c95281fb2ead59e475fa",
+      "archive": "artifacts/razorpay-webhook-source.tar",
+      "archive_sha256": "d0da915aa3e4fc6a8fa040bba8160d4672212fbaa280e5879d121a9497f4dc1f"
+    },
+    "verify-play-purchase": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/playPurchaseValidation.ts": "cfa1a8af6c409fdc5f140f0379d17ffe554af4bf361e296ed0a600de273f1924",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/verify-play-purchase/index.ts": "2fc9acec9d976d9c2d03cd5d6cc9096437433fdca4c648f96c7de6e7225f65db"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "0dbb3f2ad57aa06bec76f287f2c67f0bac3cb2df7ded5a1bb15a40a9bba1ef4b",
+      "archive": "artifacts/verify-play-purchase-source.tar",
+      "archive_sha256": "7f3c213f837ac4d6b6fa44675dccc576f42aef01b271c3e85a0dc6fbeadba4bb"
+    },
+    "report-external-transaction": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/notesChoiceAuthorization.ts": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b",
+        "functions/_shared/paymentQueue.ts": "28c20b2eb6e8481f0cc658af9707f4c48e54c2fc7f360f4f34a032be82000714",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "2ea4f1c34c3d2126521cee0ea68455623527141b12ca48b78c6105d6d0276436",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/report-external-transaction/index.ts": "bebd295976f2b43311f801307a431e7b21b9d5c04321084614359cc0f427af92"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "17f1cbd0fb47f8167bc611434640ec2f3a74fa3dc7fa74098890a9e3954b2bf6",
+      "archive": "artifacts/report-external-transaction-source.tar",
+      "archive_sha256": "7814606e3c8d9ae0cbc6e5970ec01b874aa3aba25d5594540cf0f2e2ff097ccd"
+    },
+    "play-payment-worker": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/paymentQueue.ts": "28c20b2eb6e8481f0cc658af9707f4c48e54c2fc7f360f4f34a032be82000714",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/play-payment-worker/index.ts": "d53528998caf0dd8ae7bdcc9a24ca53e912fbbb979460d63cbb867b0d68c0458"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "49606473cdd806e1d17dd451e6fef3255a645e2bc6513cd6d1e00c9e47e18a2a",
+      "archive": "artifacts/play-payment-worker-source.tar",
+      "archive_sha256": "e24977978af7368088162a656dea6926236d46fbbafe423cda757d37e2dfb769"
+    },
+    "sync-play-catalog": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/playCatalog.ts": "d9e9ae8a593cbf09e8857ca1300b648d307ee2f6fd68d84f337b19e38609c091",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/sync-play-catalog/index.ts": "8a58e6b33fb5004fa40ad50cfef49b081f41f57f25d1a54825bfc272245bfc62"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "04dd8d6419cecb26af6077e62e0df8081485f5a9f64a0aedafa089bd1fea8f39",
+      "archive": "artifacts/sync-play-catalog-source.tar",
+      "archive_sha256": "7e7f9bfccc34cc27faaa98a1f0a96b77de39784e21d5fd2d01f708705449727e"
+    },
+    "get-note-url": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/get-note-url/index.ts": "ad6a62a388690af9268e2d94a3fab171ca545c7b43e8e6019d1ef9fa9b5ea5b0"
+      },
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "closure_sha256": "cec6fa35de9f706c48a61555dac4219cafa12e7125de71a7ebbc8f5569dbe4b4",
+      "archive": "artifacts/get-note-url-source.tar",
+      "archive_sha256": "31fb2428c78be708a16794d3c41344a585fc0a0e06051499b94743f9d906feed"
+    }
+  },
+  "migrations": [
+    {
+      "path": "migrations/20261110100000_mv003_razorpay_entitlement_commitment.sql",
+      "sha256": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b"
+    },
+    {
+      "path": "migrations/20261110120000_mv005_razorpay_order_transitions.sql",
+      "sha256": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730"
+    },
+    {
+      "path": "migrations/20261110130000_mv006_purchase_ownership_guard.sql",
+      "sha256": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c"
+    },
+    {
+      "path": "migrations/20261108100000_notes_choice_checkout.sql",
+      "sha256": "bf0452bc97960bc15c7954d44303cb1009f7f8dfb66721ea627a6f952aff4427"
+    },
+    {
+      "path": "migrations/20261109100000_billing_settlement_recovery.sql",
+      "sha256": "d62c8f4b17c75bf75df01d73460646381d8154916d835ec1acebe136dac90dee"
+    },
+    {
+      "path": "migrations/20261111100000_phase_c_final_mv003_commitment.sql",
+      "sha256": "d47d7ee0e8d74e56752c16c034e38c996e7b6b81e029cbb2d309a43151b720f2"
+    },
+    {
+      "path": "migrations/20261111110000_phase_c_play_entitlement_snapshot.sql",
+      "sha256": "da4f56405f25e8e1a67f077d4ecce1e40ddbf2932efa16882e4ba8a2a2ed08c4"
+    }
+  ],
+  "baseline_migrations": {
+    "20260701000000_baseline_live_schema.sql": "c54f69ec9068abf37abb6cc5d6696bfa98636f19ecdd7bf529f1890f00a5170a",
+    "20260718_payment_backend.sql": "d31758cab06e4ad51d7267bef6f79d824e490ba039f7ca286b06d8bd3c239f8d",
+    "20260721_admin_orders_purchases_access.sql": "8bc2d53a156481d61965ddcc83627f958c2d813d917ae1e684098d3a36753c21",
+    "20260801150000_razorpay_webhook_atomic_grant.sql": "1713787078ebe465c30919af21860986e50d3f82296bd3e09788c3bb26d1e935",
+    "20260801_auth_verified_identities.sql": "7606baf859d9d44cae53ed8d67678f42f386b95c9ac259c1d19126723f7e42c2",
+    "20260919120000_multi_course_and_referrals.sql": "3efee2364e7cef4fe20135edecd27498bc22aa4daab875e13753132c0080febf",
+    "20260919130000_referral_history_rpc.sql": "26da93a0544c023bddd37d6d8a235fd2913972134ec1184c1c80da29541cc8c8",
+    "20260920120000_null_year_course_fallback.sql": "c8ecac2e3f309d1df83e6519fa9eca788d183d4a4627d341400e5d03f9334792",
+    "20260920130000_app_config.sql": "b2c06c94ae710a0d0edd12cf09e7a1f883717dc0de16e61f36c347cf6c4b85ab",
+    "20260920140000_default_new_profile_course.sql": "8b94b4e8184e8b424942503ff5b256404128725060145e04f57a176db4d24c7c",
+    "20260921120000_analytics_retention.sql": "3ed98e21f30bee4f50c7b742a165dd7cf936cf11b55bf463b8dd4fb80bf3cc84",
+    "20260921130000_account_deletion_support.sql": "f2d20c78354f75211e68bac320e786ce113bacd3518883f9f830d085587eb920",
+    "20260922100000_phase1a_sync_and_order_security.sql": "ff415faed591330e1f8ecf7fa83f1e847be63e0969a0a04f4fe93e3c8acde1e6",
+    "20260923100000_signup_profile_fields.sql": "bfb83bff5299d463fbc36b2ab357411a5cd755a0c50c51e9acfba51758aedde8",
+    "20260924100000_critical1_lock_settlement_functions.sql": "cae39194acde0e196fd9835063170835c85bef5dce43a18dfd3e6cd060afa11c",
+    "20260924110000_critical2_orders_server_only.sql": "6ef49e39c6783ccfbb9a67588ec4d897fce7897441a039e17d4d796248178de1",
+    "20260924120000_critical3_storage_profiles_rls.sql": "25784b01969bd71edf4e74d2a163fbc5ac0a004f9b70b4bb13724d6666922eb8",
+    "20260924130000_signup_name_phone_and_backfill.sql": "832f96a542580fba4e14b6b1b257efb17f7bf5de1f9124c4d41b71a6b869dd97",
+    "20260924140000_auth_rate_limits.sql": "6c9c13d2ca0ab9f088eeebeb811fe3a6b22bd3a31084ead7c86a0e85594b87cc",
+    "20260924150000_free_preview.sql": "9699ba9e0be6c72390e7a5f631d7dbe0b193273f4da29b85b25b0c9d9b315fcd",
+    "20260925100000_phase2_referral_config_and_product_type.sql": "8ebd7905ce31f87c93b7e7d732100d42e866c3828b465f852cc7fcf656ba6ac4",
+    "20260925110000_phase2_wallet_ledger.sql": "fd9b6d6ab3add7ecc0578fe27ce28f49355a797f768078692f659442dd9bfb3b",
+    "20260925120000_phase2_orders_pricing_and_settlement.sql": "03ce7f89d949a4e9c36a201f74cd10549afc0e37f256833aa099ca9cf259c612",
+    "20260925130000_drop_debug_whoami.sql": "2c349416e767fc1051196e06282230e00943afe2f92d857e80602eb050889e0a",
+    "20260925140000_phase2_single_use_friend_discount.sql": "03a2d6bb93cc0fc18ae30714f44f04971f06dbbba8201671fa08162d36e02804",
+    "20260926100000_batch1_refund_dispute_revoke_access.sql": "b707c26cd1ecfdfda3e86109e8623f039a483e423043a4d612eaf1673a56da42",
+    "20260926110000_batch1_settle_wallet_and_flags.sql": "84b9040932565ca827191b0fe3306ba1997c0e7c39cd32b104cd515a7024835f",
+    "20260926120000_batch1_block_owned_product.sql": "e7f1e33745ed27cda1c9d97ec9eabbcd88d7f7692f35f4dee0268a809eaa5c32",
+    "20260926130000_batch1_hygiene.sql": "04f20207e6dc75a74dbf35d64617e0e5f08ef70b9e4e4a145c735f89f10c0d7c",
+    "20260927100000_f7_drop_legacy_admin_policies.sql": "34d682389853b29a99472daf8f6f809d571eb56a6ab02f4826d0844d6efb33d8",
+    "20260927110000_f8_revoke_excess_grants.sql": "9efb84dd71873a9ba551b242806802e84d973307745515ea792f13cf774e5b5a",
+    "20260927120000_batch3_referral_hardening.sql": "1114fa158aa83658281d143dabaa1a177cbdbcc0f2c7ff9734958a3c57047233",
+    "20260927130000_batch3b_antifarming.sql": "e84c7f72d63df7c733af2712d600ba978c18b7eead7e9f16dab06c5d6cab7373",
+    "20260928100000_referral_settings_limits_and_audit.sql": "1b732059b2fc3226090caf0cd85bcc4c911d0ae312af3ed582ae1f5c01e4f654",
+    "20260928110000_referral_off_blocks_wallet.sql": "187fdc5ad0e2c6ef430fb601a180e7dcbcd703f83fb4dfe9c72c132c8e264c73",
+    "20260929100000_high_phone_change_rpc_and_notes_storage.sql": "ec76860cd463ba1b97e665ddc3298bfe1d3dd4f9f9b3b36deb3124667a300a34",
+    "20260930100000_medium_db_hardening.sql": "d1850bab661cb23831ce444ea16b19929b84998eeb0c81eab31f714d094630bb",
+    "20260930110000_low_grants_tightening.sql": "ff372c8af1c0491005e1df2c68df88a2b65b0ef9f152995d87ded6121ae7a9df",
+    "20261001100000_admin_mfa_aal2.sql": "c604a625526d6275c4e97fee0cfb1f08bd59ccfd69b796335feaa8c9b03edf6c",
+    "20261012100000_google_play_ucb.sql": "b15a2c385e67f4a6a438adb7c9f32ab58e03e10907e3cc4d9b769c1cc47e298a",
+    "20261012110000_google_play_refunds.sql": "3f130e6bcd3582d242b5b2595001b8629272d72ae7c4b0f3e9ddeb60b7d7d3ec",
+    "20261012120000_ucb_partial_refunds.sql": "713d48eea492477c50955d4fe7d97af9062b6596464bda1221f491641beedea2",
+    "20261013090000_ucb_atomic_completion.sql": "d9b0e51d056bd4a4cac6d4f7d468975d8d42cafa46859a394b62e0e707e8a55e",
+    "20261013100000_wallet_reservations.sql": "99f80314020f7fc546764fc14b2f03524867056cc74cab77ebbef78f3f37aa10",
+    "20261013110000_play_void_cursor.sql": "05b3e34b854a0079d114a28b0c6bdaf99aae8c6b0a3f38037b509c7db007638d",
+    "20261014100000_payment_audit_capture_inbox.sql": "1ddeaeadbf485f5be5885fbc15e9fdcbc146d925ef1c9e135411288cc2d87555",
+    "20261014110000_payment_job_leases.sql": "cb27a47965e92dcb10febbb18606515e368dab0cee90b0a6d9589a2dbc7ce4ff",
+    "20261015100000_play_payment_jobs.sql": "d3d99eb64323e2b3fdda8b4ab8115c86e1c4e460cc856ab1be61ce84fced3df7",
+    "20261015120000_play_entitlement_order_snapshot.sql": "dd4d9f41d5a8c0ecd2a41396268a3f796b33205336a2a5fbc57baee23cd63547",
+    "20261016090000_free_video_access.sql": "c6362f093c178932491c6b08493b74d3215d4e759e47fe74ec15e2bdde236f63",
+    "20261016100000_play_catalog_sync.sql": "08c7b195d00dd5ab009d5f87eac804542cd4f13bdc4ad613ff7ed73e833eb270",
+    "20261018100000_verified_quiz_attempts.sql": "7c81e686bbd423138187f03078a29acf8c5503643a30a8d6276c88f5e7041841",
+    "20261018110000_trusted_note_uploads.sql": "1e4af9e6252b51c8c24b93f4bc1d4a7c5b10ee0ad043afe2632bd496f4924b33",
+    "20261018120000_note_upload_deleted_retry.sql": "631d39719676cb2bbcb68f748431f370ad1c765a729fe7ef8beea19483f607a9",
+    "20261018130000_note_pdf_quarantine.sql": "7a082d96f332e9063452209899f9e03c57442fe0a1f81ce5c89fb8e24356cead",
+    "20261019150000_play_catalog_queue_fences.sql": "f2b02b6aacb72b5da9e9e1fc60b7b9b05c7afccf7dd6913ed44d970eccd18cb9",
+    "20261019151000_play_duplicate_settlement_result.sql": "baf612e3528c6255c1c84ca767eae377304922249169ef0ed01811c73a99f146",
+    "20261020100000_notes_service_reads.sql": "dcdbcb228e80f2367894769dfef364ed8908fb8a5e411a8b40c9c0b9db5d715c",
+    "20261020101000_maintenance_mode_read.sql": "274e973df03c9240a1bee8065c96ee462bdf104901ff477d740bf16094bd505a",
+    "20261020102000_correct_stale_store_url.sql": "5090b5cd3138aa51f8ca14593c04feec9951fd6755d7e6621a85d6bebf93cb1c",
+    "20261020103000_first_purchase_identity_retention.sql": "a3078abe64d7d48a4dbc9a75a72453b3ed4a9d314fbbf1b532b05a53f2f8eb88",
+    "20261020104000_course_wide_content_browsing.sql": "5d7428d45beeffdbff1ee6bcb3ebdc21d56ed7cbea8111221578530f42aa2b49",
+    "20261020105000_quiz_answer_read_boundary.sql": "813b202e45f31d030a5f003b115e413762b22fd7780a82a70487123b617852fe",
+    "20261020110000_admin_url_mfa.sql": "1e2a8139fbf192b8ea76cf5a4299305e61c4e9919703997bf9f4ee9f5ad49c4c",
+    "20261104100000_razorpay_snapshot_discount_retry.sql": "6291a65ef76a90c6e8057e73fa6ccb60bef7145d67cddd4de5329da1623ada3b",
+    "20261104110000_course_year_profile_confirmation.sql": "c7f73031abb665822613e9e524d8354f6d874826871ab71dc4d532f3984c1c3c"
+  },
+  "mobile_sources": {
+    "mobile-app/App.tsx": "dd05b5bc4a9c55832c0e00503cdeb64417f2e741eb27adab53f39feeff8b40b5",
+    "mobile-app/index.ts": "5c157f4d44972d9c84415e1e4bda595b3abcd8cf733f8a9cd20935bec3eccc42",
+    "mobile-app/src/components/BottomNav.tsx": "c8e7e2b6db54191d9a79d5f66854ef73d79e764daedf1e2610cc5aaa60d6eb54",
+    "mobile-app/src/components/BrandLogo.tsx": "5a2ee000745e456b71561caad423043b5d53d867618323173f990eca16af3e29",
+    "mobile-app/src/components/ChapterCard.tsx": "a1fcffcbfa20a55e0cbc356f02059aa155d7496fecdae8f5104d786ea7a07384",
+    "mobile-app/src/components/ConfirmationDialog.tsx": "31ab1236837bb9f5b15c3bfd349b6232f99244e9db312f74a684e346e3dd8f84",
+    "mobile-app/src/components/ContinueLearningCard.tsx": "92e3041dd232f4bcaa15825910b4a734f238db57db3ad64b73567f8ca1c9d545",
+    "mobile-app/src/components/CustomButton.tsx": "e6999f1542f432f8d17cb7e4613f498cbfff5db1f62784ac1404e5e73d9863de",
+    "mobile-app/src/components/CustomInput.tsx": "0711414ed2220617cd89dc12759cc10c7e768d6720a2d35a91c6a0ce7a813fac",
+    "mobile-app/src/components/DailyQuoteCard.tsx": "705a2f69e9fa704036b179a402c4f7be79d189881fcd1742c675f746efc55e2c",
+    "mobile-app/src/components/EmptyState.tsx": "06b4b52bb71ae6ebe91d0b35c627989fade394a8bef3e9340374468eac717dd9",
+    "mobile-app/src/components/ErrorBoundary.tsx": "30edfe3fb4509a6652a782e10c7eee3ae24d479870b2f68132302e4f1c7e0aad",
+    "mobile-app/src/components/ErrorState.tsx": "e798db0452f39139d7ed6a6b76b94f511c2915d5a9c76aefdc0d36f701b8de6d",
+    "mobile-app/src/components/FeatureCard.tsx": "ed4d2391f070ce51a52894509459bf0fddc33a274423b05d96f8ac1d22824578",
+    "mobile-app/src/components/FilterChip.tsx": "fe7a43b635cfec7df9b54a53dc3cb0490946aed16e71b825e17aac83fe9450ad",
+    "mobile-app/src/components/GradientBackground.tsx": "4cedade46e82c7511035ff1124627c9fb74d06261dcb74ee5091fb9ba52098a1",
+    "mobile-app/src/components/HomeHeader.tsx": "02636f52a64b234b895104d0d2b30d8e32515ded6cebf5bb76ef138ff9f22d2f",
+    "mobile-app/src/components/LoadError.tsx": "8b14f76f67d11041e5569e4985386c356397c7facf849988b1eaee2a8b8f8e68",
+    "mobile-app/src/components/MiniChapterCard.tsx": "8c30cf6bc4cc7c6e8ca493f9005c98230001d79e683ff43c6f882dbc5dc787a5",
+    "mobile-app/src/components/NoteCard.tsx": "e78898f45c08a9f48560ea3415202f57100f3cb2b72a380d17db14b5b45af0ee",
+    "mobile-app/src/components/NotificationBell.tsx": "8187ff087884a2ab6833bd749e246bc6eb9163426ac7393023ad4a1fc55f8d75",
+    "mobile-app/src/components/NotificationRow.tsx": "fea5c665b4e3e1043bc957a12b51938cf8d760ea4623dd3570e1fda90730ba2b",
+    "mobile-app/src/components/OptionCard.tsx": "f5cb29ace3b8d6e9e99d2fbe08398e9469995de91605505fb2e37e3e407ad5e5",
+    "mobile-app/src/components/ProductCard.tsx": "a54a3ecee4083fce64098a1e7bca761a151a15bc0e4dba50ebba11c7686bc548",
+    "mobile-app/src/components/ProductPosterCard.tsx": "d9a6c6c573474b9b33c716164c530c1fae52a1ebb9b3b864303251d57219d426",
+    "mobile-app/src/components/ProfileAvatar.tsx": "ba9a0faf70b98ee0e4847c9a9a52c0a93398461c5f8883ad67cda2fdf578b602",
+    "mobile-app/src/components/ProfileMenuCard.tsx": "82508980466809b1b210ff16cd96c40b0aa84533b34515a30e23b00a18af221f",
+    "mobile-app/src/components/ProgressBar.tsx": "f10ea3baee9e311242130eee1f0fb7932b1fb4e6fe7fe7bc837f906cae7339b7",
+    "mobile-app/src/components/ProgressRing.tsx": "a400b7d044f2d64a7fb2c3231202d74f3f3e41c54d942961ced6ccf3a2de321c",
+    "mobile-app/src/components/PurchaseOwnershipStatus.tsx": "4339744553d4db3454586c0a26f5e1fb3ff27108d3651c16699c5916cf264546",
+    "mobile-app/src/components/SearchBar.tsx": "0c1a2d9f8e310a524509ed4194643c0a4035b98ce195e9b5b81821b4e2a65775",
+    "mobile-app/src/components/SectionHeader.tsx": "0e7b7243f54792a298c6588ee783875a29255c0daefebba3f03e32be3dd0a46a",
+    "mobile-app/src/components/SettingsItem.tsx": "60085f013cea00965681c69ee7c51a0a8a0d19f5e31f106cc39366c4d5cd7b98",
+    "mobile-app/src/components/SideDrawer.tsx": "db4ce3ad7f4398705d5f285c8cd30be9fda2d1784c0c98d5c3b27c89fbeea014",
+    "mobile-app/src/components/Skeleton.tsx": "f7bb72b1649e554ac5c662bad77c636aae1c629fab19e199844a56405257e525",
+    "mobile-app/src/components/StaggerItem.tsx": "0e9624c1a25136218b671173eee76e52d4d77ca931a9ec800648cc02edd37048",
+    "mobile-app/src/components/StatCard.tsx": "6366cd8b5dfbb64e64d93fb9407322aa294709731a88c565ecffa83ca66029a3",
+    "mobile-app/src/components/StreakBadge.tsx": "7c89dc2fb562e52d06b599a18d9c1359fa77bf964bf90ecbf849c8bd1dc04948",
+    "mobile-app/src/components/StudentProfileCard.tsx": "38f46d40c5b5cdad708885bc16f3faf9bf05b465df5c37c61a806196da9d5bed",
+    "mobile-app/src/components/SubjectCard.tsx": "437757660b5d2c68867a0893c65d98f3b145e918cf79b46a80e323e0d87cff11",
+    "mobile-app/src/components/TestCard.tsx": "f5b5619865be5e6e1ecac6665e90c39f968b15e9b2d21597c0f4897bcbb64285",
+    "mobile-app/src/components/UnlockOptionsPanel.tsx": "2aea02a4f0526f1abb74772075d59a5597e33521700d16d0e8f394ab58ac6da6",
+    "mobile-app/src/components/VideoCard.tsx": "07e69240ffa2d75956d7383c19273e83bc87501768229085cdd533f24ddc8e6d",
+    "mobile-app/src/components/WebLink.tsx": "f7ab04e10d463942ccf9c0b93f2bf5d012eb42c7963dc210a64734ae28efa5f0",
+    "mobile-app/src/components/YearCard.tsx": "aa7dbe9653a5a6902c363a615f864d4bed913f078ca00c8768ff13e390a9cddf",
+    "mobile-app/src/components/motion/AnimatedPressable.tsx": "c459906969296ad86fe594a0b8346570b1724e99f6c7b34ab9a4690e90d32928",
+    "mobile-app/src/components/motion/FadeSlideIn.tsx": "cf8795e998da8d30c309fe1618f22108ee58148451a7fa547bb4b7a71073ade5",
+    "mobile-app/src/components/motion/SuccessBurst.tsx": "8a29c251df8af0717902ee6dac307c8c3e84ee238059f059998b309e3983dd82",
+    "mobile-app/src/components/search/HighlightedText.tsx": "46c74b46804fde273812f72edca3fe5b88c64a86d87768d7a35bbc10830e9ff7",
+    "mobile-app/src/components/search/RecentSearchesRow.tsx": "63fe01b475e00923dc4dfb351760ab7e38b1c11d83fabba52d077df826611c82",
+    "mobile-app/src/components/search/SearchEmptyState.tsx": "058b14683089c52ceca3c7770f4fb91ae0eb60e79327b98595c66ef92c9c0c9d",
+    "mobile-app/src/components/search/SearchFiltersSheet.tsx": "0657c2344d6d69df03e4339a9b4b9cbf7300ece669583e472e8f7b4056be5249",
+    "mobile-app/src/components/search/SearchResultRow.tsx": "bdcc46e397cdd541eeb84c87aae05a2d1fbd5846902cac15a6c638564677481c",
+    "mobile-app/src/config/database.ts": "bb89f7fe77fe95da1d404ceaa73eb00bb23e7cbdcbe575bcbdc526c884c53fb6",
+    "mobile-app/src/config/paymentProvider.ts": "38552b1c8f309a475a99dfdeb24a3a936eef6f2afb31773161aeb0034cfe7b4e",
+    "mobile-app/src/config/secureSessionStorage.ts": "7710dcda7e99217295b76bca29b309cc0e7e018675c20dff283dd4363e3f77ef",
+    "mobile-app/src/config/sentry.ts": "b4606e61f2909508d04ca2b1777afde9a95cd41f12279f6529bcc53ade3677ec",
+    "mobile-app/src/config/supabase.ts": "9b0ee1dce1cba0871a414b0fb626b7cb45ae7b76523c985bc31cc259dbe0a014",
+    "mobile-app/src/constants/legal.ts": "16b07f36bd9ba76a742f7bf2ebb75ee4fa9eebefc20e8d0ddfb6fb9ab374880b",
+    "mobile-app/src/constants/privacyInventory.ts": "53bb0c2fe34462cd77a41ba0669dfa00ccc6291ff536b22aa221c1b97d0b69b6",
+    "mobile-app/src/features/auth/authFetch.ts": "f9ebbb7f1b4b397a55d54b84ed066f4bd5ef00bd7ac1b69f1022cc191d58b59b",
+    "mobile-app/src/features/auth/authService.ts": "dcd225cf26804317760ebab953306bfadb8e39643bb55dac65178ad75a67a872",
+    "mobile-app/src/features/auth/deepLinkStore.ts": "981d3f9a58ce9d203abcaee6c4e74e99b97ec7c91989f25029670ecd7df355d0",
+    "mobile-app/src/features/auth/identity.ts": "1f1f38b75e2e0370cf9dab4dffcbcac1ffa686ae63b32c8f8583997d5020b9cf",
+    "mobile-app/src/features/auth/loginLockout.ts": "5b9a452a52624d795a59438937416cf48c1add872b633307acd34f65f98c4e63",
+    "mobile-app/src/features/auth/recoveryFlow.d.ts": "7bc9ba7caf081837523b0950b4af3b6c04c9ffaf2ac1d0b73fd3d6d22a5cbfb2",
+    "mobile-app/src/features/auth/recoveryFlow.js": "92d3187d1d510c877b436ddc74e906e4ab22f9d099d3ec87545149d70fcf974d",
+    "mobile-app/src/hooks/useBuyOptions.ts": "a3beae8445764b89e3adf77848cc92e7b4721be583ae21d8b89ea223ca2cfaa2",
+    "mobile-app/src/hooks/useCourseYear.ts": "4a0ca43fc309fef274ff0b481d946fa81c7a021309215037e30595975a5b06ab",
+    "mobile-app/src/hooks/useDebounce.ts": "3726ae58566f406aa874bae3f0b3687af79e052229e18e84357fe0062d841bfa",
+    "mobile-app/src/hooks/useDownloads.ts": "f6a7006a01762502b022a0d9a06f38edced4f0e9740e7e28a792bad35cc54785",
+    "mobile-app/src/hooks/useForceUpdate.ts": "2335f0bb700f9221bea4929dedf6cc90326a8d8536709c44ba81b191f838ee34",
+    "mobile-app/src/hooks/useGlobalSearch.ts": "01840f77bc7e086a431cbcabd643e2f3dee12a57479fce4054c6a1c9fd2121d0",
+    "mobile-app/src/hooks/useLoadResource.ts": "94e4f8cae611a1bc4042c41d63eb24dee86e277e75c8fff5233550209c198b31",
+    "mobile-app/src/hooks/useMaintenanceMode.ts": "66c93d91e8bc7ac9a32e7ee9da3275e7bc6b7206ebee09d43880395316be3473",
+    "mobile-app/src/hooks/useNetworkStatus.ts": "28415e413aa9460a84ea2ffc9629b193232279ebd728731e2e68a11ed6f84d8e",
+    "mobile-app/src/hooks/useNotificationRouting.ts": "7031d32cae928a0a1a620a4cb3aef002ace349070289259f05ca123ef2bfb7bb",
+    "mobile-app/src/hooks/usePreventScreenshot.ts": "882e4e777cc440d38a05e718fe477a2d26c1618344aa10f175a9ba5cfde8c9a9",
+    "mobile-app/src/hooks/usePurchase.ts": "be7f425578d3a5f0a4ca0124e1b795ac5589b852e9cb79e4c522bf260ec423bd",
+    "mobile-app/src/hooks/usePurchaseResource.ts": "ecf0f3feac9b469ee4fa4c75e2f3d93b6b2c5ed6cafc6ae992a38c3a2844fc30",
+    "mobile-app/src/hooks/usePurchases.ts": "fe7b23bd6742e446ac8efeff85c56bdf3b5687ba24eb801eaa73ec60b70749f6",
+    "mobile-app/src/hooks/useQuizStats.ts": "db3a6dff60706b648f93919381b5aacc2ed42fa90e85d6cb521fee3775ed9673",
+    "mobile-app/src/hooks/useStoreCatalog.ts": "a76d116eb93598e778fff995992ccd92f5080bc19889b37d526ce10b46f8f311",
+    "mobile-app/src/hooks/useStreak.ts": "54c0292f1086643141662f7fea1ce2657e489f976f53b7bb9db7b59d617f5d75",
+    "mobile-app/src/navigation/AppNavigator.tsx": "f9dc99220adcb1d9107c5377a82820e695a93ad113ecd4708cff10d57834075b",
+    "mobile-app/src/navigation/withRouteValidation.tsx": "b7d56d80f7bbf57918bcf98059a31b90257f47c8553553c0eb713e72303a29a3",
+    "mobile-app/src/repositories/chaptersRepository.ts": "9be8c49b6fcce19877905e6ab3da466bfabfe9195a0c92db3f4890a377f12422",
+    "mobile-app/src/repositories/coursesRepository.ts": "77089621674f2d4d5cb6d1fe038b061c4614b376237fa2446cd13f263f6c6dad",
+    "mobile-app/src/repositories/notesRepository.ts": "64da7ef71fd9216c2d4876116ca0da7cf1f70faa7b70e204a13c9ffc30f39fd2",
+    "mobile-app/src/repositories/ordersRepository.ts": "193e23656ef340baec61bd68fe26fa505d7e33823347c391f9286ed10e3ba3b5",
+    "mobile-app/src/repositories/productsRepository.ts": "38d3689af05c043c67ab5450eb090e98313b5f60779d808a3ff29ec3c13a46e9",
+    "mobile-app/src/repositories/purchasesRepository.ts": "4c92ea5a9870ad03d5b0d074e760b0555e6216006f9b80871650d0a058b9d943",
+    "mobile-app/src/repositories/quizRepository.ts": "1f3bdc2be35a03ba5957f3dab7b2f83b4f034c5d350d748d7d16c801f830687b",
+    "mobile-app/src/repositories/referralsRepository.ts": "1b192004e3a06e8607b0730e552ebc87c2f08c89faafc16ee8118cd4e47cb776",
+    "mobile-app/src/repositories/searchCatalogRepository.ts": "a8fc2d54bd3f2d23585818b582b054a5fce02274db5665054f0329e93bdee58e",
+    "mobile-app/src/repositories/searchPagination.ts": "04b388d40305718919e0b4892b7fc485c36709986c17272b22a56fa6f0bbec30",
+    "mobile-app/src/repositories/subjectsRepository.ts": "3a6bc4ed5b5445644b310875433a7fcac17faa66504ec77ceb07c4eea1c1ce5b",
+    "mobile-app/src/repositories/usersRepository.ts": "13bf33efce857e532890ec90fc84e4ddb11323a03cecac251a722eb58acc165a",
+    "mobile-app/src/repositories/videosRepository.ts": "4f644dae7da62a84e7a2cf208a37b1c7afa32bef2c46fe7889f9f8c21f3b149b",
+    "mobile-app/src/repositories/yearsRepository.ts": "86aa984887ab4ee6118c7c37f6c3042ad0e94e2f841b320f117393d4d7071009",
+    "mobile-app/src/screens/about/AboutScreen.tsx": "247e664b749afdc84f9984d7eca9d11184947d1c8510c769b292fd925178fbe6",
+    "mobile-app/src/screens/auth/ForgotPasswordScreen.tsx": "518e0de6cc12d01d171851e0947502b3918b2e43202cdd3ed0bff66979702c8e",
+    "mobile-app/src/screens/auth/LoginScreen.tsx": "85d24d6a3c5f9a02215b1cba64e392a9211938a3b4a4100e96eb8196a6585199",
+    "mobile-app/src/screens/auth/RegisterScreen.tsx": "389bd92da672461a15890c10efd5ccfed52c7a7bff45762d89150ab165ed6745",
+    "mobile-app/src/screens/auth/ResetPasswordScreen.tsx": "b89e1d3eb42eac37a6d2da7a8768d1828ff364adbed35c429b081fdfc7f29f67",
+    "mobile-app/src/screens/auth/SplashScreen.tsx": "8f4dab09a447f6169e2d8aadc2d79d56e37636bea2cabf4209f6df932984ef40",
+    "mobile-app/src/screens/chapters/ChaptersScreen.tsx": "81e01f811c687e11cd4734c21ec02fe63a748a0cda183d10a18ad7bfa231c564",
+    "mobile-app/src/screens/contact/ContactScreen.tsx": "375d16b16bf2f614a6a10f2035c06012cbd3de33abcd7ef92daa23117f497bc8",
+    "mobile-app/src/screens/details/ChapterDetailsScreen.tsx": "a92d00494b360891792f02f5e57520d5c02d1fc1f5637a9d4419b5cdd3544297",
+    "mobile-app/src/screens/downloads/DownloadsScreen.tsx": "3c2935166a4fced7da0db05082b788334c1f92f207f565cb578d7c3a55400d30",
+    "mobile-app/src/screens/home/HomeScreen.tsx": "58e31f655a0ef839253a3883e969faace15137ec94e76d1e13d1f286a17953d3",
+    "mobile-app/src/screens/maintenance/MaintenanceScreen.tsx": "8b1d69371d4053a38eb29cdc7b260f75e86b7bce63168ff983d47b77bf99da41",
+    "mobile-app/src/screens/notes/NotesScreen.tsx": "94887e0f6c8df59b9f4b744bcaf0c0b15c572dc67c27a4adf0a117765acc99a9",
+    "mobile-app/src/screens/notifications/NotificationPreferencesScreen.tsx": "a4c2a6473e56ad4bf1ac4d72af32b9f3f079c8cdf2d4d479de50fd71e6b9900e",
+    "mobile-app/src/screens/notifications/NotificationsScreen.tsx": "c159ffe04a04ab2f41a7b7f87ce057f359ab73a0ee133ae47d4ed27ee41317db",
+    "mobile-app/src/screens/onboarding/SelectCourseYearScreen.tsx": "86afee9a9de5e9b409a8c55e4606cc6c985da10b86c5ff01238fc59960c20e52",
+    "mobile-app/src/screens/payment/OrderSummaryScreen.tsx": "af6b8c7d0278a51eead9a5f6ec0c07dca7bd9227c67ffe44cb3521f75ba50ef3",
+    "mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx": "d5914ebd16c3d558029ebc009c85e1eeacd853c7bb0d2d890327bf7495be47c3",
+    "mobile-app/src/screens/payment/PaymentFailedScreen.tsx": "2e1a459e6263a24eb450561f24ae28ad0783f26e974599b0cfe3ab5490ce4ffd",
+    "mobile-app/src/screens/payment/PaymentSuccessScreen.tsx": "e205d18823fcbfe45140f3f39d49ae10289c3bb16e31e5b540c5d2ecf2ade938",
+    "mobile-app/src/screens/payment/checkoutHtmlTemplate.ts": "41e2e48d4fcb22686b386778812cb33630ebdf89bd3de574b68129b414d8047a",
+    "mobile-app/src/screens/payment/checkoutNavigation.ts": "60da0406e76162cec40686a2760f5a1d6047b05daad3532893e469e31d1120df",
+    "mobile-app/src/screens/pdf/PdfViewerScreen.native.tsx": "bad5be63287b389c5252ecb2db00e3a0e52c7abd193ec630afa1f99192b9ad06",
+    "mobile-app/src/screens/pdf/PdfViewerScreen.web.tsx": "f5a7938e2b214c2f3e67cda4265ed96ad0c4fb968055b150384a6d854ce55f79",
+    "mobile-app/src/screens/privacy/PrivacyScreen.tsx": "8afdb09ee0bd3a1115ae1dc9eb37cd8635b565e9ebd006e7abdaa48dcb047737",
+    "mobile-app/src/screens/profile/ChangePasswordScreen.tsx": "3c176090c499a8fe4ceb9efeeeb482ce7919b59be3a27edbeb6f07ae9a155b3c",
+    "mobile-app/src/screens/profile/EditProfileScreen.tsx": "f1575df51f4c1e23d3b28a4ac88ea0a19e29615de7c9be005b4b9fff62d47908",
+    "mobile-app/src/screens/profile/ProfileScreen.tsx": "f1294959044dbfccade838ae57938606baac0360e669752bee9c5d3981d32c92",
+    "mobile-app/src/screens/purchases/MyPurchasesScreen.tsx": "525db9984c5c5deb3c81f8e2718374eb7df056e68e170432e51532f1b3b0ef51",
+    "mobile-app/src/screens/quiz/QuizScreen.tsx": "e1a0c7c60b57a7291f659fb6e18afceb0ea38b8fcdd1c4e3369e007108c18770",
+    "mobile-app/src/screens/quiz/TestListScreen.tsx": "3966ac9ecb64dffb841f7d7cf189420fb38654d97f1b288fcbf0e386bddcc5db",
+    "mobile-app/src/screens/referral/ReferralScreen.tsx": "4b837dc8d54a81634e1d9c12889290b29781d6614bf9f0f7aed2a4527f89f321",
+    "mobile-app/src/screens/referral/ReferralTermsScreen.tsx": "7c5145c5c9c758273bf68ae7b15035ca7c72b60468066206063630b9536b3108",
+    "mobile-app/src/screens/reminder/StudyReminderScreen.tsx": "0a02dd8e3df57651b12588c3a785e0a9c24d3b4236283b66664370a04dec92f8",
+    "mobile-app/src/screens/search/SearchScreen.tsx": "8a57eba7a60d438a4ded3c84255d068495824be43386f5058d92e6926eaf3ff0",
+    "mobile-app/src/screens/settings/SettingsScreen.tsx": "c5ae91746a18b45e974e5c35de6e5031ce47c5e47cd34c3dfae4eda7a3685300",
+    "mobile-app/src/screens/store/StoreScreen.tsx": "613ad1b20dd2046ed82a613290401bd5723d87ec3025d655a7d67be29f5a0cd5",
+    "mobile-app/src/screens/subjects/SubjectsScreen.tsx": "418b6932d00ee0a012da0d110c0c22ad1fa728e32de72ce527fa52a8a6aae1ce",
+    "mobile-app/src/screens/terms/TermsScreen.tsx": "7f1bcc93dd86f246410c0741c0b5117b1403d683f29ea80e3091ee18b3424968",
+    "mobile-app/src/screens/update/UpdateRequiredScreen.tsx": "b79528f4b59d038cf5c4c150b3c31c9ae1fdded955a44260ad9b8e828abd57e9",
+    "mobile-app/src/screens/videos/VideosScreen.tsx": "1abf8160b1ee17ffcb370aa27bbf47ac2308e5f3af638caff9390c31a6087ea7",
+    "mobile-app/src/screens/years/YearsScreen.tsx": "326c135c3d7f0bb9764f9a9a0461a360b393146d3285fbffde40323e795c5061",
+    "mobile-app/src/services/analyticsService.ts": "5107e6e21e62b3b456be76f3a570008d77990036bd59314c4d91f017d89e21a9",
+    "mobile-app/src/services/appConfigService.ts": "7933522ff7fced2ab49e9456586c10222615882088dafe3270010efdaf13eaa6",
+    "mobile-app/src/services/authState.ts": "6f66b50a6cdc1fa43ab8afda066d0f38154ece73f4cf81050ff29a4138b9f11d",
+    "mobile-app/src/services/chaptersService.ts": "86744d9e16b6419cc1dd1d25591a2b0446cd879d2b25100d79d7255fe18570bd",
+    "mobile-app/src/services/courseState.ts": "27e8974e8699aab50d0ed05d4a0ff3f2776f0752da5a2c52ce7503452f6b5fe5",
+    "mobile-app/src/services/coursesService.ts": "55fc3efd924d2c82b42ee4abd50930748c0b25ca7d7c0c9768295cf95640a27b",
+    "mobile-app/src/services/indiaBillingStates.ts": "2c979e0d3e1a5edfb873d4e09f4f7a9dd75164272daa75edebfaf9b0bc245fcd",
+    "mobile-app/src/services/maintenanceService.ts": "95b00e4a75c97e7e3b2c203d755118740215e2cef8062ec3ade6a7b271283817",
+    "mobile-app/src/services/nonplayTestService.ts": "66e139a8f9cee856290028cc113e7a6e8a2d2a2538f43146b278edcaded54b4f",
+    "mobile-app/src/services/notesService.ts": "95d772a705db1a3e03f5efe3d4f30ac499fe3c088d9df9b8dcfe41058bfa7ca6",
+    "mobile-app/src/services/notificationRouting.ts": "8372057819efeceb5c38c24f0965d52b33488d5625ce1b536af658ef138f53f0",
+    "mobile-app/src/services/notificationsService.ts": "a0a48fce1c878ccb6973a142ff01946209e05596aaacef7d1a831b6fa2405af4",
+    "mobile-app/src/services/offlineNoteAccess.ts": "79970c04f7e9b6eb8d3fd1a6529219907669a21c666884861b0cc9048a1d349d",
+    "mobile-app/src/services/offlineNoteVerification.ts": "77683cf1996f9254a3cc13cacef9d2ee364fb012d32aa450bca7411d5b3a9a7f",
+    "mobile-app/src/services/ordersService.ts": "f419c9346500107a041f48a3015e2d86a83ffe399112401cc7f9f3f7be0deca3",
+    "mobile-app/src/services/paymentService.ts": "1bfeacfb3741d3031a3c6c5a9fc35c010723dcf7b5808bf87b16daa0d9b7fbb9",
+    "mobile-app/src/services/playBillingService.ts": "bff1cf3545dc53979444c23a382a7342165fa68dba6149fc76e66cab5c422af1",
+    "mobile-app/src/services/playOfferSelection.ts": "c0996d1b7f7fc948769192c2a23076a2be49727b9a86c8fb02423b4a94f2c589",
+    "mobile-app/src/services/productsService.ts": "a6a26b58ef4c222b86d37ca43d1fe668344589b426a24b1f8b7af72319b80bae",
+    "mobile-app/src/services/purchasesService.ts": "4ae592ac56f78524bd14991bfaedc4236c3f1fc5ed32b987ff525b697989ce6a",
+    "mobile-app/src/services/pushNotifications.ts": "d693d818789f45a9f313135109ca1b8346f9acef93e959d26f0b8ed205bd29d4",
+    "mobile-app/src/services/quizAttempts.ts": "95aad83db2822c64eebe12fc9273a5cc7a0c59adbb14732a4e3fbddd37c330c0",
+    "mobile-app/src/services/quizService.ts": "91013cecb11f621f324dce94217717c67e50cedf2db10be699f2dd76fceabc46",
+    "mobile-app/src/services/referralsService.ts": "316bedbb3d781d76a9da463fcfec88115f880617147f908645bb1be28cd152b3",
+    "mobile-app/src/services/searchService.ts": "ae8c8a16006a5f6547c7e03bd9b4b19594ceea8730db5692c9460a0d5e759227",
+    "mobile-app/src/services/secureNotesService.ts": "eefe67def936193147fa06412227fdf89aeea01f41c6ef0dba8c938e26128ad3",
+    "mobile-app/src/services/storeCatalogService.ts": "885d28cafe186a0d5ebb78ff6cb24038ae79ed150802c7c1c8d25ea2729d324b",
+    "mobile-app/src/services/studyReminderService.ts": "6513b976477b080ac04a20fcdb8fe6afbe4c66fa4428b49f92e13dd18b9b5ab3",
+    "mobile-app/src/services/subjectsService.ts": "c731da156a850811f5d65f224a80ae05e0424181e088293cc1ec95efa7f00442",
+    "mobile-app/src/services/syncEngine.ts": "6572f3233dcaccb31bcf463c4d1e80f6f0e484b862c8252c95b8b8239a10b5f4",
+    "mobile-app/src/services/usersService.ts": "fbdbeee4e7437ad30614160f226f81cc5282af502b8ca3ce0a987ea4acb8621c",
+    "mobile-app/src/services/videosService.ts": "ef82b9133ba449f6a069aded98bbe8d3fa835eef3542460e997ee61a0410aee8",
+    "mobile-app/src/services/yearsService.ts": "39eed3e43b6e27fc91e1d4bafded73ee774fe09a84ce7f7f8eb73b84a50e680b",
+    "mobile-app/src/theme/colors.ts": "1687ee4996ce6829a14b98a2a62bc3fd7b8571c65378ec5bf5947e6625bae193",
+    "mobile-app/src/theme/fonts.ts": "a0cc7dca213ec6e7b46cb8485aaa828a6f60f6881d90ad4b64ad05582c8acb54",
+    "mobile-app/src/theme/motion.ts": "3564e7b557a2f8509ddd2e01c3cafe668b596db99123ab4f917a7c03bf3dc785",
+    "mobile-app/src/theme/radius.ts": "22aab92b3bf7e48e50126f384d67aed98ed96f9cb47459a65a2a296d70b3d35d",
+    "mobile-app/src/theme/shadows.ts": "2044dc05c7dc8774bd4004ba0a00272e4cf913a1d3f24ab703248a0945f1cf54",
+    "mobile-app/src/theme/spacing.ts": "5a70c7a69cac912b7e0b492672fa5880480ae814d1934f65f8a4d312beebc4f6",
+    "mobile-app/src/theme/typography.ts": "f3abacec711f63416a525cc4777b54711c25c6e28b8780af2c285310dc938874",
+    "mobile-app/src/types/chapter.ts": "4a874a33847bc296985c5d5882ee6d2d51c70822e77e7f8cc0c6823c39963190",
+    "mobile-app/src/types/course.ts": "f26f4aed98314bee05dc60828abd8e638460dde6622973fa2b065dca613a7a23",
+    "mobile-app/src/types/index.ts": "bc21aa23fdbd5880e51c76a58623bd359aa8686f1dce73ddd7bf36deaddb0bae",
+    "mobile-app/src/types/navigation.ts": "4274b97e3cb69d07794c70b289ef4fc6985ffbb4629542d7eb99cd80c2225566",
+    "mobile-app/src/types/note.ts": "398c978b3ea2feca5d045e714c692cca71fcb2751419ce2f6b94df373f3e63b2",
+    "mobile-app/src/types/offline.ts": "bcc547ea34519e271a19ec6a9e966c9fff89fb2b37f2521e9ed4ecb8d243b51e",
+    "mobile-app/src/types/order.ts": "7296264b46d2481c73ad4233f4c48abad9240fa2c571d524a65139541fbd01ff",
+    "mobile-app/src/types/product.ts": "ce60bce5fb128b6ff270fc4d98f4023d92d91f3b6106b5a8bb5c56cccf7280f7",
+    "mobile-app/src/types/purchase.ts": "aa9547248a34861408efada53d6b94ea3c5ea634dd1dce2c2176026d3678544e",
+    "mobile-app/src/types/quiz.ts": "cc2937bf109be191c39ba3b97d703c378784d789ed8623a23f367e8e48194c36",
+    "mobile-app/src/types/referral.ts": "bb1d96e515cc0be35713e505d8e3055d89a74ebf736d0cef44814b28f08e6367",
+    "mobile-app/src/types/search.ts": "454ff1035baa9e0b9a2136aea6d3efd8549f141ee58fe537c54beaca176173fd",
+    "mobile-app/src/types/subject.ts": "65c85a5b5e2ce5812b82ec6270f909b3e4f107d55013f46695cf85e1025d53f6",
+    "mobile-app/src/types/user.ts": "e2ffb46e1d183de385c87832ce3fa75eae692fbbcfb780e6e0a03980c02577ab",
+    "mobile-app/src/types/video.ts": "7a782aee346a04a2056fe90c8cacc49aeefd6e7e41fce2a33cf1f3c407a1ae52",
+    "mobile-app/src/types/year.ts": "aa66ffc723b26674cd00dd0e287be7f1a440f9a47cfc2e877be84c3ee741d7b8",
+    "mobile-app/src/utils/caseConvert.ts": "69da8ce6bdb8c22fd66924d9cc8e9e5a05f8395ed38f9058f74950eb24d88f4b",
+    "mobile-app/src/utils/dailyQuote.ts": "9f31974159ca9f4bdc63ad15e4f1ae3bfa21c46a0c06ad869dc7d7c4e27d58a8",
+    "mobile-app/src/utils/downloadManager.ts": "5dd1f13449c6aaad1b92c9fc380ddc054e96b2e8951cf08ff66eac77471a9411",
+    "mobile-app/src/utils/gradient.ts": "c62284eb98e82a2a878e30071de47ea336d996514852ce39913691cf34fb3a50",
+    "mobile-app/src/utils/localCache.ts": "d8891d4b2b313a509a515222217b6e061fd452488f8387555e031b86ba0ab6b6",
+    "mobile-app/src/utils/logger.ts": "3e6b76e24675e31ee3143a0cd61d81dec37c51f9710b4e739f93fb6a0c022dbe",
+    "mobile-app/src/utils/notificationPreferences.ts": "907f2702ff7a71586c07d79b5d257877f309b015a4fdbb8650bc4d4ef677e80a",
+    "mobile-app/src/utils/passwordStrength.ts": "c250f23ec0275926e6284c549f5140a20bc63cafe1dc09e7101e498581d717e4",
+    "mobile-app/src/utils/pendingReferral.ts": "7a9bd057529570bc6c69e02dcc2514b67f8e14cdae1339ad0d8669466f5e5d9b",
+    "mobile-app/src/utils/phone.ts": "f914eac626d39ec64c6b44ca913e56d40aa8d8d0debf2cec20285e0339428264",
+    "mobile-app/src/utils/recentActivity.ts": "7eb273303fa48a9fc1a260c7b7b852506b3ff1fe44ef63fffc54e111b88ebb7e",
+    "mobile-app/src/utils/recentSearches.ts": "0647f6f9428a1edbca7401c5f036a7413d13fb105419a125e6a6a75d5e1ecc89",
+    "mobile-app/src/utils/streakTracker.ts": "10e047467d2ef0151b6fe5413bcbc152c151182f958daaf894233f3ad813e817",
+    "mobile-app/src/utils/textMatch.ts": "b4f8754e24d1cf8dd7ec76dfa4d54f07000903581544e5ee0bcc3a0aa314fe1b",
+    "mobile-app/src/utils/version.ts": "a87cadc3ae5723cb05653db3ca9917b81d3fa6a2f8e57d0913ded40f27964f4d",
+    "mobile-app/src/utils/videoDiagnostics.ts": "b245a049879b982364ad953d805ec36c56ab8f8eb5e34f3c2175af17d1b17257",
+    "mobile-app/src/utils/videoLink.ts": "737c0a481926df180ac3c4c92f817208f95e71f3b8b00dd637f3b61d5c6a827f",
+    "mobile-app/src/utils/videoUrl.ts": "b82ba96008f9e0e9d4963eea2c7e9595c90d1a5251b5b5a8d5c332f3e31fcf33",
+    "mobile-app/src/validation/contactSchema.ts": "054730d109f6fe86a4207853b2600eb194c4fba3e0b37a0ec2d6939051ec500f",
+    "mobile-app/src/validation/forgotPasswordSchema.ts": "48088be2977d1d4bc6c518ea2503792f385104a8d963d7b3b2c83d5a90531b8e",
+    "mobile-app/src/validation/loginSchema.ts": "ac8c33b43eb550c7fd65960459e5b3c4e4c8407fb46c1043c0e1e9611d80c23f",
+    "mobile-app/src/validation/passwordPolicy.ts": "79e97af9c86f69eea1db0058fbe3de4588cbd2a4431e950b313ff249a5585f3e",
+    "mobile-app/src/validation/registerSchema.ts": "af60ab7b466376893a62623021f9976fce23685cf5a619ae6585b05617325863",
+    "mobile-app/src/validation/resetPasswordSchema.ts": "c08a6389021c94a9791400371ac3c74830410b9053f6a1357d3c29e157b947e3",
+    "mobile-app/plugins/withAndroidQueries.js": "aa29a27fa2784c38773f580caf524841cc9e9e62a50793b03535b35179dec84d",
+    "mobile-app/plugins/withAndroidRelease.js": "cdbe2193ce396a300617b3ac8593679b225dc31c34dd3356149c5ded30a38863",
+    "mobile-app/plugins/withOptionalSentry.cjs": "4778e8f1fba084ab4205e1a2749120a19bf77b64dd84e81871b8e08a05d62f15",
+    "mobile-app/assets/adaptive-icon.png": "d01f7a97e30ce7998bc15718ea472646e38dcad861f17b8c1ac9ac888273309d",
+    "mobile-app/assets/branding/medveda-header-logo.png": "19b97b8b5581eb59d2bc6655acbd6dc71c3be3f892528239039130bc4e1283d7",
+    "mobile-app/assets/favicon.png": "948fe2e85e129027e4c4a74fb53598e424f7f2963e98a686c95643bdb554c42c",
+    "mobile-app/assets/icon.png": "d08f1ad9c0d46230ab5a7596d1668b232902f72bff2374863ed3605bcf19d27c",
+    "mobile-app/assets/splash.png": "96a8be2b5b584807059e9bc4e1f838996a8e1970f0d4553e1ba1631b795429a7",
+    "mobile-app/package.json": "5326e0fe2362f51badb814fba669f4e0f71cd62a4556fc5fbaf18c2e1c801283",
+    "mobile-app/package-lock.json": "9c31167671de53e8741e5854e60cf88efeae94474994d8a2fb7e018f5debaf91",
+    "mobile-app/app.config.js": "88d35d8c0fd2ad1ed3ad7f3bfdacdd8e86b2346e016db975bc8aa87b90d1d46f",
+    "mobile-app/app.json": "87edff40f924260c91f63f35482e9fcf8f727847973a6ece63b76450729685e6",
+    "mobile-app/eas.json": "8825dfe69af4849df5033458ea06f2df04953ba4369c8a62baff61e2fb38863a",
+    "mobile-app/tsconfig.json": "8a6e03e88ebc25aa677b8ec97bb423eaacd499250aec7a701d743203b169b868",
+    "mobile-app/babel.config.js": "00f4c0dc69b5ad67100f3c9a823fedee9d384a1fc03dc8dc8b49a636f2023d8a",
+    "mobile-app/metro.config.js": "a9f4677dff8ed58efbcdb3849f12522287a2dc589051cb20f00c19c6a25c5c56",
+    "mobile-app/release-rules.pro": "bb771af60b4b2f90ce1aa77f2ae53f8efebd212223396110ba730470d2238ba8"
+  },
+  "excluded": [
+    "isolated_nonplay_test migration and entrypoints",
+    "future MV006 unique index",
+    "activation/deployment scripts"
+  ],
+  "website_create_order": {
+    "candidate": "../phase-b-20261111/artifacts/B3-create-order-source.tar",
+    "sha256": "72e5c74183d814a3a54cc4819647951f429e935925d3c612b1b976d4a086a9ef",
+    "reason": "Retain separately reviewed B3; dedicated Notes choice uses its own entrypoint."
+  },
+  "npm_lock": {
+    "version": "5",
+    "specifiers": {
+      "npm:@supabase/supabase-js@2.118.0": "2.118.0"
+    },
+    "npm": {
+      "@supabase/auth-js@2.118.0": {
+        "integrity": "sha512-xWfPXyhS2KDSfAneMtI6p/tBnbdiz/5vaRKXEqUfzfC9WCniKr2Ds5o5G7RIGig0bom4z6wUY9zaV07WDVTfnQ==",
+        "dependencies": [
+          "tslib@2.8.1"
+        ]
+      },
+      "@supabase/functions-js@2.118.0": {
+        "integrity": "sha512-4ofletPa/noKAU6KHeqsd3FztGzRPUEJRey1MKY0o+PIHaVePqRPShIXtl37gcVyIWaFM+zNg6r9zh0uUSFOSA==",
+        "dependencies": [
+          "tslib@2.8.1"
+        ]
+      },
+      "@supabase/phoenix@0.4.5": {
+        "integrity": "sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw=="
+      },
+      "@supabase/postgrest-js@2.118.0": {
+        "integrity": "sha512-JXy+37KPApHsyotaQACovv/Jy9E22rfiWLRuT+2UjoEAcAIelDFIrsF/FY47Dy19mO7lI0Tq+zDCX8oJ2Ozfiw==",
+        "dependencies": [
+          "tslib@2.8.1"
+        ]
+      },
+      "@supabase/realtime-js@2.118.0": {
+        "integrity": "sha512-pzCIEWjqD5/xqEZQerpt+q9rsgYkcrkgCJgf0W2ULqC4fYUeB/p9CFa3t9vn+IVh6dMN9r4ZCE262lZvUC+Bfw==",
+        "dependencies": [
+          "@supabase/phoenix",
+          "tslib@2.8.1"
+        ]
+      },
+      "@supabase/storage-js@2.118.0": {
+        "integrity": "sha512-5MNkKt2Moy7Jud/sPX7/28BwdDxZMCVHGJT00b8op3KRa9LKSjOAYU5IcfGWIstaasAqY8GkbA6oI3IRDgB1YQ==",
+        "dependencies": [
+          "iceberg-js",
+          "tslib@2.8.1"
+        ]
+      },
+      "@supabase/supabase-js@2.118.0": {
+        "integrity": "sha512-FxI8UXMVC2UG7IkeiI8fuQZqq2oI3JeSuN8MPIC2RLVaoEAxKS0nqE6kii9Ewpq8f9gNPM6git1Y8f0vN/QLFw==",
+        "dependencies": [
+          "@supabase/auth-js",
+          "@supabase/functions-js",
+          "@supabase/postgrest-js",
+          "@supabase/realtime-js",
+          "@supabase/storage-js"
+        ]
+      },
+      "iceberg-js@0.8.1": {
+        "integrity": "sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA=="
+      },
+      "tslib@2.8.1": {
+        "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="
+      }
+    }
+  }
+}

@@ -28,7 +28,7 @@ export interface Product {
   // app's poster-style cards (Store, Buy Notes) whenever it's higher
   // than `price` - shows a "M.R.P. ₹X (Y% off)" discount look. Leave
   // blank/0 to hide the discount and show only the plain price.
-  originalPrice?: number;
+  originalPrice?: number | null;
   thumbnail: string;
 
   // Only the field(s) matching `scope` are meaningful:

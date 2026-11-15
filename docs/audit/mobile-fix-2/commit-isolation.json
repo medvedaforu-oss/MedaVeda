@@ -1,0 +1,162 @@
+{
+  "MOB-01": [
+    {
+      "path": "mobile-app/scripts/audit-navigation-selftest.cjs",
+      "status": "existing-untracked-prerequisite"
+    },
+    {
+      "path": "mobile-app/src/navigation/AppNavigator.tsx",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-03": [
+    {
+      "path": "mobile-app/scripts/mv007-billing-boundary-selftest.cjs",
+      "status": "existing-untracked-prerequisite"
+    },
+    {
+      "path": "mobile-app/src/config/paymentProvider.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-04": [
+    {
+      "path": "mobile-app/src/services/playBillingService.ts",
+      "status": "existing-untracked-prerequisite"
+    },
+    {
+      "path": "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-05": [
+    {
+      "path": "mobile-app/App.tsx",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-06": [
+    {
+      "path": "mobile-app/scripts/password-recovery.test.cjs",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/screens/auth/ResetPasswordScreen.tsx",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/features/auth/deepLinkStore.ts",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/features/auth/recoveryFlow.js",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/features/auth/recoveryFlow.d.ts",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-07": [
+    {
+      "path": "mobile-app/app.config.js",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/navigation/AppNavigator.tsx",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/features/auth/deepLinkStore.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-08": [
+    {
+      "path": "mobile-app/scripts/audit-reminder-service-selftest.cjs",
+      "status": "existing-untracked-prerequisite"
+    },
+    {
+      "path": "mobile-app/scripts/remaining-audit-selftest.cjs",
+      "status": "existing-untracked-prerequisite"
+    },
+    {
+      "path": "mobile-app/src/services/studyReminderService.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-10": [
+    {
+      "path": "mobile-app/src/services/pushNotifications.ts",
+      "status": "overlapping-existing-changes"
+    },
+    {
+      "path": "mobile-app/src/services/authState.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-11": [
+    {
+      "path": "mobile-app/src/utils/downloadManager.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-13": [
+    {
+      "path": "mobile-app/scripts/offline-download-selftest.cjs",
+      "status": "overlapping-existing-changes"
+    },
+    {
+      "path": "mobile-app/src/services/authState.ts",
+      "status": "overlapping-existing-changes"
+    },
+    {
+      "path": "mobile-app/src/utils/downloadManager.ts",
+      "status": "overlapping-existing-changes"
+    }
+  ],
+  "MOB-14": [
+    {
+      "path": "mobile-app/src/services/syncEngine.ts",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-15": [
+    {
+      "path": "mobile-app/src/services/searchService.ts",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/hooks/useGlobalSearch.ts",
+      "status": "clean-projection"
+    },
+    {
+      "path": "mobile-app/src/components/search/SearchResultRow.tsx",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-16": [
+    {
+      "path": "mobile-app/src/components/ProgressRing.tsx",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-17": [
+    {
+      "path": "mobile-app/src/hooks/useQuizStats.ts",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-18": [
+    {
+      "path": "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+      "status": "clean-projection"
+    }
+  ],
+  "MOB-20": [
+    {
+      "path": "mobile-app/src/screens/auth/ResetPasswordScreen.tsx",
+      "status": "clean-projection"
+    }
+  ]
+}

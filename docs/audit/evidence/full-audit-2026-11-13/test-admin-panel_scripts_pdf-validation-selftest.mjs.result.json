@@ -1,0 +1,11 @@
+{
+  "name": "test-admin-panel_scripts_pdf-validation-selftest.mjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "admin-panel/scripts/pdf-validation-selftest.mjs"
+  ],
+  "exit": 0,
+  "seconds": 0.25
+}

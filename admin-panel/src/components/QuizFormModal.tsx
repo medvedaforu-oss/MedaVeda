@@ -243,7 +243,7 @@ export default function QuizFormModal({
               )}
             </div>
 
-            <textarea
+            <textarea aria-label={`Question ${qIndex + 1} text`}
               rows={2}
               placeholder="Question text"
               value={q.question}
@@ -255,7 +255,7 @@ export default function QuizFormModal({
 
             <div className="mb-2 space-y-2">
               {q.options.map((option, oIndex) => (
-                <input
+                <input aria-label={`Question ${qIndex + 1}, option ${oIndex + 1}`}
                   key={oIndex}
                   type="text"
                   placeholder={`Option ${oIndex + 1}`}
@@ -268,7 +268,7 @@ export default function QuizFormModal({
               ))}
             </div>
 
-            <select
+            <select aria-label={`Question ${qIndex + 1} correct answer`}
               value={q.answer}
               onChange={(e) =>
                 updateQuestion(qIndex, { answer: e.target.value })

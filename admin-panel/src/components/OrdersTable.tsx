@@ -6,6 +6,8 @@ type Props = {
 };
 
 const statusStyles: Record<OrderStatus, string> = {
+  pending: "bg-amber-100 text-amber-700",
+  cancelled: "bg-gray-200 text-gray-600",
   created: "bg-amber-100 text-amber-700",
   paid: "bg-green-100 text-green-700",
   failed: "bg-red-100 text-red-700",
@@ -69,16 +71,19 @@ export default function OrdersTable({ orders, onStatusChange }: Props) {
 
               <td className="p-4 text-right">
                 <select
-                  value={order.status}
-                  onChange={(e) =>
-                    onStatusChange(order, e.target.value as OrderStatus)
-                  }
+                  aria-label={`Update unpaid order for ${order.productTitle || "product"}`}
+                  disabled={order.status !== "created" || !!order.paymentId}
+                  value=""
+                  onChange={(e) => {
+                    const status = e.target.value;
+                    if (order.status === "created" && !order.paymentId && (status === "failed" || status === "cancelled"))
+                      onStatusChange(order, status);
+                  }}
                   className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
                 >
-                  <option value="created">Pending</option>
-                  <option value="paid">Paid</option>
-                  <option value="failed">Failed</option>
-                  <option value="refunded">Refunded</option>
+                  <option value="" disabled>{order.status === "created" && !order.paymentId ? "Choose action" : "Provider managed"}</option>
+                  <option value="failed">Mark failed</option>
+                  <option value="cancelled">Cancel unpaid order</option>
                 </select>
               </td>
             </tr>

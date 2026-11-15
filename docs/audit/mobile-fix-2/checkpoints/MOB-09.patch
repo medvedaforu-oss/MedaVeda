@@ -1,0 +1,103 @@
+--- a/mobile-app/src/services/quizAttempts.ts
++++ b/mobile-app/src/services/quizAttempts.ts
+@@ -4,7 +4,7 @@
+ // Existing client scores remain local practice results, never trusted scores.
+ 
+ import { getDb, OFFLINE_DB_SUPPORTED } from "../config/database";
+-import { queueForSync } from "./syncEngine";
++import { enqueueForSync, drainQueue } from "./syncEngine";
+ import { logDebug } from "../utils/logger";
+ 
+ export interface QuizAttemptInput {
+@@ -28,32 +28,35 @@
+ 
+   const canVerify = !!input.userId && Number.isSafeInteger(input.questionRevision) &&
+     (input.questionRevision ?? 0) > 0;
+-  db.runSync(
+-    `INSERT INTO quiz_attempts_local
+-      (attempt_id, quiz_id, chapter_id, score, total_questions, answers_json, taken_at, synced, verification_status)
+-     VALUES (?,?,?,?,?,?,?,0,?);`,
+-    [
+-      attemptId,
+-      input.quizId,
+-      "", // quizzes are subject-scoped, not chapter-scoped in this app
+-      input.score,
+-      input.totalQuestions,
+-      JSON.stringify(input.answers),
+-      takenAt,
+-      canVerify ? "unverified" : "legacy",
+-    ]
+-  );
++  db.withTransactionSync(() => {
++    db.runSync(
++      `INSERT INTO quiz_attempts_local
++        (attempt_id, quiz_id, chapter_id, score, total_questions, answers_json, taken_at, synced, verification_status)
++       VALUES (?,?,?,?,?,?,?,0,?);`,
++      [
++        attemptId,
++        input.quizId,
++        "", // quizzes are subject-scoped, not chapter-scoped in this app
++        input.score,
++        input.totalQuestions,
++        JSON.stringify(input.answers),
++        takenAt,
++        canVerify ? "unverified" : "legacy",
++      ]
++    );
+ 
+-  if (canVerify) {
+-    queueForSync("quiz_attempt", "upsert", {
+-      attempt_id: attemptId,
+-      user_id: input.userId,
+-      test_id: input.quizId,
+-      question_revision: input.questionRevision,
+-      answers: input.answers,
+-    });
+-  }
++    if (canVerify) {
++      enqueueForSync("quiz_attempt", "upsert", {
++        attempt_id: attemptId,
++        user_id: input.userId,
++        test_id: input.quizId,
++        question_revision: input.questionRevision,
++        answers: input.answers,
++      });
++    }
+ 
++  });
++  if (canVerify) void drainQueue();
+   return attemptId;
+ }
+ 
+--- a/mobile-app/src/services/syncEngine.ts
++++ b/mobile-app/src/services/syncEngine.ts
+@@ -55,8 +55,8 @@
+   }
+ }
+ 
+-/** Call this from any repository/service right after a successful local write. */
+-export function queueForSync(
++/** Enqueue inside the same SQLite transaction as the local write. Does not drain. */
++export function enqueueForSync(
+   entityType: SyncEntityType,
+   operation: "upsert" | "delete",
+   payload: Record<string, unknown>
+@@ -69,8 +69,16 @@
+      VALUES (?,?,?,?,?,0,NULL);`,
+     [queueId, entityType, operation, JSON.stringify(payload), Date.now()]
+   );
+-  // Fire-and-forget: try syncing immediately in case we're already online.
+-  drainQueue();
++}
++
++/** For standalone writes; transactional callers enqueue then drain after commit. */
++export function queueForSync(
++  entityType: SyncEntityType,
++  operation: "upsert" | "delete",
++  payload: Record<string, unknown>
++): void {
++  enqueueForSync(entityType, operation, payload);
++  void drainQueue();
+ }
+ 
+ function getPendingItems(): SyncQueueItem[] {

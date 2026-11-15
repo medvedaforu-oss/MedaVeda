@@ -1,0 +1,414 @@
+[
+  {
+    "name": "mobile-app/scripts/accessibility-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/android-release-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/android-vault-preflight-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/audit-firebase-profile-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/audit-icon-controls-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/audit-navigation-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/android-bundle-validator-selftest.py",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/audit-reminder-service-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/auth-recovery-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/checkout-html-selftest.mjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/auth-state-race-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/checkout-security-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/course-state-race-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/course-year-confirmation-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/course-year-picker-race-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/course-year-selection-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/deep-link-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/download-actions-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/firebase-config-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/list-states-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/load-resource-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/login-network-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/login-submit-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv004-recovery-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv007-billing-boundary-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv008-ownership-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv009-store-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv010-options-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv011-accessibility-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/mv012-history-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/navigation-lazy-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/nonplay-test-isolation-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/closed-testing-selftest.cjs",
+    "exit": 1
+  },
+  {
+    "name": "mobile-app/scripts/notes-entitlement-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notes-billing-choice-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notes-open-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notification-account-hook-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notification-inflight-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notification-preferences-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notification-reads-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/notification-routing-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/offline-download-selftest.cjs",
+    "exit": 1
+  },
+  {
+    "name": "mobile-app/scripts/offline-license-storage-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/offline-owner-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/password-policy-selftest.mjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/p2-registration-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-poll-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/password-recovery.test.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-provider-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-request-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-routing-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-success-owner-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-summary-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/pdf-lifecycle-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/payment-verdict-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/pdf-remote-retry-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/profile-save-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/play-catalog-contract-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/purchases-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/push-lifecycle-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/quiz-editing-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/quiz-hooks-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/quiz-input-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/razorpay-internal-test-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/razorpay-live-testing-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/readiness-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/release-payments-disabled-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/remaining-audit-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/same-project-build-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/route-validation-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/search-cache-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/search-lazy-hook-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/sentry-config-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/staging-build-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/search-pagination-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/startup-availability-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/verify-signature-selftest.js",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/sync-concurrency-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/video-data-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/video-link-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/video-tap-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/scripts/years-inflight-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-01.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-03.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-04-service.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-04.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-05.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-06.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-07.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-08.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-09.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-10.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-11.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-13.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-14-backoff.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-15.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-14.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-16.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-17.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-18.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-19.cjs",
+    "exit": 0
+  },
+  {
+    "name": "mobile-app/__tests__/MOB-20.cjs",
+    "exit": 0
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "localGoogleServicesFiles": [],
+  "GOOGLE_SERVICES_JSON_envPresent": false,
+  "envFileExists": false,
+  "expectedAndroidPackage": "in.medveda.app",
+  "androidHomeExists": false,
+  "androidSdkRootExists": false,
+  "alternateSdkPlatforms": false,
+  "alternateSdkBuildTools": false
+}

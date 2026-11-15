@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/home/ganeshp8545/AyurPulse/docs/audit/p1-local-readiness-20261111_142055/evidence/run-phase-b-preserved.py"
+  ],
+  "exit_code": 0,
+  "seconds": 186.95
+}

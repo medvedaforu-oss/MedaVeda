@@ -1,0 +1,19 @@
+PASS roundtrip verifies complete authenticated identity and exact digest
+PASS all authenticated header regions reject mutation
+PASS wrong owner note version length epoch and content identity fail closed
+PASS chunk order lengths ciphertext tags and completion are authenticated
+PASS truncation at structural boundaries and trailing bytes are rejected
+PASS untrusted bounds invalid identities short long and nonPDF input reject
+PASS fresh attempts use different wrapped keys file IDs and nonce material
+PASS owner session revocation foreign sessions and stale tickets deny
+PASS dedicated vault publishes ciphertext only and preserves unrelated existing data
+PASS missing key short stream and write exception never publish final
+PASS fsync and publication failures retain only ciphertext and cannot report success
+PASS existing target is never clobbered by atomic publication
+PASS symlink roots and source entries cannot escape vault
+HOST_DIAGNOSTIC sizeMiB=1 sealAndVerifyMs=71
+HOST_DIAGNOSTIC sizeMiB=10 sealAndVerifyMs=546
+HOST_DIAGNOSTIC sizeMiB=50 sealAndVerifyMs=1189
+HOST_DIAGNOSTIC sizeMiB=100 sealAndVerifyMs=1510
+PASS stream 1 10 50 100 MiB under 48 MiB host heap without plaintext spooling
+14 focused foundation tests passed; no Android/iOS/device acceptance claimed

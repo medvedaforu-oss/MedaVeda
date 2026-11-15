@@ -27,9 +27,8 @@ type Props = {
   /**
    * Tapping the Buy button starts checkout instead of opening the
    * content. Only rendered (and price shown) when a product exists to
-   * buy and it isn't already owned. Nested inside the card's own
-   * TouchableOpacity - RN's touch responder system gives this button
-   * priority so it never also triggers `onPress`.
+   * buy and it isn't already owned. A sibling of the content button
+   * so both actions can receive accessibility focus independently.
    */
   onBuyPress?: () => void;
   buying?: boolean;
@@ -56,61 +55,69 @@ export default function ProductPosterCard({
     : 0;
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={onPress}
-      activeOpacity={0.85}
-    >
-      <View style={[styles.cover, { backgroundColor: coverColor }]}>
-        <Text style={styles.coverIcon}>{icon}</Text>
+    <View style={styles.card}>
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel={`Open ${title}${caption ? `, ${caption}` : ""}${owned ? ", Owned" : ""}`}
+        accessibilityState={{ disabled: false }}
+        onPress={onPress}
+        activeOpacity={0.85}
+      >
+        <View style={[styles.cover, { backgroundColor: coverColor }]}>
+          <Text style={styles.coverIcon}>{icon}</Text>
 
-        {owned && (
-          <View style={styles.ownedBadge}>
-            <Text style={styles.ownedBadgeText}>✓ Owned</Text>
-          </View>
-        )}
-      </View>
-
-      {!!caption && (
-        <Text style={styles.caption} numberOfLines={1}>
-          {caption}
-        </Text>
-      )}
-
-      <Text style={styles.title}>
-        {title}
-      </Text>
-
-      {!owned && !!onBuyPress && !purchasesUnavailable && (
-        <View style={styles.priceBlock}>
-          <Text style={styles.price}>₹{price}</Text>
-
-          {showDiscount && (
-            <View style={styles.mrpRow}>
-              <Text style={styles.mrpLabel}>M.R.P: </Text>
-              <Text style={styles.mrpValue}>₹{originalPrice}</Text>
+          {owned && (
+            <View style={styles.ownedBadge}>
+              <Text style={styles.ownedBadgeText}>✓ Owned</Text>
             </View>
           )}
-
-          {showDiscount && (
-            <Text style={styles.discountText}>({discountPercent}% off)</Text>
-          )}
         </View>
-      )}
+
+        {!!caption && (
+          <Text style={styles.caption}>
+            {caption}
+          </Text>
+        )}
+
+        <Text style={styles.title}>
+          {title}
+        </Text>
+
+        {!owned && !!onBuyPress && !purchasesUnavailable && (
+          <View style={styles.priceBlock}>
+            <Text style={styles.price}>₹{price}</Text>
+
+            {showDiscount && (
+              <View style={styles.mrpRow}>
+                <Text style={styles.mrpLabel}>M.R.P: </Text>
+                <Text style={styles.mrpValue}>₹{originalPrice}</Text>
+              </View>
+            )}
+
+            {showDiscount && (
+              <Text style={styles.discountText}>({discountPercent}% off)</Text>
+            )}
+          </View>
+        )}
+
+      </TouchableOpacity>
 
       {!owned && !!onBuyPress && (
         <TouchableOpacity
-          style={[styles.buyButton, (buying || purchasesUnavailable) && styles.buyButtonDisabled]}
-          onPress={onBuyPress}
-          activeOpacity={0.85}
-          disabled={buying}
+          style={styles.buyButton}
+          onPress={() => { if (!buying && !purchasesUnavailable) onBuyPress(); }}
+          accessibilityRole="button"
+          accessibilityLabel={purchasesUnavailable ? `${title}. Purchases unavailable` : buying ? `${title}. Purchase in progress` : `Review purchase: ${title}, ₹${price}`}
+          accessibilityState={{ disabled: buying || purchasesUnavailable, busy: buying }}
+          activeOpacity={1}
+          disabled={buying || purchasesUnavailable}
         >
           <Text style={styles.buyButtonText}>
             {purchasesUnavailable ? "Purchases unavailable" : buying ? "Please wait…" : "Buy Now"}
           </Text>
         </TouchableOpacity>
       )}
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -141,7 +148,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ownedBadgeText: {
-    color: COLORS.white,
+    color: COLORS.background,
     fontWeight: "700",
     fontSize: FONT.tiny,
   },
@@ -155,7 +162,6 @@ const styles = StyleSheet.create({
     fontSize: FONT.small,
     fontWeight: "700",
     color: COLORS.text,
-    lineHeight: 18,
     minHeight: 36,
   },
   priceBlock: {
@@ -168,6 +174,7 @@ const styles = StyleSheet.create({
   },
   mrpRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "baseline",
     marginTop: 2,
   },
@@ -187,6 +194,9 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   buyButton: {
+    minHeight: 48,
+    minWidth: 48,
+    paddingHorizontal: 10,
     marginTop: 8,
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.sm,
@@ -194,12 +204,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  buyButtonDisabled: {
-    opacity: 0.6,
-  },
   buyButtonText: {
-    color: COLORS.white,
+    color: COLORS.background,
     fontWeight: "700",
     fontSize: FONT.small,
+    textAlign: "center",
   },
 });

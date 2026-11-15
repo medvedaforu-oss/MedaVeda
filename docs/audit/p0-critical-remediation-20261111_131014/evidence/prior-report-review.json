@@ -1,0 +1,848 @@
+[
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_IDE_TOOLCHAIN_2026-11-10.md",
+    "sha256": "2f697026ad4d0dc4b47bdd5633b15ccc6bb256da83c509765c3e065d0ccb2378",
+    "bytes": 14060,
+    "headings": [
+      "# Local Android / VS Code Toolchain Audit",
+      "## Outcome",
+      "## A. Root Causes By Reported Error",
+      "## B. Shared Causes",
+      "## C. Changed Files",
+      "## D. Before / After Versions",
+      "## E. Verification",
+      "## F. Remaining Local Steps",
+      "## G. Production Safety",
+      "## Evidence And References"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_NATIVE_RELEASE_READINESS_2026-11-11.md",
+    "sha256": "11eb755de525de15f432185ae659447f791031c8a0be536b54f8f3a0cc11936a",
+    "bytes": 34324,
+    "headings": [
+      "# MedVeda Android native release readiness \u2014 2026-11-11",
+      "## 1. Evidence and prior reports",
+      "## 2. Native configuration audit",
+      "## 3. Permissions and security configuration",
+      "## 4. Google Play Billing dependency status",
+      "## 5. Razorpay library status",
+      "## 6. Build environment and EAS cloud readiness",
+      "## 7. Firebase and signing",
+      "## 8. Fresh local verification",
+      "## 9. Exact blockers and unresolved acceptance",
+      "## 10. Manual owner actions and safe next build command",
+      "## 11. Exact real-device acceptance checklist \u2014 planned, not executed",
+      "## 12. Exact files changed and final decision"
+    ],
+    "p0_evidence": [
+      "**Final decision: NO-GO today for certifying and creating the requested production-compatible, disabled-payment AAB.** The existing production EAS profile and remote signing metadata are usable, but Firebase/FCM setup is absent, the unmodified regression run has one failing test fixture, and the retained artifact inspector has an obsolete Billing-permission rejection. Native compilation of the current source remains unverified. These findings do not establish that Gradle would fail to compile the application.",
+      "Inherited broader release gates also remain open where documented, including offline paid-PDF encryption, managed hosted Auth/Storage behavior, privacy/operational acceptance and device performance. This audit does not certify or silently waive them. See [release gates](../RELEASE_GATES.md); its older alternate-environment instructions do not authorize staging access here.",
+      "**GO:** review the existing disabled-payment production profile, retained native integrations, available signing metadata and local fixes. **NO-GO now:** claim a verified production-compatible current-source AAB, initiate the unapproved cloud build, publish/submit, deploy backend artifacts or activate purchases. Missing Firebase and verification gaps need resolution; actual compilation and exact-binary/device acceptance then remain required. The next owner action is to provide genuine Firebase/FCM inputs, followed by the verification corrections and separately approved cloud build above."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_RELEASE_BLOCKER_FIX_2026-11-11.md",
+    "sha256": "e93f9aa650f0fec46fc2c98e9ba7cb3862f53a2548f6f47dc6850062d4a41ffc",
+    "bytes": 21156,
+    "headings": [
+      "# MedVeda Android release blocker fixes \u2014 2026-11-11",
+      "## 1. Exact stale Auth mock fix",
+      "## 2. Exact AAB validator correction",
+      "## 3. Firebase / FCM status",
+      "## 4. Safe owner actions for Firebase",
+      "## 5. Local verification",
+      "## 6. Remaining blockers and build prerequisites",
+      "## 7. Exact task-attributable file inventory"
+    ],
+    "p0_evidence": [
+      "**Locally fixable verification defects: FIXED. Current decision: NO-GO for a release-ready payment-disabled AAB build until genuine Firebase/FCM inputs are supplied and checked, followed by separate build authorization.** Local SDK absence does not prevent a future EAS cloud build. No current-source native compilation or device acceptance is claimed.",
+      "**Final decision: NO-GO now for the requested release-ready AAB build.** Verification defects are resolved; the remaining immediate owner input is genuine Firebase/FCM, followed by separate build authorization. Once these are checked, **GO for one separately authorized payment-disabled EAS build for native verification**, with binary/device acceptance still required afterward. No payment activation, deployment, Play approval or publication follows from this report."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_BILLING_FIXES_2026-11-09.md",
+    "sha256": "3bc145c20d8eb1515e43364dbe824cdd53991755d8ba5f9ee29102d674b4acbb",
+    "bytes": 34986,
+    "headings": [
+      "# MedVeda billing fixes and verification \u2014 9 November 2026",
+      "## A. Final status",
+      "## B. Resolved issue checklist",
+      "## C. Incomplete or blocked items",
+      "## Pricing and preservation",
+      "## D. Exact files changed",
+      "## E. Tests and evidence",
+      "## F. Production preparation \u2014 instructions only, not executed",
+      "## G. Remaining risks",
+      "## H. Final verdict"
+    ],
+    "p0_evidence": [
+      "**Local billing source fixes verified. Production and payment-enabled Alpha: NO-GO.**",
+      "| B07 | High | Raw refund/dispute event existence was treated as a permanent reversal, including partial refunds and disputes later won. Replays could mark valid orders refunded. | Persist provider-validated blocking facts. Hold uncertain/open disputes without a grant or irreversible refund; link the verified capture for inbox recovery. Full refunds/lost disputes reverse; won disputes clear holds; verified partial refunds preserve valid access. Granted replays preserve their purchase state. | New migration; `supabase/functions/_shared/settle.ts` | 25 real-handler/local-SQL webhook checks, including early partial refund, early full refund, open\u2192won dispute, refund/GET interleaving and replay. |",
+      "| B08 | High | Refund entitlement/accounting mutation preceded refund-object validation for ordinary Razorpay orders. | Fetch and bind the processed refund's payment, amount, currency and time before any refund mutation, then persist its authoritative blocking fact. | `supabase/functions/_shared/settle.ts` | Existing actual-handler refund/dispute tests and SQL reversal suites. |",
+      "| B17 | Medium | Provider error response bodies could flow into settlement/worker logs. | Omit raw Razorpay error bodies; retain operation/status. Remove raw SQL settlement/refund/dispute messages and persist fixed reporting failure labels. | Razorpay, settlement and external reporting helpers | Synthetic sensitive-provider-body rejection test and changed-file secret scan. |",
+      "7. Only after the excluded owner-managed prerequisites and authorized isolated"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_B_TO_C_ATOMIC_REHEARSAL_2026-11-11.md",
+    "sha256": "197af8dee09cd3adf0be8a26565830ec860152120f1de19f3b99fb98b9f1019b",
+    "bytes": 19625,
+    "headings": [
+      "# MEDVEDA \u2014 Final B-to-C compatibility and atomic migration rehearsal",
+      "## 1. Inputs and scope",
+      "## 2. Actual B-to-C compatibility",
+      "## 3. New compatibility candidates and exact identity",
+      "## 4. Atomic C1\u2013C4 procedure and runtime defects",
+      "## 5. Ledger correctness and final strong proof",
+      "## 6. Failure, rollback, interruption and locking",
+      "## 7. Reporting, queues and disabled gates",
+      "## 8. Validation results and reproducibility",
+      "## 9. Financial preservation and exact changed-file inventory",
+      "## 10. Remaining blockers and GO/NO-GO"
+    ],
+    "p0_evidence": [
+      "**Local technical acceptance: PASS for the corrected atomic wrapper and separate compatible upgrade. Technical production deployment readiness: NO-GO. The original execution wrapper is not executable as reviewed. No production connection, deployment, payment activation, genuine provider transaction, real financial worker invocation, staging use or Android publication occurred.**",
+      "| Reviewed B2 raw-body HMAC, settlement and duplicate delivery | PASS | PASS for legacy orders; refund/dispute, unresolved provider mismatch and capture-only recovery regressions pass |",
+      "| New choice capture/refund/dispute delivery with retained B | Not installed | **INCOMPLETE**: B omits C reporting/refund queues and `blocks_entitlement` fact writes; legacy success does not establish choice compliance |",
+      "The [separate upgrade manifest](../../supabase/releases/b-to-c-compatible-20261111/manifest.json) and [checksums](../../supabase/releases/b-to-c-compatible-20261111/checksums.sha256) pin all sources, closures, four isolated archives and JWT configuration. B1/B2 and the reporting worker derive from reviewed C sources, restoring B's refusal to acknowledge unknown refund/dispute outcomes; B2 also retains retry on unresolved capture mismatches. B3's entrypoint is byte-identical to reviewed B3; its shared provider helper is C's additive version. Other C Play/catalog/Notes delivery remains separately reviewed work.",
+      "Exact A wrapper: **66\u219269**. Corrected C wrapper: **69\u219273**. The [ledger result](evidence/b-to-c-atomic-20261111/ledger-validation.json) verifies the exact version set and all seven A/C complete source-array entries; C1/C2 execute after the higher-timestamp A versions without repair/pre-marking. A1 appears once. The isolated non-Play installer and future ownership index are excluded.",
+      "[Validation summary](evidence/b-to-c-atomic-20261111/validation-summary.json), [transition results](evidence/b-to-c-atomic-20261111/transition-results.json), [remaining-check results](evidence/b-to-c-atomic-20261111/remaining-results.json), [reproduction guide](evidence/b-to-c-atomic-20261111/README.md). There are 21 transition and 28 remaining PASS group records; repeated wrapper checks overlap and these are not unique end-to-end transaction counts. A continuation runner corrected a harness expectation for the exact ledger-drift error text and completed remaining cases on fresh databases. Earlier iterations also corrected fixture prerequisites/line endings and an inefficient fingerprint loop; no safety assertion was waived. No managed Auth/PostgREST/cache/hook/native/provider recovery acceptance is claimed.",
+      "**GO for independent local technical review of these separately pinned candidates. NO-GO for technical production deployment/execution, payment activation, worker scheduling or Android publication.**",
+      "Blocking before a deployment decision: independently review/re-pin the corrected wrapper and four-function upgrade; incorporate them into a newly approved execution manifest/runbook without silently replacing originals; prove full compatible recovery including managed Auth/Storage/config/object/secrets and accepted RPO/RTO; establish fresh production drift/security/ledger/bundle/config checks; name operator/observer/incident owners and approve a bounded window; demonstrate ingress draining with durable retries and a compatible post-C delivery/resume set; verify managed hook/cache/runtime acceptance. Inherited missing managed recovery evidence is unresolved. Reconcile any differently intended eight-migration review identity before signoff."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_CLOSED_TESTING_2026-11-08.md",
+    "sha256": "73d8bee14ad9d1e2567ffb40836f19f8493d37d5bca5b9a84be71b13d72069e8",
+    "bytes": 29966,
+    "headings": [],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MIGRATION_REPEATABILITY_PREFLIGHT_2026-11-10.md",
+    "sha256": "018a4341d69054a8de0a2f5f702ba99c0817ffe953962a7ce222e27b0db4e5ee",
+    "bytes": 9806,
+    "headings": [
+      "# Isolated test migration repeatability \u2014 10 November 2026",
+      "## A. Exact failure and root cause",
+      "## B. Exact files modified",
+      "## C. SQL statements fixed",
+      "## D. First application",
+      "## E. Second application",
+      "## F. Security and regression results",
+      "## G. Updated production deployment preflight",
+      "## H. Remaining deployment prerequisites",
+      "## I. Single next action"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MOBILE_PRODUCTION_FULL_AUDIT_2026-11-10.md",
+    "sha256": "c9c68ae3848696a77b49eeed9d94a356f144f3f8d136a7af84bc1844189322b7",
+    "bytes": 86527,
+    "headings": [
+      "# MedVeda Android production audit \u2014 2026-11-10",
+      "## A. Executive Summary",
+      "### Audit controls and baseline",
+      "## B. Razorpay Payment Audit",
+      "### Actual integration and runtime",
+      "### Actual execution-path ledger",
+      "### Production pricing",
+      "### Failure, retry, cancellation and recovery",
+      "## C. Notes Unlock Audit",
+      "## D. Production Database Audit",
+      "### Read-only observations",
+      "### Constraints, RLS and function privileges",
+      "### Deployment/migration compatibility",
+      "## E. Complete Screen and Feature Inventory",
+      "## F. UI/UX Findings",
+      "## G. Stability and Performance",
+      "## H. Android Release Readiness",
+      "### Current source configuration",
+      "### Existing artifact inspected read-only",
+      "### Google Play payment policy",
+      "## I. Test Execution Evidence",
+      "### Status vocabulary",
+      "### Commands and safeguards",
+      "### Production query evidence sufficient to reproduce key findings",
+      "### Feature/test matrix \u2014 80 assessed items",
+      "## J. Prioritized Issue Table",
+      "### Detailed issue records",
+      "### Additional concerns \u2014 not confirmed bugs",
+      "## K. Payment Readiness Decision",
+      "## L. Safe Fix Plan \u2014 recommendations only, not implemented",
+      "## M. Final Production Decision"
+    ],
+    "p0_evidence": [
+      "**Decision: NO-GO for the requested production Android paid-Notes experience.** New purchases are deliberately disabled in the production configuration and existing inspected Android artifact. Enabling a flag alone would not produce a verified, compliant payment release.",
+      "**NO-GO for the complete requested production payment-enabled Android release.** This is not a conclusion that every free-learning screen is broken. It is driven by confirmed disabled checkout, production price discrepancy, deployed settlement/auth gaps and contradictory financial state, together with missing native and policy acceptance evidence."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MOBILE_RELEASE_REVIEW_2026-11-04.md",
+    "sha256": "802e18cbfa410b0cb21fead43c05a1c48efbbdc7c222aa3e873f77a9b0a32bc5",
+    "bytes": 8612,
+    "headings": [],
+    "p0_evidence": [
+      "**NO-GO for the production AAB \u2014 4 November 2026.** Android remote push configuration is missing. One reproduced course/year selection race was fixed; affected local checks pass. No AAB was built or submitted."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV001_PAYMENT_READINESS_2026-11-11.md",
+    "sha256": "6a9a65a6dfda58c61622035edeec68920580cb7f7f824838dfd3d95187d85d4e",
+    "bytes": 32987,
+    "headings": [
+      "# MV001 \u2014 production payment readiness \u2014 2026-11-11",
+      "## Scope and preservation",
+      "## Exact task changes",
+      "## Google Play India requirements and unresolved approvals",
+      "## Fresh production compatibility evidence",
+      "## Prepared flow and limits",
+      "## Verification commands and results",
+      "## Release readiness matrix",
+      "## Safe owner-approved implementation and deployment plan \u2014 not executed",
+      "## Rollback strategy"
+    ],
+    "p0_evidence": [
+      "**NO-GO. Production Buy Now remains disabled.** Safe local guards and deterministic regressions pass. Production payment activation is **BLOCKED** by missing Google Play enrollment/acceptance evidence, undeployed backend contracts and workers, unresolved financial history, and native/device acceptance gaps. No production payment-to-Notes success is claimed.",
+      "6. **Historical reconciliation remains a separate financial task:** owner privately verifies each affected payment/refund/dispute in Razorpay and preserves immutable preimages/evidence/audit linkage. Follow MV005/MV006 approval plans; preserve successful Notes access while evidence is unresolved. Do not replay settlement, revoke history, choose a canonical row, enable the future complete unique index or issue compensation to make counts agree. MV006 canonicalization also needs the documented historical replay/retained-payment and future-reversal policy before any demotion.",
+      "**Exact remaining blockers:** owner-specific India enrollment/package/country/trust/support approval; active supported Play product/price mapping and native Billing version; missing production commitment/status/ownership/choice/recovery/reporting contracts; undeployed matching verifier/webhook/Play handlers and operational reporting/reversal workers; two historical order contradictions and one duplicate group with no approved provider-backed resolution; absent native build/device/payment/reporting acceptance. **Final decision: NO-GO. Keep production Buy Now disabled.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV003_LOCAL_FIX_2026-11-10.md",
+    "sha256": "a6850a28756f1a502fe980693886886e76f7e17cc63eb7bc0b10683a7bd81f93",
+    "bytes": 10413,
+    "headings": [
+      "# MV003 \u2014 local entitlement commitment fix \u2014 2026-11-10",
+      "## Scope and production contract evidence",
+      "## Behavior",
+      "## Exact changed files",
+      "## Exact verification commands and results",
+      "## Remaining risk and deployment handoff"
+    ],
+    "p0_evidence": [
+      "Existing capture rows must match order/provider-order/amount and cannot be in compensation/reversal states. Any compensation row blocks proof, including parked/refunded rows. Pending or parked refund/dispute reversal facts block proof conservatively. Applied reversal handlers' durable purchase/order/capture states determine current access, allowing applied partial refunds and resolved disputes to retain legitimate access."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV004_LOCAL_FIX_2026-11-10.md",
+    "sha256": "6fa6da9da39537a0eda5115a19270c0a1f5f7113c6b5527b821320a86a5b8c3a",
+    "bytes": 16572,
+    "headings": [
+      "# MV004 \u2014 payment recovery authorization \u2014 2026-11-10",
+      "## Root cause and preserved work",
+      "## Implementation and authorization evidence",
+      "## Exact files changed by this task",
+      "## Local verification commands and results",
+      "## Android compatibility, remaining risks and owner handoff"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV005_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3f593970f426317a1cc4e7cec57b9ace5f40abdb2498ac7f75a023ce015b4f45",
+    "bytes": 24108,
+    "headings": [
+      "# MV005 \u2014 Razorpay financial state consistency \u2014 2026-11-10",
+      "## Investigation and evidence boundary",
+      "## Exact production results",
+      "## Root cause conclusion",
+      "## Local changes and transitions",
+      "## Automated verification",
+      "## Read-only historical reconciliation plan",
+      "## Separately reviewable repair proposal \u2014 NOT EXECUTED",
+      "## Exact task file list",
+      "## Deployment requirements, risks and blockers"
+    ],
+    "p0_evidence": [
+      "| Inbox refund/dispute entries / external refund rows | 0 / 0 | 0 / 0 |",
+      "Unpaid created/pending/failed/cancelled -> paid remains available through the existing verified settlement RPC; the trigger itself never proves payment or grants access. Paid -> refunded remains available. Refunded capture replays stay revoked. Existing failure/discount/compensation and refund/dispute routines are preserved. Authorized payments remain unentitled; captured facts alone remain unentitled until atomic settlement and MV003 commitment succeed.",
+      "6. On any pre-commit discrepancy, ROLLBACK. After commit, do not restore an inconsistent failed state or disable the prevention guard automatically. Preserve evidence and stop related repair work. A new provider reversal must follow a separately approved compensating refund/dispute process, with immutable audit history. If the repair itself was erroneous, obtain owner approval for an evidence-based compensating change; do not blanket-restore database backups or delete financial rows. The new guard intentionally rejects paid -> failed."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV006_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3757710c189711bdbe422c5b0879c52e2cb08c24de57733d23d8a52471290a44",
+    "bytes": 28597,
+    "headings": [
+      "# MV006 \u2014 successful purchase ownership \u2014 2026-11-10",
+      "## Scope and preservation",
+      "## Production evidence and root cause",
+      "## Purchase model and exact implementation",
+      "## Restoration and Notes authorization",
+      "## Commands and verification results",
+      "## Read-only reconciliation proposal \u2014 not executed",
+      "## Required safeguards for any future production repair",
+      "## Migration safety and future deployment order",
+      "## Exact changed-file inventory"
+    ],
+    "p0_evidence": [
+      "The retained September index migration contains an author's historical testing/capture narrative. That comment is a provenance lead, not independent current provider evidence; it does not prove merchant identity, original business intent, present refund/dispute status or the correct canonical row. The reason and financial disposition of the exception remain unconfirmed. No customer/account claims or payment references from that comment are reproduced here.",
+      "A trusted owner/operator must privately map this one duplicate group to its exact purchase/order/payment keys in an access-controlled manifest. Keep identifiers out of public reports. For each row record preimages, timestamps, immutable scope and amount, provider and order links, capture/inbox/legacy events, compensation/refund/dispute facts, wallet debits/credits, referral effects and review flags. Compare scope snapshots across the pair, including bundle arrays and course: if they differ, choosing one row may lose legitimate Notes rights and the simple canonicalization proposal must stop. Verify current account and unrelated entitlements without disclosing identities.",
+      "- Any pre-commit discrepancy means ROLLBACK. After commit stop on unexpected evidence; do not automatically promote a duplicate, restore conflicting success, disable the guard, delete audit rows or restore a whole database backup. An erroneous canonical choice requires a separately approved compensating transaction with current provider evidence. A reviewed transfer would demote the old anchor before promoting the validated replacement atomically under the guard's isolation/locking contract. New financial reversals follow the existing refund/dispute path and their own approval scope."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV007_GOOGLE_PLAY_BILLING_REMOVAL_2026-11-11.md",
+    "sha256": "d6613e5c8705f27c6e885084b6f86d37c9779defd5a51684b9950d6f8f1e77e5",
+    "bytes": 40344,
+    "headings": [
+      "# MV007 \u2014 Google Play Billing removal gate and safe cleanup \u2014 2026-11-11",
+      "## Status",
+      "## Policy gate and evidence limits",
+      "## Repository inspection and exact safe changes",
+      "## Reference classification and disposition",
+      "## Razorpay integration integrity",
+      "## Exact task-attributable file inventory",
+      "## Deterministic verification commands and results",
+      "## MV003\u2013MV012 regression results",
+      "## Native/device gaps and manual owner actions"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV008_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3b05a10de431ba10506c0a08b745fddcd512f781230d655f11552cf0f8ec67bf",
+    "bytes": 18523,
+    "headings": [
+      "# MV008 \u2014 purchase ownership refresh race \u2014 2026-11-10",
+      "## Investigation and root cause",
+      "## Exact implementation",
+      "## Changed files attributable to MV008",
+      "## Deterministic race and isolation evidence",
+      "## Executed verification commands and final counts",
+      "## Previous fixes, payment gates and pricing",
+      "## Owner handoff and limits"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV009_LOCAL_FIX_2026-11-11.md",
+    "sha256": "ebb7fe4777ff764faf6967ce087dafc8220e9bc6ba2e549e0e19c2e92460afb6",
+    "bytes": 19197,
+    "headings": [
+      "# MV009 \u2014 Store network, empty and retry handling \u2014 2026-11-11",
+      "## Investigation and confirmed root cause",
+      "## Implemented behavior and exact changes",
+      "## Exact changed-file inventory",
+      "## Lifecycle and deterministic evidence",
+      "## Commands and results",
+      "## Regression status",
+      "## Remaining issues, production requirements and owner actions"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV010_LOCAL_FIX_2026-11-11.md",
+    "sha256": "f9c036c5128b28880b26fe430a89bd5a515ec00b21292366257878f1d31f2ccc",
+    "bytes": 18385,
+    "headings": [
+      "# MV010 \u2014 Notes purchase options errors, retry and isolation \u2014 2026-11-11",
+      "## Scope, investigation and preservation",
+      "## Root cause and complete flow",
+      "## Exact changes and complete changed-file inventory",
+      "## Error / empty / retry and freshness verification",
+      "## Required deterministic coverage and isolation evidence",
+      "## Commands and final results",
+      "## Regression status",
+      "## Limitations, production release requirements and manual owner actions"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV011_LOCAL_FIX_2026-11-11.md",
+    "sha256": "6562fd4fb2a9a309a28d56f9ac324e620e9ab015bc0f796331823e801f55b9d5",
+    "bytes": 18591,
+    "headings": [
+      "# MV011 \u2014 Purchase action contrast, semantics and readability \u2014 2026-11-11",
+      "## Investigation, scope and preservation",
+      "## Exact colors and calculated contrast",
+      "## Complete task-attributable modified-file inventory",
+      "## Accessibility behavior and deterministic coverage",
+      "## Commands and results",
+      "## Regression status",
+      "## Remaining device checks, owner actions and deployment"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV012_LOCAL_FIX_2026-11-11.md",
+    "sha256": "036a0b3adf9b53cab9c053303d23aee27e4fb83dc84b477a04462837e453d222",
+    "bytes": 18233,
+    "headings": [
+      "# MV012 \u2014 My Purchases chronological sorting \u2014 2026-11-11",
+      "## Investigation and root cause",
+      "## Exact implementation and before/after behavior",
+      "## Complete task-attributable changed-file inventory",
+      "## Deterministic test coverage and results",
+      "## Verification commands",
+      "## Regression and production status",
+      "## Remaining limitations and manual owner actions"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_NONPLAY_TEST_ISOLATION_2026-11-09.md",
+    "sha256": "4c746f3f2a15155bcf821b73ea121a2b269cb7a823996b51dc5f759ffc1efcb4",
+    "bytes": 20335,
+    "headings": [
+      "# Isolated Razorpay Test Mode implementation \u2014 9 November 2026",
+      "## A. Exact files changed",
+      "## B. New migration, tables and functions",
+      "## C. Isolation guarantees and operational limits",
+      "## D. Validation and limitations",
+      "## E. Existing live flow",
+      "## F. Required configuration for a future authorised test",
+      "## G. Future deployment commands \u2014 NOT EXECUTED",
+      "# Owner supplies this connection securely; do not echo it or store it in the repo.",
+      "# Only after successful migration/application verification:",
+      "# This external owner-reviewed file must contain only NONPLAY_TEST_* names,",
+      "# including NONPLAY_TEST_CHECKOUT_ENABLED=false for preparation.",
+      "## H. APK readiness",
+      "## I. Single next owner action"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_NOTES_BILLING_CHOICE_2026-11-08.md",
+    "sha256": "0754ed6bb75edf6432f9f8bbc9c036aec23f0913ced22bb9993a2ad8b8e58675",
+    "bytes": 14639,
+    "headings": [
+      "# Paid Notes billing choice \u2014 8 November 2026",
+      "## Single next action",
+      "## What is prepared",
+      "## Official programme requirements checked",
+      "## Fresh read-only deployment check",
+      "## Exact remaining Alpha test setup",
+      "## Verification and its limits",
+      "## Exact files changed by this task"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PERF_ANDROID_CHECKLIST_2026-10-27.md",
+    "sha256": "233322c942cc9ef764e607e6f07882f9b932f57e71908adfeb8d7b3d5f804630",
+    "bytes": 7839,
+    "headings": [
+      "# Android regression and performance checklist \u2014 27 October 2026",
+      "## Identical behavior and UI",
+      "## Performance",
+      "## Extra gate for any R8 trial"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_A_FINAL_SAFETY_REVIEW_2026-11-11.md",
+    "sha256": "17d5251109e6b0351031bf2ab0ace862339acfc8572d8f3072c25100c42f4949",
+    "bytes": 22068,
+    "headings": [
+      "# MedVeda Phase A final safety review \u2014 2026-11-11"
+    ],
+    "p0_evidence": [
+      "Required orders/payments/purchases/captures/compensations/provider-event tables and referenced columns exist. Status/provider fields used by the guards are NOT NULL; purchases.product_id remains nullable for historical scope access. No November 8/9 choice/recovery column or RPC is required. The baseline's eight previously inspected settlement/creation/refund/dispute/Notes function definitions also matched the rebuilt local baseline in the acceptance runner. Existing indexes are valid/ready, including purchase-order uniqueness, provider references and the partial ownership index with its historical exception. No index is removed or rebuilt.",
+      "The fresh backup inventory GET reports **`pitr_enabled=false`, `backups=[]`, `physical_backup_data={}`**. This establishes no available managed backup or PITR recovery point through the inspected response; it does not prove no owner-held external backup exists. No current successful external backup/restore evidence was found in the reviewed reports. No backup was created, downloaded or restored.",
+      "The [October 23 restore report](MEDVEDA_PRODUCTION_BACKUP_RESTORE_READINESS_20261023.md) proves only a partial application-table restore: 46 application COPY sections/645 rows and FK checks passed, while complete data restore failed because the local managed Auth schema lacked `audit_log_entries.ip_address`. Loading only Auth IDs did not restore accounts/sessions/identities. That old dump and its hashes cannot certify today's database or a complete recovery path.",
+      "Owner requirements before readiness: current backup identity/time/status and retention; demonstrated compatible full application/managed Auth/Storage metadata restore in isolation locally; object-byte/configuration/secrets recovery references; documented RPO/RTO and handling of financial/provider facts after a recovery point; PITR evidence or an approved demonstrated alternative; named privileged operator and independent observer; bounded DDL/incident window and explicit signed package approval. Any backup creation or restore requires separate authorization. No account upgrade, recovery change or restore is implied by this report. Supabase documents that database backups exclude Storage object bytes and that restoration capability depends on the configured recovery service; platform documentation is not evidence this project has it enabled. [Supabase backup documentation](https://supabase.com/docs/guides/platform/backups), [restore-to-new-project documentation](https://supabase.com/docs/guides/platform/clone-project)."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_A_OPERATOR_RUNBOOK_2026-11-11.md",
+    "sha256": "ecea346b78184bbdb6f603e34e33fb4cf6c123e3415da6474dc785a633db9723",
+    "bytes": 16383,
+    "headings": [
+      "# MedVeda Phase A operator runbook \u2014 2026-11-11"
+    ],
+    "p0_evidence": [
+      "1. **Obtain approvals and demonstrate recovery.** The owner must sign a change reference identifying the three hashes below, the derived operator SQL hash, named privileged operator and independent read-only observer, accepted 2-second lock/15-second statement limits, maintenance window, incident contact and abort policy. Separately obtain the current backup identifier/time/status, retention and achievable RPO/RTO, PITR capability/range or an explicitly approved demonstrated alternative, and a successful compatible restore rehearsal covering application tables, managed Auth and Storage metadata. Preserve Notes object bytes and external project/Auth/secret/configuration recovery references separately. Use a compatible isolated LOCAL restore environment; never staging. Backup creation or restoration is a separate authorization, absent here. Do not restore over production as a drill. The October 23 application-only restore is insufficient: complete restore failed on `auth.audit_log_entries.ip_address`. Current backup-list GET returned `backups=[]`, `pitr_enabled=false`, `physical_backup_data={}`. Resolve that evidence gap, rather than assuming a backup exists."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_B_EDGE_COMPATIBILITY_2026-11-11.md",
+    "sha256": "c3d3c9ab34eca9fee1e1f9313424b314bc3c7393c86edc4e5dd229d29b2f5d71",
+    "bytes": 28900,
+    "headings": [
+      "# MedVeda Phase B Edge compatibility \u2014 2026-11-11",
+      "## 1. Independently inspected baseline",
+      "## 2. Narrow candidate behavior and status",
+      "## 3. Exact artifacts, inventories and hashes",
+      "## 4. SQL dependency matrix",
+      "## 5. Handler, SQL and regression results",
+      "## 6. Function configuration and deployment prerequisites",
+      "## 7. Remaining blockers, risks and owner actions",
+      "## 8. Exact task-attributable changed files"
+    ],
+    "p0_evidence": [
+      "| B2 razorpay-webhook | LOCAL VERIFIED | Retains exact raw-body HMAC verification, optional previous-secret support and authenticated durable inbox. Uses the same hash-identical candidate MV003 helper as B1. Real SQL handles idempotent capture/refund/dispute transitions. Only committed grants, durable compensation/reversal outcomes and correctly ignored authenticated events receive acknowledgement. Transient/mismatched capture outcomes and unknown-payment refunds/disputes return retryable failures. |",
+      "B1/B2 retain the reviewed MV003 proof calls before/after settlement, historical committed-purchase skip, missing-entitlement failure, capture/compensation classification and historical failed/cancelled-success manual-review branch. The shared helper is a **compatibility extraction**, not byte-identical to the broad local helper: only undeployed Notes-choice authorization, external-reporting calls/closure and `blocks_entitlement` writes are removed; unknown refund/dispute outcomes additionally fail closed. The exact proof RPC is unchanged. Both candidates import the **same reviewed extracted helper**; neither substitutes a void-return success heuristic. [Exact helper projection diff](evidence/phase-b-20261111/_shared_settle.ts.diff).",
+      "No deterministic local compatibility requirement remains failing. Production rollout remains **BLOCKED** by unproven current recoverability, absent Phase A delivery and absent separate production authorization. The earlier review observed PITR disabled/no listed managed backups and only incomplete historical managed-Auth restore evidence. This session did not refresh backups or prove a recovery procedure. Existing evidence is not deployment approval. Owner must supply a current recovery point and demonstrate compatible application/Auth/Storage-metadata restoration in isolation, with object/config/secrets recovery references, RPO/RTO and financial/provider handling after a restore point.",
+      "Other practical limits: local PostgreSQL 17.11 differs from hosted 17.6; managed Auth/PostgREST/cache/DDL hooks are stubbed or unexecuted; native Android/device/provider/Google acceptance is unverified. SDK pinning, legacy unsigned recovery's intentional 401, possible webhook retries for unresolved mismatches and alert configuration require operator review. No actual HTTP SDK transport, installed website checkout, Google reporting or physical-device purchase is certified. Proof establishes exact commitment at its database snapshot; later authenticated refunds/disputes can change access. Existing two failed-order/success contradictions and the historical duplicate group remain unresolved owner decisions."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_C_LOCAL_READINESS_2026-11-11.md",
+    "sha256": "f3622646c5364879be18dcd32a7a7b2dd864e383955af83c71b01c3bbab29c01",
+    "bytes": 30199,
+    "headings": [
+      "# MedVeda Phase C billing integration local readiness \u2014 2026-11-11",
+      "## 1. Local implementation status",
+      "## 2. Exact SQL dependencies and ordering",
+      "## 3. Google Play India integration",
+      "## 4. Razorpay Notes-choice integration",
+      "## 5. External reporting",
+      "## 6. Worker readiness",
+      "## 7. Local test commands and results",
+      "## 8. Missing Console evidence",
+      "## 9. Native/device blockers",
+      "## 10. Exact changed-file inventory and release artifacts",
+      "## 11. Manual owner requirements",
+      "## 12. Remaining production blockers and fail-safe",
+      "## 13. Future deployment order and final decision"
+    ],
+    "p0_evidence": [
+      "**Final decision: NO-GO for production deployment or purchase activation. Local review package prepared and deterministic acceptance PASS. Purchases remain disabled.** No migration, function, schedule, secret, catalog or price was deployed or changed remotely. No real order, financial worker, provider receipt, authorization token or Google acceptance was created. No staging contact occurred.",
+      "Authorization queues a report even while order is unpaid. Its timestamp is recorded once after provider status/amount validation, and queue deadlines survive later capture/retry. **Timestamp limitation:** existing authorization handling uses provider payment `created_at` as its stable conservative time anchor, not a separately exposed `authorized_at`; lost-dispute reversal time uses first local observation. Do not label these exact provider authorization/resolution instants. Owner/provider/API acceptance must validate timestamp semantics; the creation-time anchor generally advances the deadline rather than extending it. Genuine token validity, Google transactionTime acceptance, tax treatment and genuine refund/dispute acceptance remain **NOT VERIFIED**.",
+      "Inherited Phase A evidence reports no listed managed backup/PITR recovery point and incomplete earlier Auth restore; not refreshed or solved here. Phase A/B/C delivery, fresh production drift/security/cache checks, complete recovery evidence, historical decisions, authentic Console/API/provider acceptance, native build/device acceptance, timestamp/tax validation, scheduler capacity/lease behavior and independent alerts remain blockers. No issue is promoted to production-complete.",
+      "**GO for local technical review of the isolated artifacts. NO-GO for production deployment, paid release, worker enablement or Buy Now activation. Purchases stay disabled.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PLAY_PATCH_403_2026-10-27.md",
+    "sha256": "387037a2a91e1bfa0b1d95a0f507d9dbb759e77f82659dcb89274836b1278dca",
+    "bytes": 9497,
+    "headings": [
+      "# MedVeda One-time Products PATCH 403",
+      "## Reconstructed production request and contract comparison",
+      "## What the parser loses and what diagnostics can recover",
+      "## Safe local change and validation"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_BACKUP_RESTORE_READINESS_20261023.md",
+    "sha256": "f30c800b514f6a1d3da2a3b4369167ce88c6fb120b050a0e614ee41ca7f79920",
+    "bytes": 4393,
+    "headings": [
+      "# MedVeda backup restore audit \u2014 2026-10-23"
+    ],
+    "p0_evidence": [
+      "**Final verdict: BLOCKED for a complete rollback.** The application tables passed an isolated restore and integrity check, but the complete `data.sql` restore failed against the cached Supabase PostgreSQL image because its managed Auth schema differs from production. Production rollback is **not verified**. No production connection or write was made.",
+      "| Complete data restore | **FAIL / compatibility BLOCKED** | Unchanged `data.sql` stopped with `ERROR: column \"ip_address\" of relation \"audit_log_entries\" does not exist`. The cached image's managed `auth` and `storage` schemas lack many dump columns and tables. A full data restore was not achieved. |",
+      "| Application integrity | PASS, partial scope | Dump requests `session_replication_role = replica` to load circular references. After loading, an explicit join check across all 65 `public` foreign keys found zero orphan rows. All 65 FK constraints were marked valid; the restored schema also had 46 primary keys, 9 unique constraints, and 76 check constraints marked valid. This does not validate omitted managed Auth/Storage data or application behavior. |",
+      "The dump contains 79 COPY sections: 46 `public`, 26 `auth`, and 7 `storage`. The nonempty managed sections contain 256 Auth rows (including 27 `auth.users`) and 58 Storage metadata rows (including 55 `storage.objects` and 3 `storage.buckets`). Thus Auth and Storage **table rows are partly included** in `data.sql`, but their managed schema definitions are absent from `schema.sql`, and the full rows could not be restored in this image. The backup does not contain uploaded object bytes, project and Auth provider configuration, external secrets or signing/payment credentials, or deployed Edge Functions. No personal data or credential values were printed in the audit.",
+      "**Recovery limitation:** the three SQL files alone cannot demonstrate a complete production rollback. A compatible disposable Supabase environment with matching managed Auth/Storage schema is needed to restore all 79 COPY sections and validate their constraints; uploaded files and external configuration need separate recovery evidence. No plan upgrade, migration, deployment, build, or production change was performed. The disposable container and temporary logs were removed after this audit."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_BUY_NOW_ACTIVATION_READINESS_2026-11-11.md",
+    "sha256": "78e88513bbda0c2aaf3faa6374a7b5a7f502de617825da6beb94c37b37aa6bf4",
+    "bytes": 32977,
+    "headings": [
+      "# MedVeda production Buy Now activation readiness \u2014 2026-11-11",
+      "## Evidence boundaries and preservation",
+      "## Complete activation matrix",
+      "## Phase A database delivery",
+      "## Phase B isolated Edge package",
+      "## Phase C compliance and dependency requirements",
+      "## Android UI and secure entitlement review",
+      "## Historical financial review \u2014 separate approval per case",
+      "## Native release readiness",
+      "## Test results and separately authorized acceptance plan",
+      "## Safe future sequence and owner actions",
+      "## Exact task-attributable modifications"
+    ],
+    "p0_evidence": [
+      "**Final decision: NO-GO. Production Buy Now must remain disabled. No activation, deployment, financial operation, genuine payment, worker invocation, AAB build or publication was performed.** Local preparation and regressions pass; mandatory production prerequisites do not.",
+      "Delivery remains **BLOCKED**. The [Phase A operator runbook](MEDVEDA_PHASE_A_OPERATOR_RUNBOOK_2026-11-11.md) and its proposed atomic wrapper remain unchanged; wrapper SHA-256 `1473150ed92b6ee08b18e66be2042e99d19e0e66e8ef957f61f4f78fa20bcb05`. No migration was executed or pre-marked. The old partial application-only restore did not restore complete managed Auth and cannot establish current recovery. Supply current backup identity/time/retention and a demonstrated compatible full application/Auth/Storage-metadata restore, separate object-byte/config/secret recovery references, RPO/RTO and post-recovery provider reconciliation policy. Any creation/restore requires its own approval.",
+      "For each of the two inconsistent cases, owner/financial operator must privately retain: exact internal order/payment/purchase links and snapshot/amount/tax/wallet/discount evidence; provider order receipt, linked payment, INR amount, authorized/captured/settled timestamps/state; complete refund/dispute/chargeback evidence; authenticated webhook delivery/event hashes; and any available audit/deployment chronology explaining the failed status. A current captured status alone cannot justify a historical update or establish the actor.",
+      "**NO-GO remains in force. Next action is recovery evidence and review, not activation.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_DEFAULT_OFF_PREFLIGHT_2026-11-10.md",
+    "sha256": "abe562d4d8c6384e9a64156c9e60f0d56227177123445e55e8e54ee686d0d595",
+    "bytes": 14457,
+    "headings": [
+      "# Production default-OFF preflight \u2014 10 November 2026",
+      "## Blockers",
+      "## Audit results",
+      "## Pending migrations",
+      "## Exact proposed files",
+      "## Conditional deployment plan \u2014 NOT EXECUTED",
+      "## Rollback and interrupted-deployment recovery \u2014 NOT EXECUTED",
+      "## Production preservation and remaining configuration"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_DEPLOYMENT_PREFLIGHT_2026-11-11.md",
+    "sha256": "367cb9c31eca6f375a2f815c20eef0a0d4d695329edec0dd2bb7802fb5e7888e",
+    "bytes": 66113,
+    "headings": [
+      "# MedVeda production deployment preflight \u2014 2026-11-11",
+      "## 1. Readiness and evidence rules",
+      "## 2. Audit inputs, source state and earlier reports",
+      "## 3. Complete bug status matrix",
+      "## 4. Fresh production backend compatibility",
+      "## 5. Isolated migration manifest",
+      "### Phase A \u2014 smallest independently reviewable prevention package",
+      "### Phase C \u2014 future full choice/recovery prerequisites, blocked",
+      "## 6. Required Edge Function manifest",
+      "## 7. Required Android build changes and acceptance",
+      "## 8. Exact safe deployment order \u2014 plan only",
+      "## 9. Payment safety checks",
+      "## 10. Historical reconciliation blockers \u2014 no repair",
+      "## 11. Current Google Play India requirements and owner actions",
+      "## 12. Fresh local release verification",
+      "## 13. Exact modified-file inventory and preservation",
+      "## 14. Rollback, fail-safe and final owner decisions"
+    ],
+    "p0_evidence": [
+      "**Final decision: NO-GO for a production payment-enabled release.** The completed deterministic fixes are locally verified; none is production-complete. A three-migration, prevention-only backend package is ready for owner deployment review while Android purchases remain disabled. Current complete local Edge bundles are **BLOCKED for the minimal rollout** because they include additional undeployed contracts. No deployment is authorized by this report.",
+      "- Backup report verified application-table restoration but **not a complete managed Auth restore**. Full production rollback/recoverability remains NOT VERIFIED; owner must approve a current recovery procedure before DDL deployment.",
+      "| Missing columns | `orders.ucb_transaction_time`, `orders.external_report_test_purchase`, `provider_events.blocks_entitlement` absent | Current authorization/reporting/refund/dispute paths reference missing schema. Do not deploy whole local helper/webhook as an MV003-only patch. |",
+      "8. Only after complete backend/native/Console/provider/reporting/reconciliation evidence, present a **new** explicit activation proposal. Enabling Buy Now, changing provider/enrollment flags or publishing an AAB is outside this task and remains NO-GO.",
+      "| Combined MV003/MV005/MV006 SQL | PASS, LOCAL VERIFIED: `PGHOST=/tmp/mv003 PGPORT=55443 PGUSER=postgres python3 supabase/tests/run-mv006-local.py`; 143 PASS lines/notices, zero ERROR lines; `sql-regressions.log`. Includes baseline reproduction, each migration twice, eight baseline function comparisons, unchanged financial/catalog fingerprints, real handler/proof/HMAC, snapshots, independent-session races, rollback, restoration/refund/dispute and future-index refusal/synthetic-only activation tests. |",
+      "- **Before deployment:** retain approved bundle/source hashes, baseline function definitions/ACLs and schema/trigger/index metadata privately; verify current backup/recovery and bounded DDL locking. The audit stores reduced hashes, not a full production rollback backup. Prior incomplete managed-Auth restore proof remains an owner operational blocker to close.",
+      "**Exact next manually authorized action:** the owner reviews and approves only the three hash-pinned Phase A artifacts and their DDL/recovery window, followed by a fresh read-only drift check. Production execution must be a new explicitly authorized action. Until then, prepare/review B as a separate local patch only; do not deploy, run workers, repair history, enable payments or publish an AAB. **Final payment release decision: NO-GO.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_MIGRATION_EXECUTION_PACKAGE_2026-11-11.md",
+    "sha256": "0c6e1a2e0c5b522922adf6a25e36166f82a29528d1b40f0ec84b8782a866bf00",
+    "bytes": 8080,
+    "headings": [
+      "# Production migration execution package \u2014 2026-11-11 UTC"
+    ],
+    "p0_evidence": [
+      "**NO-GO for execution. Prepared for independent operator review; nothing is authorized or executed.**",
+      "1. **Verified recovery:** current recovery point and demonstrated complete compatible application/Auth/Storage metadata restore, object/config/secrets recovery, accepted RPO/RTO and post-recovery financial reconciliation. Retained evidence reports PITR disabled/no listed backups and an incomplete prior Auth restore. This preparation did not refresh or resolve it.",
+      "**NO-GO FOR EXECUTION. Do not proceed automatically.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md",
+    "sha256": "7b417cd8fb8d63ce916c059793501d699ad9618ae35ba5c6040e29788d494bc0",
+    "bytes": 19570,
+    "headings": [
+      "# Razorpay deployment, acceptance and rollback handoff"
+    ],
+    "p0_evidence": [
+      "**NO-GO for hosted Razorpay purchasing pending the deployment and acceptance gates below.**",
+      "2. Verify a recent restorable production backup/PITR point and take a protected logical schema+data backup using a configured connection service, plus private exports of the five replaced function definitions, their ACLs, both table triggers/policies and current Edge function bundles/JWT settings. Record backup timestamp, hashes, row counts and a restore check. Keep credentials, tokens, live user rows and provider settings outside the repository. No production backup has been verified in this run.",
+      "Continue supporting historical Play orders, purchase verification/consumption, pending purchases, void/refund/dispute reconciliation, retained identity/accounting and any external transaction/refund reports and fees already owed. Verify their deployed jobs, credentials and backlog before release. Local passing tests do not establish live operation.",
+      "**NO-GO remains** because production identity/access/deployed state, hosted test capture/unlock, native/device acceptance and permitted distribution/enrollment are unresolved. Production and Play internal-testing profiles remain disabled. No claim of successful payment, deployment or Notes unlock is made."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RAZORPAY_INTERNAL_TEST_ROUTING_2026-11-04.md",
+    "sha256": "7f353889dc89894744357d8283e75f8a3156139da0114bf37290300631f0e857",
+    "bytes": 5643,
+    "headings": [],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "sha256": "abb38be8176208320ab61b07da15cf3ef90ad47f875355273b5bddb2364520f2",
+    "bytes": 6494,
+    "headings": [
+      "# Quiz and admin URL migration: compatibility and recovery",
+      "## Migration provenance and dependencies",
+      "## Client compatibility boundary",
+      "## URL helpers and deployment sequence",
+      "## Required hosted and device evidence",
+      "## Stop and rollback rules"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/MEDVEDA_STARTUP_PAYMENTS_2026-11-08.md",
+    "sha256": "9deb17137a2d405c915ea95f3d904c473815ba5523d04759f9f7445068eb9f63",
+    "bytes": 13944,
+    "headings": [
+      "# MedVeda startup and Notes checkout \u2014 8 November 2026",
+      "## Source and preservation",
+      "## Startup",
+      "## Payments: cause, implementation and remaining limits",
+      "## Current official India Play requirements",
+      "## Fresh hosted evidence and exact next step",
+      "## Validation and changed files"
+    ],
+    "p0_evidence": [
+      "uses the Play-managed choice screen, external transaction token and authorized"
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/ANDROID_AND_FRONTEND_AUDIT.md",
+    "sha256": "283d0f89e65fc72825f9093023e42e3c8bbad51dbb8811e5d0bdc978f5eef6fe",
+    "bytes": 7491,
+    "headings": [
+      "# ANDROID AND FRONTEND AUDIT",
+      "## Fresh build and static checks",
+      "## Consumer frontend",
+      "## Android build / store readiness",
+      "## Admin dashboard",
+      "## Website"
+    ],
+    "p0_evidence": []
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/COMPLETE_PROJECT_DEEP_AUDIT.md",
+    "sha256": "53560950e8efc3e61e4c623061554829267938a970a0f4b8a34d4c31acd70519",
+    "bytes": 8515,
+    "headings": [
+      "# COMPLETE PROJECT DEEP AUDIT",
+      "## Evidence and scope",
+      "## Discovered architecture",
+      "## Functional conclusions",
+      "## Previous B-to-C rehearsal verification",
+      "## Production evidence and direct answers",
+      "## Fresh production observation supplement"
+    ],
+    "p0_evidence": [
+      "**Verdict: PRODUCTION NO-GO.** The repository contains a substantial functional application and strong synthetic payment/database regression coverage. It does not establish an accepted production release. No completion percentage is justified: screens, backend contracts and operational prerequisites have different weights, and managed/native/provider journeys remain unverified.",
+      "Prior claims are retained as historical evidence in `MEDVEDA_B_TO_C_ATOMIC_REHEARSAL_2026-11-11.md`. This audit reproduced original hash mismatch and invalid FOREACH parsing; atomic A 66\u219269; corrected C 69\u219273; strong final proof and exact migration-source ledger records; all baseline function preimages; financial-row preservation on synthetic history; forced rollback after all four C stages; legacy B handler, recovery and history paths; candidate choice authorization/reporting; final-schema contracts and MV005/MV006 concurrency. See fresh logs and the detailed migration report."
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/DATABASE_PUSH_READINESS.md",
+    "sha256": "7ef5d03e0335ec47717d452dbc31b5ed69729192a6a01c365dd27783f04d4ab2",
+    "bytes": 7324,
+    "headings": [
+      "# DATABASE PUSH READINESS",
+      "## Pending files and intended sequence",
+      "## Independently reproduced release behavior",
+      "## Exact blockers",
+      "## Financial history / recovery",
+      "## Fresh production observation supplement"
+    ],
+    "p0_evidence": [
+      "Intended sequence is baseline 66 \u2192 atomic A1/A2/A3 \u2192 69 \u2192 separately verified B delivery \u2192 atomic C1/C2/C3/C4 \u2192 73 \u2192 separately approved compatible Edge delivery/resume. The excluded test installer explains 74 local files versus 73 final production versions. Its installation is not implicitly authorized. Future full ownership index under `supabase/maintenance` is also a separate operation. Timestamp order differs from the reviewed staged sequence; migration-ledger repair/pre-marking is not a safe substitute.",
+      "Fresh tests reproduced 126 exact baseline function preimages; atomic A 66\u219269; corrected C 69\u219273; seven exact ledger source arrays; strong final MV003 bodies/ACLs; refusal on post-success retry; missing gate refusal; each C-stage forced rollback; synthetic historical public-table row fingerprints unchanged. Fresh drift/interruption/lock evidence and any harness limitations are listed in `evidence/TEST_EXECUTION.md`; prior logs alone are not proof of reproduction.",
+      "3. Demonstrate a current compatible restore covering application schema/data, managed Auth identities/config, Storage metadata AND object bytes, policies, secrets/config references and approved RPO/RTO. Existing partial restore evidence is insufficient."
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/FEATURE_COMPLETENESS_MATRIX.md",
+    "sha256": "47624e6055f98673d922a613fadf402df6080721cf62aad49f3d1f7dd486bda6",
+    "bytes": 41037,
+    "headings": [
+      "# FEATURE COMPLETENESS MATRIX",
+      "## Consumer features",
+      "## Admin and website feature inventory",
+      "## Exhaustive discovered route/entrypoint appendix"
+    ],
+    "p0_evidence": [
+      "| Refund/dispute retries | BROKEN | [mobile-app/src/screens/payment/PaymentFailedScreen.tsx:1](/home/ganeshp8545/AyurPulse/mobile-app/src/screens/payment/PaymentFailedScreen.tsx:1) | `functions/_shared/settle.ts` | refund/dispute RPC; provider_events; workers | AUD-001 workspace defect; candidate isolated fix verified |"
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/NOTES_UNLOCKING_END_TO_END_AUDIT.md",
+    "sha256": "c39547ab0ac473d783136e16c27943d4e646406e74be59eb4fd2f6e37c1d4910",
+    "bytes": 6725,
+    "headings": [
+      "# NOTES UNLOCKING END TO END AUDIT",
+      "## Environment-specific verdict",
+      "## Flow traced",
+      "## Safety and recovery matrix",
+      "## Fresh production observation supplement"
+    ],
+    "p0_evidence": [
+      "| Wrong owner/product | Recovery/commitment and storage ownership checks deny | Full managed Auth/IDOR penetration testing outstanding |"
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/PRODUCTION_READINESS_GO_NO_GO.md",
+    "sha256": "fb0752c0aeca71efa4e35e76465f54dea446015df5b200d117804735b1b88edb",
+    "bytes": 8785,
+    "headings": [
+      "# PRODUCTION READINESS GO NO GO",
+      "## Fresh non-mutating production observations",
+      "## Required area verdicts",
+      "## All 20 executive questions"
+    ],
+    "p0_evidence": [
+      "**PRODUCTION NO-GO.** Local financial safeguards have meaningful test evidence, but mandatory deployment, security, recovery, native/provider and operational gates remain unresolved. Nothing in this audit authorizes deployment, migration, payment activation or publication.",
+      "| Security | FAIL | Tested financial/auth/RLS controls; HIGH targeted notification isolation and reversal retry defects; deployment gap |",
+      "| Backup and Recovery | BLOCKED | No fresh complete compatible managed Auth/Storage/application restore proof or accepted RPO/RTO |"
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/RAZORPAY_PAYMENT_AUDIT.md",
+    "sha256": "d2d4fdeebf9bf58a13b2e8fc3640b3c478a13c60487b39340fea866138e8b8a2",
+    "bytes": 8424,
+    "headings": [
+      "# RAZORPAY PAYMENT AUDIT",
+      "## Complete flow and trust boundaries",
+      "## Required integration checks",
+      "## Refund and dispute semantics",
+      "## Direct production answer",
+      "## Fresh production observation supplement"
+    ],
+    "p0_evidence": [
+      "**HIGH \u2014 current workspace defect:** [supabase/functions/_shared/settle.ts:239](/home/ganeshp8545/AyurPulse/supabase/functions/_shared/settle.ts:239) and line 314 return `ok:true` for `unknown_payment`. The webhook can acknowledge and the worker can finish a reversal job without resolved settlement. [Independent reproduction](evidence/unknown-reversal-reproduction.log) compares current helper with compatible archive: workspace succeeds, candidate returns 503. Do not treat broad workspace deployment as the reviewed upgrade."
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/README.md",
+    "sha256": "b8f34e40e277000b80b2198c6aa62702fdf759e183b775fe4ba426177482ae9f",
+    "bytes": 1247,
+    "headings": [
+      "# MEDVEDA / AyurPulse independent audit \u2014 2026-11-11"
+    ],
+    "p0_evidence": [
+      "**PRODUCTION NO-GO.** No application source, approved artifact or production data was modified. Detailed answers and limitations are in the reports below."
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/REMAINING_WORK_PRIORITY_CHECKLIST.md",
+    "sha256": "2dd523ba596f7fe38306bb2b00c31e6610d078e1f378264dcff422bc3256c6c1",
+    "bytes": 6794,
+    "headings": [
+      "# REMAINING WORK PRIORITY CHECKLIST",
+      "## P0 \u2014 Critical production blockers",
+      "## P1 \u2014 High-priority functional/security acceptance",
+      "## P2 \u2014 Medium-priority bugs and operational improvements",
+      "## P3 \u2014 Low-priority cleanup and polish",
+      "## Safest order and completion rule"
+    ],
+    "p0_evidence": [
+      "- [ ] Resolve unknown refund/dispute acknowledgement (AUD-001) across complete verifier/webhook/reporting-worker closures. Preserve durable retry and fail-closed commitment semantics.",
+      "- [ ] Obtain current complete recovery evidence: application + managed Auth + Storage metadata and object bytes + config/secret recovery, tested compatible restore, RPO/RTO and provider reconciliation after restore.",
+      "- [ ] Deliver required A \u2192 B \u2192 atomic C \u2192 compatible Edge sequence only under separate authorization and accepted recovery/drift/drain gates. Validate ledger 66\u219269\u219273 and exact source/function/config contracts before resume.",
+      "Preserve evidence/history \u2192 repair and test P0 code defects \u2192 accept full recovery \u2192 freeze/review exact release identity \u2192 resolve CI and required native/managed/provider acceptance \u2192 refresh production drift \u2192 separately authorize bounded controlled delivery with traffic/workers drained \u2192 validate exact contracts/history \u2192 separately approve resume/activation only after all required policy/provider/monitoring gates pass."
+    ]
+  },
+  {
+    "path": "docs/audit/full-project-2026-11-11_123321/SECURITY_AND_BUG_REPORT.md",
+    "sha256": "54f5a1b2db955a3f4ce4e3fddf8b50b18491daa87a25bebf544dc1235cd0fe86",
+    "bytes": 13952,
+    "headings": [
+      "# SECURITY AND BUG REPORT",
+      "## Confirmed defects",
+      "### AUD-001 \u2014 HIGH \u2014 Current workspace acknowledges unresolved financial reversals",
+      "### AUD-002 \u2014 HIGH \u2014 Targeted notification becomes globally readable",
+      "### AUD-003 \u2014 MEDIUM \u2014 Admin analytics truncates orders at server row cap",
+      "### AUD-004 \u2014 MEDIUM \u2014 Admin order menu offers forbidden status mutations",
+      "### AUD-005 \u2014 LOW \u2014 Admin duplicate imports fail mandatory CI lint",
+      "### AUD-006 \u2014 MEDIUM \u2014 Original atomic C wrapper hash comparison rejects matching baseline",
+      "### AUD-007 \u2014 MEDIUM \u2014 Original atomic C wrapper has invalid FOREACH syntax",
+      "### AUD-008 \u2014 MEDIUM \u2014 Play malformed-body test has incomplete mocks",
+      "### AUD-009 \u2014 MEDIUM \u2014 Legacy SQL expectations disagree with new ownership guard",
+      "### AUD-010 \u2014 MEDIUM \u2014 Mobile dependency tree contains moderate advisories",
+      "## Confirmed production gaps and data anomalies",
+      "## Security controls verified within scope",
+      "## Suspected risks / unresolved verification (not confirmed exploits)"
+    ],
+    "p0_evidence": [
+      "**No CRITICAL exploitable vulnerability was independently demonstrated. That is not a clean bill of health.** HIGH findings below block launch. All reproductions use synthetic data and never attack or mutate production. The current deployed release is separately behind the reviewed local financial guards.",
+      "### AUD-001 \u2014 HIGH \u2014 Current workspace acknowledges unresolved financial reversals",
+      "- Reproduction: Invoke actual helper with authenticated synthetic provider refund/dispute and RPC result `{status:unknown_payment}`.",
+      "### AUD-002 \u2014 HIGH \u2014 Targeted notification becomes globally readable",
+      "Fresh read-only `production-readonly.json` shows 66 ledger versions, no `razorpay_entitlement_committed` RPC, and deployed verifier/webhook bundles without the commitment call. This is a **HIGH deployment/financial acceptance gap** relative to the audited candidate; a pending-code fix does not protect production. Bundle feature-string inspection is structural evidence, not a remotely executed exploit. The new handler/proof deployment must be delivered as an approved compatible unit.",
+      "- Real managed Auth JWT/gateway behavior, MFA enrollment/refresh, password hook/config and Storage object ACL acceptance remain untested."
+    ]
+  }
+]

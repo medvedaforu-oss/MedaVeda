@@ -1,0 +1,7 @@
+# Isolated candidate settings only; never use the broad workspace config.
+[functions.create-order]
+verify_jwt = true
+[functions.verify-payment]
+verify_jwt = false
+[functions.razorpay-webhook]
+verify_jwt = false

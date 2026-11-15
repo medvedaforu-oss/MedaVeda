@@ -49,11 +49,23 @@ for (const [name, values, shouldPass] of [
 const saved = new Map(Object.keys(safe).map(name => [name, process.env[name]]));
 Object.assign(process.env, safe);
 try {
-  const app = require('../app.config.js')({ config: require('../app.json').expo });
+  const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
+  const filename = path.resolve(__dirname, '../app.config.js');
+  const localFirebase = path.resolve(__dirname, '../google-services.json');
+  let productionFilePresent = false;
+  const mod = { exports: {} };
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {
+    module: mod, exports: mod.exports, __dirname: path.dirname(filename), process,
+    require: name => name === 'fs' ? { ...fs, existsSync: file => path.resolve(file) === localFirebase ? productionFilePresent : fs.existsSync(file) }
+      : name.startsWith('./') ? require(path.resolve(path.dirname(filename), name)) : require(name),
+  });
+  const app = mod.exports({ config: require('../app.json').expo });
+  productionFilePresent = true;
+  assert.throws(() => mod.exports({ config: require('../app.json').expo }), /Staging build cannot include/);
   check('staging APK has distinct app identity and disabled runtime',
     app.name === 'MedVeda Staging' && app.scheme === 'medveda-staging' &&
     app.android.package === 'in.medveda.staging' &&
-    app.android.runtimeVersion.endsWith('-disabled') &&
+    app.android.runtimeVersion.endsWith('-disabled-notes-choice-v1') &&
     app.extra.medvedaPaymentProvider === 'disabled');
 } finally {
   for (const [name, value] of saved) {

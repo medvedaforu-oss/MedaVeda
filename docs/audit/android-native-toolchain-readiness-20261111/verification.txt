@@ -1,0 +1,5 @@
+Prepared bash blocks: all four parse with bash -n.
+Prepared Python copy snippet: parses; not executed.
+Local document links: resolve.
+All 9 inspected project/config/dependency files retain their recorded SHA-256.
+No Android compilation or instrumentation run; no installation.

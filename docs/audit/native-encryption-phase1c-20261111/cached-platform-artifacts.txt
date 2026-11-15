@@ -1,0 +1,3 @@
+Search: Gradle/Maven caches, /opt, /usr/lib/android-sdk for android.jar, locked RN AAR, Expo core AAR.
+Exit: 1 (one or more search roots absent).
+Matches:

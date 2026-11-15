@@ -1,0 +1,11 @@
+{
+  "name": "expo-doctor",
+  "cwd": "mobile-app",
+  "command": [
+    "npx",
+    "--yes",
+    "expo-doctor"
+  ],
+  "exit": 1,
+  "seconds": 52.96
+}

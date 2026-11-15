@@ -1,0 +1,19 @@
+{
+  "tcp_listen_addresses": "",
+  "initial_harness_databases": [
+    "ap_wh"
+  ],
+  "remaining_scratch_databases": [],
+  "active_other_clients": 0,
+  "shutdown_command": [
+    "/usr/lib/postgresql/17/bin/pg_ctl",
+    "-D",
+    "/tmp/medveda-p1-pg/data",
+    "-m",
+    "fast",
+    "stop"
+  ],
+  "exit_code": 0,
+  "output": "waiting for server to shut down.... done\nserver stopped\n",
+  "scope": "P1 synthetic cluster only; retained stopped under /tmp"
+}

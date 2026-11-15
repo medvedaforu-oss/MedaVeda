@@ -9,6 +9,7 @@ type Props = {
 };
 
 export default function NotesTable({ notes, chapters, onEdit, onDelete }: Props) {
+  const chapterTitles = new Map(chapters.map((chapter) => [chapter.id, chapter.title]));
   if (notes.length === 0) {
     return (
       <div className="rounded-xl bg-white p-10 text-center text-gray-400 shadow">
@@ -18,7 +19,7 @@ export default function NotesTable({ notes, chapters, onEdit, onDelete }: Props)
   }
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="bg-white rounded-xl shadow overflow-x-auto">
       <table className="w-full">
         <thead className="bg-green-700 text-white">
           <tr>
@@ -41,7 +42,7 @@ export default function NotesTable({ notes, chapters, onEdit, onDelete }: Props)
               </td>
 
               <td className="p-4">
-                {chapters.find((c) => c.id === note.chapterId)?.title ?? "-"}
+                {chapterTitles.get(note.chapterId) ?? "-"}
               </td>
 
               <td className="p-4">

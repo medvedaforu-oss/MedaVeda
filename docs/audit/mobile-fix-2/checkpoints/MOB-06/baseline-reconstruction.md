@@ -1,0 +1,1 @@
+Original initial-status.txt shows no preexisting modifications in the four recovery source files or password-recovery.test.cjs. Complete before images were recovered from initial HEAD 54c33cb because interrupted controller edits predated the first durable checkpoint. After images retain finding06 only;07/20 deltas are separate. Original failing logs remain unchanged.

@@ -1,0 +1,9 @@
+Independent read-only reviewer: /root/review_remaining_fixes.
+Compared scoped changes to /tmp/medveda-remaining-baseline, preserving unrelated work.
+Found reminder restoration could re-enable a disabled choice after a deferred OS schedule query.
+Executable fault-injection reproduced enabled=false -> true before correction.
+Fixed by serializing complete restoration decision with an internal nonqueued enable helper.
+Reviewer rechecked and ran the regression successfully.
+Reviewer subsequently checked final initial-read failure/retry implementation and both reminder regression suites: no substantive issues found.
+No remaining substantive findings in reviewed storage/navigation/profile/preferences/terms/admin/SQL/backend candidates/website/dormant acquisition.
+No native/device acceptance or encryption activation assessed.

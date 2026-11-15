@@ -1,0 +1,15 @@
+# Mobile reliability and accessibility
+
+Date: 2026-11-11 UTC. P1 local only. Synthetic accounts/payments and isolated PostgreSQL; no production/staging calls, financial APIs, deployment, payment activation, cloud/native build, credentials upload or publication. Production purchases remain disabled. Local verification is not production acceptance.
+
+**Existing P1 journey fixes are ALREADY FIXED and reverified; new account/notification/promise fixes are locally verified. Real TalkBack/layout/device acceptance remains NOT VERIFIED.**
+
+The full selected mobile regression set covers startup availability/maintenance/update retry, Auth recovery/deep links and stale bootstrap, course/year changes, Store retry, buy-option errors, purchase-history sorting, Notes open/PDF lifecycle and remote URL retry, downloads/owner isolation, free videos, quiz editing, lazy navigation, loading/list/error states, search concurrency, sync and unmount cleanup. Production educational videos remain accessible without starting financial checkout.
+
+New changes address delayed push registration/logouts and token rotation, stale notification navigation across accounts, duplicate foreground presentation and wrong-account targets, deferred Auth work, Play post-storage account changes and summary owner checks. Study reminder startup now awaits channel setup and catches restoration failures; optional notification failure cannot create an unhandled startup promise. The native notification APIs were not replaced or mocked in shipped code.
+
+Existing MV008–MV012 behavior remains: generation-pinned ownership, recoverable Store failure, explicit unknown/error buy options, meaningful disabled/payment labels and latest-first deterministic history. Accessibility suites execute labels, roles, disabled states, live error/loading semantics, separate Notes open/download touch targets and tested layout structure. Config retains adaptive orientation, resizeable MainActivity and keyboard resize, and ProGuard keeps required JNI surfaces.
+
+No visual redesign, new paywall or P2 cosmetic work was performed. Synthetic JSX/hook tests do not measure physical touch targets, real TalkBack focus/announcements, font clipping, display scaling, contrast on hardware, native PDF/UPI/WebView memory, process death or performance. Device matrix must include TalkBack, 200% fonts, small screen/rotation, 16 KB arm64, minimum supported API and current API, offline/resume and low-memory/large-PDF cases.
+
+The prior full-project report also left local release-impacting admin issues open. P1 closes these narrowly: analytics pages all orders with stable ID ordering and deterministic product ties; only unpaid failed/cancelled actions are offered (provider-managed statuses are read-only; service refuses invalid mutations; server RPC remains final authority); duplicate imports no longer break mandatory lint. Counts above 1,000, course filter, later-page failure and UI action constraints are tested. Pagination is not a cross-request database snapshot: concurrent financial updates can change a live dashboard; no accounting reconciliation claim is made.

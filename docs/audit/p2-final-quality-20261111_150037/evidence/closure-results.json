@@ -1,0 +1,56 @@
+[
+  {
+    "command": [
+      "node",
+      "scripts/p2-quality-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "log": "closure-0.log",
+    "seconds": 1.46
+  },
+  {
+    "command": [
+      "node",
+      "scripts/p2-performance-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "log": "closure-1.log",
+    "seconds": 0.91
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "log": "closure-2.log",
+    "seconds": 0.84
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "log": "closure-3.log",
+    "seconds": 0.1
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "log": "closure-4.log",
+    "seconds": 13.3
+  }
+]

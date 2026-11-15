@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/home/ganeshp8545/.gradle/wrapper/dists/gradle-9.3.1-bin/23ovyewtku6u96viwx3xl3oks/gradle-9.3.1/bin/gradle",
+    ":medveda-offline-vault:compileDebugKotlin",
+    ":medveda-offline-vault:compileDebugAndroidTestKotlin",
+    "--project-cache-dir",
+    "/home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-project",
+    "--no-daemon",
+    "--console=plain",
+    "--max-workers=1",
+    "-Dorg.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=384m",
+    "-Dorg.gradle.parallel=false",
+    "-Pkotlin.compiler.execution.strategy=in-process",
+    "-Dorg.gradle.internal.http.connectionTimeout=15000",
+    "-Dorg.gradle.internal.http.socketTimeout=30000",
+    "--info",
+    "--stacktrace"
+  ],
+  "exit": 143,
+  "timed_out": false,
+  "seconds": 65.94
+}

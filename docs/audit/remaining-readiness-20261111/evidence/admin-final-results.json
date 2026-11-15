@@ -1,0 +1,147 @@
+[
+  {
+    "command": [
+      "npm",
+      "run",
+      "build",
+      "--prefix",
+      "admin-panel"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "npm",
+      "test",
+      "--prefix",
+      "admin-panel"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "npm",
+      "ls",
+      "--depth=0",
+      "--offline",
+      "--ignore-scripts",
+      "--prefix",
+      "admin-panel"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/auth-race-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/batch2-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/list-retry-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/mutation-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/p1-financial-ui-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/pagination-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/pdf-validation-selftest.mjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/play-pricing-diagnostic-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/play-service-account-diagnostic-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/request-race-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/settings-save-selftest.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "admin-panel/scripts/upload-error-selftest.mjs"
+    ],
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "tracked_diff_matches_prework": true,
+  "prework_diff_sha256": "f88d7573fa04663a27c3f92011c0b904d377c0acd394cb2cfbc1dc0ab4a97495",
+  "current_diff_sha256": "f88d7573fa04663a27c3f92011c0b904d377c0acd394cb2cfbc1dc0ab4a97495",
+  "status_entries_removed": [],
+  "status_entries_added": [],
+  "fresh_audits": {
+    "mobile-app": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 0,
+      "critical": 0,
+      "total": 3
+    },
+    "tooling": {
+      "info": 0,
+      "low": 0,
+      "moderate": 9,
+      "high": 0,
+      "critical": 0,
+      "total": 9
+    },
+    "admin-panel": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "report_bytes": 59606,
+  "report_required_sections": true,
+  "missing_relative_markdown_links": []
+}

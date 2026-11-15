@@ -1,0 +1,9 @@
+# MOB-02 / B03 — open native and backend dependency
+
+The current download/view path still persists readable paid PDF bytes. The dormant offline-vault module explicitly reports contentEnabled=false/nativeAccepted=false and is not integrated into acquisition or viewing. No encryption, native activation or entitlement relaxation was attempted. This remains open.
+
+A complete design requires an authenticated owner-bound acquisition permit and offline license contract, a native HTTPS acquisition path that writes only authenticated ciphertext to durable storage, and a ticket-bound viewer which uses bounded private temporary plaintext with lifecycle cleanup. Encrypting after a plaintext download cannot meet the requirement. Reuse the existing scaffold only after its streaming/container/journal protocol and all platform implementations are accepted; no new native module is authorized here.
+
+Migrate legacy completed and paused PDFs with a durable cleanup/re-download journal. Never certify cleanup from a UI row deletion; include orphan files, interrupted transfers and viewer/cache copies. Preserve the seven-day offline policy and clock rollback checks while binding every lease/key/permit to the auth lifetime and content revision. Define logout, account switch, process kill, expired license, key loss, refund and signed URL expiry behavior before activation. Flash deletion does not prove physical secure erase.
+
+Backend dependency: reviewed permit/license issuance and revocation with owner/content binding and server time. Native dependencies: actual integrated encrypted streaming and secure view/temporary-file lifecycle on the target Android release binary. Device acceptance must prove no persistent plaintext across success/failure/pause/kill/logout, cache cleanup, wrong-owner denial, seven-day expiry/clock rollback and interrupted legacy migration. Current host tests exercise dormant code and cannot close B03.

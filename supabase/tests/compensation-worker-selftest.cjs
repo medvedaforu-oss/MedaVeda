@@ -19,6 +19,7 @@ vm.runInNewContext(code,{exports:{},require:id=>{
  if(id.endsWith('externalReporting.ts'))return {reportExternalOrder:async()=>{},reportExternalRefundEvent:async()=>{}};
  if(id.endsWith('googlePlay.ts'))return {};
  if(id.endsWith('ucbAlert.ts'))return {alertUcb:async()=>{}};
+ if(id.endsWith('notesChoiceAuthorization.ts'))return {reportNotesChoiceAuthorization:async()=>{}};
  if(id.endsWith('settle.ts'))return {settleRefund:async()=>{googleRefundQueued++;return {ok:true}}};
  if(id.endsWith('razorpay.ts'))return {refundCapturedPayment:async(_payment,_amount,requestId)=>{
    if(requestId!==item.refund_request_id)throw Error('idempotency marker changed');

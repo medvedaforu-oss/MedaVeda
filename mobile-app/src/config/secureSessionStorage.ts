@@ -56,62 +56,70 @@ function keyFor(key: string) {
   return `secure-${key}`.replace(/[^a-zA-Z0-9._-]/g, "_");
 }
 
-async function encrypt(key: string, value: string): Promise<string> {
-  const encryptionKey = crypto.getRandomValues(new Uint8Array(32)); // 256-bit
-  const cipher = new aesjs.ModeOfOperation.ctr(encryptionKey, new aesjs.Counter(1));
-  const encryptedBytes = cipher.encrypt(aesjs.utils.utf8.toBytes(value));
-
-  // The AES key itself lives ONLY in the OS keystore/keychain, never in
-  // AsyncStorage - this is what makes the AsyncStorage blob useless on
-  // its own.
-  await SecureStore.setItemAsync(keyFor(key), aesjs.utils.hex.fromBytes(encryptionKey));
-
-  return aesjs.utils.hex.fromBytes(encryptedBytes);
+// A blob names an immutable key generation. Publishing the blob is the commit:
+// a failed write never replaces the key needed by the previously durable blob.
+const operations = new Map<string, Promise<unknown>>();
+function serialized<T>(key: string, action: () => Promise<T>): Promise<T> {
+  const pending = (operations.get(key) ?? Promise.resolve()).catch(() => {}).then(action);
+  operations.set(key, pending);
+  void pending.finally(() => { if (operations.get(key) === pending) operations.delete(key); }).catch(() => {});
+  return pending;
 }
-
-async function decrypt(key: string, value: string): Promise<string | null> {
-  const encryptionKeyHex = await SecureStore.getItemAsync(keyFor(key));
-  if (!encryptionKeyHex) return null; // key missing -> can't decrypt, treat as "no session"
-
-  const cipher = new aesjs.ModeOfOperation.ctr(
-    aesjs.utils.hex.toBytes(encryptionKeyHex),
-    new aesjs.Counter(1)
-  );
-  const decryptedBytes = cipher.decrypt(aesjs.utils.hex.toBytes(value));
-  return aesjs.utils.utf8.fromBytes(decryptedBytes);
+function generationOf(blob: string): string | null {
+  if (!blob.startsWith("{")) return null; // installed legacy ciphertext
+  const value = JSON.parse(blob);
+  if (value.version !== 2 || !/^[a-f0-9]{32}$/.test(value.generation) ||
+      typeof value.ciphertext !== "string" || !/^(?:[a-f0-9]{2})*$/.test(value.ciphertext))
+    throw new Error("Invalid session envelope");
+  return value.generation;
+}
+function storedKey(key: string, generation: string | null) {
+  return generation ? `${keyFor(key)}.${generation}` : keyFor(key);
 }
 
 export const secureSessionStorage = {
-  async getItem(key: string): Promise<string | null> {
-    if (isWeb) return AsyncStorage.getItem(key);
-
-    const encrypted = await AsyncStorage.getItem(key);
-    if (!encrypted) return null;
-    try {
-      return await decrypt(key, encrypted);
-    } catch {
-      // Corrupt/unreadable value (e.g. keystore was cleared) - fail closed
-      // by dropping it, rather than throwing and breaking app startup.
+  getItem(key: string): Promise<string | null> {
+    return serialized(key, async () => {
+      const blob = await AsyncStorage.getItem(key);
+      if (isWeb || !blob) return blob;
+      let generation: string | null;
+      try { generation = generationOf(blob); } catch { return null; }
+      // Locked/unavailable keystore is not evidence of corrupt persisted data.
+      const keyHex = await SecureStore.getItemAsync(storedKey(key, generation));
+      if (!keyHex) return null;
+      try {
+        if (!/^[a-f0-9]{64}$/.test(keyHex)) return null;
+        const ciphertext = generation ? JSON.parse(blob).ciphertext : blob;
+        const cipher = new aesjs.ModeOfOperation.ctr(aesjs.utils.hex.toBytes(keyHex), new aesjs.Counter(1));
+        return aesjs.utils.utf8.fromBytes(cipher.decrypt(aesjs.utils.hex.toBytes(ciphertext)));
+      } catch { return null; }
+    });
+  },
+  setItem(key: string, value: string): Promise<void> {
+    return serialized(key, async () => {
+      if (isWeb) { await AsyncStorage.setItem(key, value); return; }
+      const previous = await AsyncStorage.getItem(key);
+      const encryptionKey = crypto.getRandomValues(new Uint8Array(32));
+      const generation = aesjs.utils.hex.fromBytes(crypto.getRandomValues(new Uint8Array(16)));
+      const cipher = new aesjs.ModeOfOperation.ctr(encryptionKey, new aesjs.Counter(1));
+      const ciphertext = aesjs.utils.hex.fromBytes(cipher.encrypt(aesjs.utils.utf8.toBytes(value)));
+      await SecureStore.setItemAsync(storedKey(key, generation), aesjs.utils.hex.fromBytes(encryptionKey));
+      encryptionKey.fill(0);
+      // On ambiguous storage failure retain both generations for restart recovery.
+      await AsyncStorage.setItem(key, JSON.stringify({ version: 2, generation, ciphertext }));
+      if (previous) {
+        try { await SecureStore.deleteItemAsync(storedKey(key, generationOf(previous))); } catch { /* harmless orphan key */ }
+      }
+    });
+  },
+  removeItem(key: string): Promise<void> {
+    return serialized(key, async () => {
+      const blob = await AsyncStorage.getItem(key);
+      // Delete publication first; interruption cannot leave a blob with a lost key.
       await AsyncStorage.removeItem(key);
-      await SecureStore.deleteItemAsync(keyFor(key));
-      return null;
-    }
-  },
-
-  async setItem(key: string, value: string): Promise<void> {
-    if (isWeb) {
-      await AsyncStorage.setItem(key, value);
-      return;
-    }
-
-    const encrypted = await encrypt(key, value);
-    await AsyncStorage.setItem(key, encrypted);
-  },
-
-  async removeItem(key: string): Promise<void> {
-    await AsyncStorage.removeItem(key);
-    if (!isWeb) {
-      await SecureStore.deleteItemAsync(keyFor(key));
-    }
+      if (!isWeb && blob) {
+        await SecureStore.deleteItemAsync(storedKey(key, generationOf(blob)));
+      }
+    });
   },
 };

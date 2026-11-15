@@ -10,14 +10,14 @@ const mocks = {
     onAuthStateChange:fn=>{authChanged=fn;}, signOut:async()=>({ error: signOutError })},
     from:()=>({select(){return this;},eq(){return this;},maybeSingle:async()=>({data:{blocked:false}})})}},
   '@react-native-async-storage/async-storage':{__esModule:true,default:{getItem:async k=>store.get(k),setItem:async(k,v)=>store.set(k,v),removeItem:async k=>store.delete(k)}},
-  './pushNotifications':{registerForPushNotifications(){registrations++;},unregisterCurrentDeviceToken:async()=>{}},
+  './pushNotifications':{setPushNotificationUser(){},registerForPushNotifications(){registrations++;return 'fixture-token';},unregisterCurrentDeviceToken:async()=>{}},
   '../utils/logger':{logDebug(){}},
-  '../utils/downloadManager':{clearAllDownloads:async()=>{if(failPurge)throw new Error('simulated storage failure');}},
+  '../utils/downloadManager':{cleanupPaidNoteDownloads:async()=>{},clearAllDownloads:async()=>{if(failPurge)throw new Error('simulated storage failure');}},
 };
 const source=fs.readFileSync(process.env.MEDVEDA_TEST_OWNER_SOURCE || path.join(__dirname,'../src/services/authState.ts'),'utf8');
 const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
-const mod={exports:{}};vm.runInNewContext(code,{module:mod,exports:mod.exports,require:id=>{assert.ok(id in mocks,id);return mocks[id];}});
-const tick=()=>new Promise(resolve=>setImmediate(resolve));
+const mod={exports:{}};vm.runInNewContext(code,{setTimeout,module:mod,exports:mod.exports,require:id=>{assert.ok(id in mocks,id);return mocks[id];}});
+const tick=()=>new Promise(resolve=>setTimeout(resolve,5));
 (async()=>{
   await tick();authChanged('SIGNED_IN',{user:{id:'second'}});await tick();
   assert.equal(store.get('medveda:offline-owner'),'first','Failed purge must not transfer ownership');
@@ -38,7 +38,7 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
     './authState': { getCurrentUser: () => user },
     './secureNotesService': { NoteAccessError: class extends Error {}, getSecureNoteUrl: async () => { checks++; user = { id: 'third' }; } },
     './offlineNoteVerification': { hasRecentNoteVerification: async () => true, recordNoteVerification: async () => { records++; }, clearNoteVerification: async () => {} },
-    '../utils/downloadManager': { cancelDownload: async () => {} },
+    '../utils/downloadManager': { getDownload:()=>({isFreePreview:true}),cancelDownload: async () => {} },
   };
   const accessCode = ts.transpileModule(fs.readFileSync(path.join(__dirname, '../src/services/offlineNoteAccess.ts'), 'utf8'),
     { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;

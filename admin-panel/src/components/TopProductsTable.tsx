@@ -14,7 +14,7 @@ export default function TopProductsTable({ products }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="bg-white rounded-xl shadow overflow-x-auto">
       <table className="w-full">
         <thead className="bg-green-700 text-white">
           <tr>
@@ -29,7 +29,7 @@ export default function TopProductsTable({ products }: Props) {
             <tr key={product.productId} className="border-b hover:bg-gray-50">
               <td className="p-4">{product.productTitle}</td>
               <td className="p-4">{product.orders}</td>
-              <td className="p-4">₹ {product.revenue}</td>
+              <td className="p-4">{new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(product.revenue)}</td>
             </tr>
           ))}
         </tbody>

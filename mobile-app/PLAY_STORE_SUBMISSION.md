@@ -1,8 +1,10 @@
 # MedVeda — Play Store Submission Guide
 
 This guide covers the remaining build and Google Play Console steps for the
-MedVeda release. New purchases are disabled in the Android app after removal
-of Google Play Billing. No replacement checkout is enabled. Existing purchased
+MedVeda release. MV007 full Billing removal is blocked pending regional policy
+and owner-specific enrollment verification. The library remains for required
+alternative-billing integration and historical recovery. New purchases are
+disabled in production; no replacement checkout is enabled. Existing purchased
 Notes continue to require server-side entitlements. Earlier Play purchases,
 pending transactions, verification, refunds and support require a separate
 operational migration decision; do not disable backend processing or change
@@ -51,10 +53,12 @@ variable.
 
 ## 5. Build with EAS
 
-This removal requires a new native build; an OTA update cannot remove the
-billing SDK or permission from an installed binary. Inspect the merged release
-manifest and native dependency graph, then the final APK/AAB, to confirm no
-`expo-iap`, BillingClient or `com.android.vending.BILLING` remains.
+No build or upload is authorized by MV007. Before any separately authorized
+release, inspect the merged manifest, native dependency graph and final binary.
+`expo-iap`, its transitive Billing library and Billing permission remain for the
+required integration; absence of the conditional Expo plugin does not disable
+autolinking. An OTA update cannot remove a native SDK from an installed binary.
+See `../docs/audit/MEDVEDA_MV007_GOOGLE_PLAY_BILLING_REMOVAL_2026-11-11.md`.
 
 ```bash
 cd mobile-app
@@ -128,7 +132,7 @@ declare only data actually collected or shared by the release.
 
 **Alternative billing**: Not enabled. Do not display Razorpay or a user-choice
 alternative billing flow in a Google Play build while the app is ineligible.
-No replacement checkout is enabled by this removal.
+The presence of retained APIs does not prove enrollment or policy compliance.
 
 ## 8. Submit
 
@@ -146,8 +150,9 @@ Or upload the AAB manually in Play Console → Production → Create release.
 - [ ] RLS is enabled on all Supabase tables.
 - [ ] The resolved `production` and `internal-testing` app configs disable new purchases.
 - [ ] Buy UI shows purchases unavailable and opens no checkout or external payment link.
-- [ ] The merged release manifest, dependency graph and final APK/AAB contain no
-      `expo-iap`, BillingClient or `com.android.vending.BILLING`.
+- [ ] The merged release manifest, dependency graph and final APK/AAB match the
+      independently approved regional payment architecture. Full Billing removal
+      remains blocked; do not remove required compliance or historical recovery APIs.
 - [ ] Existing entitled Notes open; locked Notes remain locked. Purchase history,
       downloads, offline content, videos and quizzes still work.
 - [ ] Earlier Play purchases and pending transactions have a separate backend/support

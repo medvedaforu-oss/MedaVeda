@@ -1,9 +1,8 @@
 import { paymentProvider } from "../config/paymentProvider";
-import { getCourseYear } from "../services/courseState";
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Platform } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, ActivityIndicator, Platform, TouchableOpacity } from "react-native";
 
-import { fetchBuyOptionsForChapter, Product } from "../services/productsService";
+import useBuyOptions from "../hooks/useBuyOptions";
 import usePurchase from "../hooks/usePurchase";
 
 import { COLORS } from "../theme/colors";
@@ -11,9 +10,9 @@ import { FONT } from "../theme/fonts";
 import { SPACING } from "../theme/spacing";
 import { RADIUS } from "../theme/radius";
 import { SHADOW } from "../theme/shadows";
-import { logError } from "../utils/logger";
 
 type Props = {
+  title?: string;
   chapterId: string;
   subjectId: string;
   yearId: string;
@@ -33,34 +32,15 @@ const SCOPE_LABEL: Record<string, string> = {
 // ChapterDetails hub screen (which has the same options, for the flow
 // that still goes through it).
 export default function UnlockOptionsPanel({
+  title = "🔒 Unlock Options",
   chapterId,
   subjectId,
   yearId,
   subjectTitle,
   yearTitle,
 }: Props) {
-  const [options, setOptions] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const { options, status, loading, error, refresh } = useBuyOptions(chapterId, subjectId, yearId, Platform.OS === "android");
   const { buy, purchasing } = usePurchase();
-
-  useEffect(() => {
-    if (Platform.OS !== "android") return;
-    let isMounted = true;
-
-    fetchBuyOptionsForChapter(chapterId, subjectId, yearId, getCourseYear().courseId)
-      .then((data) => {
-        if (isMounted) setOptions(data);
-      })
-      .catch((err) => logError("Failed to load buy options:", err))
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [chapterId, subjectId, yearId]);
 
   function scopeLabel(scope: string) {
     if (scope === "subject" && subjectTitle) return `Full Subject: ${subjectTitle}`;
@@ -70,16 +50,32 @@ export default function UnlockOptionsPanel({
 
   if (Platform.OS !== "android") return null;
 
+  const actionDisabled = paymentProvider === "disabled" || loading || status !== "success" || purchasing;
+
   return (
     <View style={styles.wrap}>
-      <Text style={styles.title}>🔒 Unlock Options</Text>
+      <Text style={styles.title}>{title}</Text>
       {paymentProvider === "disabled" && <Text style={styles.empty}>New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account.</Text>}
 
-      {loading ? (
-        <ActivityIndicator size="small" color={COLORS.accent} style={{ marginVertical: SPACING.md }} />
-      ) : options.length === 0 ? (
-        <Text style={styles.empty}>No purchase options set up for this chapter yet.</Text>
-      ) : (
+      {(status === "error" || status === "retrying") && (
+        <View accessibilityRole={status === "error" ? "alert" : undefined} style={styles.status}>
+          <Text style={styles.empty} accessibilityLiveRegion="polite">
+            {error ?? "Retrying purchase options…"}{options.length > 0 ? " Previously loaded options may be out of date." : ""}
+          </Text>
+          <TouchableOpacity onPress={() => { void refresh(); }} disabled={loading}
+            accessibilityState={{ disabled: loading, busy: loading }} accessibilityRole="button"
+            accessibilityLabel="Retry loading purchase options" style={styles.retry}>
+            <Text style={styles.retryLabel}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {loading && (
+        <View accessible accessibilityLabel={status === "retrying" ? "Retrying purchase options" : "Loading purchase options"} accessibilityState={{ busy: true }}>
+          <ActivityIndicator size="small" color={COLORS.accent} style={{ marginVertical: SPACING.md }} />
+        </View>
+      )}
+      {status === "empty" && <Text style={styles.empty}>No purchase options set up for this chapter yet.</Text>}
+      {options.length > 0 && (
         options.map((product) => (
           <View key={product.id} style={styles.card}>
             <View style={styles.cardContent}>
@@ -87,18 +83,27 @@ export default function UnlockOptionsPanel({
               <Text style={styles.cardScope}>{scopeLabel(product.scope)}</Text>
             </View>
 
-            <Text
-              style={styles.price}
-              onPress={() => buy(product)}
+            <TouchableOpacity
+              style={styles.priceAction}
+              accessibilityRole="button"
+              accessibilityLabel={paymentProvider === "disabled"
+                ? `${product.title}, ${scopeLabel(product.scope)}. New purchases unavailable`
+                : `${product.title}, ${scopeLabel(product.scope)}, ₹${product.price}${loading || status !== "success" ? ". Purchase options not current" : purchasing ? ". Purchase in progress" : ". Review purchase"}`}
+              accessibilityState={{ disabled: actionDisabled, busy: loading || purchasing }}
+              disabled={actionDisabled}
+              activeOpacity={1}
+              onPress={() => { if (!actionDisabled) buy(product); }}
             >
-              {paymentProvider === "disabled" ? "Unavailable" : `₹${product.price}`}
-            </Text>
+              <Text style={styles.price}>
+                {paymentProvider === "disabled" ? "Unavailable" : `₹${product.price}`}
+              </Text>
+            </TouchableOpacity>
           </View>
         ))
       )}
 
       {purchasing && (
-        <View style={styles.overlay}>
+        <View accessible accessibilityLabel="Opening purchase" accessibilityState={{ busy: true }} style={styles.overlay}>
           <ActivityIndicator size="large" color={COLORS.white} />
         </View>
       )}
@@ -116,12 +121,16 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     marginBottom: SPACING.md,
   },
+  status: { marginVertical: SPACING.md },
+  retry: { minHeight: 48, minWidth: 48, justifyContent: "center", alignSelf: "flex-start", padding: SPACING.md, marginVertical: SPACING.sm, backgroundColor: COLORS.primary, borderRadius: RADIUS.md },
+  retryLabel: { color: COLORS.white, fontWeight: "700" },
   empty: {
     color: COLORS.subtitle,
     fontSize: FONT.body,
   },
   card: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: COLORS.card,
@@ -133,7 +142,10 @@ const styles = StyleSheet.create({
     ...SHADOW.card,
   },
   cardContent: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 160,
+    minWidth: 0,
     paddingRight: SPACING.md,
   },
   cardTitle: {
@@ -146,15 +158,22 @@ const styles = StyleSheet.create({
     color: COLORS.subtitle,
     marginTop: 2,
   },
-  price: {
-    fontSize: FONT.body,
-    fontWeight: "700",
-    color: COLORS.white,
+  priceAction: {
+    minHeight: 48,
+    minWidth: 48,
+    maxWidth: "100%",
+    justifyContent: "center",
     backgroundColor: COLORS.accent,
     paddingHorizontal: 16,
     paddingVertical: SPACING.sm,
     borderRadius: 30,
-    overflow: "hidden",
+  },
+  price: {
+    fontSize: FONT.body,
+    fontWeight: "700",
+    color: COLORS.background,
+    textAlign: "center",
+    flexShrink: 1,
   },
   overlay: {
     ...StyleSheet.absoluteFill,

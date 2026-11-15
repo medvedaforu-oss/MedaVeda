@@ -1,14 +1,15 @@
 import { supabase } from "../config/supabase";
 import { Platform } from "react-native";
 import * as Application from "expo-application";
-import { paymentProvider } from "../config/paymentProvider";
+import { paymentProvider, userChoiceBillingEnabled, isNonplayTestBuild, isStandaloneRazorpayLiveBuild } from "../config/paymentProvider";
 import { getCurrentUser } from "./authState";
 
-// Supabase Edge Functions that back the payment flow (see
-// supabase/functions/{create-order,verify-payment}).
-// Deployed with e.g. `supabase functions deploy create-order`.
+// The isolated APK delegates to nonplayTestService before this retained Play
+// choice / legacy verification code. Its records and credentials are separate.
 const projectUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-const CREATE_ORDER_URL = `${projectUrl}/functions/v1/create-order`;
+// The explicitly selected standalone live binary reuses the deployed live
+// route. Never fall back between live and isolated-test endpoints on failure.
+const CREATE_ORDER_URL = `${projectUrl}/functions/v1/${isStandaloneRazorpayLiveBuild ? "create-order" : "create-order-nonplay-test"}`;
 const VERIFY_PAYMENT_URL = `${projectUrl}/functions/v1/verify-payment`;
 const PAYMENT_REQUEST_TIMEOUT_MS = 35_000;
 
@@ -54,6 +55,7 @@ export interface CheckoutData {
 export interface VerifyResult {
   success: boolean;
   pending?: boolean;
+  authRequired?: boolean;
   title?: string;
   message?: string;
   productTitle?: string;
@@ -95,8 +97,13 @@ export async function purchaseProduct(
   ucbOrderId?: string,
   buyerState?: string
 ): Promise<CheckoutData> {
+  if (isNonplayTestBuild) {
+    if (useWallet || ucbOrderId || buyerState) throw new Error("Only isolated synthetic Notes checkout is supported.");
+    return (await import("./nonplayTestService")).createTestOrder(productId);
+  }
   if (Platform.OS !== "android") throw new Error("Purchases are available in the Android app.");
-  if (paymentProvider !== "razorpay") throw new Error("New purchases are unavailable in this app version.");
+  if (paymentProvider !== "razorpay" && !(userChoiceBillingEnabled && ucbOrderId))
+    throw new Error("Start with the Google Play payment choice.");
   const { data } = await supabase.auth.getSession();
   const accessToken = data.session?.access_token;
 
@@ -108,12 +115,13 @@ export async function purchaseProduct(
   // an amount. The server reads the price from the products table, applies the
   // friend discount and wallet rules, creates the order and the Razorpay order
   // together, and returns the checkout data. The client cannot write to `orders`.
-  const { res, body } = await paymentRequest(CREATE_ORDER_URL, {
+  const { res, body } = await paymentRequest(ucbOrderId ? `${projectUrl}/functions/v1/create-order-play-choice` : CREATE_ORDER_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`, // header, never the URL
       "x-medveda-app-version": Application.nativeApplicationVersion ?? "",
+      "x-medveda-application-id": Application.applicationId ?? "",
     },
     body: JSON.stringify({
       productId,
@@ -123,8 +131,24 @@ export async function purchaseProduct(
   });
 
   if (!res.ok) {
-    throw new Error(body.error || "Could not start payment. Please try again.");
+    throw new Error(body?.error || "Could not start payment. Please try again.");
   }
+  // A malformed/stale deployment must fail before opening the payment UI.
+  // Each native distribution requires its own explicit provider key mode.
+  if (!body || typeof body.keyId !== "string" ||
+      !(ucbOrderId ? body.keyId.startsWith(projectUrl === "https://nsmsqsogedzohwboripd.supabase.co" ? "rzp_test_" : "rzp_live_") && body.isLiveMode === body.keyId.startsWith("rzp_live_")
+        : isStandaloneRazorpayLiveBuild ? body.keyId.startsWith("rzp_live_") && body.isLiveMode === true
+        : body.keyId.startsWith("rzp_test_") && body.isLiveMode === false) ||
+      typeof body.razorpayOrderId !== "string" || !/^order_[a-zA-Z0-9_]+$/.test(body.razorpayOrderId) ||
+      typeof body.internalOrderId !== "string" || !body.internalOrderId ||
+      !Number.isSafeInteger(body.amountPaise) || body.amountPaise < 100 ||
+      typeof body.productTitle !== "string" || !body.productTitle.trim()) {
+    throw new Error("Invalid checkout order. Please contact support.");
+  }
+  assertVerifyUrl(body.verifyUrl);
+  const current = await supabase.auth.getSession();
+  if (current.data.session?.user?.id !== data.session?.user?.id)
+    throw new Error("The signed-in account changed. Please check My Purchases before paying again.");
   return body as CheckoutData;
 }
 
@@ -148,6 +172,7 @@ async function verifyPaymentOnce(
     razorpay_signature: string;
   }
 ): Promise<VerifyResult> {
+  if (isNonplayTestBuild) return (await import("./nonplayTestService")).verifyTestPayment(verifyUrl,payload);
   assertVerifyUrl(verifyUrl);
   const { res, body } = await paymentRequest(verifyUrl, {
     method: "POST",
@@ -213,27 +238,63 @@ export async function verifyPayment(
  * is open and unsettled) - if nothing was actually paid yet, it just
  * returns { success: false }.
  */
+const recoveryAuthMessage = "Sign in again to the account used for this payment, then check My Purchases. Your payment status is still unconfirmed. Do not pay again.";
+function recoveryAuthRequired(): VerifyResult {
+  return { success: false, pending: true, authRequired: true, message: recoveryAuthMessage };
+}
+
+// Supabase Auth transport already has a 15s abort deadline. Also bound waiting
+// for the session/refresh lock; a late result can never continue recovery.
+async function recoveryAuthRead<T>(work: PromiseLike<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([work, new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error("Payment recovery sign-in timed out.")), PAYMENT_REQUEST_TIMEOUT_MS);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
 export async function recoverPayment(
   verifyUrl: string,
-  internalOrderId: string
+  internalOrderId: string,
+  expectedUserId = getCurrentUser()?.id
 ): Promise<VerifyResult> {
-  const { data } = await supabase.auth.getSession();
-  const accessToken = data.session?.access_token;
-  if (!accessToken) throw new Error("Please log in before checking payment status.");
+  if (isNonplayTestBuild) return (await import("./nonplayTestService")).verifyTestPayment(verifyUrl,{internalOrderId,recover:true});
   assertVerifyUrl(verifyUrl);
-  const { res, body } = await paymentRequest(verifyUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`,
-      "x-medveda-app-version": Application.nativeApplicationVersion ?? "" },
-    body: JSON.stringify({ internalOrderId, recover: true }),
-  });
+  const sameAccount = () => !!expectedUserId && getCurrentUser()?.id === expectedUserId;
+  if (!sameAccount()) return recoveryAuthRequired();
+  let session;
+  try {
+    const { data, error } = await recoveryAuthRead(supabase.auth.getSession());
+    if (error || !sameAccount() || !data.session || data.session.user.id !== expectedUserId || !data.session.access_token)
+      return recoveryAuthRequired();
+    session = data.session;
+  } catch { return recoveryAuthRequired(); }
 
-
-  if (!res.ok && body.success === undefined) {
-    throw new Error(body.error || "Could not check payment status.");
+  // One 401 refresh and one retry, pinned to the original account throughout.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (!sameAccount()) return recoveryAuthRequired();
+    const { res, body } = await paymentRequest(verifyUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}`,
+        "x-medveda-app-version": Application.nativeApplicationVersion ?? "" },
+      body: JSON.stringify({ internalOrderId, recover: true }),
+    });
+    if (!sameAccount()) return recoveryAuthRequired();
+    if (res.status === 401) {
+      if (attempt === 1) return recoveryAuthRequired();
+      try {
+        const { data, error } = await recoveryAuthRead(supabase.auth.refreshSession());
+        if (error || !sameAccount() || !data.session || data.session.user.id !== expectedUserId || !data.session.access_token)
+          return recoveryAuthRequired();
+        session = data.session;
+      } catch { return recoveryAuthRequired(); }
+      continue;
+    }
+    if (!res.ok && body.success === undefined) throw new Error(body.error || "Could not check payment status.");
+    return body as VerifyResult;
   }
-
-  return body as VerifyResult;
+  return recoveryAuthRequired();
 }
 
 /**
@@ -260,13 +321,14 @@ export async function recoverPaymentWithRetry(
   internalOrderId: string
 ): Promise<VerifyResult> {
   const attempts = [0, 2000, 3000, 5000, 6000, 8000]; // ms delay before each attempt (~24s total)
-  let lastResult: VerifyResult = { success: false };
+  let lastResult: VerifyResult = { success: false, pending: true };
+  const expectedUserId = getCurrentUser()?.id;
 
   for (let i = 0; i < attempts.length; i++) {
     if (attempts[i] > 0) await delay(attempts[i]);
     try {
-      lastResult = await recoverPayment(verifyUrl, internalOrderId);
-      if (lastResult.success) return lastResult;
+      lastResult = await recoverPayment(verifyUrl, internalOrderId, expectedUserId);
+      if (lastResult.success || lastResult.authRequired || lastResult.pending === false) return lastResult;
     } catch {
       // Transient network hiccup on this attempt - keep trying.
     }
@@ -281,6 +343,7 @@ const recoveryByUser = new Map<string, Promise<boolean>>();
 // My Purchases can recover recent attempts even when Android lost the checkout
 // route during process death. This remains available when NEW purchases are off.
 export async function recoverMyPendingPayments(): Promise<boolean> {
+  if (isNonplayTestBuild) return (await import("./nonplayTestService")).recoverTestPayments();
   const uid = getCurrentUser()?.id;
   if (!uid) return false;
   const existing = recoveryByUser.get(uid);
@@ -301,7 +364,7 @@ export async function recoverMyPendingPayments(): Promise<boolean> {
       const candidates = (data ?? []).filter((row) => !row.purchases?.length).slice(0, 3);
       const results = await Promise.allSettled(candidates.map(async (row) => {
         if (getCurrentUser()?.id !== uid) return false;
-        const result = await recoverPayment(VERIFY_PAYMENT_URL, row.id);
+        const result = await recoverPayment(VERIFY_PAYMENT_URL, row.id, uid);
         return getCurrentUser()?.id === uid && result.success;
       }));
       return results.some((result) => result.status === "fulfilled" && result.value);

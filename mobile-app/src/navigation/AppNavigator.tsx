@@ -8,6 +8,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import useNotificationRouting from "../hooks/useNotificationRouting";
 
+import { getCurrentUser, subscribeAuthUser } from "../services/authState";
+import { logError } from "../utils/logger";
+
 import { COLORS } from "../theme/colors";
 import {
   setupNotificationChannel,
@@ -26,11 +29,7 @@ import ResetPasswordScreen from "../screens/auth/ResetPasswordScreen";
 import HomeScreen from "../screens/home/HomeScreen";
 import SelectCourseYearScreen from "../screens/onboarding/SelectCourseYearScreen";
 
-
-
-
 import { paymentProvider } from "../config/paymentProvider";
-
 
 // Metro includes every literal module in the installed bundle. React Navigation
 // evaluates these synchronous loaders only when a route is rendered, so native
@@ -73,6 +72,13 @@ const deferredScreens = {
 
 const Stack = createNativeStackNavigator();
 
+const studyOptions = (title: string) => ({
+  headerShown: true,
+  title,
+  headerStyle: { backgroundColor: COLORS.background },
+  headerTintColor: COLORS.text,
+});
+
 const navigationTheme = {
   ...DefaultTheme,
   dark: true,
@@ -99,6 +105,13 @@ const linking = {
 };
 
 export default function AppNavigator() {
+  const [ownerId, setOwnerId] = useState(() => getCurrentUser()?.id ?? null);
+  useEffect(() => {
+    const update = () => setOwnerId(getCurrentUser()?.id ?? null);
+    const unsubscribe = subscribeAuthUser(update);
+    update();
+    return unsubscribe;
+  }, []);
   const navigation = useNavigationContainerRef<ParamListBase>();
   const [navigationReady, setNavigationReady] = useState(false);
   const [route, setRoute] = useState<string>();
@@ -108,8 +121,8 @@ export default function AppNavigator() {
   // a safety net for Android dropping exact alarms after a device
   // reboot - the OS otherwise keeps firing the schedule on its own).
   useEffect(() => {
-    setupNotificationChannel();
-    restoreStudyReminderOnLaunch();
+    void setupNotificationChannel().then(restoreStudyReminderOnLaunch)
+      .catch(error => logError("Reminder restoration failed", error));
   }, []);
 
   // Blocks screenshots/screen recording for the whole app (paid Notes PDF
@@ -127,24 +140,30 @@ export default function AppNavigator() {
           initialRouteName="Splash"
           screenOptions={{ headerShown: false }}
         >
+        <Stack.Group navigationKey="auth-recovery">
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+        </Stack.Group>
+        <Stack.Group navigationKey={ownerId ?? "signed-out"}>
+        {ownerId && <>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen
           name="SelectCourseYear"
           component={SelectCourseYearScreen}
           options={{ gestureEnabled: false }}
         />
-        <Stack.Screen name="Years" getComponent={deferredScreens.YearsScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Subjects" getComponent={deferredScreens.SubjectsScreen} />
-        <Stack.Screen name="Chapters" getComponent={deferredScreens.ChaptersScreen} />
-        <Stack.Screen name="ChapterDetails" getComponent={deferredScreens.ChapterDetailsScreen} />
+        <Stack.Screen name="Years" getComponent={deferredScreens.YearsScreen} options={studyOptions("Choose year")} />
+        <Stack.Screen name="Subjects" getComponent={deferredScreens.SubjectsScreen} options={studyOptions("Choose subject")} />
+        <Stack.Screen name="Chapters" getComponent={deferredScreens.ChaptersScreen} options={studyOptions("Choose chapter")} />
+        <Stack.Screen name="ChapterDetails" getComponent={deferredScreens.ChapterDetailsScreen} options={studyOptions("Study materials")} />
         <Stack.Screen name="Store" getComponent={deferredScreens.StoreScreen} />
-        <Stack.Screen name="Notes" getComponent={deferredScreens.NotesScreen} />
-        <Stack.Screen name="Videos" getComponent={deferredScreens.VideosScreen} />
-        <Stack.Screen name="QuizTests" getComponent={deferredScreens.TestListScreen} />
-        <Stack.Screen name="Quiz" getComponent={deferredScreens.QuizScreen} />
+        <Stack.Screen name="Notes" getComponent={deferredScreens.NotesScreen} options={studyOptions("Notes")} />
+        <Stack.Screen name="Videos" getComponent={deferredScreens.VideosScreen} options={studyOptions("Free lectures")} />
+        <Stack.Screen name="QuizTests" getComponent={deferredScreens.TestListScreen} options={studyOptions("Free MCQ tests")} />
+        <Stack.Screen name="Quiz" getComponent={deferredScreens.QuizScreen} options={studyOptions("MCQ test")} />
         <Stack.Screen name="Profile" getComponent={deferredScreens.ProfileScreen} />
         <Stack.Screen name="EditProfile" getComponent={deferredScreens.EditProfileScreen} />
         <Stack.Screen name="Referral" getComponent={deferredScreens.ReferralScreen} />
@@ -152,7 +171,7 @@ export default function AppNavigator() {
         <Stack.Screen name="ChangePassword" getComponent={deferredScreens.ChangePasswordScreen} />
         <Stack.Screen name="MyPurchases" getComponent={deferredScreens.MyPurchasesScreen} />
         <Stack.Screen name="Downloads" getComponent={deferredScreens.DownloadsScreen} />
-        <Stack.Screen name="PdfViewer" getComponent={deferredScreens.PdfViewerScreen} />
+        <Stack.Screen name="PdfViewer" getComponent={deferredScreens.PdfViewerScreen} options={studyOptions("Note reader")} />
         <Stack.Screen name="Search" getComponent={deferredScreens.SearchScreen} />
         <Stack.Screen name="Settings" getComponent={deferredScreens.SettingsScreen} />
         <Stack.Screen name="StudyReminder" getComponent={deferredScreens.StudyReminderScreen} />
@@ -160,18 +179,18 @@ export default function AppNavigator() {
         <Stack.Screen name="NotificationPreferences" getComponent={deferredScreens.NotificationPreferencesScreen} />
         <Stack.Screen name="PaymentSuccess" getComponent={deferredScreens.PaymentSuccessScreen} />
         <Stack.Screen name="PaymentFailed" getComponent={deferredScreens.PaymentFailedScreen} />
-        {paymentProvider === "razorpay" && (
+        {paymentProvider !== "disabled" && (
           <Stack.Screen name="OrderSummary" getComponent={deferredScreens.OrderSummaryScreen} />
         )}
-        {paymentProvider === "razorpay" && (
+        {paymentProvider !== "disabled" && (
           <Stack.Screen name="PaymentCheckout" getComponent={deferredScreens.PaymentCheckoutScreen} />
         )}
         <Stack.Screen name="About" getComponent={deferredScreens.AboutScreen} />
         <Stack.Screen name="Contact" getComponent={deferredScreens.ContactScreen} />
         <Stack.Screen name="Privacy" getComponent={deferredScreens.PrivacyScreen} />
         <Stack.Screen name="Terms" getComponent={deferredScreens.TermsScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+        </>}
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
     </ErrorBoundary>

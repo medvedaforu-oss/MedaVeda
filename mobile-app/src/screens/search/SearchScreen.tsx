@@ -1,3 +1,4 @@
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
 import React, { useState } from "react";
 import {
   View,
@@ -38,6 +39,9 @@ export default function SearchScreen() {
   const [filtersVisible, setFiltersVisible] = useState(false);
 
   const {
+    purchasesLoading,
+    purchasesError,
+    refreshPurchases,
     query,
     setQuery,
     isSearching,
@@ -120,8 +124,11 @@ export default function SearchScreen() {
 
   return (
     <View style={styles.container}>
+      <PurchaseOwnershipStatus loading={purchasesLoading} error={purchasesError} refresh={refreshPurchases} />
       <View style={styles.header}>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
           onPress={() => navigation.goBack()}
           style={styles.backBtn}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -139,6 +146,9 @@ export default function SearchScreen() {
         />
 
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Search filters"
+          accessibilityState={{ expanded: filtersVisible }}
           onPress={() => setFiltersVisible(true)}
           style={styles.filterBtn}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

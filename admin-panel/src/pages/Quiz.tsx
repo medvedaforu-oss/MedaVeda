@@ -123,7 +123,7 @@ export default function Quiz() {
 
         <SearchBar value={search} onChange={setSearch} placeholder="Search quiz tests..." />
 
-        <select
+        <select aria-label="Filter by subject"
           value={subjectId}
           onChange={(e) => setSubjectId(e.target.value)}
           className="border rounded-lg px-3 py-2"

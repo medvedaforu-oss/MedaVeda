@@ -123,6 +123,10 @@ export function initDatabase(): void {
     );
   `);
 
+  const downloadColumns = db.getAllSync(`PRAGMA table_info(downloads);`) as { name: string }[];
+  if (!downloadColumns.some(c => c.name === "is_free_preview")) {
+    db.execSync(`ALTER TABLE downloads ADD COLUMN is_free_preview INTEGER NOT NULL DEFAULT 0;`);
+  }
   migrateDownloadsCourseId(db);
   migrateQuizVerificationStatus(db);
 }

@@ -1,5 +1,6 @@
 import { supabase } from "../config/supabase";
 import { toCamelCase } from "../utils/caseConvert";
+import { isNonplayTestBuild } from "../config/paymentProvider";
 import {
   ApplyReferralCodeResult,
   OrderQuote,
@@ -10,6 +11,7 @@ import {
 } from "../types/referral";
 
 export async function getReferralSettings(): Promise<ReferralSettings | null> {
+  if (isNonplayTestBuild) return null;
   const { data, error } = await supabase
     .from("referral_settings")
     .select("*")
@@ -49,6 +51,7 @@ export async function getMyReferralList(): Promise<ReferralListItem[]> {
 }
 
 export async function quoteOrder(productId: string, useWallet: boolean): Promise<OrderQuote> {
+  if (isNonplayTestBuild) return (await import("../services/nonplayTestService")).testQuote(productId,useWallet);
   const { data, error } = await supabase.rpc("quote_my_order", {
     p_product_id: productId,
     p_use_wallet: useWallet,

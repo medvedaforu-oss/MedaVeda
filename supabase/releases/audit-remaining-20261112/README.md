@@ -1,0 +1,11 @@
+# Remaining-audit backend candidates — NOT DEPLOYED
+
+These isolated candidates retain the reviewed Batch 1 settlement/webhook fixes and add owner-authenticated recovery (AUD-011), fail-closed admin MFA (AUD-015), and push ticket/feed/ambiguous-transport accounting (AUD-016). The targeted broadcast rejection (AUD-014) remains. Batch 1 source/archive/checksum artifacts are unchanged.
+
+The new verifier retains the Batch 1 settlement response and helper; only request admission follows the current local verified-owner/signature-before-lookup path. The webhook closure is byte-identical to Batch 1. The sender retains broadcast-only scope. New ACL and admission migration is `20261112150427_audit_checkout_publication_guard.sql`, required for AUD-013; the existing Batch 1 migration `20261112104610_audit_batch1_refund_revocation.sql` remains required for AUD-009/010/012. Neither has been executed in production here.
+
+These are source candidates, not execution approval. Do not deploy the whole dirty workspace. Before separately approved release, bind fresh deployed-source/schema drift review, dependency lock, tests, monitoring and current recovery evidence to exact hashes; close the existing operational gates from the Batch 1 preflight. No backup infrastructure work was performed. Keep the forward reversal/access guards and durable facts; restoring unsafe source is not a safe routine rollback.
+
+Checkout publication enforcement is database-side and applies to the existing `create_priced_order` contract before any provider POST, including the deployed website creator. No create-order deployment is required solely for that guard. Login body correction needs a separately prepared/reviewed deployment of `supabase/functions/login-with-mobile/index.ts`; it is not part of these three source closures. Website/admin assets and mobile fixes also require their own approved delivery/build.
+
+Local verification commands and outcomes are in `docs/audit/evidence/remaining-bugs-20261112/verification-results.json`, `database-full.log`, `candidate-database.log`, and `migration-replay.log`. Provider/Auth/Expo transports are synthetic. Native/device acceptance remains blocked. No real notifications, payments or refunds were initiated.

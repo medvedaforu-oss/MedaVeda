@@ -1,0 +1,208 @@
+[
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/REPORT.md",
+    "change": "added",
+    "sha256": "c0b6e96bf1641d7bfaedd17a93814ca705230dc56b9504e9dd4178a970968287"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/android-compile-isolated.txt",
+    "change": "added",
+    "sha256": "80d693fa0ead520378a6f8a75092f8e2bcbb1e84047b52a5fe64e0e83ad88ba2"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/android-compile.txt",
+    "change": "added",
+    "sha256": "d7490d7cbaf11cac5b4c66993eebc005a10bad80beb0dbdd131e5a0e21c1c994"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/autolink-android.json",
+    "change": "added",
+    "sha256": "7aca7a11d3d1c2c9a3357e88979b3aa321c389d7c47fc1eebf3e04938959e74f"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/autolink-apple.json",
+    "change": "added",
+    "sha256": "9e217c3957d29eb2aa3c2c02ff72cf39f15f7658b29745c9f9d830d6d9a27893"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/baseline.json",
+    "change": "added",
+    "sha256": "6f38cc21f93acdc242e3eb8e475b68d5625762b39b5447a160b59dd145e8a1e1"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/compatibility.json",
+    "change": "added",
+    "sha256": "36a88ced3e9aeb14f6bb2215aea1d829616acac6d56411d50e902c4e2aef2b89"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/durable-red.txt",
+    "change": "added",
+    "sha256": "10876784571f19a32f225e8e70186d8fd5dee6b366eb820e1a091c7c814bdcf2"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/empty-registry-red.txt",
+    "change": "added",
+    "sha256": "b8f0b391922017056b5856d8b43407986197049a01922aea27d578c6e6579b08"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/facade-typecheck.txt",
+    "change": "added",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/initial-red.txt",
+    "change": "added",
+    "sha256": "3773b8b68a3177cb35be19aeab580ca7c6fe1ccff53814fc3e7fa6c330a9f7d1"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/preservation.json",
+    "change": "added",
+    "sha256": "03a86814a8f2d1644eda660b63fa06067a77461e69d6e3e53f8d1ea3aa2d7cdd"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/security-review.md",
+    "change": "added",
+    "sha256": "3435526ea0f2888f6397d96140c1286b1d4513c0b93106a2374f114671a9c4cf"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/shared-tests.txt",
+    "change": "added",
+    "sha256": "5f8e210937333991c51d314fc4e44901c444077b341156209b86931af6e8afa9"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/swift-tooling.txt",
+    "change": "added",
+    "sha256": "14c5edbb2068471b358b76c5bc183a83a7b1d1565b5fb948738ba6792aa13d18"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/verification.json",
+    "change": "added",
+    "sha256": "27b68dfc50560f049e4fda102845edad20b2ca255c1eb9c75c9944a34d38fe5f"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/verify-preservation.py",
+    "change": "added",
+    "sha256": "8988124675c72fe6d66d2c64794dd2738fea737d721df0ec9eeaac6590ede1a9"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-11-11-native-encryption-phase1b.md",
+    "change": "added",
+    "sha256": "7db7287d1de5f99be2e9ca28ac80f6a479cb942c52e083f9008401d58ce76c1c"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/PHASE1B.md",
+    "change": "added",
+    "sha256": "f2f228eeb7e98c3c5c9fbaa4345c462cbc552f83e90073743afa8e7a94cd901a"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/README.md",
+    "change": "modified",
+    "sha256": "d3225a5fecb03331cb241cca28033d9fd57291560027466c286cffec36943fa7"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/build.gradle",
+    "change": "added",
+    "sha256": "2db189d00fdb84fe90c284d97ffad36e20b92fdc58fea08687374eaf1c7867fb"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/androidTest/java/in/medveda/offline/NativeSecurityTest.kt",
+    "change": "added",
+    "sha256": "a88e2a625ee535ab53f308311fc14379d7de46cae60fca26165be0e9e13c7503"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidKeys.kt",
+    "change": "added",
+    "sha256": "f8893c8d1cc9343d07a701f3eecc99726a04bb37fa376bbf96d3abbb2a5b87c2"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultControl.kt",
+    "change": "added",
+    "sha256": "603907823687bbf83ded4f6856d47f29f6ed5b0e12d6e3e07adc056e5175bf84"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/MedvedaOfflineVaultModule.kt",
+    "change": "added",
+    "sha256": "2e9eda128a260ed96433b12de3f1c11176e1fe35d9df75f5b66deceea2f45047"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/expo-module.config.json",
+    "change": "added",
+    "sha256": "f2d39c537b489b473c3fc22287c4cc30ce57810787eca14323bce06572c06f81"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/index.ts",
+    "change": "added",
+    "sha256": "2ce2df10f65b421f6dc55b79b73962b4a245451de1097115da218e5b9f23b231"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/DurableGenerations.kt",
+    "change": "added",
+    "sha256": "0fcd36daed29a3e3c019d59301c42014bf3aa990b4238f76bbacff3ca55694f4"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/NativeLeases.kt",
+    "change": "added",
+    "sha256": "a23b199cd85a763e4b42e10ede86d9adfc4c62ceaea44dd3b3fc36874bf13864"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/OwnerKeys.kt",
+    "change": "added",
+    "sha256": "ea61a71f28ba5fdab80c208a2b728c41d526e9400f911ee07d001d05f1af2d84"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/Registry.kt",
+    "change": "added",
+    "sha256": "a6468832e6dd9f8ab4bff747f8e1859d700a3de3321c6baa21da518b572cfa7b"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/KeychainKeys.swift",
+    "change": "added",
+    "sha256": "c75cdb443bd28b3288363e27b834c427f7108a7b7c26c383f1cc6b13cad93f79"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/MVPDFVerifier.swift",
+    "change": "added",
+    "sha256": "973a0bb427f6cedf1a1202bb994e4f4bcac495071a0d8e3c46bdadf76df889b2"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/MedvedaOfflineVault.podspec",
+    "change": "added",
+    "sha256": "a6a84f34eb7226aaaef320a63237d8e740162cdbdc55e426c66d67e1098c912f"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/MedvedaOfflineVaultModule.swift",
+    "change": "added",
+    "sha256": "dd4da762ef8aec8389f9e2d5a6fe5cc2ee8583ce46aa8ab9609187827fd4349b"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/Tests/ContainerTests.swift",
+    "change": "added",
+    "sha256": "fd24187984499b95728fd1090ce30d8bc9b75c2e05b8cac33d853023bc67e822"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/ios/Tests/reference.mvp",
+    "change": "added",
+    "sha256": "a3dcf01a15697030b0c8780c33715c4f0846a565e6a0fb74358ae1b5b3d114f4"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/package.json",
+    "change": "added",
+    "sha256": "3b6cb40382ae954d30e5cce14dfaeb8142f7b0b021f2317f0eb03b05797feeeb"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/phase1b/Phase1BTest.kt",
+    "change": "added",
+    "sha256": "8f08455d10e251dc36703af48a9df0e927221250c18ee05af8a86e44c3eb7eb9"
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/phase1b/run-tests.py",
+    "change": "added",
+    "sha256": "99e5abd71d61a0a73dc7dfa14f50b02a21386c544b62c6102d03ac0626973dd2"
+  },
+  {
+    "path": "docs/audit/native-encryption-phase1b-20261111/files-changed.json",
+    "change": "added",
+    "sha256": null,
+    "note": "Self-reference; all other entries hashed."
+  }
+]

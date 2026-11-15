@@ -33,7 +33,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
   let body: { mobileNumber?: unknown; password?: unknown };
   try {
-    body = await req.json();
+    const input: unknown = await req.json();
+    if (!input || typeof input !== "object" || Array.isArray(input)) return invalid();
+    body = input as { mobileNumber?: unknown; password?: unknown };
   } catch {
     return invalid();
   }

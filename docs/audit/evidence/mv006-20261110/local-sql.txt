@@ -1,0 +1,145 @@
+PASS standalone production-baseline migration applied twice; existing rows unchanged
+PASS PRE-FIX reproduced privileged paid -> failed with successful payment/purchase and preserved Notes access
+psql:supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql:32: NOTICE:  trigger "orders_03_razorpay_transition" for relation "public.orders" does not exist, skipping
+PASS MV005 migration twice: historical financial fingerprints unchanged
+PASS all eight inspected live function definitions match retained local baseline
+PASS PRE-FIX excluded purchase permits second successful ownership with distinct financial references
+PASS PRE-FIX refund of indexed historical purchase permits fresh duplicate beside exempt purchase
+psql:supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql:60: NOTICE:  trigger "purchases_zz_success_ownership" for relation "public.purchases" does not exist, skipping
+PASS MV006 twice over historical duplicates: existing financial fingerprints unchanged
+PASS future constraint refuses absent approval and historical duplicates atomically
+PASS historical duplicate rows retained; trusted Notes authorization preserved
+PASS existing duplicate metadata update does not revoke or canonicalize history
+PASS refund of one historic row keeps other purchase access; exception no longer permits new grant
+PASS conflicting restoration transaction rolled back
+PASS fully refunded ownership loses backend Notes authorization
+PASS concurrent exempt restore then insert: waiting statement sees committed ownership
+PASS concurrent insert then exempt restore: one authoritative success
+PASS multi-row conflicting grants roll back atomically
+PASS two captured orders settle concurrently: exactly one ownership, second never proves commitment
+PASS already-owned new capture durably queued for compensation; no fictional entitlement
+PASS separate provider reference retained as compensation evidence
+PASS duplicate delivery of both payments remains idempotent
+PASS same user/product checkout blocked before another order
+PASS different users buy same product
+PASS same user buys different products
+PASS valid purchase without capture marker restores backend Notes access
+PASS unsuccessful disputed ownership does not authorize Notes
+PASS legitimate dispute restoration still works
+PASS fully refunded purchase plus compensated capture never authorize Notes
+PASS refunded/compensated deliveries never regrant access
+PASS legacy scope-based success without product retains Notes access
+PASS legacy NULL-product restore preserved without guessing a product
+PASS ownership violation rolls back financial write in same transaction
+PASS guard service-definer function has no client execution grant
+PASS provider-payment and purchase-order uniqueness retained
+PASS legacy same-order replay remains idempotent
+PASS concurrent same-order INSERT ON CONFLICT replays coalesce without ownership errors
+PASS historical contradiction retained; entitlement reader remains accessible; proof fails closed
+PASS unpaid created grants no entitlement
+PASS verified capture settles created -> paid
+PASS late failure/cancellation rejected; conditional handler update harmless; Notes preserved
+PASS duplicate settlement idempotent
+PASS partial refund keeps legitimate access
+PASS open dispute suspends access
+PASS won dispute restores access
+PASS full refund remains terminal on replay
+PASS unpaid pending grants no entitlement
+PASS verified capture settles pending -> paid
+PASS late failure/cancellation rejected; conditional handler update harmless; Notes preserved
+PASS duplicate settlement idempotent
+PASS partial refund keeps legitimate access
+PASS open dispute suspends access
+PASS won dispute restores access
+PASS full refund remains terminal on replay
+PASS unpaid failed grants no entitlement
+PASS verified capture settles failed -> paid
+PASS late failure/cancellation rejected; conditional handler update harmless; Notes preserved
+PASS duplicate settlement idempotent
+PASS partial refund keeps legitimate access
+PASS open dispute suspends access
+PASS won dispute restores access
+PASS full refund remains terminal on replay
+PASS unpaid cancelled grants no entitlement
+PASS verified capture settles cancelled -> paid
+PASS late failure/cancellation rejected; conditional handler update harmless; Notes preserved
+PASS duplicate settlement idempotent
+PASS partial refund keeps legitimate access
+PASS open dispute suspends access
+PASS won dispute restores access
+PASS full refund remains terminal on replay
+PASS capture fact without purchase never proves entitlement
+PASS captured fact can finish missing settlement
+PASS lost dispute cannot regrant
+PASS settlement first: waiting failed writer sees paid row and cannot overwrite it
+PASS failure first: later legitimate capture settles atomically
+PASS concurrent settlement creates one consistent purchase
+PASS SQL exception rolls back payment, purchase, capture and order transaction
+PASS retry after transaction rollback succeeds
+PASS guard has no client execution grant
+PASS historical failed/success helper returns manual review on duplicates; lookup errors fail closed; financial rows/access preserved; no settlement/compensation
+PASS valid captured payment has committed entitlement
+PASS valid chapter scope commits from immutable order snapshot
+PASS valid subject scope commits from immutable order snapshot
+PASS valid year scope commits from immutable order snapshot
+PASS valid bundle scope commits from immutable order snapshot
+PASS missing purchase cannot prove commitment
+PASS purchase user_id cannot prove commitment
+PASS purchase product_id cannot prove commitment
+PASS purchase amount cannot prove commitment
+PASS purchase course_id cannot prove commitment
+PASS purchase scope cannot prove commitment
+PASS purchase chapter_id cannot prove commitment
+PASS purchase subject_id cannot prove commitment
+PASS purchase year_id cannot prove commitment
+PASS purchase year_ids cannot prove commitment
+PASS purchase razorpay_order_id cannot prove commitment
+PASS payment user_id cannot prove commitment
+PASS payment product_id cannot prove commitment
+PASS payment amount cannot prove commitment
+PASS payment provider cannot prove commitment
+PASS payment razorpay_order_id cannot prove commitment
+PASS payment razorpay_payment_id cannot prove commitment
+PASS payment status cannot prove commitment
+PASS compensation_pending cannot prove commitment
+PASS compensated cannot prove commitment
+PASS reversal_pending cannot prove commitment
+PASS reversed cannot prove commitment
+PASS compensation pending cannot prove commitment
+PASS compensation processing cannot prove commitment
+PASS compensation refunded cannot prove commitment
+PASS compensation parked cannot prove commitment
+PASS pending reversal blocks commitment
+PASS parked reversal blocks commitment
+PASS false-success reproduction: granted marker + missing purchase + normal void return retries callback/webhook
+PASS callback/webhook reject purchase user_id mismatch despite normal void settlement
+PASS callback/webhook reject purchase product_id mismatch despite normal void settlement
+PASS callback/webhook reject purchase amount mismatch despite normal void settlement
+PASS callback/webhook reject purchase scope mismatch despite normal void settlement
+PASS callback/webhook reject purchase course_id mismatch despite normal void settlement
+PASS actual SQL compensation returns void; callback never unlocks; webhook acknowledges durable refund queue
+PASS actual missing SQL RPC fails closed; webhook retries
+PASS actual SQL exception during commitment check fails closed; webhook retries
+PASS PGRST202 missing/errored commitment RPC fails closed and webhook retries
+PASS XX000 missing/errored commitment RPC fails closed and webhook retries
+PASS duplicate signed callback/webhook is idempotent
+PASS independent PostgreSQL sessions serialize concurrent settlement
+PASS historical purchase without capture marker stays valid and skips destructive replay
+PASS interrupted capture-only settlement recovers through owner callback
+PASS interruption after SQL commit retries without duplicate purchase
+PASS valid signed callback without JWT succeeds
+PASS invalid signature rejected before provider/settlement
+PASS captured status, provider order, currency and amount checks retained
+PASS full refund/reversal cannot regrant or return success
+PASS service-role-only ACL and SECURITY DEFINER execution
+PASS all MV003 SQL/helper/callback/webhook scenarios; zero real HTTP requests
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:57: NOTICE:  PASS immutable chapter scope/course/amount, duplicate callbacks, partial/full refunds and post-refund replay
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:57: NOTICE:  PASS immutable subject scope/course/amount, duplicate callbacks, partial/full refunds and post-refund replay
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:57: NOTICE:  PASS immutable year scope/course/amount, duplicate callbacks, partial/full refunds and post-refund replay
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:57: NOTICE:  PASS immutable bundle scope/course/amount, duplicate callbacks, partial/full refunds and post-refund replay
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:123: NOTICE:  PASS failed/cancelled retry discount, late captures, account binding, amount check, duplicate debit and refund
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:143: NOTICE:  PASS expired reservation retries safely and late expired capture is compensated
+psql:supabase/tests/razorpay_snapshot_retry_checks.sql:151: NOTICE:  PASS incomplete legacy order is compensated without inferring entitlement from catalog
+PASS retained Razorpay scope, snapshot, discount, wallet, refund and replay SQL regressions
+PASS future complete unique index activates only on clean synthetic fixture history; financial fingerprints unchanged
+PASS complete unique index independently rejects excluded-row duplication and rolls back transaction

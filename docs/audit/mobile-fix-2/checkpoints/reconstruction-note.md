@@ -1,0 +1,1 @@
+Initial /tmp snapshots were lost at a user interruption. MOB09/19 original files were clean at task start and recovered from HEAD; MOB01/03/08 before images were reconstructed by reversing their recorded minimal patches. Original failing test logs were retained. These are reconstructed source images, not newly observed before runs.

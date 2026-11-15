@@ -280,6 +280,8 @@ function DownloadCard({
 function ActionIcon({ icon, onPress }: { icon: string; onPress: () => void }) {
   return (
     <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel={({ "⏸": "Pause download", "▶️": "Resume download", "🔄": "Retry download", "✕": "Cancel download", "🗑️": "Delete download" } as Record<string, string>)[icon]}
       style={styles.actionButton}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       onPress={onPress}
@@ -368,9 +370,9 @@ const styles = StyleSheet.create({
 
   actions: { flexDirection: "row", marginLeft: SPACING.sm },
   actionButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     marginLeft: 6,
     alignItems: "center",
     justifyContent: "center",

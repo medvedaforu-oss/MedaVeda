@@ -1,0 +1,535 @@
+--- a/mobile-app/scripts/notes-billing-choice-selftest.cjs
++++ b/mobile-app/scripts/notes-billing-choice-selftest.cjs
+@@ -18,7 +18,7 @@
+   '@react-native-async-storage/async-storage':{__esModule:true,default:{getItem:async k=>stored.get(k),setItem:async(k,v)=>{stored.set(k,v);if(switchOnSave)user='stranger';},removeItem:async k=>stored.delete(k)}},
+   'react-native':{Platform:{OS:'android'}},'js-sha256':sha,
+   'expo-application':{applicationId:'in.medveda.app',nativeApplicationVersion:'1.2.2'},
+-  '../config/paymentProvider':{userChoiceBillingEnabled:enabled},
++  '../config/paymentProvider':{userChoiceBillingEnabled:enabled}, './authState':{getCurrentUser:()=>({id:user}),getAuthEpoch:()=>0},
+   '../config/supabase':{supabase:{auth:{getSession:async()=>({data:{session:{user:{id:user},access_token:'fixture'}}})}}},
+   '../repositories/ordersRepository':{getOrdersByUser:async()=>serverOrders},'./playOfferSelection':{},'expo-iap':iap,
+  },{process:{env:{EXPO_PUBLIC_SUPABASE_URL:'https://fixture.invalid'}},fetch:async(_url,options)=>{
+--- a/mobile-app/scripts/play-catalog-contract-selftest.cjs
++++ b/mobile-app/scripts/play-catalog-contract-selftest.cjs
+@@ -9,7 +9,7 @@
+  const iap={initConnection:async()=>ready,fetchProducts:async()=>rows,purchaseUpdatedListener:()=>({remove(){}}),purchaseErrorListener:()=>({remove(){}}),userChoiceBillingListenerAndroid:()=>({remove(){}}),requestPurchase:async()=>{requests++;}};
+  const api=load('mobile-app/src/services/playBillingService.ts',{
+  '@react-native-async-storage/async-storage':{__esModule:true,default:{}},'react-native':{Platform:{OS:'android'}},'js-sha256':sha,'expo-application':{},
+- '../config/paymentProvider':{userChoiceBillingEnabled:enabled},'../config/supabase':{supabase:{}},'../repositories/ordersRepository':{},'./playOfferSelection':selector,'expo-iap':iap,
++ './authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0}, '../config/paymentProvider':{userChoiceBillingEnabled:enabled},'../config/supabase':{supabase:{}},'../repositories/ordersRepository':{},'./playOfferSelection':selector,'expo-iap':iap,
+  },{process:{env:{EXPO_PUBLIC_SUPABASE_URL:'https://synthetic.invalid'}}});return {api,rows(v){rows=v;},requests:()=>requests};
+ }
+ (async()=>{
+--- a/mobile-app/scripts/payment-summary-selftest.cjs
++++ b/mobile-app/scripts/payment-summary-selftest.cjs
+@@ -4,10 +4,10 @@
+  const h=harness();let finish,creates=0,navigations=0,alerts=0;
+  const mocks={react:h.react,'react/jsx-runtime':jsx,
+  'react-native':{View:'View',Text:'Text',ScrollView:'Scroll',Switch:'Switch',ActivityIndicator:'Spinner',StyleSheet:{create:x=>x},Platform:{OS:'android'},Alert:{alert:()=>alerts++}},
+- '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>({replace:()=>navigations++,goBack(){}})},
++ '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>({isFocused:()=>true,addListener:()=>()=>{},replace:()=>navigations++,goBack(){}})},
+  '../../components/CustomButton':{__esModule:true,default:'PayButton'},'../../components/ErrorState':{__esModule:true,default:'Error'},
+  '../../services/referralsService':{fetchOrderQuote:async()=>({ok:true,amount:49}),fetchReferralSettings:async()=>({enabled:false}),formatRupees:String,walletProductsText:()=>''},
+- '../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
++ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
+  '../../services/paymentService':{purchaseProduct:()=>{creates++;return new Promise(r=>finish=r);}},'../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
+  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
+  const Screen=load('mobile-app/src/screens/payment/OrderSummaryScreen.tsx',mocks).default;
+@@ -26,7 +26,7 @@
+   fetchOrderQuote:()=>++reads===1?Promise.resolve({ok:true,amount:49,walletEligible:true,walletAvailable:10})
+    :new Promise((resolve,rejectPromise)=>{complete=()=>reject?rejectPromise(new Error('offline')):resolve({ok:false});}),
+   fetchReferralSettings:async()=>({enabled:true}),formatRupees:String,walletProductsText:()=>''},
+- '../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
++ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
+  '../../services/paymentService':{purchaseProduct:async()=>{creates++;return {amountPaise:4900};}},
+  '../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
+  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
+--- a/mobile-app/scripts/razorpay-internal-test-selftest.cjs
++++ b/mobile-app/scripts/razorpay-internal-test-selftest.cjs
+@@ -115,7 +115,7 @@
+   const Summary = load('mobile-app/src/screens/payment/OrderSummaryScreen.tsx', {
+     react: h.react, 'react/jsx-runtime': jsx, 'react-native': native,
+     '@react-navigation/native': { useRoute: () => ({ params: summaryRoute.params }),
+-      useNavigation: () => ({ replace: (name, params) => { checkoutRoute = { name, params }; } }) },
++      useNavigation: () => ({ isFocused:()=>true,addListener:()=>()=>{},replace: (name, params) => { checkoutRoute = { name, params }; } }) },
+     '../../components/CustomButton': { __esModule: true, default: 'PayButton' },
+     '../../components/ErrorState': { __esModule: true, default: 'Error' },
+     '../../services/referralsService': { fetchOrderQuote: async id => {
+@@ -123,7 +123,7 @@
+     }, fetchReferralSettings: async () => ({ enabled: false }), formatRupees: String, walletProductsText: () => '' },
+     '../../services/playBillingService': {}, '../../config/supabase': {},
+     '../../services/indiaBillingStates': { INDIA_ADMINISTRATIVE_AREAS: [] },
+-    '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/paymentService': service, '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
++    '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/paymentService': service, '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
+     '../../utils/logger': { logError() {} }, ...themes('../../theme/'),
+   }).default;
+   h.render(Summary); await tick();
+@@ -149,7 +149,7 @@
+       useNavigation: () => ({ dispatch: value => { destination = value.routes[1]; }, goBack: () => back++ }),
+       useFocusEffect() {}, CommonActions: { reset: value => value } },
+     '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
+-    '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/paymentService': { verifyPayment: async () => { verifies++; return verdict; }, recoverPaymentWithRetry: async () => ({ success: false, pending: true }) },
++    '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/paymentService': { verifyPayment: async () => { verifies++; return verdict; }, recoverPaymentWithRetry: async () => ({ success: false, pending: true }) },
+     '../../services/ordersService': { markOrderStatus: async () => {} },
+     './checkoutHtmlTemplate': { buildCheckoutHtml: p => JSON.stringify(p) },
+     './checkoutNavigation': { CHECKOUT_ORIGIN_WHITELIST: [], isAllowedCheckoutWebUrl: () => true },
+--- a/mobile-app/src/services/playBillingService.ts
++++ b/mobile-app/src/services/playBillingService.ts
+@@ -9,6 +9,7 @@
+ import { Order } from "../types/order";
+ import { selectStandardPlayOffer } from "./playOfferSelection";
+ import { userChoiceBillingEnabled } from "../config/paymentProvider";
++import { getAuthEpoch } from "./authState";
+ 
+ const projectUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
+ const attemptKey = (userId: string) => `medveda:play-attempt:${userId}`;
+@@ -81,6 +82,7 @@
+ const listeners = new Set<Listener>();
+ const inFlightTokens = new Set<string>();
+ let activeAttempt: PlayAttempt | null = null;
++let activeAttemptEpoch = -1;
+ let connection: Promise<typeof import("expo-iap")> | null = null;
+ const choiceInFlight = new Set<string>();
+ const seenChoiceTokens = new Set<string>();
+@@ -104,7 +106,9 @@
+ }
+ 
+ async function authenticatedPost<T>(name: string, payload: Record<string, string>, expectedUserId?: string): Promise<T> {
++  const epoch = getAuthEpoch();
+   const { data } = await withBillingDeadline(supabase.auth.getSession());
++  if (getAuthEpoch() !== epoch) throw new Error("The signed-in account changed. Please check purchases again.");
+   if (!data.session?.access_token) throw new Error("Please log in before purchasing.");
+   if (expectedUserId && data.session.user.id !== expectedUserId)
+     throw new Error("The signed-in account changed. Please check purchases again.");
+@@ -187,12 +191,14 @@
+ 
+ async function saveAttempt(attempt: PlayAttempt): Promise<void> {
+   activeAttempt = attempt;
++  activeAttemptEpoch = getAuthEpoch();
+   await AsyncStorage.setItem(attemptKey(attempt.userId), JSON.stringify(attempt));
+ }
+ 
+ export async function saveAlternativeContext(attempt: PlayAttempt, buyerState: string, useWallet: boolean): Promise<void> {
++  const epoch = getAuthEpoch();
+   const { data } = await withBillingDeadline(supabase.auth.getSession());
+-  if (data.session?.user.id !== attempt.userId) throw new Error("The signed-in account changed.");
++  if (getAuthEpoch() !== epoch || data.session?.user.id !== attempt.userId) throw new Error("The signed-in account changed.");
+   await saveAttempt({ ...attempt, choiceContext: { buyerState, useWallet } });
+ }
+ 
+@@ -202,41 +208,45 @@
+ 
+ export async function resumeAlternativeChoice(productId: string): Promise<PlayAttempt | null> {
+   if (!userChoiceBillingEnabled) return null;
++  const epoch = getAuthEpoch();
+   const { data } = await withBillingDeadline(supabase.auth.getSession());
+   const uid = data.session?.user.id;
+-  if (!uid) return null;
++  if (!uid || getAuthEpoch() !== epoch) return null;
+   const stored = await withBillingDeadline(AsyncStorage.getItem(attemptKey(uid)));
+-  if (!stored) return null;
++  if (!stored || getAuthEpoch() !== epoch) return null;
+   let attempt: PlayAttempt;
+   try { attempt = JSON.parse(stored) as PlayAttempt; }
+   catch { await AsyncStorage.removeItem(attemptKey(uid)); return null; }
+   if (!attempt || attempt.userId !== uid || attempt.productId !== productId || !attempt.externalTransactionToken) return null;
+   const current = await withBillingDeadline(supabase.auth.getSession());
+-  if (current.data.session?.user.id !== uid) return null;
++  if (getAuthEpoch() !== epoch || current.data.session?.user.id !== uid) return null;
+   activeAttempt = attempt;
++  activeAttemptEpoch = epoch;
+   return attempt;
+ }
+ 
+ async function handleAlternativeChoice(details: import("expo-iap").UserChoiceBillingDetails): Promise<void> {
+   const attempt = activeAttempt;
+-  if (!userChoiceBillingEnabled || !attempt || !details || seenChoiceTokens.has(details.externalTransactionToken) || choiceInFlight.has(attempt.internalOrderId) ||
++  const epoch = activeAttemptEpoch;
++  if (getAuthEpoch() !== epoch || !userChoiceBillingEnabled || !attempt || !details || seenChoiceTokens.has(details.externalTransactionToken) || choiceInFlight.has(attempt.internalOrderId) ||
+       !Array.isArray(details.products) || details.products.length !== 1 || details.products[0] !== attempt.playSku ||
+       typeof details.externalTransactionToken !== "string" || details.externalTransactionToken.length < 10) return;
+   if (attempt.externalTransactionToken && attempt.externalTransactionToken !== details.externalTransactionToken) return;
+   choiceInFlight.add(attempt.internalOrderId);
+   try {
+     const session = await withBillingDeadline(supabase.auth.getSession());
+-    if (session.data.session?.user.id !== attempt.userId || activeAttempt !== attempt) return;
++    if (getAuthEpoch() !== epoch || session.data.session?.user.id !== attempt.userId || activeAttempt !== attempt) return;
+     const selected = { ...attempt, externalTransactionToken: details.externalTransactionToken };
+     // Persist before any HTTP request; retry the same choice after process death.
+     await saveAttempt(selected);
+     // A logout/switch during native delivery or storage must not open checkout
+     // for the next account. Keep the owner's durable choice for later recovery.
+     const current = await withBillingDeadline(supabase.auth.getSession());
+-    if (current.data.session?.user.id !== attempt.userId || activeAttempt !== selected) return;
++    if (getAuthEpoch() !== epoch || current.data.session?.user.id !== attempt.userId || activeAttempt !== selected) return;
+     seenChoiceTokens.add(details.externalTransactionToken);
+     emit({ type: "alternative", attempt: selected });
+   } catch {
++    if (getAuthEpoch() !== epoch) return;
+     emit({ type: "error", attempt, message: "Could not save your payment choice. Please try again." });
+   } finally { choiceInFlight.delete(attempt.internalOrderId); }
+ }
+@@ -358,7 +368,7 @@
+         }),
+         iap.purchaseErrorListener((error) => {
+           const attempt = activeAttempt;
+-          if (!attempt || attempt.externalTransactionToken) return;
++          if (!attempt || activeAttemptEpoch !== getAuthEpoch() || attempt.externalTransactionToken) return;
+           if (error.code === "user-cancelled") {
+             void clearAttempt(attempt).catch(() => {});
+             emit({ type: "cancel", attempt });
+@@ -386,19 +396,36 @@
+   return connection;
+ }
+ 
+-export async function startPlayPurchase(attempt: PlayAttempt, offerToken: string): Promise<void> {
++export async function startPlayPurchase(attempt: PlayAttempt, offerToken: string, isCurrent: () => boolean = () => true): Promise<void> {
++  const epoch = getAuthEpoch();
++  const assertCurrent = () => {
++    if (getAuthEpoch() !== epoch || !isCurrent())
++      throw new Error("The checkout session changed. Check My Purchases before paying again.");
++  };
++  assertCurrent();
+   assertUserChoicePurchase();
+   if (launching || (activeAttempt && !activeAttempt.externalTransactionToken))
+     throw new Error("Another Play purchase is awaiting confirmation. Check My Purchases first.");
+   launching = true;
+-  try {
++  let dispatched = false;
++  try {
++    // Persisted attempts survive process death. Never replace an unresolved
++    // native checkout merely because its in-memory listener was lost.
++    if (await withBillingDeadline(AsyncStorage.getItem(attemptKey(attempt.userId))))
++      throw new Error("A Play payment is awaiting confirmation. Check My Purchases before paying again.");
++    assertCurrent();
+     const iap = await ensurePlayBilling();
++    assertCurrent();
+     const { data } = await withBillingDeadline(supabase.auth.getSession());
++    assertCurrent();
+     if (data.session?.user.id !== attempt.userId) throw new Error("The signed-in account changed.");
+     await saveAttempt(attempt);
++    assertCurrent();
+     const current = await withBillingDeadline(supabase.auth.getSession());
++    assertCurrent();
+     if (current.data.session?.user.id !== attempt.userId || activeAttempt !== attempt)
+       throw new Error("The signed-in account changed.");
++    dispatched = true;
+     await withBillingDeadline(iap.requestPurchase({
+       request: {
+         google: {
+@@ -417,15 +444,21 @@
+     }
+     // A user-choice or purchase listener may already have handled the result.
+     if (activeAttempt?.internalOrderId === attempt.internalOrderId && !activeAttempt.externalTransactionToken) {
+-      await clearAttempt(attempt);
+       const code = typeof error === "object" && error !== null && "code" in error
+         ? String(error.code) : "";
+       if (code === "user-cancelled") {
++        await clearAttempt(attempt);
+         emit({ type: "cancel", attempt });
+         return;
+       }
+-      const message = error instanceof Error ? error.message : "Could not start Play payment.";
+-      emit({ type: "error", attempt, message });
++      if (dispatched) {
++        // A rejected launch may still deliver a late paid receipt or choice.
++        // Keep its owner/order association and block replacement checkout.
++        emit({ type: "pending", attempt });
++      } else {
++        await clearAttempt(attempt);
++        throw error;
++      }
+     } else if (!activeAttempt) { throw error; }
+   } finally { launching = false; }
+ }
+--- a/mobile-app/src/screens/payment/OrderSummaryScreen.tsx
++++ b/mobile-app/src/screens/payment/OrderSummaryScreen.tsx
+@@ -22,6 +22,7 @@
+ import { attachExternalToken, createPlayOrder, fetchMatchingPlayProduct, resumeAlternativeChoice,
+   finishAlternativeChoice, saveAlternativeContext, startPlayPurchase, subscribePlayBilling, type PlayAttempt } from "../../services/playBillingService";
+ import { supabase } from "../../config/supabase";
++import { getAuthEpoch, getCurrentUser, subscribeAuthUser } from "../../services/authState";
+ import { INDIA_ADMINISTRATIVE_AREAS } from "../../services/indiaBillingStates";
+ 
+ import { COLORS } from "../../theme/colors";
+@@ -47,6 +48,27 @@
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState<string | null>(null);
+   const [paying, setPaying] = useState(false);
++  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
++  const billingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
++  const focused = useRef(navigation.isFocused());
++  const owner = useRef(getCurrentUser()?.id);
++  // This screen and its admitted attempt belong to one sign-in lifetime.
++  // A -> B -> A must not revive work started by the first A session.
++  const screenEpoch = useRef(getAuthEpoch());
++  const attemptEpoch = useRef(screenEpoch.current);
++  const focusEpoch = useRef(0);
++  const canContinue = useCallback((epoch: number, focus: number) =>
++    !navigated.current && focused.current && navigation.isFocused() &&
++    getAuthEpoch() === epoch && epoch === screenEpoch.current &&
++    focusEpoch.current === focus && getCurrentUser()?.id === owner.current, [navigation]);
++  const clearBillingTimer = useCallback(() => {
++    if (billingTimer.current !== null) clearTimeout(billingTimer.current);
++    billingTimer.current = null;
++  }, []);
++  const canShowAttempt = useCallback((attempt: PlayAttempt) =>
++    !navigated.current && focused.current && navigation.isFocused() &&
++    attemptEpoch.current === getAuthEpoch() && attemptEpoch.current === screenEpoch.current &&
++    owner.current === attempt.userId && getCurrentUser()?.id === attempt.userId, [navigation]);
+   const [buyerState, setBuyerState] = useState("");
+   const [selectingState, setSelectingState] = useState(false);
+   const [alternative, setAlternative] = useState<PlayAttempt | null>(null);
+@@ -63,16 +85,50 @@
+   const paymentInFlight = useRef(false);
+   const quoteReady = useRef(false);
+ 
++  useEffect(() => {
++    const blur = navigation.addListener("blur", () => {
++      focused.current = false;
++      focusEpoch.current++;
++      clearBillingTimer();
++    });
++    const focus = navigation.addListener("focus", () => {
++      focused.current = true;
++      const attempt = currentAttempt.current;
++      if (attempt && paymentInFlight.current && canShowAttempt(attempt)) {
++        setAwaitingConfirmation(true);
++        setPaying(false);
++      } else if (!attempt && getAuthEpoch() === screenEpoch.current) {
++        paymentInFlight.current = false;
++        setPaying(false);
++      }
++    });
++    const unsubscribeOwner = subscribeAuthUser(() => {
++      owner.current = getCurrentUser()?.id;
++      clearBillingTimer();
++      // The old owner's payment must never open checkout for the next account.
++      if (getAuthEpoch() !== screenEpoch.current) {
++        requestId.current++;
++        quoteReady.current = false;
++        setQuote(null);
++        setAwaitingConfirmation(true);
++        setPaying(false);
++      }
++    });
++    return () => { clearBillingTimer(); blur(); focus(); unsubscribeOwner(); };
++  }, [navigation, clearBillingTimer, canShowAttempt]);
++
+   const loadQuote = useCallback(
+     async (wallet: boolean) => {
+       const id = ++requestId.current;
++      const epoch = getAuthEpoch();
++      const focus = focusEpoch.current;
+       quoteReady.current = false;
+       setQuote(null);
+       try {
+         setLoading(true);
+         setError(null);
+         const q = await fetchOrderQuote(productId, wallet);
+-        if (id !== requestId.current || navigated.current) return; // a newer request superseded this one
++        if (id !== requestId.current || !canContinue(epoch, focus)) return; // a newer request superseded this one
+         if (!q.ok) {
+           setError("This product is no longer available.");
+           return;
+@@ -80,14 +136,14 @@
+         setQuote(q);
+         quoteReady.current = true;
+       } catch (err) {
+-        if (id !== requestId.current || navigated.current) return;
++        if (id !== requestId.current || !canContinue(epoch, focus)) return;
+         logError("quote failed:", err);
+         setError("Could not load the price. Please try again.");
+       } finally {
+-        if (id === requestId.current) setLoading(false);
++        if (id === requestId.current && canContinue(epoch, focus)) setLoading(false);
+       }
+     },
+-    [productId]
++    [productId, canContinue]
+   );
+ 
+   useEffect(() => {
+@@ -111,14 +167,18 @@
+   };
+ 
+   const openAlternative = useCallback(async (attempt: PlayAttempt) => {
+-    if (alternativeInFlight.current || navigated.current) return;
++    if (alternativeInFlight.current || !canShowAttempt(attempt)) return;
++    clearBillingTimer();
++    setAwaitingConfirmation(false);
++    const epoch = getAuthEpoch();
++    const focus = focusEpoch.current;
+     alternativeInFlight.current = true;
+     setAlternative(attempt);
+     setPaying(true);
+     paymentInFlight.current = true;
+     const assertOwner = async () => {
+       const { data } = await supabase.auth.getSession();
+-      if (data.session?.user.id !== attempt.userId || navigated.current)
++      if (data.session?.user.id !== attempt.userId || !canShowAttempt(attempt) || !canContinue(epoch, focus))
+         throw new Error("The signed-in account changed. Check My Purchases before retrying.");
+     };
+     try {
+@@ -143,19 +203,25 @@
+       navigated.current = true;
+       navigation.replace("PaymentCheckout", checkoutData);
+     } catch (err: any) {
+-      Alert.alert("Could Not Start Payment", err?.message || "Please try again.");
++      if (canShowAttempt(attempt) && canContinue(epoch, focus)) Alert.alert("Could Not Start Payment", err?.message || "Please try again.");
+     } finally {
+       alternativeInFlight.current = false;
+-      paymentInFlight.current = false;
+-      setPaying(false);
++      if (canShowAttempt(attempt) && canContinue(epoch, focus)) {
++        paymentInFlight.current = false;
++        setPaying(false);
++      }
+     }
+-  }, [navigation, productId]);
++  }, [navigation, productId, canShowAttempt, clearBillingTimer, canContinue]);
+ 
+   useEffect(() => {
+     if (paymentProvider !== "play") return;
+     let active = true;
++    const epoch = getAuthEpoch();
++    const focus = focusEpoch.current;
+     void resumeAlternativeChoice(productId).then(attempt => {
+-      if (active && attempt) {
++      if (active && attempt && canContinue(epoch, focus)) {
++        attemptEpoch.current = epoch;
++        if (!canShowAttempt(attempt)) return;
+         currentAttempt.current = attempt;
+         setAlternative(attempt);
+         setBuyerState(attempt.choiceContext?.buyerState ?? "");
+@@ -164,9 +230,11 @@
+       }
+     }).catch(() => {});
+     const unsubscribe = subscribePlayBilling(event => {
+-      if (!active || navigated.current || event.attempt.internalOrderId !== currentAttempt.current?.internalOrderId) return;
++      if (!active || !canShowAttempt(event.attempt) || event.attempt.internalOrderId !== currentAttempt.current?.internalOrderId) return;
++      clearBillingTimer();
+       if (event.type === "alternative") { void openAlternative(event.attempt); return; }
+-      paymentInFlight.current = false;
++      paymentInFlight.current = event.type !== "cancel";
++      setAwaitingConfirmation(event.type !== "cancel");
+       setPaying(false);
+       if (event.type === "success") {
+         navigated.current = true;
+@@ -176,39 +244,58 @@
+         navigated.current = true;
+         navigation.replace("PaymentFailed", { title: productTitle, pending: true,
+           provider: "play", internalOrderId: event.attempt.internalOrderId });
+-      } else if (event.type === "error") Alert.alert("Payment update", event.message);
++      } else if (event.type === "error") Alert.alert("Payment update", `${event.message} Check My Purchases before paying again.`);
++      else if (event.type === "cancel") currentAttempt.current = null;
+     });
+     return () => { active = false; unsubscribe(); };
+-  }, [navigation, openAlternative, productId, productTitle, loadQuote]);
++  }, [navigation, openAlternative, productId, productTitle, loadQuote, canShowAttempt, clearBillingTimer, canContinue]);
+ 
+   const pay = async () => {
+-    if (paymentInFlight.current || !quoteReady.current || paying || loading || !quote) return;
++    if (awaitingConfirmation || paymentInFlight.current || !quoteReady.current || paying || loading || !quote) return;
+     if (Platform.OS !== "android" || paymentProvider === "disabled") {
+       Alert.alert("Checkout unavailable", "Start checkout from a note on Android.");
+       return;
+     }
++    const epoch = getAuthEpoch();
++    const focus = focusEpoch.current;
++    if (!canContinue(epoch, focus)) return;
+     paymentInFlight.current = true;
+     try {
+       setPaying(true);
+       if (paymentProvider === "play") {
+         if (alternative) { await openAlternative(alternative); return; }
+         const { data } = await supabase.auth.getSession();
++        if (!canContinue(epoch, focus)) return;
+         const uid = data.session?.user.id;
+         if (!uid) throw new Error("Please log in before purchasing.");
+         const order = await createPlayOrder(productId, uid);
++        if (!canContinue(epoch, focus)) return;
+         if (Math.round(order.amountInr * 100) !== Math.round(quote.listPrice * 100)) {
+           throw new Error("The product price changed. Review it and try again.");
+         }
+         const offer = await fetchMatchingPlayProduct(order.playSku, order.amountInr);
++        if (!canContinue(epoch, focus)) return;
+         const attempt = { ...order, userId: uid, productId, productTitle,
+           choiceContext: { buyerState, useWallet } };
++        attemptEpoch.current = epoch;
++        if (!canShowAttempt(attempt)) return;
+         currentAttempt.current = attempt;
+-        await startPlayPurchase(attempt, offer.offerToken);
++        clearBillingTimer();
++        billingTimer.current = setTimeout(() => {
++          if (currentAttempt.current?.internalOrderId !== attempt.internalOrderId || !canShowAttempt(attempt)) return;
++          // A resolved native launch promise is not a payment outcome. Keep the
++          // listener and the admission lock until cancellation or confirmation.
++          setAwaitingConfirmation(true);
++          setPaying(false);
++        }, 30000);
++        await startPlayPurchase(attempt, offer.offerToken, () =>
++          canShowAttempt(attempt) && canContinue(epoch, focus));
+         // Native listeners own the outcome, including cancellation and pending.
+         return;
+       }
+       // Same flag the server just quoted for; the server recomputes everything.
+       const checkoutData = await purchaseProduct(productId, useWallet);
++      if (!canContinue(epoch, focus)) return;
+       if (checkoutData.amountPaise !== Math.round(quote.amount * 100)) {
+         Alert.alert("Price updated", "The total changed. Review the updated price before paying.");
+         await loadQuote(useWallet);
+@@ -218,13 +305,21 @@
+       navigated.current = true;
+       navigation.replace("PaymentCheckout", checkoutData);
+     } catch (err: any) {
++      if (!canContinue(epoch, focus)) return;
++      clearBillingTimer();
++      if (currentAttempt.current) {
++        if (canShowAttempt(currentAttempt.current)) {
++          setAwaitingConfirmation(true);
++          setPaying(false);
++        }
++        return;
++      }
+       paymentInFlight.current = false;
+       setPaying(false);
+-      currentAttempt.current = null;
+       Alert.alert("Could Not Start Payment", err?.message || "Please try again.");
+       loadQuote(useWallet); // balance / discount may have changed
+     } finally {
+-      if (paymentProvider !== "play" || alternative || !currentAttempt.current) {
++      if (canContinue(epoch, focus) && (paymentProvider !== "play" || alternative || !currentAttempt.current)) {
+         paymentInFlight.current = false;
+         setPaying(false);
+       }
+@@ -304,8 +399,19 @@
+       </ScrollView>
+ 
+       <View style={styles.footer}>
+-        {alternative && !paying && <CustomButton title="Choose payment again" onPress={async () => {
++        {awaitingConfirmation && <>
++          <Text style={styles.product}>Payment status is still pending. Check My Purchases before paying again.</Text>
++          <CustomButton title="My Purchases" onPress={() => {
++            const attempt = currentAttempt.current;
++            if (attempt && canShowAttempt(attempt)) navigation.navigate("MyPurchases");
++          }} />
++        </>}
++        {alternative && !paying && !awaitingConfirmation && <CustomButton title="Choose payment again" onPress={async () => {
++          const epoch = getAuthEpoch();
++          const focus = focusEpoch.current;
++          if (!canShowAttempt(alternative)) return;
+           await finishAlternativeChoice(alternative);
++          if (!canShowAttempt(alternative) || !canContinue(epoch, focus)) return;
+           setAlternative(null);
+           currentAttempt.current = null;
+           void loadQuote(useWallet);
+@@ -313,7 +419,7 @@
+         <CustomButton
+           title={paying ? "Please wait…" : paymentProvider === "play" && !alternative ? "Continue to payment" : quote ? `Pay ${formatRupees(quote.amount)}` : "Pay"}
+           onPress={pay}
+-          disabled={!quote || loading || paying}
++          disabled={!quote || loading || paying || awaitingConfirmation}
+         />
+       </View>
+       <Modal visible={selectingState} onRequestClose={() => setSelectingState(false)} animationType="slide">

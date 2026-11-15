@@ -5,7 +5,9 @@ import Constants, { ExecutionEnvironment } from "expo-constants";
 // an actual `require("expo-notifications")` at runtime - safe to keep
 // unconditional even though the value import below is not.
 import type * as ExpoNotifications from "expo-notifications";
+import { createNotificationPresentationGate } from "./notificationRouting";
 import { logError } from "../utils/logger";
+import { isCategoryEnabled, NOTIFICATION_CATEGORIES } from "../utils/notificationPreferences";
 
 // Fully on-device: a daily repeating LOCAL notification scheduled by the
 // OS itself (Notifications.scheduleNotificationAsync with a
@@ -60,13 +62,23 @@ if (!isExpoGo) {
   // them silently in that case, which used to make it look "not
   // working" when tested with the app open.
   if (Notifications) {
+    const shouldPresent = createNotificationPresentationGate();
     Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowBanner: true,
-        shouldShowList: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-      }),
+      handleNotification: async notification => {
+        const data = notification.request.content.data;
+        const category = NOTIFICATION_CATEGORIES.find(category => category.type === data?.type);
+        // Device preferences also govern foreground push presentation. Unknown
+        // categories and local study reminders retain their existing behavior.
+        // Background push filtering must be enforced by the sender.
+        const present = shouldPresent(notification.request.identifier, data)
+          && await isCategoryEnabled(category?.type);
+        return {
+          shouldShowBanner: present,
+          shouldShowList: present,
+          shouldPlaySound: present,
+          shouldSetBadge: false,
+        };
+      },
     });
   }
 }
@@ -86,7 +98,7 @@ export async function getStudyReminderSettings(): Promise<StudyReminderSettings>
     return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
   } catch (err) {
     logError("Failed to read study reminder settings:", err);
-    return DEFAULT_SETTINGS;
+    throw err;
   }
 }
 
@@ -104,64 +116,79 @@ async function requestPermission(): Promise<boolean> {
   return requested.granted;
 }
 
-// Cancels whatever was scheduled before, so toggling the time never
-// leaves two reminders firing at once.
-async function cancelScheduledReminder() {
-  if (!Notifications) return;
-
-  const existingId = await AsyncStorage.getItem(NOTIFICATION_ID_KEY);
-  if (existingId) {
-    try {
-      await Notifications.cancelScheduledNotificationAsync(existingId);
-    } catch {
-      // already fired / already cancelled - fine to ignore
-    }
-    await AsyncStorage.removeItem(NOTIFICATION_ID_KEY);
-  }
+// Serialize time changes/restoration so two schedules cannot race publication.
+let reminderOperation: Promise<unknown> = Promise.resolve();
+function serialize<T>(action: () => Promise<T>): Promise<T> {
+  const result = reminderOperation.catch(() => {}).then(action);
+  reminderOperation = result;
+  return result;
 }
-
-// Turns the reminder on (or updates its time) and persists the choice so
-// it can be re-applied on the next app launch (Android in particular can
-// drop exact alarms across a device reboot).
-export async function enableStudyReminder(
-  hour: number,
-  minute: number
-): Promise<{ success: boolean; permissionDenied?: boolean; unsupported?: boolean }> {
-  if (!Notifications) {
-    return { success: false, unsupported: true };
-  }
-
-  const granted = await requestPermission();
-  if (!granted) {
-    return { success: false, permissionDenied: true };
-  }
-
-  await cancelScheduledReminder();
-
-  const notificationId = await Notifications.scheduleNotificationAsync({
+async function snapshot() {
+  const raw = await AsyncStorage.getItem(STORAGE_KEY);
+  const settings: StudyReminderSettings & { notificationId?: string } = raw ? JSON.parse(raw) : DEFAULT_SETTINGS;
+  const id = settings.notificationId ?? await AsyncStorage.getItem(NOTIFICATION_ID_KEY);
+  return { settings, id };
+}
+function schedule(hour: number, minute: number, identifier?: string) {
+  if (!Notifications) throw new Error("Reminders unavailable");
+  return Notifications.scheduleNotificationAsync({
+    ...(identifier ? { identifier } : {}),
     content: {
       title: "📚 Time to study!",
       body: "A few minutes of revision now keeps everything fresh for the exam.",
       sound: true,
     },
     trigger: {
-      hour,
-      minute,
-      repeats: true,
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
+      hour, minute,
       ...(Platform.OS === "android" ? { channelId: "study-reminders" } : {}),
-    } as ExpoNotifications.CalendarTriggerInput,
+    },
   });
-
-  await AsyncStorage.setItem(NOTIFICATION_ID_KEY, notificationId);
-  await saveSettings({ enabled: true, hour, minute });
-
-  return { success: true };
 }
 
-export async function disableStudyReminder() {
-  await cancelScheduledReminder();
-  const current = await getStudyReminderSettings();
-  await saveSettings({ ...current, enabled: false });
+export function enableStudyReminder(
+  hour: number, minute: number
+): Promise<{ success: boolean; permissionDenied?: boolean; unsupported?: boolean }> {
+  return serialize(() => enableReminderNow(hour, minute));
+}
+
+async function enableReminderNow(hour: number, minute: number) {
+    if (!Notifications) return { success: false, unsupported: true };
+    if (!Number.isInteger(hour) || hour < 0 || hour > 23 || !Number.isInteger(minute) || minute < 0 || minute > 59)
+      throw new Error("Invalid reminder time");
+    if (!await requestPermission()) return { success: false, permissionDenied: true };
+    const previous = await snapshot();
+    // Schedule first: a rejected new trigger must not cancel the previous reminder.
+    const id = await schedule(hour, minute);
+    let cancelled = false;
+    try {
+      if (previous.id) {
+        await Notifications.cancelScheduledNotificationAsync(previous.id);
+        cancelled = true;
+      }
+      // Choice + schedule identity share one atomic storage publication.
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ enabled: true, hour, minute, notificationId: id }));
+    } catch (error) {
+      await Notifications.cancelScheduledNotificationAsync(id).catch(() => {});
+      if (cancelled && previous.settings.enabled && previous.id)
+        await schedule(previous.settings.hour, previous.settings.minute, previous.id).catch(() => {});
+      throw error;
+    }
+    return { success: true };
+}
+
+export function disableStudyReminder(): Promise<void> {
+  return serialize(async () => {
+    const previous = await snapshot();
+    if (previous.id && Notifications) await Notifications.cancelScheduledNotificationAsync(previous.id);
+    try {
+      await saveSettings({ ...previous.settings, enabled: false });
+    } catch (error) {
+      if (previous.settings.enabled && previous.id && Notifications)
+        await schedule(previous.settings.hour, previous.settings.minute, previous.id).catch(() => {});
+      throw error;
+    }
+  });
 }
 
 // Called once on app launch. If the reminder was left "on" from a
@@ -169,21 +196,18 @@ export async function disableStudyReminder() {
 // owned by the OS and survives app restarts on its own, but re-applying
 // it here is a cheap safety net against the rare cases (mainly Android
 // after a device reboot) where the OS drops it.
-export async function restoreStudyReminderOnLaunch() {
-  if (!Notifications) return;
-
-  const settings = await getStudyReminderSettings();
-  if (!settings.enabled) return;
-
-  const existingId = await AsyncStorage.getItem(NOTIFICATION_ID_KEY);
-  if (existingId) {
-    const stillScheduled = (
-      await Notifications.getAllScheduledNotificationsAsync()
-    ).some((n) => n.identifier === existingId);
-    if (stillScheduled) return;
-  }
-
-  await enableStudyReminder(settings.hour, settings.minute);
+export function restoreStudyReminderOnLaunch(): Promise<void> {
+  return serialize(async () => {
+    if (!Notifications) return;
+    const { settings, id: existingId } = await snapshot();
+    if (!settings.enabled) return;
+    if (existingId) {
+      const stillScheduled = (await Notifications.getAllScheduledNotificationsAsync())
+        .some(n => n.identifier === existingId);
+      if (stillScheduled) return;
+    }
+    await enableReminderNow(settings.hour, settings.minute);
+  });
 }
 
 // Android requires a notification channel to be created before a

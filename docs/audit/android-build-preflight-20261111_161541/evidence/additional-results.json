@@ -1,0 +1,36 @@
+[
+  {
+    "name": "android-autolinking",
+    "command": [
+      "node",
+      "node_modules/expo-modules-autolinking/bin/expo-modules-autolinking.js",
+      "resolve",
+      "--platform",
+      "android",
+      "--json"
+    ],
+    "cwd": "mobile-app",
+    "exit": 0,
+    "seconds": 0.38
+  },
+  {
+    "name": "push-delivery",
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.52
+  },
+  {
+    "name": "p0-notification",
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0,
+    "seconds": 0.58
+  }
+]

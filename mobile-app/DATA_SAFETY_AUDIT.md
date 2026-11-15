@@ -8,7 +8,15 @@ data off the device to MedVeda or an SDK/provider, or stores it in MedVeda’s
 remote backend. Local-only device storage is called out separately because it
 may not be “collected” in Play Console’s definition.
 
-**Release configuration, 2026-10-15:** The Google Play build uses Google Play
+**MV007 correction, 2026-11-11:** Production purchases remain disabled. Full
+Billing removal is blocked by regional policy and missing owner enrollment
+evidence. `expo-iap` remains autolinked for required alternative-billing APIs
+and historical receipt recovery; its Android library declares Billing permission.
+No merged release manifest or device behavior was verified. This supersedes
+the historical configuration statements below, not the actual release's data
+declaration review. See `../docs/audit/MEDVEDA_MV007_GOOGLE_PLAY_BILLING_REMOVAL_2026-11-11.md`.
+
+**Historical release configuration, 2026-10-15:** The Google Play build uses Google Play
 Billing only. Razorpay is reachable only from the explicit non-Play staging
 profile. The UCB integration described later in this audit is not enabled in
 the Play build; do not declare its external transaction token/report or
@@ -58,7 +66,7 @@ declaration.
 
 The details below document the existing integration for a future eligibility
 review; they are not collection paths in the current Play build. The Play
-build now disables new purchases after removal of mobile Google Play Billing.
+build now disables new purchases; the Billing library and required integration remain.
 Earlier transaction verification, refunds and retention remain backend obligations.
 
 | Data type | New collection / recipient | Why and when | Play Console review |
@@ -232,7 +240,7 @@ and `android:allowBackup="false"`.
 * At the 2026-10-09 baseline, `IN_APP_PURCHASES_ENABLED` was not found in
   `mobile-app/` source/configuration or `package.json`. Re-audit the final UCB
   build and any remote feature flags before filing.
-* The Android build disables new purchases. Mobile Google Play Billing is removed;
+* The production Android build disables new purchases. Mobile Google Play Billing is retained;
   earlier purchase history and backend transaction/refund processing remain.
   No replacement checkout is enabled.
   Declare purchase data paths that are reachable in the exact submitted build;

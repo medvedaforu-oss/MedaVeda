@@ -136,7 +136,7 @@ export default function ReferralScreen() {
     );
   }
 
-  const hasBalance = !!wallet && (wallet.available > 0 || wallet.pending > 0 || wallet.totalEarned > 0);
+  const hasBalance = !!wallet && (wallet.available > 0 || wallet.pending > 0 || wallet.totalEarned > 0 || (wallet.expired ?? 0) > 0);
 
   if (!settings?.enabled && !hasBalance && history.length === 0) {
     return (
@@ -185,7 +185,7 @@ export default function ReferralScreen() {
             <Text style={styles.statValue}>{formatRupees(wallet?.pending ?? 0)}</Text>
             <Text style={styles.statLabel}>Pending</Text>
             <Text style={styles.statNote}>
-              {settings?.enabled ? `available after ${settings.creditHoldDays} days` : ""}
+              {wallet?.pending ? "Awaiting release; review or dispute holds may apply" : ""}
             </Text>
           </View>
           <View style={styles.statDivider} />
@@ -194,6 +194,9 @@ export default function ReferralScreen() {
             <Text style={styles.statLabel}>Total earned</Text>
           </View>
         </View>
+        {(wallet?.expired ?? 0) > 0 && (
+          <Text style={styles.statNote}>Expired balance: {formatRupees(wallet?.expired)}</Text>
+        )}
         {settings?.enabled && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>
@@ -216,7 +219,7 @@ export default function ReferralScreen() {
             />
             <Step
               n={3}
-              text={`You get ${formatRupees(settings.referrerCreditAmount)} after their first payment (available after ${settings.creditHoldDays} days).`}
+              text={`You get ${formatRupees(settings.referrerCreditAmount)} after their first payment (held for ${settings.creditHoldDays} days; reviews or disputes may delay release).`}
               last
             />
           </View>

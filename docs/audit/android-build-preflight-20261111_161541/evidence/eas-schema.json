@@ -1,0 +1,137 @@
+{
+  "status": "PASS",
+  "cliVersion": "24.14.0",
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
+  },
+  "profiles": {
+    "development": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "developmentClient": true,
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "channel": "development",
+      "buildType": "apk"
+    },
+    "preview": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "channel": "preview",
+      "buildType": "apk"
+    },
+    "screenshots": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]",
+        "EXPO_PUBLIC_DISABLE_SCREENSHOT_BLOCK": "1"
+      },
+      "channel": "screenshots",
+      "buildType": "apk"
+    },
+    "production": {
+      "credentialsSource": "remote",
+      "distribution": "store",
+      "environment": "production",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]",
+        "MEDVEDA_PAYMENT_PROVIDER": "disabled"
+      },
+      "channel": "production",
+      "buildArtifactPaths": [
+        "android/app/build/outputs/mapping/release/**/*",
+        "android/app/build/outputs/logs/manifest-merger-release-report.txt"
+      ],
+      "buildType": "app-bundle"
+    },
+    "internal-testing": {
+      "credentialsSource": "remote",
+      "distribution": "store",
+      "autoIncrement": true,
+      "environment": "preview",
+      "env": {
+        "MEDVEDA_BUILD_TARGET": "same-project",
+        "MEDVEDA_PAYMENT_PROVIDER": "disabled",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "channel": "internal-testing",
+      "buildArtifactPaths": [
+        "android/app/build/outputs/mapping/release/**/*",
+        "android/app/build/outputs/logs/manifest-merger-release-report.txt"
+      ],
+      "buildType": "app-bundle"
+    },
+    "staging-validation": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "environment": "preview",
+      "channel": "staging-validation",
+      "env": {
+        "MEDVEDA_BUILD_TARGET": "staging",
+        "MEDVEDA_PAYMENT_PROVIDER": "disabled",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://nsmsqsogedzohwboripd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "buildType": "apk"
+    },
+    "razorpay-internal-test": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "environment": "development",
+      "channel": "razorpay-internal-test",
+      "env": {
+        "MEDVEDA_BUILD_TARGET": "production-isolated-test",
+        "MEDVEDA_DISTRIBUTION": "non-play-internal-test",
+        "MEDVEDA_PAYMENT_PROVIDER": "razorpay",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "MEDVEDA_NONPLAY_TEST_ENVIRONMENT": "production-isolated-razorpay-test-v1",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "buildType": "apk"
+    },
+    "shrink-test": {
+      "credentialsSource": "remote",
+      "distribution": "internal",
+      "channel": "shrink-test",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]",
+        "ANDROID_SHRINK": "1"
+      },
+      "buildArtifactPaths": [
+        "android/app/build/outputs/mapping/release/**/*",
+        "android/app/build/outputs/logs/manifest-merger-release-report.txt"
+      ],
+      "buildType": "apk"
+    },
+    "alpha-payment-validation": {
+      "credentialsSource": "remote",
+      "distribution": "store",
+      "environment": "development",
+      "autoIncrement": true,
+      "channel": "alpha-payment-validation",
+      "env": {
+        "MEDVEDA_BUILD_TARGET": "staging",
+        "MEDVEDA_DISTRIBUTION": "play-alpha-validation",
+        "MEDVEDA_PAYMENT_PROVIDER": "play",
+        "MEDVEDA_INDIA_UCB_ENROLLED": "false",
+        "MEDVEDA_UCB_TEST_ACCEPTED": "false",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://nsmsqsogedzohwboripd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "[REDACTED]"
+      },
+      "buildType": "app-bundle"
+    }
+  }
+}

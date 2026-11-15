@@ -1,3 +1,5 @@
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
+import usePurchases from "../../hooks/usePurchases";
 import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
@@ -37,8 +39,12 @@ function NotesScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
-  const { chapterId, chapterTitle, subjectId, subjectTitle, yearId, yearTitle, unlocked } =
+  const { chapterId, chapterTitle, subjectId, subjectTitle, yearId, yearTitle } =
     route.params;
+
+  const { isChapterOwned, refresh: refreshPurchases, loading: purchasesLoading, error: purchasesError } = usePurchases();
+  const unlocked = isChapterOwned({ id: chapterId, subjectId, yearId });
+  useFocusEffect(useCallback(() => { void refreshPurchases(); }, [refreshPurchases]));
 
   const load = useCallback(() => fetchNotesByChapter(chapterId), [chapterId]);
   const { value: notes, loading, error, retry } = useLoadResource<Note[]>(load, []);
@@ -113,7 +119,7 @@ function NotesScreen() {
     // it reads without any network at all - no signed URL needed, the
     // bytes are already on-device.
     const downloaded = getItem(item.id);
-    if (downloaded?.status === "completed" && downloaded.localUri) {
+    if (item.isFreePreview === true && downloaded?.status === "completed" && downloaded.localUri) {
       navigation.navigate("PdfViewer", { pdfUrl: downloaded.localUri });
       return;
     }
@@ -129,7 +135,7 @@ function NotesScreen() {
     try {
       const signedUrl = await getSecureNoteUrl(item.id);
       if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
-      navigation.navigate("PdfViewer", { pdfUrl: signedUrl });
+      navigation.navigate("PdfViewer", { pdfUrl: signedUrl, noteId: item.id });
     } catch (err) {
       if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
       logError("Failed to resolve note URL:", err);
@@ -153,6 +159,7 @@ function NotesScreen() {
       await start({
         id: item.id,
         contentType: "note",
+        isFreePreview: item.isFreePreview === true,
         title: item.title,
         sourceUrl: "", // The manager requests fresh authorization for every transfer.
         chapterId,
@@ -180,22 +187,23 @@ function NotesScreen() {
     return (
       <NoteCard
         title={item.title}
-        description={item.description}
+        description={item.isFreePreview === true ? item.description : `${item.description ?? ""} • Online-only`}
         locked={!unlocked && !isFree}
         free={isFree && !unlocked}
         onPress={() => handleNotePress(item)}
         opening={resolvingNoteId === item.id}
-        downloaded={accessible && isDownloaded(item.id)}
-        downloading={accessible && isDownloading(item.id)}
+        downloaded={item.isFreePreview === true && accessible && isDownloaded(item.id)}
+        downloading={item.isFreePreview === true && accessible && isDownloading(item.id)}
         downloadProgress={downloadProgressFor(item.id)}
-        onDownloadPress={accessible ? () => handleDownloadPress(item) : undefined}
-        onRemoveDownloadPress={accessible ? () => removeDownload(item.id) : undefined}
+        onDownloadPress={item.isFreePreview === true && accessible ? () => handleDownloadPress(item) : undefined}
+        onRemoveDownloadPress={item.isFreePreview === true && accessible ? () => removeDownload(item.id) : undefined}
       />
     );
   }, [freeNoteIds, unlocked, handleNotePress, resolvingNoteId, isDownloaded, isDownloading, downloadProgressFor, handleDownloadPress, removeDownload]);
 
   return (
     <View style={styles.container}>
+      <PurchaseOwnershipStatus loading={purchasesLoading} error={purchasesError} refresh={refreshPurchases} />
       <Text style={styles.title}>{chapterTitle}</Text>
       <Text style={styles.subtitle}>Study Notes</Text>
 
@@ -210,7 +218,7 @@ function NotesScreen() {
       ) : error ? (
         <LoadError content="notes" retry={retry} />
       ) : (
-        <FlatList refreshing={loading} onRefresh={retry} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
+        <FlatList refreshing={loading} onRefresh={() => { retry(); void refreshPurchases(); }} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
           data={filteredData}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
@@ -237,7 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     padding: SPACING.lg,
-    paddingTop: 60,
+    paddingTop: SPACING.md,
   },
   title: {
     fontSize: FONT.title,

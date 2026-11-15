@@ -11,7 +11,7 @@ import CoursePicker from "../components/CoursePicker";
 export default function Analytics() {
   const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
   const [courseFilter, setCourseFilter] = useState("");
-  const { data, loading, error } = useAnalytics({ courseId: courseFilter || undefined });
+  const { data, loading, error, reload } = useAnalytics({ courseId: courseFilter || undefined });
 
   const filterBar = (
     <div className="mb-6 w-56">
@@ -46,12 +46,14 @@ export default function Analytics() {
 
       {filterBar}
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p>
+        <button type="button" onClick={() => { void reload(); }}>Retry analytics</button>
+        <p>Figures below may be out of date.</p></div>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
           title="Total Revenue"
-          value={`₹ ${data.totalRevenue}`}
+          value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(data.totalRevenue)}
           icon="💰"
           color="#16a34a"
         />

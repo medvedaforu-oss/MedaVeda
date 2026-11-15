@@ -146,7 +146,7 @@ export default function Chapters() {
           />
         </div>
 
-        <select
+        <select aria-label="Filter by year"
           value={yearFilter}
           onChange={(e) => {
             setYearFilter(e.target.value);
@@ -162,7 +162,7 @@ export default function Chapters() {
           ))}
         </select>
 
-        <select
+        <select aria-label="Filter by subject"
           value={subjectFilter}
           onChange={(e) => setSubjectFilter(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"

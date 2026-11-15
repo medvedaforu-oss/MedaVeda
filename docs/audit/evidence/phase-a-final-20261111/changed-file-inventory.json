@@ -1,0 +1,32 @@
+{
+  "modified_preexisting": [],
+  "new_files": [
+    "docs/audit/MEDVEDA_PHASE_A_FINAL_SAFETY_REVIEW_2026-11-11.md",
+    "docs/audit/MEDVEDA_PHASE_A_OPERATOR_RUNBOOK_2026-11-11.md",
+    "docs/audit/evidence/phase-a-final-20261111/artifact-integrity.json",
+    "docs/audit/evidence/phase-a-final-20261111/baseline-diff.json",
+    "docs/audit/evidence/phase-a-final-20261111/candidate-checksum-verification.json",
+    "docs/audit/evidence/phase-a-final-20261111/changed-file-inventory.json",
+    "docs/audit/evidence/phase-a-final-20261111/diff-check.log",
+    "docs/audit/evidence/phase-a-final-20261111/expected-phase-a-metadata.json",
+    "docs/audit/evidence/phase-a-final-20261111/extra-local-checks.py",
+    "docs/audit/evidence/phase-a-final-20261111/independent-postchecks-readonly.sql",
+    "docs/audit/evidence/phase-a-final-20261111/initial-file-hashes.json",
+    "docs/audit/evidence/phase-a-final-20261111/initial-git-status.txt",
+    "docs/audit/evidence/phase-a-final-20261111/inspect-ddl-hooks-readonly.py",
+    "docs/audit/evidence/phase-a-final-20261111/inspect-operational-readonly.py",
+    "docs/audit/evidence/phase-a-final-20261111/inspect-production-readonly.py",
+    "docs/audit/evidence/phase-a-final-20261111/inspect-safety-readonly.py",
+    "docs/audit/evidence/phase-a-final-20261111/operator-package-checksums.sha256",
+    "docs/audit/evidence/phase-a-final-20261111/operator-phase-a-proposed.sql",
+    "docs/audit/evidence/phase-a-final-20261111/prepare-operator-sql.py",
+    "docs/audit/evidence/phase-a-final-20261111/preservation.json",
+    "docs/audit/evidence/phase-a-final-20261111/production-ddl-hooks.json",
+    "docs/audit/evidence/phase-a-final-20261111/production-operational.json",
+    "docs/audit/evidence/phase-a-final-20261111/production-readonly.json",
+    "docs/audit/evidence/phase-a-final-20261111/production-safety.json",
+    "docs/audit/evidence/phase-a-final-20261111/regression-results.json",
+    "docs/audit/evidence/phase-a-final-20261111/run-phase-a-local.py",
+    "docs/audit/evidence/phase-a-final-20261111/test-operator-local.py"
+  ]
+}

@@ -1,0 +1,1 @@
+Guarded cleanup refused because the webhook harness retained synthetic database ap_wh. No shutdown/deletion happened. Inspection confirmed ap_wh is created by supabase/tests/webhook-harness/run.sh in the new isolated P1 cluster. Final cleanup allowlists exactly that name; any other database stops cleanup.

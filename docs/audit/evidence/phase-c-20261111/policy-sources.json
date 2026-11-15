@@ -1,0 +1,17 @@
+{
+  "checked_date_utc": "2026-11-11",
+  "scope": "Public primary documentation only; no Console, Supabase, Razorpay or Google financial API acceptance requests",
+  "sources": [
+    {"url":"https://support.google.com/googleplay/android-developer/answer/13306652?hl=en","finding":"India alongside-Play program; enrollment/terms/payment profile/trust and safety, package opt-in and authorized transaction reporting within 24 hours"},
+    {"url":"https://developer.android.com/google/play/billing/alternative","finding":"User-choice API integration; API feature minimum is not the current publishing minimum"},
+    {"url":"https://developer.android.com/google/play/billing/alternative/alternative-billing-with-user-choice-in-app","finding":"Native choice, ProductDetails/offerToken, Play-country eligibility, alternative callback/token persistence and selected Play completion"},
+    {"url":"https://developer.android.com/google/play/billing/deprecation-faq","finding":"PBL 7 new/update deadline August 31 2026, extension November 1 2026; new November 11 build requires PBL 8 or later"},
+    {"url":"https://developer.android.com/google/play/billing/outside-gpb-backend","finding":"Initial transaction token, unique external ID, report after authorization, full/partial refunds"},
+    {"url":"https://developers.google.com/android-publisher/api-ref/rest/v3/externaltransactions/createexternaltransaction","finding":"Application/external ID and androidpublisher OAuth scope"},
+    {"url":"https://developers.google.com/android-publisher/api-ref/rest/v3/externaltransactions/refundexternaltransaction","finding":"Stable original transaction ID; full or pre-tax partial refund and refundTime"},
+    {"url":"https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.productsv2","finding":"Purchase state, line-item offer details, obfuscated account/profile, completion time"},
+    {"url":"https://razorpay.com/docs/payments/server-integration/nodejs/integration-steps/","finding":"Server-created order, integer currency subunit amount, payment signature verification and capture"},
+    {"url":"https://razorpay.com/docs/webhooks/validate-test/","finding":"Raw payload HMAC and old secret for retries; duplicate/out-of-order delivery handling"},
+    {"url":"https://docs.expo.dev/versions/v57.0.0/","finding":"Read before mobile edit per mobile-app/AGENTS.md"}
+  ]
+}

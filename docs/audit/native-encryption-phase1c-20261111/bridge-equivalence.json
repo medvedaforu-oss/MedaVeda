@@ -1,0 +1,6 @@
+{
+  "method": "Restore original package, remove added lifecycle import, append extracted lifecycle body; compare SHA-256 with pre-work original",
+  "expectedSha256": "2e9eda128a260ed96433b12de3f1c11176e1fe35d9df75f5b66deceea2f45047",
+  "reconstructedSha256": "2e9eda128a260ed96433b12de3f1c11176e1fe35d9df75f5b66deceea2f45047",
+  "byteIdenticalAfterRecombining": true
+}

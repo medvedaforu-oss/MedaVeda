@@ -1,0 +1,11 @@
+{
+  "name": "test-supabase_tests_audit-push-policy-selftest.cjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "supabase/tests/audit-push-policy-selftest.cjs"
+  ],
+  "exit": 0,
+  "seconds": 2.19
+}

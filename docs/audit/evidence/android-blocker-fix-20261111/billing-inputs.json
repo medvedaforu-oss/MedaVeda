@@ -1,0 +1,22 @@
+{
+  "mobile-app/node_modules/expo-iap/android/build.gradle": {
+    "sha256": "612ac3c1441a69c76062af2ce4207505247a4893c693ec2e81987478cae1207c",
+    "matches_prior_native_audit": true
+  },
+  "mobile-app/node_modules/expo-iap/openiap-versions.json": {
+    "sha256": "8998ea916ec604a514bdd16510ac3324fa3f7a630b1609c070e4fc32d9939824",
+    "matches_prior_native_audit": true
+  },
+  "mobile-app/node_modules/expo-iap/android/src/main/AndroidManifest.xml": {
+    "sha256": "df5accb1680c20aff11b50cac0dd2d967f847a9d6b0aeba33bcaec72e2acc25c",
+    "matches_prior_native_audit": true
+  },
+  "mobile-app/node_modules/expo-iap/android/src/main/java/expo/modules/iap/ExpoIapModule.kt": {
+    "sha256": "01060f3a98228d2b8ce6a07e6f694e0504f4f8093352c1e1f306b0857fe3b09a",
+    "matches_prior_native_audit": true
+  },
+  "mobile-app/node_modules/expo-iap/android/src/main/java/expo/modules/iap/ExpoIapHelper.kt": {
+    "sha256": "ac953a4ec26ee3770a4ca18aca1a14fd876b8d5e85361bf2313b09fde4c83364",
+    "matches_prior_native_audit": true
+  }
+}

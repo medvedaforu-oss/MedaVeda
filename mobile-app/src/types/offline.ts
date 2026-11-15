@@ -21,6 +21,7 @@ export interface DownloadItem {
   yearTitle: string;
   // "" when unknown. Legacy rows (all BAMS) are backfilled to "bams".
   courseId: string;
+  isFreePreview?: boolean;
   sourceUrl: string;
   localUri: string | null;
   fileSizeBytes: number;
@@ -37,6 +38,7 @@ export interface DownloadRequest {
   id: string;
   contentType: DownloadContentType;
   title: string;
+  isFreePreview?: boolean;
   sourceUrl: string;
   chapterId: string;
   chapterTitle: string;
@@ -47,11 +49,7 @@ export interface DownloadRequest {
   contentVersion?: number;
 }
 
-export type SyncEntityType =
-  | "quiz_attempt"
-  | "bookmark"
-  | "reading_progress"
-  | "watch_history";
+export type SyncEntityType = "quiz_attempt";
 
 export interface SyncQueueItem {
   queueId: string;

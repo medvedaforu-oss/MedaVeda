@@ -1,0 +1,5 @@
+{
+  "scope": "all snapshotted pre-existing regular files, excluding credentials/dependencies/generated/cache/Git and new package",
+  "checked": 2386,
+  "changed_or_removed": []
+}

@@ -8,6 +8,7 @@ const order = { id: 'order-1', provider: 'razorpay', status: 'paid', amount: 10,
   payment_completed_at: '2026-10-13T00:00:00.000Z', external_refund_at: null };
 order.payment_provider_time='2026-10-11T23:00:00.000Z'; // capture 25h before receipt
 const refunds = {};
+let appEnv="production", dbFail=false;
 const api = { current: null, getFailures: 0, createFailures: 0, permanent: false,
   createCalls: 0, partialCalls: [], mismatch: false };
 class GoogleApiError extends Error { constructor(status) { super(`Google API ${status}`); this.status = status; } }
@@ -17,7 +18,7 @@ function external(id, body) {
     originalPreTaxAmount: body.originalPreTaxAmount, originalTaxAmount: body.originalTaxAmount,
     currentPreTaxAmount: { ...body.originalPreTaxAmount },
     userTaxAddress: body.userTaxAddress, transactionTime: body.transactionTime,
-    oneTimeTransaction: body.oneTimeTransaction };
+    oneTimeTransaction: body.oneTimeTransaction, ...(api.testPurchase ? {testPurchase:{}} : {}) };
 }
 const google = { GoogleApiError, packageName,
   getExternalTransaction: async () => {
@@ -26,6 +27,7 @@ const google = { GoogleApiError, packageName,
   },
   createExternalTransaction: async (id, body) => {
     api.createCalls++;
+    if (api.failAfterReported) { order.external_report_status="reported"; throw new GoogleApiError(503); }
     if (api.permanent) throw new GoogleApiError(400);
     if (api.createFailures-- > 0) throw new GoogleApiError(503);
     api.current = external(id, body);
@@ -50,6 +52,7 @@ function query(table) {
     maybeSingle: async () => ({ data: rows(table).find(row=>predicates.every(f=>f(row))) ?? null, error:null }),
     then(resolve) {
       const selected=rows(table).filter(row=>predicates.every(f=>f(row)));
+      if (this.changes && dbFail) { resolve({data:null,error:{code:"fixture"}}); return; }
       if (this.changes) selected.forEach(row=>Object.assign(row,this.changes));
       resolve({ data:selected, error:null });
     },
@@ -59,7 +62,7 @@ function query(table) {
 const supabaseAdmin = { from: query, rpc: async (name,args) => {
   if (name === 'claim_ucb_external_refund') {
     const row=refunds[args.p_refund_id];
-    if (row.status === 'reported') return { data:{ok:false},error:null };
+    if (row.busy || row.status === 'reported') return { data:{ok:false},error:null };
     row.status='processing'; return {data:{ok:true},error:null};
   }
   return {data:{ok:true},error:null};
@@ -72,7 +75,7 @@ vm.runInNewContext(code,{module:testModule,exports:testModule.exports,require:id
   if(id==='./googlePlay.ts') return google;
   if(id==='./ucbStates.ts') return {INDIA_ADMINISTRATIVE_AREAS:new Set(['MAHARASHTRA'])};
   throw new Error(id);
-},console,Date,BigInt});
+},console,Date,BigInt,Deno:{env:{get:()=>appEnv}}});
 const {reportExternalOrder,reportExternalRefundEvent}=testModule.exports;
 let failed=0;
 function check(name,ok){console.log(`${ok?'PASS':'FAIL'} F10 ${name}`);if(!ok)failed++;}
@@ -92,6 +95,14 @@ async function rejects(fn){try{await fn();return false}catch{return true}}
   check('Google amount mismatch rejected',await rejects(()=>reportExternalOrder(order.id)) && order.external_report_status==='failed');
   api.mismatch=false;api.current=null;order.external_report_status='pending';
   await reportExternalOrder(order.id);
+  if (!process.argv.includes('--production-only')) {
+    appEnv='staging';order.external_report_status='pending';api.current=null;
+    check('test server rejects an unmarked real Google report result',await rejects(()=>reportExternalOrder(order.id)));
+    api.testPurchase=true;api.current=null;
+    check('license-test Google result persists its authoritative test marker',await reportExternalOrder(order.id)==='reported' && order.external_report_test_purchase===true);
+  }
+  appEnv='production';api.testPurchase=false;api.current=null;order.external_report_status='pending';
+  await reportExternalOrder(order.id);
   for(const [id,amount] of [['refund-one',200],['refund-two',300]])
     refunds[id]={refund_id:id,order_id:order.id,amount_paise:amount,pre_tax_paise:amount,
       refund_time:'2026-10-13T01:00:00Z',is_full:false,status:'pending'};
@@ -99,5 +110,17 @@ async function rejects(fn){try{await fn();return false}catch{return true}}
     && api.current.currentPreTaxAmount.priceMicros==='8000000');
   check('second partial refund uses prior reported amount',await reportExternalRefundEvent('refund-two')==='reported'
     && api.current.currentPreTaxAmount.priceMicros==='5000000' && api.partialCalls.length===2);
+  refunds['refund-busy']={refund_id:'refund-busy',order_id:order.id,amount_paise:100,pre_tax_paise:100,
+    refund_time:'2026-10-13T02:00:00Z',is_full:false,status:'processing',busy:true};
+  check('busy refund claim throws for durable retry rather than returning skipped success',
+    await rejects(()=>reportExternalRefundEvent('refund-busy')) && refunds['refund-busy'].status==='processing');
+  check('already reported refund replay returns confirmed completion',
+    await reportExternalRefundEvent('refund-one')==='reported' && api.partialCalls.length===2);
+  order.external_report_status='pending';dbFail=true;
+  check('Google success cannot return reported when persistence fails',await rejects(()=>reportExternalOrder(order.id)) && order.external_report_status==='pending');
+  dbFail=false;
+  check('lost persistence result reconciles on retry',await reportExternalOrder(order.id)==='reported');
+  order.external_report_status='pending';api.current=null;api.failAfterReported=true;
+  check('a slower failed attempt cannot downgrade a concurrent reported result',await rejects(()=>reportExternalOrder(order.id)) && order.external_report_status==='reported');
   if(failed)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1});

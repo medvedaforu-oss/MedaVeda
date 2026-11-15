@@ -1,0 +1,107 @@
+[
+  {
+    "test": "exact A wrapper; 66 -> 69; all baseline public rows preserved",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "all 126 pinned production function preimages reproduced",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-handlers on mv003_6c5d7d69e655",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-recovery on mv003_6c5d7d69e655",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-history on mv003_6c5d7d69e655",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "reviewed C wrapper rejects matching baseline due to newline hash defect",
+    "result": "PASS",
+    "detail": "ERROR:  pinned function drift: accounts_share_network\nCONTEXT:  PL/pgSQL function inline_code_block line 3 at RAISE"
+  },
+  {
+    "test": "hash-only correction exposes invalid FOREACH syntax",
+    "result": "PASS",
+    "detail": "ERROR:  syntax error at or near \"[\"\nLINE 4:  FOREACH t IN ARRAY['orders','payments','purchases','product...\n                           ^"
+  },
+  {
+    "test": "missing evidence gate fails closed",
+    "result": "PASS",
+    "detail": "ERROR:  missing independently signed evidence reference: medveda.c_owner_approval\nCONTEXT:  PL/pgSQL function inline_code_block line 6 at RAISE"
+  },
+  {
+    "test": "forced failure after C1 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C2 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C3 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C4 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "exact C wrapper success; all pre-existing public-table rows and prices preserved",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "73 exact versions; seven exact source statements; no duplicate A1 or excluded installer",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "all final function bodies match expected MD5 including strong MV003",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "retry after successful commit fails closed without changes",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-handlers on mv003_f1d3f3adb3c8",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-recovery on mv003_df450537f980",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-history on mv003_25f2e366798c",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual b-to-c-handlers on mv003_d568955b8f84",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual b-to-c-handlers on mv003_6be24b52f307",
+    "result": "PASS",
+    "detail": null
+  }
+]

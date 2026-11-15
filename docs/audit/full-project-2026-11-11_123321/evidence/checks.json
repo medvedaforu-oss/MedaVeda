@@ -1,0 +1,1237 @@
+[
+  {
+    "name": "mobile-types",
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "mobile-app/tsconfig.json"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 19.92,
+    "log": "mobile-types.log"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 12.99,
+    "log": "lint.log"
+  },
+  {
+    "name": "admin-build",
+    "command": [
+      "npm",
+      "run",
+      "build",
+      "--prefix",
+      "admin-panel"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 18.15,
+    "log": "admin-build.log"
+  },
+  {
+    "name": "admin-tests",
+    "command": [
+      "npm",
+      "test",
+      "--prefix",
+      "admin-panel"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 5.17,
+    "log": "admin-tests.log"
+  },
+  {
+    "name": "website-build",
+    "command": [
+      "node",
+      "website/scripts/build.mjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "log": "website-build.log"
+  },
+  {
+    "name": "website-links",
+    "command": [
+      "node",
+      "website/scripts/check-links.mjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.11,
+    "log": "website-links.log"
+  },
+  {
+    "name": "secrets-selftest",
+    "command": [
+      "node",
+      "scripts/secret-scan-selftest.mjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "log": "secrets-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-accessibility-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/accessibility-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.05,
+    "log": "mobile-app-scripts-accessibility-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-android-release-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/android-release-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.08,
+    "log": "mobile-app-scripts-android-release-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-auth-recovery-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-recovery-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.21,
+    "log": "mobile-app-scripts-auth-recovery-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-auth-state-race-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-state-race-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.8,
+    "log": "mobile-app-scripts-auth-state-race-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-checkout-security-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/checkout-security-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.61,
+    "log": "mobile-app-scripts-checkout-security-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-closed-testing-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/closed-testing-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 35.18,
+    "log": "mobile-app-scripts-closed-testing-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-course-state-race-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/course-state-race-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.69,
+    "log": "mobile-app-scripts-course-state-race-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-course-year-confirmation-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-confirmation-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 8.61,
+    "log": "mobile-app-scripts-course-year-confirmation-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-course-year-picker-race-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-picker-race-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.64,
+    "log": "mobile-app-scripts-course-year-picker-race-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-course-year-selection-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/course-year-selection-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.25,
+    "log": "mobile-app-scripts-course-year-selection-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-deep-link-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/deep-link-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.45,
+    "log": "mobile-app-scripts-deep-link-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-download-actions-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/download-actions-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.43,
+    "log": "mobile-app-scripts-download-actions-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-list-states-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/list-states-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.17,
+    "log": "mobile-app-scripts-list-states-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-load-resource-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/load-resource-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.67,
+    "log": "mobile-app-scripts-load-resource-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-login-network-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/login-network-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.65,
+    "log": "mobile-app-scripts-login-network-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-login-submit-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/login-submit-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.61,
+    "log": "mobile-app-scripts-login-submit-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv004-recovery-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv004-recovery-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.67,
+    "log": "mobile-app-scripts-mv004-recovery-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv007-billing-boundary-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv007-billing-boundary-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.12,
+    "log": "mobile-app-scripts-mv007-billing-boundary-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv008-ownership-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.32,
+    "log": "mobile-app-scripts-mv008-ownership-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv009-store-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv009-store-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.81,
+    "log": "mobile-app-scripts-mv009-store-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv010-options-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv010-options-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.03,
+    "log": "mobile-app-scripts-mv010-options-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv011-accessibility-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv011-accessibility-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.78,
+    "log": "mobile-app-scripts-mv011-accessibility-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-mv012-history-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv012-history-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.1,
+    "log": "mobile-app-scripts-mv012-history-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-navigation-lazy-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/navigation-lazy-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.27,
+    "log": "mobile-app-scripts-navigation-lazy-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-nonplay-test-isolation-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/nonplay-test-isolation-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.48,
+    "log": "mobile-app-scripts-nonplay-test-isolation-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notes-billing-choice-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-billing-choice-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.56,
+    "log": "mobile-app-scripts-notes-billing-choice-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notes-entitlement-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-entitlement-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.19,
+    "log": "mobile-app-scripts-notes-entitlement-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notes-open-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-open-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.87,
+    "log": "mobile-app-scripts-notes-open-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notification-inflight-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-inflight-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.66,
+    "log": "mobile-app-scripts-notification-inflight-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notification-preferences-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "log": "mobile-app-scripts-notification-preferences-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notification-reads-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-reads-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.52,
+    "log": "mobile-app-scripts-notification-reads-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-notification-routing-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-routing-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.7,
+    "log": "mobile-app-scripts-notification-routing-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-offline-download-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-download-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.38,
+    "log": "mobile-app-scripts-offline-download-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-offline-owner-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-owner-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.75,
+    "log": "mobile-app-scripts-offline-owner-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-poll-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-poll-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.86,
+    "log": "mobile-app-scripts-payment-poll-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-provider-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.11,
+    "log": "mobile-app-scripts-payment-provider-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-request-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-request-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.82,
+    "log": "mobile-app-scripts-payment-request-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-routing-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.31,
+    "log": "mobile-app-scripts-payment-routing-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-success-owner-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-success-owner-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.45,
+    "log": "mobile-app-scripts-payment-success-owner-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-summary-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-summary-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.33,
+    "log": "mobile-app-scripts-payment-summary-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-payment-verdict-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.07,
+    "log": "mobile-app-scripts-payment-verdict-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-pdf-lifecycle-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-lifecycle-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.85,
+    "log": "mobile-app-scripts-pdf-lifecycle-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-pdf-remote-retry-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/pdf-remote-retry-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.88,
+    "log": "mobile-app-scripts-pdf-remote-retry-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-profile-save-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/profile-save-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.83,
+    "log": "mobile-app-scripts-profile-save-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-purchases-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.63,
+    "log": "mobile-app-scripts-purchases-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-purchases-unavailable-ui-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/purchases-unavailable-ui-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.76,
+    "log": "mobile-app-scripts-purchases-unavailable-ui-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-quiz-editing-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-editing-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.79,
+    "log": "mobile-app-scripts-quiz-editing-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-quiz-hooks-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-hooks-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.87,
+    "log": "mobile-app-scripts-quiz-hooks-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-quiz-input-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/quiz-input-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.66,
+    "log": "mobile-app-scripts-quiz-input-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-razorpay-internal-test-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.9,
+    "log": "mobile-app-scripts-razorpay-internal-test-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-readiness-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/readiness-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.13,
+    "log": "mobile-app-scripts-readiness-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-release-payments-disabled-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.7,
+    "log": "mobile-app-scripts-release-payments-disabled-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-route-validation-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/route-validation-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.86,
+    "log": "mobile-app-scripts-route-validation-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-same-project-build-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/same-project-build-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.08,
+    "log": "mobile-app-scripts-same-project-build-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-search-cache-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/search-cache-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.04,
+    "log": "mobile-app-scripts-search-cache-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-search-lazy-hook-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/search-lazy-hook-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.92,
+    "log": "mobile-app-scripts-search-lazy-hook-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-search-pagination-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/search-pagination-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.79,
+    "log": "mobile-app-scripts-search-pagination-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-sentry-config-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/sentry-config-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.09,
+    "log": "mobile-app-scripts-sentry-config-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-staging-build-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/staging-build-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.08,
+    "log": "mobile-app-scripts-staging-build-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-startup-availability-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/startup-availability-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.81,
+    "log": "mobile-app-scripts-startup-availability-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-sync-concurrency-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/sync-concurrency-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.8,
+    "log": "mobile-app-scripts-sync-concurrency-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-video-data-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/video-data-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.58,
+    "log": "mobile-app-scripts-video-data-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-video-link-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/video-link-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.61,
+    "log": "mobile-app-scripts-video-link-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-video-tap-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/video-tap-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.62,
+    "log": "mobile-app-scripts-video-tap-selftest.log"
+  },
+  {
+    "name": "mobile-app-scripts-years-inflight-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/years-inflight-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.57,
+    "log": "mobile-app-scripts-years-inflight-selftest.log"
+  },
+  {
+    "name": "supabase-tests-b-to-c-handlers-selftest",
+    "command": [
+      "node",
+      "supabase/tests/b-to-c-handlers-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.52,
+    "log": "supabase-tests-b-to-c-handlers-selftest.log"
+  },
+  {
+    "name": "supabase-tests-b-to-c-reporting-selftest",
+    "command": [
+      "node",
+      "supabase/tests/b-to-c-reporting-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.77,
+    "log": "supabase-tests-b-to-c-reporting-selftest.log"
+  },
+  {
+    "name": "supabase-tests-b-to-c-worker-selftest",
+    "command": [
+      "node",
+      "supabase/tests/b-to-c-worker-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.31,
+    "log": "supabase-tests-b-to-c-worker-selftest.log"
+  },
+  {
+    "name": "supabase-tests-billing-recovery-worker-selftest",
+    "command": [
+      "node",
+      "supabase/tests/billing-recovery-worker-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.29,
+    "log": "supabase-tests-billing-recovery-worker-selftest.log"
+  },
+  {
+    "name": "supabase-tests-compensation-worker-selftest",
+    "command": [
+      "node",
+      "supabase/tests/compensation-worker-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.94,
+    "log": "supabase-tests-compensation-worker-selftest.log"
+  },
+  {
+    "name": "supabase-tests-content-url-publication-selftest",
+    "command": [
+      "node",
+      "supabase/tests/content-url-publication-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.45,
+    "log": "supabase-tests-content-url-publication-selftest.log"
+  },
+  {
+    "name": "supabase-tests-delete-account-rate-limit-selftest",
+    "command": [
+      "node",
+      "supabase/tests/delete-account-rate-limit-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.76,
+    "log": "supabase-tests-delete-account-rate-limit-selftest.log"
+  },
+  {
+    "name": "supabase-tests-diagnostic-auth-selftest",
+    "command": [
+      "node",
+      "supabase/tests/diagnostic-auth-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.65,
+    "log": "supabase-tests-diagnostic-auth-selftest.log"
+  },
+  {
+    "name": "supabase-tests-f10-coverage-selftest",
+    "command": [
+      "node",
+      "supabase/tests/f10-coverage-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "supabase-tests-f10-coverage-selftest.log"
+  },
+  {
+    "name": "supabase-tests-google-reporting-selftest",
+    "command": [
+      "node",
+      "supabase/tests/google-reporting-selftest.cjs",
+      "--production-only"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.6,
+    "log": "supabase-tests-google-reporting-selftest.log"
+  },
+  {
+    "name": "supabase-tests-identity-retention-selftest",
+    "command": [
+      "node",
+      "supabase/tests/identity-retention-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.08,
+    "log": "supabase-tests-identity-retention-selftest.log"
+  },
+  {
+    "name": "supabase-tests-mv003-entitlement-selftest",
+    "command": [
+      "node",
+      "supabase/tests/mv003-entitlement-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.4,
+    "log": "supabase-tests-mv003-entitlement-selftest.log"
+  },
+  {
+    "name": "supabase-tests-mv004-recovery-selftest",
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.84,
+    "log": "supabase-tests-mv004-recovery-selftest.log"
+  },
+  {
+    "name": "supabase-tests-mv005-create-order-selftest",
+    "command": [
+      "node",
+      "supabase/tests/mv005-create-order-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.42,
+    "log": "supabase-tests-mv005-create-order-selftest.log"
+  },
+  {
+    "name": "supabase-tests-mv005-history-selftest",
+    "command": [
+      "node",
+      "supabase/tests/mv005-history-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.55,
+    "log": "supabase-tests-mv005-history-selftest.log"
+  },
+  {
+    "name": "supabase-tests-mv006-restoration-selftest",
+    "command": [
+      "node",
+      "supabase/tests/mv006-restoration-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.05,
+    "log": "supabase-tests-mv006-restoration-selftest.log"
+  },
+  {
+    "name": "supabase-tests-notes-choice-order-selftest",
+    "command": [
+      "node",
+      "supabase/tests/notes-choice-order-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.12,
+    "log": "supabase-tests-notes-choice-order-selftest.log"
+  },
+  {
+    "name": "supabase-tests-phase-b-handlers-selftest",
+    "command": [
+      "node",
+      "supabase/tests/phase-b-handlers-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.63,
+    "log": "supabase-tests-phase-b-handlers-selftest.log"
+  },
+  {
+    "name": "supabase-tests-phase-b-history-selftest",
+    "command": [
+      "node",
+      "supabase/tests/phase-b-history-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.47,
+    "log": "supabase-tests-phase-b-history-selftest.log"
+  },
+  {
+    "name": "supabase-tests-phase-b-recovery-selftest",
+    "command": [
+      "node",
+      "supabase/tests/phase-b-recovery-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.94,
+    "log": "supabase-tests-phase-b-recovery-selftest.log"
+  },
+  {
+    "name": "supabase-tests-phase-c-gates-selftest",
+    "command": [
+      "node",
+      "supabase/tests/phase-c-gates-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.32,
+    "log": "supabase-tests-phase-c-gates-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-body-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-body-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.79,
+    "log": "supabase-tests-play-body-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-catalog-creation-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-catalog-creation-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 2.38,
+    "log": "supabase-tests-play-catalog-creation-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-catalog-worker-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-catalog-worker-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.05,
+    "log": "supabase-tests-play-catalog-worker-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-consumption-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-consumption-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.72,
+    "log": "supabase-tests-play-consumption-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-cron-config-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-cron-config-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.22,
+    "log": "supabase-tests-play-cron-config-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-order-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-order-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.75,
+    "log": "supabase-tests-play-order-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-payment-worker-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-payment-worker-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.8,
+    "log": "supabase-tests-play-payment-worker-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-reconcile-fairness-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-reconcile-fairness-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.77,
+    "log": "supabase-tests-play-reconcile-fairness-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-service-account-diagnostic-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-service-account-diagnostic-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.77,
+    "log": "supabase-tests-play-service-account-diagnostic-selftest.log"
+  },
+  {
+    "name": "supabase-tests-play-verification-selftest",
+    "command": [
+      "node",
+      "supabase/tests/play-verification-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.23,
+    "log": "supabase-tests-play-verification-selftest.log"
+  },
+  {
+    "name": "supabase-tests-razorpay-routing-selftest",
+    "command": [
+      "node",
+      "supabase/tests/razorpay-routing-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.56,
+    "log": "supabase-tests-razorpay-routing-selftest.log"
+  },
+  {
+    "name": "supabase-tests-razorpay-security-selftest",
+    "command": [
+      "node",
+      "supabase/tests/razorpay-security-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.47,
+    "log": "supabase-tests-razorpay-security-selftest.log"
+  },
+  {
+    "name": "supabase-tests-readiness-migrations-selftest",
+    "command": [
+      "node",
+      "supabase/tests/readiness-migrations-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.05,
+    "log": "supabase-tests-readiness-migrations-selftest.log"
+  },
+  {
+    "name": "supabase-tests-recovery-selftest",
+    "command": [
+      "node",
+      "supabase/tests/recovery-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 1.15,
+    "log": "supabase-tests-recovery-selftest.log"
+  },
+  {
+    "name": "supabase-tests-settle-timestamp-selftest",
+    "command": [
+      "node",
+      "supabase/tests/settle-timestamp-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.8,
+    "log": "supabase-tests-settle-timestamp-selftest.log"
+  },
+  {
+    "name": "supabase-tests-ucb-cron-config-selftest",
+    "command": [
+      "node",
+      "supabase/tests/ucb-cron-config-selftest.cjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 1,
+    "seconds": 0.17,
+    "log": "supabase-tests-ucb-cron-config-selftest.log"
+  },
+  {
+    "name": "mobile-checkout-html-selftest",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/checkout-html-selftest.mjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.16,
+    "log": "mobile-checkout-html-selftest.log"
+  },
+  {
+    "name": "mobile-password-policy-selftest",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "mobile-app/scripts/password-policy-selftest.mjs"
+    ],
+    "cwd": "/tmp/medveda-full-audit-snapshot",
+    "exit_code": 0,
+    "seconds": 0.12,
+    "log": "mobile-password-policy-selftest.log"
+  }
+]

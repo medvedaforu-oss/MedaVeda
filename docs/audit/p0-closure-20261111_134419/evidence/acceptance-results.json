@@ -1,0 +1,79 @@
+{
+  "recorded_at_utc": "2026-11-11T14:16:34.595869+00:00",
+  "jobs": [
+    {
+      "name": "database",
+      "command": [
+        "bash",
+        "supabase/tests/run-all.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 48.505
+    },
+    {
+      "name": "mv003-006",
+      "command": [
+        "python3",
+        "supabase/tests/run-mv006-local.py"
+      ],
+      "exit_code": 0,
+      "seconds": 45.801
+    },
+    {
+      "name": "atomic",
+      "command": [
+        "python3",
+        "/home/ganeshp8545/AyurPulse/docs/audit/p0-closure-20261111_134419/evidence/run-atomic.py"
+      ],
+      "exit_code": 0,
+      "seconds": 208.033
+    },
+    {
+      "name": "proof",
+      "command": [
+        "python3",
+        "/home/ganeshp8545/AyurPulse/docs/audit/p0-closure-20261111_134419/evidence/run-proof.py"
+      ],
+      "exit_code": 0,
+      "seconds": 21.421
+    },
+    {
+      "name": "forward-ledger",
+      "command": [
+        "python3",
+        "/home/ganeshp8545/AyurPulse/docs/audit/p0-closure-20261111_134419/evidence/run-forward-ledger.py"
+      ],
+      "exit_code": 0,
+      "seconds": 44.967
+    },
+    {
+      "name": "focused",
+      "command": [
+        "python3",
+        "/home/ganeshp8545/AyurPulse/docs/audit/p0-closure-20261111_134419/evidence/run-checks-final.py"
+      ],
+      "exit_code": 0,
+      "seconds": 38.639
+    },
+    {
+      "name": "archives",
+      "command": [
+        "python3",
+        "/home/ganeshp8545/AyurPulse/docs/audit/p0-closure-20261111_134419/evidence/validate-archives.py"
+      ],
+      "exit_code": 0,
+      "seconds": 44.232
+    }
+  ],
+  "focused_commands": 36,
+  "frozen_archives": 22,
+  "historical_suites": 4,
+  "additional_independent_rehearsal_groups": 7,
+  "preservation": {
+    "initial_files": 1836,
+    "changed_existing": [],
+    "missing_existing": [],
+    "result": "PASS"
+  },
+  "production_authorization": false
+}

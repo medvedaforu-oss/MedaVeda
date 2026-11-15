@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-08",
+  "focusedSuites": {
+    "passed": 30,
+    "total": 30,
+    "log": "local-suites.txt"
+  },
+  "typeScript": "passed",
+  "mobileLint": "passed",
+  "expoLiveCompatibility": "passed",
+  "androidPrebuild": "passed",
+  "productionHermesExport": "passed",
+  "passwordRecovery": "passed",
+  "connectedAndroidDevices": [],
+  "deviceAcceptance": "pending",
+  "hostedAcceptance": "pending",
+  "playConsoleAcceptance": "pending",
+  "versions": {
+    "expo": "57.0.32",
+    "react-native": "0.86.3",
+    "react-native-screens": "4.26.2",
+    "expo-build-properties": "57.0.23",
+    "expo-status-bar": "57.0.1",
+    "@expo/metro-runtime": "57.0.18",
+    "expo-constants": "57.0.23",
+    "expo-notifications": "57.0.25",
+    "expo-splash-screen": "57.0.11",
+    "expo-updates": "57.0.27",
+    "node-forge": "1.4.3"
+  },
+  "signedReleaseBuild": {
+    "status": "finished",
+    "versionName": "1.2.2",
+    "versionCode": 13,
+    "id": "6563492c-b997-4b1a-b46f-a13b5425db16"
+  },
+  "bundletoolValidation": "passed",
+  "mappingMatchesEmbedded": "passed",
+  "jarFileVerification": {
+    "signedPayloadEntries": 1313,
+    "unsignedPayloadEntries": 0,
+    "duplicateZipEntries": 0
+  },
+  "dexBytes": 7710596,
+  "baselineDexBytes": 34765816,
+  "dexReductionPercent": 77.82,
+  "native64Bit16KiBAlignment": {
+    "passed": 54,
+    "total": 54
+  }
+}

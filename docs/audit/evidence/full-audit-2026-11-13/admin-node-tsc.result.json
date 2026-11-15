@@ -1,0 +1,14 @@
+{
+  "name": "admin-node-tsc",
+  "cwd": "admin-panel",
+  "command": [
+    "./node_modules/.bin/tsc",
+    "--noEmit",
+    "--incremental",
+    "false",
+    "-p",
+    "tsconfig.node.json"
+  ],
+  "exit": 0,
+  "seconds": 10.12
+}

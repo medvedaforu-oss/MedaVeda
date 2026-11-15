@@ -1,0 +1,11 @@
+{
+  "name": "test-mobile-app_scripts_download-actions-selftest.cjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "mobile-app/scripts/download-actions-selftest.cjs"
+  ],
+  "exit": 0,
+  "seconds": 1.11
+}

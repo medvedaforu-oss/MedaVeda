@@ -1,0 +1,20 @@
+[
+  "mobile-app/app.config.js",
+  "mobile-app/src/utils/notificationPreferences.ts",
+  "mobile-app/src/services/studyReminderService.ts",
+  "mobile-app/src/navigation/AppNavigator.tsx",
+  "mobile-app/src/config/secureSessionStorage.ts",
+  "mobile-app/src/components/SideDrawer.tsx",
+  "mobile-app/src/screens/search/SearchScreen.tsx",
+  "mobile-app/src/screens/reminder/StudyReminderScreen.tsx",
+  "mobile-app/src/screens/referral/ReferralTermsScreen.tsx",
+  "mobile-app/src/screens/profile/ProfileScreen.tsx",
+  "mobile-app/src/screens/notifications/NotificationPreferencesScreen.tsx",
+  "mobile-app/src/screens/downloads/DownloadsScreen.tsx",
+  "admin-panel/src/pages/Settings.tsx",
+  "admin-panel/src/pages/Notifications.tsx",
+  "admin-panel/src/hooks/useSettings.ts",
+  "supabase/functions/login-with-mobile/index.ts",
+  "supabase/functions/send-push-notification/index.ts",
+  "website/assets/js/account-verified.js"
+]

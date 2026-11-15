@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "sha256sum",
+      "-c",
+      "supabase/releases/phase-b-20261111/checksums.sha256"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "entries": 16
+  },
+  {
+    "command": [
+      "sha256sum",
+      "-c",
+      "supabase/releases/phase-c-20261111/checksums.sha256"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "entries": 50
+  },
+  {
+    "command": [
+      "sha256sum",
+      "-c",
+      "supabase/releases/b-to-c-compatible-20261111/checksums.sha256"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "entries": 24
+  }
+]

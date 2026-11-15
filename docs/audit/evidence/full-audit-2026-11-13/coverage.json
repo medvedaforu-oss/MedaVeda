@@ -1,0 +1,26 @@
+{
+  "reviewedFiles": 645,
+  "coverage": {
+    "mobile-app/src": {
+      "files": 220,
+      "reviewed": 220,
+      "missing": []
+    },
+    "admin-panel/src": {
+      "files": 121,
+      "reviewed": 121,
+      "missing": []
+    },
+    "supabase/functions": {
+      "files": 61,
+      "reviewed": 61,
+      "missing": []
+    },
+    "supabase/migrations": {
+      "files": 78,
+      "reviewed": 78,
+      "missing": []
+    }
+  },
+  "sourceChangesSinceInventory": []
+}

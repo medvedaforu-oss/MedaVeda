@@ -1,0 +1,87 @@
+{
+  "MOB-19": {
+    "hash": "8bdf72c15ba9a567c7b1be560b6ef8cde19b951f",
+    "files": [
+      "mobile-app/src/hooks/useNetworkStatus.ts",
+      "mobile-app/__tests__/audit-harness.cjs",
+      "mobile-app/__tests__/MOB-19.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-19.log",
+      "docs/audit/mobile-fix-2/after/MOB-19.log"
+    ]
+  },
+  "MOB-09": {
+    "hash": "e27ae7b8ad77c1eb17b564ccf21dea927d4d2f1c",
+    "files": [
+      "mobile-app/src/services/quizAttempts.ts",
+      "mobile-app/src/services/syncEngine.ts",
+      "mobile-app/__tests__/MOB-09.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-09.log",
+      "docs/audit/mobile-fix-2/after/MOB-09.log"
+    ]
+  },
+  "MOB-06": {
+    "hash": "d94d0ffe6f5e16510a2a79dd4c64d5a909e7aa9f",
+    "files": [
+      "mobile-app/scripts/password-recovery.test.cjs",
+      "mobile-app/src/screens/auth/ResetPasswordScreen.tsx",
+      "mobile-app/src/features/auth/deepLinkStore.ts",
+      "mobile-app/src/features/auth/recoveryFlow.js",
+      "mobile-app/src/features/auth/recoveryFlow.d.ts",
+      "mobile-app/__tests__/MOB-06.cjs",
+      "mobile-app/__tests__/reset-harness.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-06.log",
+      "docs/audit/mobile-fix-2/after/MOB-06.log"
+    ]
+  },
+  "MOB-07": {
+    "hash": "d4bdd3cb0b5cec7c9df8f44e11c4249c9d66dd54",
+    "files": [
+      "mobile-app/app.config.js",
+      "mobile-app/src/navigation/AppNavigator.tsx",
+      "mobile-app/src/features/auth/deepLinkStore.ts",
+      "mobile-app/__tests__/MOB-07.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-07.log",
+      "docs/audit/mobile-fix-2/after/MOB-07.log"
+    ]
+  },
+  "MOB-15": {
+    "hash": "c7c6d49ac94631bde1f342e0027608a0759ebe5d",
+    "files": [
+      "mobile-app/src/services/searchService.ts",
+      "mobile-app/src/hooks/useGlobalSearch.ts",
+      "mobile-app/src/components/search/SearchResultRow.tsx",
+      "mobile-app/__tests__/MOB-15.cjs",
+      "mobile-app/__tests__/audit-harness.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-15.log",
+      "docs/audit/mobile-fix-2/after/MOB-15.log"
+    ]
+  },
+  "MOB-16": {
+    "hash": "d967f3cbfe003e054e74cdf2c323575c903a60b6",
+    "files": [
+      "mobile-app/src/components/ProgressRing.tsx",
+      "mobile-app/__tests__/MOB-16.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-16.log",
+      "docs/audit/mobile-fix-2/after/MOB-16.log"
+    ]
+  },
+  "MOB-18": {
+    "hash": "b3548fdf349c7e6dcb4d5139684841612e120221",
+    "files": [
+      "mobile-app/src/screens/payment/OrderSummaryScreen.tsx",
+      "mobile-app/__tests__/MOB-18.cjs",
+      "mobile-app/__tests__/payment-harness.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-18.log",
+      "docs/audit/mobile-fix-2/after/MOB-18.log"
+    ]
+  },
+  "MOB-20": {
+    "hash": "1f12bb3abf9c4faf2755c4796c56416a46c53853",
+    "files": [
+      "mobile-app/src/screens/auth/ResetPasswordScreen.tsx",
+      "mobile-app/__tests__/MOB-20.cjs",
+      "docs/audit/mobile-fix-2/before/MOB-20.log",
+      "docs/audit/mobile-fix-2/after/MOB-20.log"
+    ]
+  }
+}

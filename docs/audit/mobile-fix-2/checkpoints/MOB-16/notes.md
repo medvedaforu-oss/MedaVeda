@@ -1,0 +1,1 @@
+Rotating complementary colored semicircles inside fixed half masks use the full disc center. Regression passes 0/1/25/50/51/75/100. No new dependencies. Native rasterization and animation device verification pending.

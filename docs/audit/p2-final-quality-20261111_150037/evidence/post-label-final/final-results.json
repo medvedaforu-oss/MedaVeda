@@ -1,0 +1,262 @@
+[
+  {
+    "name": "p2-regression",
+    "command": [
+      "node",
+      "scripts/p2-quality-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 1.85
+  },
+  {
+    "name": "mobile-types",
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "mobile-app/tsconfig.json"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 19.89
+  },
+  {
+    "name": "admin-build",
+    "command": [
+      "npm",
+      "run",
+      "build",
+      "--prefix",
+      "admin-panel"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 18.72
+  },
+  {
+    "name": "lint",
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 13.02
+  },
+  {
+    "name": "whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.56
+  },
+  {
+    "name": "signature",
+    "command": [
+      "node",
+      "mobile-app/scripts/verify-signature-selftest.js"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.15
+  },
+  {
+    "name": "p2-labels",
+    "command": [
+      "node",
+      "scripts/p2-admin-labels-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 1.46
+  },
+  {
+    "name": "p2-registration",
+    "command": [
+      "node",
+      "mobile-app/scripts/p2-registration-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.75
+  },
+  {
+    "name": "p2-performance",
+    "command": [
+      "node",
+      "scripts/p2-performance-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.56
+  },
+  {
+    "name": "auth-race-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/auth-race-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.56
+  },
+  {
+    "name": "batch2-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/batch2-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 1.76
+  },
+  {
+    "name": "list-retry-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/list-retry-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.55
+  },
+  {
+    "name": "mutation-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/mutation-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.89
+  },
+  {
+    "name": "p1-financial-ui-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/p1-financial-ui-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.62
+  },
+  {
+    "name": "pagination-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/pagination-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.56
+  },
+  {
+    "name": "play-pricing-diagnostic-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/play-pricing-diagnostic-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 1.29
+  },
+  {
+    "name": "play-service-account-diagnostic-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/play-service-account-diagnostic-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 1.49
+  },
+  {
+    "name": "request-race-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/request-race-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.91
+  },
+  {
+    "name": "settings-save-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/settings-save-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.57
+  },
+  {
+    "name": "notification-account-hook-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-account-hook-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.6
+  },
+  {
+    "name": "notification-inflight-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-inflight-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.54
+  },
+  {
+    "name": "notification-preferences-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-preferences-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.69
+  },
+  {
+    "name": "notification-reads-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-reads-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.53
+  },
+  {
+    "name": "notification-routing-selftest",
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-routing-selftest.cjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.94
+  },
+  {
+    "name": "secret-selftest",
+    "command": [
+      "node",
+      "scripts/secret-scan-selftest.mjs"
+    ],
+    "cwd": "/home/ganeshp8545/AyurPulse",
+    "exit_code": 0,
+    "seconds": 0.1
+  }
+]

@@ -1,0 +1,97 @@
+{
+  "currentFiles": 5257,
+  "currentPotentialSecrets": [],
+  "historyBlobs": 3830,
+  "historyBytes": 60409007,
+  "historyPotentialSecrets": [],
+  "envFiles": [
+    {
+      "path": ".env.local",
+      "tracked": false,
+      "names": [
+        "VERCEL_OIDC_TOKEN"
+      ]
+    },
+    {
+      "path": "admin-panel/.env",
+      "tracked": false,
+      "names": [
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_ANON_KEY"
+      ]
+    },
+    {
+      "path": "admin-panel/.env.example",
+      "tracked": true,
+      "names": [
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_ANON_KEY"
+      ]
+    },
+    {
+      "path": "admin-panel/.env.local",
+      "tracked": false,
+      "names": [
+        "VERCEL_OIDC_TOKEN"
+      ]
+    },
+    {
+      "path": "admin-panel/.env.staging.local",
+      "tracked": false,
+      "names": [
+        "VITE_MEDVEDA_BUILD_TARGET",
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_ANON_KEY"
+      ]
+    },
+    {
+      "path": "mobile-app/.env",
+      "tracked": false,
+      "names": [
+        "EXPO_PUBLIC_SUPABASE_URL",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY"
+      ]
+    },
+    {
+      "path": "mobile-app/.env.example",
+      "tracked": true,
+      "names": [
+        "EXPO_PUBLIC_SUPABASE_URL",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY",
+        "EXPO_PUBLIC_SENTRY_DSN"
+      ]
+    },
+    {
+      "path": "supabase/functions/.env.example",
+      "tracked": true,
+      "names": [
+        "RAZORPAY_KEY_ID",
+        "RAZORPAY_KEY_SECRET",
+        "APP_ENV",
+        "RAZORPAY_WEBHOOK_SECRET",
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON",
+        "GOOGLE_PLAY_PACKAGE_NAME",
+        "PLAY_CATALOG_REGIONS_VERSION",
+        "PLAY_CATALOG_CRON_SECRET",
+        "PLAY_PAYMENT_CRON_SECRET",
+        "UCB_REPORT_CRON_SECRET",
+        "UCB_SENTRY_DSN"
+      ]
+    },
+    {
+      "path": "website/.env.local",
+      "tracked": false,
+      "names": [
+        "VERCEL_OIDC_TOKEN"
+      ]
+    }
+  ],
+  "markersByKind": {
+    "placeholder": 221,
+    "AyurPulse": 7619,
+    "TODO/FIXME/HACK": 6,
+    "console": 818
+  }
+}

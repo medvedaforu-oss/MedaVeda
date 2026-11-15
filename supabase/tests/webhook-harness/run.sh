@@ -21,6 +21,7 @@ end $$;
 SQL
 S=$(mktemp -d); mkdir -p "$S/_shared" "$S/razorpay-webhook"
 cp "$root/supabase/functions/_shared/settle.ts" "$S/_shared/"
+cp "$root/supabase/functions/_shared/notesChoiceAuthorization.ts" "$S/_shared/"
 cp "$root/supabase/tests/webhook-harness/supabaseAdmin.mock.ts" "$S/_shared/supabaseAdmin.ts"
 cp "$root/supabase/tests/webhook-harness/razorpay.mock.ts" "$S/_shared/razorpay.ts"
 cp "$root/supabase/tests/webhook-harness/externalReporting.mock.ts" "$S/_shared/externalReporting.ts"

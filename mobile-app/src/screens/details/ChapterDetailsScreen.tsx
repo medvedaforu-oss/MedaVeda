@@ -1,13 +1,11 @@
-import { paymentProvider } from "../../config/paymentProvider";
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
+import UnlockOptionsPanel from "../../components/UnlockOptionsPanel";
 import { withRouteValidation } from "../../navigation/withRouteValidation";
-import LoadError from "../../components/LoadError";
-import useLoadResource from "../../hooks/useLoadResource";
 import React, { useEffect, useCallback } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator,
   Platform,
 } from "react-native";
 
@@ -19,17 +17,13 @@ import {
 
 import FeatureCard from "../../components/FeatureCard";
 import usePurchases from "../../hooks/usePurchases";
-import usePurchase from "../../hooks/usePurchase";
 
-import { fetchBuyOptionsForChapter, Product } from "../../services/productsService";
 import { recordChapterView } from "../../utils/recentActivity";
 import { getCourseYear } from "../../services/courseState";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
-import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 
 function ChapterDetailsScreen() {
   const navigation = useNavigation<any>();
@@ -44,12 +38,7 @@ function ChapterDetailsScreen() {
     yearTitle,
   } = route.params;
 
-  const load = useCallback(() => fetchBuyOptionsForChapter(chapterId, subjectId, yearId, getCourseYear().courseId), [chapterId, subjectId, yearId]);
-  const { value: buyOptions, loading, error, retry } = useLoadResource<Product[]>(load, []);
-
-
-  const { isChapterOwned, refresh: refreshPurchases } = usePurchases();
-  const { buy, purchasing } = usePurchase();
+  const { isChapterOwned, refresh: refreshPurchases, loading: purchasesOwnershipLoading, error: purchasesOwnershipError } = usePurchases();
 
   // MedVeda 2.0: only PDF Notes is paid content - Video Lectures and
   // MCQ Quiz are always free, so "unlocked" here only ever gates the
@@ -90,15 +79,9 @@ function ChapterDetailsScreen() {
     });
   }
 
-  const scopeLabel: Record<string, string> = {
-    chapter: "This Chapter",
-    subject: `Full Subject: ${subjectTitle}`,
-    year: `Full Year: ${yearTitle}`,
-    bundle: "Multi-Year Bundle",
-  };
-
   return (
     <View style={styles.container}>
+      <PurchaseOwnershipStatus loading={purchasesOwnershipLoading} error={purchasesOwnershipError} refresh={refreshPurchases} />
       <Text style={styles.title}>{chapterTitle}</Text>
       <Text style={styles.subtitle}>
         🎥 Videos & 📝 Quiz are always free · 📚 Notes{" "}
@@ -131,44 +114,8 @@ function ChapterDetailsScreen() {
       />
 
       {!notesUnlocked && Platform.OS === "android" && (
-        <>
-          <Text style={styles.buySectionTitle}>Unlock PDF Notes</Text>
-          {paymentProvider === "disabled" && <Text style={styles.empty}>New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account.</Text>}
-
-          {loading ? (
-            <ActivityIndicator size="large" color={COLORS.accent} />
-          ) : error ? (
-            <LoadError content="chapter options" retry={retry} />
-          ) : buyOptions.length === 0 ? (
-            <Text style={styles.empty}>
-              No purchase options set up for this chapter yet.
-            </Text>
-          ) : (
-            buyOptions.map((product) => (
-              <View key={product.id} style={styles.buyCard}>
-                <View style={styles.buyCardContent}>
-                  <Text style={styles.buyCardTitle}>{product.title}</Text>
-                  <Text style={styles.buyCardScope}>
-                    {scopeLabel[product.scope] ?? product.scope}
-                  </Text>
-                </View>
-
-                <Text
-                  style={styles.buyCardPrice}
-                  onPress={() => buy(product)}
-                >
-                  {paymentProvider === "disabled" ? "Unavailable" : `₹${product.price}`}
-                </Text>
-              </View>
-            ))
-          )}
-        </>
-      )}
-
-      {purchasing && (
-        <View style={styles.overlay}>
-          <ActivityIndicator size="large" color={COLORS.white} />
-        </View>
+        <UnlockOptionsPanel title="Unlock PDF Notes" chapterId={chapterId} subjectId={subjectId} yearId={yearId}
+          subjectTitle={subjectTitle} yearTitle={yearTitle} />
       )}
     </View>
   );
@@ -179,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     padding: SPACING.lg,
-    paddingTop: 60,
+    paddingTop: SPACING.md,
   },
 
   title: {
@@ -195,66 +142,6 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.xl,
   },
 
-  buySectionTitle: {
-    fontSize: FONT.subHeading,
-    fontWeight: "700",
-    color: COLORS.text,
-    marginTop: SPACING.xl,
-    marginBottom: SPACING.md,
-  },
-
-  empty: {
-    color: COLORS.subtitle,
-    fontSize: FONT.body,
-  },
-
-  buyCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: COLORS.card,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
-    ...SHADOW.card,
-  },
-
-  buyCardContent: {
-    flex: 1,
-    paddingRight: SPACING.md,
-  },
-
-  buyCardTitle: {
-    fontSize: FONT.body,
-    fontWeight: "700",
-    color: COLORS.text,
-  },
-
-  buyCardScope: {
-    fontSize: FONT.small,
-    color: COLORS.subtitle,
-    marginTop: 2,
-  },
-
-  buyCardPrice: {
-    fontSize: FONT.body,
-    fontWeight: "700",
-    color: COLORS.white,
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 16,
-    paddingVertical: SPACING.sm,
-    borderRadius: 30,
-    overflow: "hidden",
-  },
-
-  overlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
 
 export default withRouteValidation(ChapterDetailsScreen, ["chapterId", "subjectId", "yearId"], [], false);

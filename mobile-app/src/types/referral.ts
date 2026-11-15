@@ -59,6 +59,7 @@ export interface ApplyReferralCodeResult {
 
 // get_my_wallet() - computed from the append-only ledger, never stored.
 export interface WalletSummary {
+  expired?: number; // Explicit expired remainder total; absent on older servers.
   available: number;
   pending: number;
   totalEarned: number;

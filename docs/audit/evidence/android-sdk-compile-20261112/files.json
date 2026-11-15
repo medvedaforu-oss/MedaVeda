@@ -1,0 +1,152 @@
+[
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/archive-verification.json",
+    "bytes": 2,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/environment.json",
+    "bytes": 453,
+    "sha256": "922d05f0101fabcd6a2418784c8057bf3d8777a663318da793d93ada80091236"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/final-preflight.json",
+    "bytes": 1285,
+    "sha256": "2e12debd9690a661f035b3d8313edf6899e3c25459c5290b55078a59d415d333"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/final-status.json",
+    "bytes": 521,
+    "sha256": "fd702fae5e4d48cf748be23fe33017a87b5211646b35d366dfc8aae053d65175"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/gradle-thread-dump.log",
+    "bytes": 34814,
+    "sha256": "35b71a09b3ef3861117aace41b3f51167e727b85535775467ff5a25d5341668e"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/gradle-version.log",
+    "bytes": 570,
+    "sha256": "5a0c7617b6c64a3daeecc1e59d7367a5f7684a1c662d4d12d79bc7c4055d89ea"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/initial-hashes.json",
+    "bytes": 5061,
+    "sha256": "a0dc697f7016d52e2642663086122ff0993c5905e329a0903fdc8f26c0f7c294"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/installed-packages.json",
+    "bytes": 1073,
+    "sha256": "840a1e5838c19a3858809acf4b1fb7cb0c5c570c7fbb285eac1d3123a517c34a"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-first.log",
+    "bytes": 7905,
+    "sha256": "aa91d98e07b222aa888eb09b711d782ed22a07528d045e999a27f183afaa404f"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-process.json",
+    "bytes": 596,
+    "sha256": "cb3077b00c1455b928ab44e599ac4c05cf44b9042297872874ba8fcd6712f1be"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-repaired-process.json",
+    "bytes": 596,
+    "sha256": "5797b695046c86dba184ded2d5a7044099304639651b6e141bbe640c5702def7"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-repaired-result.json",
+    "bytes": 614,
+    "sha256": "e9cc44a0234b197549b89ada2f444b1cf7be13c3cdd222f98305a4dd08d6958c"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-repaired.log",
+    "bytes": 977,
+    "sha256": "e1b202cb137b29e01940f2b18dc05137b702229136351ea97eb93cde8b457639"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-result.json",
+    "bytes": 614,
+    "sha256": "35971771685d0034d30fd51ff4df77944442a31bd806c79d73766c1214a5dab9"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-seeded-process.json",
+    "bytes": 596,
+    "sha256": "a9dfcf7e1eb9a761a4c645fea42dc194b3d1ba981edbfdd1522abef097e81da1"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline-seeded.log",
+    "bytes": 281,
+    "sha256": "7c7431accd4687b83256e3f87f8518ac11c8fa378430b9b9c676379e40a4886e"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-offline.log",
+    "bytes": 976,
+    "sha256": "28852b78cf76b8dd39e2d0c2ec1c99428ffd70d4f7777ef4be318bfcd212ca39"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-online-process.json",
+    "bytes": 580,
+    "sha256": "725f85dab907a4bf092ce1db74ceb48dcfabeab91c9c3134edc690cef1b87071"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-online-result.json",
+    "bytes": 600,
+    "sha256": "b6daa76393e5985957a33a399b70dda1261b6ddf185ae8cb30b79a2c1e1beb56"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-private-online.log",
+    "bytes": 600,
+    "sha256": "46da7eabab878706cc37204235c0f9919101c248e5a4af9b134bc09321168ff0"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-resume-offline-process.json",
+    "bytes": 363,
+    "sha256": "f4f6896c80d837ae48b363692814873211db6cfcffebd5af85e818c9588ebe59"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-resume-offline-result.json",
+    "bytes": 381,
+    "sha256": "066072f02a68c7a239be99364d2cb51522d8ee5855d1c8c44f3205d3f374313c"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/native-resume-offline.log",
+    "bytes": 1707,
+    "sha256": "2a6d5c29487dd3e4e32d24597f25481521b44bea1f03311253ffdf6f6d15029e"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/preflight.json",
+    "bytes": 1285,
+    "sha256": "2e12debd9690a661f035b3d8313edf6899e3c25459c5290b55078a59d415d333"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/preserved-source.json",
+    "bytes": 4089,
+    "sha256": "53aa1bc45b6c7c0c11a60cc20e6003b8a46276d397b99e3d732a2797b528d9c8"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/private-artifact-seed.json",
+    "bytes": 72,
+    "sha256": "a9dbd1c0fd70a8f35eff98b11c6c849c0368fe96c455207fe553630726135381"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/run-native-compile.py",
+    "bytes": 2165,
+    "sha256": "f74cd837a2496b02c3cd2d97d5ac7a12992e4f0e8d074c381d0466fde13c101d"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/sdk-install-result.json",
+    "bytes": 36,
+    "sha256": "13bec352bc9b0621ed282b4ded2ae99b34db02293565a7583bf93c54b7248995"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/sdk-install.log",
+    "bytes": 1711,
+    "sha256": "a9a3ea1e65e4cbd7d8692566b1a045202ec04104ef292144d1e156071f12aa97"
+  },
+  {
+    "path": "docs/audit/evidence/android-sdk-compile-20261112/sdk-packages.json",
+    "bytes": 1764,
+    "sha256": "3b89f7d0b5784d870fd00c045bb75ec8d3e1be5498c035b76770592d3eb8f1e7"
+  }
+]

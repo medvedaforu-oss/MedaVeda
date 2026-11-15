@@ -1,0 +1,11 @@
+--- a/mobile-app/src/hooks/useNetworkStatus.ts
++++ b/mobile-app/src/hooks/useNetworkStatus.ts
+@@ -6,7 +6,7 @@
+ 
+   useEffect(() => {
+     const unsubscribe = NetInfo.addEventListener((state) => {
+-      setIsOnline(Boolean(state.isConnected && state.isInternetReachable));
++      setIsOnline(state.isConnected === true && state.isInternetReachable !== false);
+     });
+     return () => unsubscribe();
+   }, []);

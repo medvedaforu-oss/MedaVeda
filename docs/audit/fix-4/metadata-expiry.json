@@ -1,0 +1,1 @@
+{"project":"xbvenkfmesugrbjuufyw","date":"2026-11-14","query":"select credit_expiry_days from public.referral_settings where id = true","result":[{"credit_expiry_days":30}],"scope":"single configuration value only; no user/payment/ledger rows read"}

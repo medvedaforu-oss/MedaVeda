@@ -5,6 +5,10 @@ import { supabase } from "../config/supabase";
 // process; fail open only before any valid boolean has been received.
 let lastConfirmed: boolean | undefined;
 
+export function getLastConfirmedMaintenanceMode(): boolean | null {
+  return lastConfirmed ?? null;
+}
+
 export async function checkMaintenanceMode(): Promise<boolean> {
   const controller = new AbortController();
   let timer: ReturnType<typeof setTimeout> | undefined;

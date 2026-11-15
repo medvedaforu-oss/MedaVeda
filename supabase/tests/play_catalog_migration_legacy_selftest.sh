@@ -11,9 +11,8 @@ psql -X -q -v ON_ERROR_STOP=1 -d "$db" -f "$here/support/supabase_stub.sql" >/de
 for migration in "$root"/supabase/migrations/*.sql; do
   name=$(basename "$migration")
   [[ "$name" =~ ^[0-9]{8,14}_ ]] || continue
-  # These unrelated, not-yet-approved payment migrations are excluded from
-  # this curated Play migration test, as in the prior catalog SQL QA.
-  [[ "$name" == 20261014100000_* || "$name" == 20261014110000_* ]] && continue
+  # Apply the complete dependency chain in this disposable database. Later
+  # snapshot migrations require quote_my_order_legacy from the October 14 SQL.
   if [[ "$name" == 20261016100000_* ]]; then
     psql -X -q -v ON_ERROR_STOP=1 -d "$db" <<'SQL' >/dev/null
 insert into public.years(id,title,course_id) values ('qa_old_y','Old year','bams');

@@ -26,6 +26,7 @@ export default function Settings() {
   }, [settings]);
 
   async function handleSave() {
+    if (!hasLoaded || loading || saving) return;
     setSaved(false);
     const problem = validateUpdateGate(form.minAppVersion, form.storeUrl);
     if (problem) {
@@ -68,7 +69,7 @@ export default function Settings() {
       {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
       {saveError && <p className="text-red-500 mb-4">{saveError}</p>}
 
-      <div className="bg-white rounded-xl shadow p-6">
+      <fieldset disabled={!hasLoaded || loading || saving} className="bg-white rounded-xl shadow p-6">
         <Input
           label="App Name"
           value={form.appName}
@@ -144,7 +145,7 @@ export default function Settings() {
         </label>
 
         <div className="mt-2 flex items-center gap-3">
-          <Button onClick={handleSave} loading={saving}>
+          <Button onClick={handleSave} loading={saving} disabled={!hasLoaded || loading}>
             Save Settings
           </Button>
 
@@ -152,7 +153,7 @@ export default function Settings() {
             <span className="text-sm text-green-700">Saved ✓</span>
           )}
         </div>
-      </div>
+      </fieldset>
 
       <PlayServiceAccountDiagnostic />
       <PlayPricingDiagnostic />

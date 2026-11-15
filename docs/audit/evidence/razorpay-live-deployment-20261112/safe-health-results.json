@@ -1,0 +1,47 @@
+[
+  {
+    "function": "verify-payment",
+    "method": "GET",
+    "case": "method-guard",
+    "status": 405,
+    "expected": 405,
+    "pass": true,
+    "response": "{\"error\":\"Method not allowed.\"}"
+  },
+  {
+    "function": "verify-payment",
+    "method": "POST",
+    "case": "empty-body",
+    "status": 400,
+    "expected": 400,
+    "pass": true,
+    "response": "{\"error\":\"Missing payment details for verification.\"}"
+  },
+  {
+    "function": "razorpay-webhook",
+    "method": "GET",
+    "case": "method-guard",
+    "status": 405,
+    "expected": 405,
+    "pass": true,
+    "response": "{\"error\":\"Method not allowed\"}"
+  },
+  {
+    "function": "razorpay-webhook",
+    "method": "POST",
+    "case": "empty-body",
+    "status": 400,
+    "expected": 400,
+    "pass": true,
+    "response": "{\"error\":\"Missing Razorpay webhook headers\"}"
+  },
+  {
+    "function": "razorpay-webhook",
+    "method": "POST",
+    "case": "forged-signature",
+    "status": 401,
+    "expected": 401,
+    "pass": true,
+    "response": "{\"error\":\"Invalid signature\"}"
+  }
+]

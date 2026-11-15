@@ -30,6 +30,7 @@ vm.runInNewContext(code,{exports:{},require:id=>{
   if(token!=='token-10')throw Error('mock Google failure');return {purchaseState:1,refundableQuantity:0};},
   getVoidedPurchasesPage:async()=>({}),consumeProductPurchase:async()=>{}};
  if(id.endsWith('ucbAlert.ts'))return {alertUcb:async()=>{}};
+ if(id.endsWith('notesChoiceAuthorization.ts'))return {reportNotesChoiceAuthorization:async()=>{}};
  if(id.endsWith('settle.ts'))return {settleRefund:async()=>({ok:true}),settleDispute:async()=>({ok:true})};
  if(id.endsWith('razorpay.ts'))return {refundCapturedPayment:async()=>({id:'rfnd_mock'})};
  if(id.endsWith('paymentQueue.ts'))return require('../functions/_shared/paymentQueue.ts');

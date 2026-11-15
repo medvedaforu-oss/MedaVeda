@@ -1,0 +1,10 @@
+{
+  "project_ref": "xbvenkfmesugrbjuufyw",
+  "observed_at_utc": "2026-11-10T04:43:29.563911+00:00",
+  "management_gets": 6,
+  "read_only_sql_requests": 6,
+  "production_mutations": 0,
+  "edge_invocations": 0,
+  "provider_calls": 0,
+  "deployments": 0
+}

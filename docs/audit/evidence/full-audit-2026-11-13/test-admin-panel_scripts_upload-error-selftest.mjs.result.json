@@ -1,0 +1,11 @@
+{
+  "name": "test-admin-panel_scripts_upload-error-selftest.mjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "admin-panel/scripts/upload-error-selftest.mjs"
+  ],
+  "exit": 0,
+  "seconds": 1.1
+}

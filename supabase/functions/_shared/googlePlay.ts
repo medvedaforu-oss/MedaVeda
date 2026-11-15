@@ -361,6 +361,7 @@ export async function sha256Hex(value: string): Promise<string> {
 }
 
 export type ExternalTransaction = {
+  testPurchase?: Record<string, never>;
   externalTransactionId?: string;
   packageName?: string;
   transactionState?: string;

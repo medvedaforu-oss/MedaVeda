@@ -1,0 +1,113 @@
+{
+  "scope": "local fixtures; no real payment or hosted database acceptance",
+  "results": [
+    {
+      "command": "node mobile-app/scripts/startup-availability-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS web/Android root: pending/disabled availability opens navigation, confirmed maintenance and required updates gate; native offline preparation preserved\nPASS splash routes restored/signed-out/recovery sessions without scheduling a delay",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/readiness-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS MOB-01 initial fail-open, confirmed true/false retained on malformed/error/timeout, successful false reopens, launch/resume and cleanup\nPASS MOB-02 runtime correction of both stale IDs; valid and custom URLs preserved",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/auth-recovery-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS startup rejection/error \u2192 visible retry \u2192 onboarding; auth transport timeout/caller cancellation; content transport unchanged",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/razorpay-internal-test-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS dedicated non-Play APK/package/channel/runtime; staging-only configuration; existing profiles and Play native package stay disabled\nPASS paid Notes pass the exact product ID to summary/server; Pay forwards server checkout data; owned Notes create no order; duplicate Pay creates once\nPASS existing checkout cancel/failure/pending/server-confirmed-success behavior remains intact",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/payment-request-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS create sends product/wallet only and cleans request deadline\nPASS malformed, live-mode and foreign verification checkout responses cannot open checkout\nPASS stalled create request aborts without automatic duplicate order retry\nPASS stalled verification aborts and bounded retry progresses\nPASS recovery cannot send a session token to a route-supplied foreign endpoint\nPASS structured pending verdict remains unconfirmed\nPASS durable server-order recovery coalesces, binds account and excludes owned/refunded purchases\nPASS signed-out/account-switched recovery cannot refresh the previous account as success",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/payment-routing-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS disabled payments block navigation and requests; existing Razorpay guards preserved",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/payment-summary-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS same-render duplicate taps create once; changed server total requires price review before checkout\nPASS pending, rejected and offline wallet quotes cannot charge using a stale total; retry remains available",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/payment-verdict-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS structured pending, legacy unconfirmed and network failures recover then show pending without failed writes\nPASS only server-confirmed verification/recovery navigates to success; explicit rejection remains terminal\nPASS UPI resume confirmation cannot be replaced or duplicated by a delayed callback verdict or network error",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/payment-poll-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS Razorpay polls coalesce, ignore blurred results, confirm focused success and stop on terminal refund verdict",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/release-payments-disabled-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS release Android actual provider config \u2192 navigation/service/checkout: no Razorpay order or checkout, including hostile Razorpay config",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/notes-entitlement-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS paid note local restriction, authorized opening/reopening with fresh links, and authoritative server denial despite a stale unlocked route",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/course-year-selection-selftest.cjs",
+      "status": "PASS",
+      "stdout": "TAP version 13\n# Subtest: course/year visibly select, save accepts 204, and state survives reload\nok 1 - course/year visibly select, save accepts 204, and state survives reload\n  ---\n  duration_ms: 494.193742\n  type: 'test'\n  ...\n# Subtest: 204 with zero profile rows stays on the picker and can retry after server repair\nok 2 - 204 with zero profile rows stays on the picker and can retry after server repair\n  ---\n  duration_ms: 195.846586\n  type: 'test'\n  ...\n# Subtest: 204 with unchanged year stays on the picker and retry navigates only after confirmation\nok 3 - 204 with unchanged year stays on the picker and retry navigates only after confirmation\n  ---\n  duration_ms: 190.148953\n  type: 'test'\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 895.912089",
+      "stderr": ""
+    },
+    {
+      "command": "node mobile-app/scripts/offline-owner-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS verification remains owner-bound; account change during check cannot record access\nPASS failed cleanup retains original owner through account switch/logout; successful cleanup allows new ownership",
+      "stderr": ""
+    },
+    {
+      "command": "node supabase/tests/razorpay-routing-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS standard entrypoint: native requests denied before writes; website checkout retained\nPASS staging entrypoint: exact project/environment/test keys/server opt-in/Auth allowlist required; Play headers, blocked users, wrong course, UCB and missing rollout fail closed; server price retained",
+      "stderr": ""
+    },
+    {
+      "command": "node supabase/tests/razorpay-security-selftest.cjs",
+      "status": "PASS",
+      "stdout": "PASS staging rejects live-mode key before provider request\nPASS actual HMAC implementation accepts authentic and rejects forged/malformed signatures\nPASS missing callback signature\nPASS forged callback signature\nPASS callback order swapped\nPASS authorized payment cannot unlock\nPASS wrong payment currency cannot unlock\nPASS provider payment/order mismatch cannot unlock\nPASS provider amount mismatch cannot unlock\nPASS stored amount mismatch cannot unlock\nPASS valid captured callback reaches server settlement\nPASS refunded recovery is terminal without provider call or regrant\nPASS recovery owner=undefined status=401\nPASS recovery owner=other status=403\nPASS recovery owner=buyer status=200",
+      "stderr": ""
+    },
+    {
+      "command": "Mobile TypeScript",
+      "status": "PASS",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "Focused ESLint",
+      "status": "PASS",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "Diff whitespace",
+      "status": "PASS",
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

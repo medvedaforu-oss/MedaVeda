@@ -1,0 +1,16 @@
+--- a/supabase/functions/_shared/settle.ts
++++ b/supabase/functions/_shared/settle.ts
+@@ -68,6 +68,13 @@
+     console.error("settle: grant failed", { code: error.code, message: error.message });
+     return { ok: false, status: 500, reason: "grant failed" };
+   }
++  // Settlement may return void for a held or compensated capture. Success
++  // requires the database's exact payment/order/purchase commitment proof.
++  const { data: committed, error: commitmentError } = await supabaseAdmin.rpc(
++    "razorpay_entitlement_committed", { p_order_id: order.id, p_payment_id: razorpayPaymentId }
++  );
++  if (commitmentError || committed !== true)
++    return { ok: false, status: 503, reason: "entitlement not committed" };
+   return { ok: true, orderId: order.id, amountRupees: Number(order.amount) };
+ }
+ 

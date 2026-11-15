@@ -1,0 +1,19 @@
+{
+  "baselineFiles": 4698,
+  "modifiedExistingFiles": [
+    "mobile-app/modules/medveda-offline-vault/README.md"
+  ],
+  "missingFiles": [],
+  "unexpectedModifications": [],
+  "unchangedFoundation": {
+    "mobile-app/modules/medveda-offline-vault/FORMAT.md": "51a10db937ad0e93bb2e604f05602b49ddb090130fa4971899df07d6eaa04248",
+    "mobile-app/modules/medveda-offline-vault/tests/run-host-tests.py": "849359fced60f24b98e30b5c30d1fb06b39dab727e8f5d6c52ff276c1682c3d1",
+    "mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt": "427e7325c9cb02d583e2bf50ee9d681d616da32a5ede030a4df8351c2dff00bc",
+    "mobile-app/modules/medveda-offline-vault/tests/reference-codec.cjs": "e59b599f52c6303b1da7824591e6cb4fd72c3bd9493c9650649ea95e6aa444b3",
+    "mobile-app/modules/medveda-offline-vault/core/VaultModel.kt": "109e87dfeeb8371748176a7226fbc1475c4d2e5e2c615aceba68ac0720a72450",
+    "mobile-app/modules/medveda-offline-vault/core/PdfContainer.kt": "62a2cad304ff9dc0c44d54b90408b0dc566d12f3761808702e1a1699fa511908",
+    "mobile-app/modules/medveda-offline-vault/core/AtomicVault.kt": "f7a38d93f844ed425282b969b5100935349e455d0929d991653e51444d4d844a"
+  },
+  "productionNoGo": true,
+  "nativeAcceptance": false
+}

@@ -41,6 +41,9 @@ export default function StatCard({
 const styles = StyleSheet.create({
   card: {
     flex: 1,
+    flexBasis: 140,
+    minWidth: 0,
+    maxWidth: "100%",
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
@@ -65,11 +68,13 @@ const styles = StyleSheet.create({
   },
 
   value: {
+    alignSelf: "stretch",
     fontSize: FONT.heading,
     fontWeight: "700",
   },
 
   title: {
+    alignSelf: "stretch",
     fontSize: FONT.small,
     color: COLORS.subtitle,
     marginTop: 2,

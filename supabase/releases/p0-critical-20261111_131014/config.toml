@@ -1,0 +1,14 @@
+[functions.verify-payment]
+verify_jwt = false
+
+[functions.razorpay-webhook]
+verify_jwt = false
+
+[functions.report-external-transaction]
+verify_jwt = false
+
+[functions.create-order]
+verify_jwt = true
+
+[functions.send-push-notification]
+verify_jwt = false

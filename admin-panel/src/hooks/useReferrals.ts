@@ -19,6 +19,8 @@ import type {
 
 export default function useReferrals(status?: ReferralStatus) {
   const beginRequest = useRequestGuard(status ?? "");
+  const beginSettings = useRequestGuard("settings");
+  const [settingsError, setSettingsError] = useState<string | null>(null);
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [settings, setSettings] = useState<ReferralSettings | null>(null);
   const [audit, setAudit] = useState<ReferralSettingsAuditEntry[]>([]);
@@ -30,20 +32,9 @@ export default function useReferrals(status?: ReferralStatus) {
     if (!current()) return;
     try {
       setLoading(true);
-      const [list, s, log] = await Promise.all([
-        getReferrals(status),
-        getReferralSettings(),
-        // The change log is secondary: if it cannot be read (e.g. the audit migration is not
-        // applied yet) the page and the settings form must still work.
-        getReferralSettingsAudit(10).catch((err) => {
-          console.error("Could not load the settings change log:", err);
-          return [] as ReferralSettingsAuditEntry[];
-        }),
-      ]);
+      const list = await getReferrals(status);
       if (!current()) return;
       setReferrals(list);
-      setSettings(s);
-      setAudit(log);
       setError(null);
     } catch (err) {
       if (!current()) return;
@@ -58,15 +49,37 @@ export default function useReferrals(status?: ReferralStatus) {
     void load();
   }, [load]);
 
+  const loadSettings = useCallback(async () => {
+    const current = beginSettings();
+    try {
+      const [row, log] = await Promise.all([
+        getReferralSettings(),
+        getReferralSettingsAudit(10).catch(() => [] as ReferralSettingsAuditEntry[]),
+      ]);
+      if (!current()) return;
+      setSettings(row);
+      setAudit(log);
+      setSettingsError(null);
+    } catch {
+      if (current()) setSettingsError("Could not load referral settings. Please try again.");
+    }
+  }, [beginSettings]);
+  useEffect(() => { void loadSettings(); }, [loadSettings]);
+
   async function saveSettings(data: ReferralSettingsInput) {
+    // Invalidate an earlier bootstrap read before the write starts.
+    const current = beginSettings();
     await saveReferralSettings(data);
-    await load();
+    if (!current()) return;
+    await loadSettings();
   }
 
   async function reject(id: string, reason?: string) {
-    await rejectReferral(id, reason);
+    const result = await rejectReferral(id, reason);
     await load();
+    return result;
   }
 
-  return { referrals, settings, audit, loading, error, reload: load, saveSettings, reject };
+  return { referrals, settings, audit, loading, error: error ?? settingsError,
+    reload: () => Promise.all([load(), loadSettings()]), saveSettings, reject };
 }

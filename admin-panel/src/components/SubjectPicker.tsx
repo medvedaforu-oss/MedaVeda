@@ -80,7 +80,7 @@ export default function SubjectPicker({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Year
         </label>
-        <select
+        <select aria-label="Year"
           value={yearId}
           onChange={(e) => {
             const year = years.find((y) => y.id === e.target.value);
@@ -103,7 +103,7 @@ export default function SubjectPicker({
         <label className="mb-1.5 block text-sm font-medium text-gray-700">
           Subject
         </label>
-        <select
+        <select aria-label="Subject"
           value={subjectId}
           onChange={(e) => {
             const subject = subjects.find((s) => s.id === e.target.value);

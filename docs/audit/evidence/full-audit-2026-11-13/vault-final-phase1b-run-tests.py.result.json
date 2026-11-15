@@ -1,0 +1,10 @@
+{
+  "name": "vault-final-phase1b-run-tests.py",
+  "cwd": ".",
+  "command": [
+    "python3",
+    "mobile-app/modules/medveda-offline-vault/tests/phase1b/run-tests.py"
+  ],
+  "exit": 0,
+  "seconds": 17.65
+}

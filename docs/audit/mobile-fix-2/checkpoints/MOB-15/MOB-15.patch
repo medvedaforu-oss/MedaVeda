@@ -1,0 +1,33 @@
+--- a/mobile-app/src/services/searchService.ts
++++ b/mobile-app/src/services/searchService.ts
+@@ -250,7 +250,7 @@
+     if (r.type === "note") {
+       const chapter = r.data.chapter as Chapter | undefined;
+       const owned = chapter ? isChapterUnlocked(ownedScopes, chapter) : false;
+-      return { ...r, owned, downloaded: downloadedIds.has(r.data.id) };
++      return { ...r, owned, free: r.data.isFreePreview === true, downloaded: downloadedIds.has(r.data.id) };
+     }
+     if (r.type === "chapter") {
+       const owned = isChapterUnlocked(ownedScopes, r.data as Chapter);
+--- a/mobile-app/src/hooks/useGlobalSearch.ts
++++ b/mobile-app/src/hooks/useGlobalSearch.ts
+@@ -52,7 +52,7 @@
+   const { buy, purchasing } = usePurchase();
+   const { downloads, refresh: refreshDownloads } = useDownloads();
+ 
+-  const downloadedIds = useMemo(() => new Set(downloads.map((d) => d.id)), [downloads]);
++  const downloadedIds = useMemo(() => new Set(downloads.filter((d) => d.status === "completed" && d.localUri).map((d) => d.id)), [downloads]);
+ 
+   const loadIndex = useCallback(async (forceRefresh = false) => {
+     const request = ++loadRequest.current.sequence;
+--- a/mobile-app/src/components/search/SearchResultRow.tsx
++++ b/mobile-app/src/components/search/SearchResultRow.tsx
+@@ -22,7 +22,7 @@
+ // six visually different card layouts crammed into one list.
+ export default function SearchResultRow({ result, onPress, loading = false }: Props) {
+   const icon = SECTION_META[result.type].icon;
+-  const locked = result.type === "note" && result.owned === false;
++  const locked = result.type === "note" && !result.owned && !result.free;
+   const isPaidProduct = result.type === "product" && !result.owned;
+ 
+   return (

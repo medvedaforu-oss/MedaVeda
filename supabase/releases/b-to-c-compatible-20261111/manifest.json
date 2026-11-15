@@ -1,0 +1,74 @@
+{
+  "status": "LOCAL REVIEW ONLY. Requires final A+C schema. No deployment or activation authorized.",
+  "project": "xbvenkfmesugrbjuufyw",
+  "derivation": "Reviewed Phase C B1/B2/reporting-worker closure plus Phase B B3; preserves Phase B unknown-reversal and unresolved-capture retry rules.",
+  "functions": {
+    "verify-payment": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "510e8421a62cbe0d17e545848bdf94c3794016fd6f5dd0f8c8811bea8d06aa1c",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/verify-payment/index.ts": "6667e4b991d1bf6a87d36d35a3e7ce304859ad0caf008fe022745854e9c12c5a"
+      },
+      "closure_sha256": "bcf3488a47458dc9a915b445f08443b65efa1a344497db302dc44924be4e3faa",
+      "archive": "artifacts/verify-payment-source.tar",
+      "archive_sha256": "0b72ae226a853ce86a43010f77d7160011e017790552847e279e434a2c3cc0bb"
+    },
+    "razorpay-webhook": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/notesChoiceAuthorization.ts": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "510e8421a62cbe0d17e545848bdf94c3794016fd6f5dd0f8c8811bea8d06aa1c",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/razorpay-webhook/index.ts": "a79b452afffb7cc1bbe18fdf5d23ad09b124b8a531e5c35c556aa194c9dbe060"
+      },
+      "closure_sha256": "3e08f631a2a43270e610ae151ed709a70994c9242928fbfae9ad64d85f34b85d",
+      "archive": "artifacts/razorpay-webhook-source.tar",
+      "archive_sha256": "f6ffef224b4a213656889e9036df0c4a925e20fa710396c85ac09a70f94c0618"
+    },
+    "report-external-transaction": {
+      "verify_jwt": false,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/externalReporting.ts": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729",
+        "functions/_shared/googlePlay.ts": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470",
+        "functions/_shared/notesChoiceAuthorization.ts": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b",
+        "functions/_shared/paymentQueue.ts": "28c20b2eb6e8481f0cc658af9707f4c48e54c2fc7f360f4f34a032be82000714",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/settle.ts": "510e8421a62cbe0d17e545848bdf94c3794016fd6f5dd0f8c8811bea8d06aa1c",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/_shared/ucbAlert.ts": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+        "functions/_shared/ucbStates.ts": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7",
+        "functions/report-external-transaction/index.ts": "bebd295976f2b43311f801307a431e7b21b9d5c04321084614359cc0f427af92"
+      },
+      "closure_sha256": "0f37c5c9c35547912bc42b4b6646ea9fa1b99713503ba42ae7dca2dd188fe106",
+      "archive": "artifacts/report-external-transaction-source.tar",
+      "archive_sha256": "c762133981eff67a397cbd00112ee4d30a10b0721863f12064ff4bd93154909f"
+    },
+    "create-order": {
+      "verify_jwt": true,
+      "sources": {
+        "functions/_shared/cors.ts": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+        "functions/_shared/rateLimit.ts": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+        "functions/_shared/razorpay.ts": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786",
+        "functions/_shared/supabaseAdmin.ts": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+        "functions/create-order/index.ts": "63221e542d583f6b77c2c1703a3f1cb7f49d7aff5226aa2e95c2def27e4b4398"
+      },
+      "closure_sha256": "1166470248b4c61d609bd63c8290f08fdd2c40bb4c06e282bc693038158eee10",
+      "archive": "artifacts/create-order-source.tar",
+      "archive_sha256": "0d3aefc93453e2c9f3d24fbbc29a2db488c6678cfceb117b6e3397e59d459d1f"
+    }
+  }
+}

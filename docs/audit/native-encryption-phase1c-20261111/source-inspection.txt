@@ -1,0 +1,574 @@
+
+FILE: mobile-app/modules/medveda-offline-vault/android/build.gradle
+1: plugins {
+2:   id 'com.android.library'
+3:   id 'expo-module-gradle-plugin'
+4: }
+5: group = 'in.medveda.offline'
+6: version = '0.1.0'
+7: android {
+8:   namespace 'in.medveda.offline'
+9:   defaultConfig {
+10:     minSdkVersion 24
+11:     testInstrumentationRunner 'android.test.InstrumentationTestRunner'
+12:   }
+13:   sourceSets.main.java.srcDirs += ['../core', '../integration']
+14: }
+
+FILE: mobile-app/modules/medveda-offline-vault/expo-module.config.json
+1: {
+2:   "platforms": ["android", "apple"],
+3:   "android": { "modules": ["expo.modules.medvedaoffline.MedvedaOfflineVaultModule"] },
+4:   "apple": { "modules": ["MedvedaOfflineVaultModule"] }
+5: }
+
+FILE: mobile-app/modules/medveda-offline-vault/android/src/main/java/expo/modules/medvedaoffline/MedvedaOfflineVaultModule.kt
+1: package expo.modules.medvedaoffline
+2: 
+3: import android.os.Build
+4: import `in`.medveda.offline.AndroidVaultLifecycle
+5: import expo.modules.kotlin.modules.Module
+6: import expo.modules.kotlin.modules.ModuleDefinition
+7: 
+8: /** Inert bridge: no disk/Keystore work at registration or lifecycle events.
+9:  * No owner/key/file/URL/lease handles cross JS. Native test harness owns the controller.
+10:  */
+11: class MedvedaOfflineVaultModule:Module() {
+12: 
+13:   override fun definition()=ModuleDefinition {
+14:     Name("MedvedaOfflineVault")
+15:     Function("capabilities") {
+16:       mapOf("format" to "MVPDF/1","platformSupported" to (Build.VERSION.SDK_INT>=28),
+17:         "contentEnabled" to false,"nativeAccepted" to false,"bridgeVersion" to 1)
+18:     }
+19:     Function("invalidate") {AndroidVaultLifecycle.invalidate()}
+20:     OnActivityEntersBackground {AndroidVaultLifecycle.invalidate()}
+21:     OnActivityDestroys {AndroidVaultLifecycle.invalidate()}
+22:     OnDestroy {AndroidVaultLifecycle.invalidate()}
+23:   }
+24: }
+25: 
+
+FILE: mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultLifecycle.kt
+1: package `in`.medveda.offline
+2: 
+3: /** Shared native lifecycle gate; no persistent initialization. */
+4: internal object AndroidVaultLifecycle {
+5:   private val session=OwnerSession()
+6:   val leases=NativeLeases(session)
+7:   fun invalidate() { leases.invalidate() }
+8: }
+
+FILE: mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidKeys.kt
+1: package `in`.medveda.offline
+2: 
+3: import android.app.KeyguardManager
+4: import android.content.Context
+5: import android.os.Build
+6: import android.os.UserManager
+7: import android.security.keystore.KeyGenParameterSpec
+8: import android.security.keystore.KeyProperties
+9: import java.security.KeyStore
+10: import javax.crypto.KeyGenerator
+11: import javax.crypto.SecretKey
+12: 
+13: /** Namespace contains only Phase 1B keys. No enumeration/deletion/replacement API. */
+14: class AndroidKeys(private val context:Context):WrappingKeys {
+15:   private fun store()=KeyStore.getInstance("AndroidKeyStore").apply {load(null)}
+16:   private fun admitted() {
+17:     requireVault(Build.VERSION.SDK_INT>=28)
+18:     requireVault(context.getSystemService(UserManager::class.java).isUserUnlocked)
+19:     requireVault(!context.getSystemService(KeyguardManager::class.java).isDeviceLocked)
+20:   }
+21:   private fun alias(id:String):String {
+22:     requireVault(id=="registry" || Regex("[0-9a-f]{32}").matches(id))
+23:     return "medveda.phase1b.$id"
+24:   }
+25:   @Synchronized override fun create(alias:String)=safely {
+26:     admitted();val name=alias(alias);requireVault(!store().containsAlias(name))
+27:     val builder=KeyGenParameterSpec.Builder(name,KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+28:       .setKeySize(256).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+29:       .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE).setRandomizedEncryptionRequired(true)
+30:     if(Build.VERSION.SDK_INT>=28)builder.setUnlockedDeviceRequired(true)
+31:     KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,"AndroidKeyStore").apply {init(builder.build())}.generateKey()
+32:     // Prove readback and AEAD functionality before a reference may be published.
+33:     val challenge=ByteArray(32).also(java.security.SecureRandom()::nextBytes)
+34:     try {
+35:       val key=lookup(alias);val aad="MVKEYCHECK001".toByteArray(Charsets.US_ASCII)
+36:       val recovered=Envelope.open(key,Envelope.seal(key,challenge,aad),aad)
+37:       try {requireVault(java.security.MessageDigest.isEqual(challenge,recovered))} finally {recovered.fill(0)}
+38:     } finally {challenge.fill(0)}
+39:   }
+40:   @Synchronized override fun lookup(alias:String):SecretKey=safely {
+41:     admitted();val key=store().getKey(alias(alias),null)
+42:     requireVault(key is SecretKey && key.algorithm=="AES" && key.encoded==null)
+43:     key as SecretKey
+44:   }
+45: }
+
+FILE: mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultControl.kt
+1: package `in`.medveda.offline
+2: 
+3: import android.content.Context
+4: import android.os.Build
+5: import java.nio.channels.FileChannel
+6: import java.nio.channels.FileLock
+7: import java.nio.file.Files
+8: import java.nio.file.LinkOption.NOFOLLOW_LINKS
+9: import java.nio.file.StandardOpenOption.*
+10: 
+11: /** Trusted native harness entry only. Never instantiated by the bridge or app startup.
+12:  * No content/DB/network/view operation. Lifetime lock prevents concurrent coordinators.
+13:  */
+14: class AndroidVaultControl private constructor(private val channel:FileChannel,private val lock:FileLock,
+15:   private val owners:OwnerKeys):AutoCloseable {
+16:   private val leases=AndroidVaultLifecycle.leases
+17:   private var closed=false
+18:   companion object {
+19:     fun open(context:Context,initializeNew:Boolean=false):AndroidVaultControl=safely {
+20:       requireVault(Build.VERSION.SDK_INT>=28)
+21:       val parent=context.noBackupFilesDir.toPath().toRealPath()
+22:       val root=parent.resolve("medveda-phase1b")
+23:       val keys=AndroidKeys(context)
+24:       val newRoot=initializeNew
+25:       if(newRoot) {
+26:         requireVault(!Files.exists(root,NOFOLLOW_LINKS))
+27:         Files.createDirectory(root,java.nio.file.attribute.PosixFilePermissions.asFileAttribute(
+28:           java.nio.file.attribute.PosixFilePermissions.fromString("rwx------")))
+29:         JvmDurability.forceDirectory(root);JvmDurability.forceDirectory(parent)
+30:       }
+31:       requireVault(!Files.isSymbolicLink(root) && root.toRealPath()==root)
+32:       val ch=FileChannel.open(root.resolve("control.lock"),CREATE,WRITE,NOFOLLOW_LINKS)
+33:       var held:FileLock?=null
+34:       try {
+35:         held=ch.tryLock()?:throw VaultFailure()
+36:         val path=root.resolve("registry")
+37:         val registry=if(newRoot) {
+38:           val store=DurableGenerations.create(path)
+39:           keys.create("registry") // crash leaves a blocked namespace, never silently reset
+40:           EncryptedRegistry.initialize(store,keys.lookup("registry"))
+41:         } else EncryptedRegistry.open(DurableGenerations.open(path),keys.lookup("registry"))
+42:         AndroidVaultControl(ch,held,OwnerKeys(registry,keys))
+43:       } catch(e:Exception) {held?.release();ch.close();throw e}
+44:     }
+45:   }
+46:   @Synchronized fun provisionForHarness(owner:String,epoch:Int)=safely {
+47:     requireVault(!closed);leases.invalidate();owners.provision(owner,epoch)
+48:   }
+49:   @Synchronized fun claimForHarness(owner:String,epoch:Int):Ticket=safely {
+50:     requireVault(!closed);leases.invalidate();owners.key(owner,epoch);leases.claim(owner)
+51:   }
+52:   @Synchronized fun invalidate() {leases.invalidate()}
+53:   @Synchronized override fun close()=safely {
+54:     leases.invalidate()
+55:     if(!closed) {closed=true;lock.release();channel.close()}
+56:   }
+57: }
+
+FILE: mobile-app/modules/medveda-offline-vault/android/src/androidTest/java/in/medveda/offline/NativeSecurityTest.kt
+1: package `in`.medveda.offline
+2: 
+3: import android.os.Build
+4: import android.test.AndroidTestCase
+5: import java.nio.file.Files
+6: import java.util.UUID
+7: 
+8: /** Isolated instrumentation only. Never run against an installed user's vault.
+9:  * Generates unique test Keystore aliases and synthetic no-backup journal dirs;
+10:  * deliberately retains them rather than providing a destructive cleanup API.
+11:  */
+12: @Suppress("DEPRECATION")
+13: class NativeSecurityTest:AndroidTestCase() {
+14:   private fun denied(block:()->Unit) {
+15:     try {block()} catch(e:VaultFailure) {assertNull(e.cause);return};fail("Expected safe denial")
+16:   }
+17:   fun testKeystoreReadbackMissingAndNoReplacement() {
+18:     val keys=AndroidKeys(context)
+19:     val alias=UUID.randomUUID().toString().replace("-","")
+20:     if(Build.VERSION.SDK_INT<28) {denied {keys.create(alias)};return}
+21:     denied {keys.lookup(alias)};keys.create(alias)
+22:     assertNull(keys.lookup(alias).encoded);denied {keys.create(alias)}
+23:     val aad="native-test".toByteArray();val plain="synthetic-canary".toByteArray()
+24:     val sealed=Envelope.seal(keys.lookup(alias),plain,aad)
+25:     assertTrue(Envelope.open(keys.lookup(alias),sealed,aad).contentEquals(plain))
+26:     sealed[sealed.lastIndex]=(sealed.last().toInt() xor 1).toByte()
+27:     denied {safely {Envelope.open(keys.lookup(alias),sealed,aad)}}
+28:   }
+29:   fun testNativeJournalOwnerIsolationReopenAndRetirement() {
+30:     if(Build.VERSION.SDK_INT<28)return
+31:     val keys=AndroidKeys(context);val alias=UUID.randomUUID().toString().replace("-","")
+32:     keys.create(alias)
+33:     val dir=context.noBackupFilesDir.toPath().toRealPath().resolve("vault-test-${UUID.randomUUID()}")
+34:     val store=DurableGenerations.create(dir)
+35:     val registry=EncryptedRegistry.initialize(store,keys.lookup(alias));val owners=OwnerKeys(registry,keys)
+36:     owners.provision("synthetic-A",1);owners.provision("synthetic-B",1)
+37:     val a=owners.key("synthetic-A",1).encoded
+38:     assertFalse(a.contentEquals(owners.key("synthetic-B",1).encoded))
+39:     val reopened=OwnerKeys(EncryptedRegistry.open(DurableGenerations.open(dir),keys.lookup(alias)),keys)
+40:     assertTrue(a.contentEquals(reopened.key("synthetic-A",1).encoded))
+41:     owners.retire("synthetic-A",1)
+42:     denied {OwnerKeys(EncryptedRegistry.open(DurableGenerations.open(dir),keys.lookup(alias)),keys).key("synthetic-A",1)}
+43:     val interrupted=object:WrappingKeys {
+44:       override fun create(alias:String) {keys.create(alias);throw java.io.IOException("synthetic interruption")}
+45:       override fun lookup(alias:String)=keys.lookup(alias)
+46:     }
+47:     denied {OwnerKeys(registry,interrupted).provision("synthetic-C",1)}
+48:     val pending=EncryptedRegistry.open(DurableGenerations.open(dir),keys.lookup(alias))
+49:     assertEquals(KeyState.PENDING,pending.entries().single {it.owner=="synthetic-C"}.state)
+50:     denied {OwnerKeys(pending,keys).key("synthetic-C",1)}
+51:     denied {OwnerKeys(pending,keys).provision("synthetic-C",1)}
+52:     Files.newDirectoryStream(dir).use { files->for(file in files) {
+53:       val bytes=Files.readAllBytes(file)
+54:       assertFalse(String(bytes,Charsets.ISO_8859_1).contains("synthetic-A"))
+55:     }}
+56:   }
+57: }
+
+FILE: mobile-app/node_modules/expo-modules-autolinking/android/expo-gradle-plugin/expo-autolinking-plugin/src/main/kotlin/expo/modules/plugin/GeneratePackagesListTask.kt
+1: package expo.modules.plugin
+2: 
+3: import expo.modules.plugin.configuration.ExpoModule
+4: import org.gradle.api.DefaultTask
+5: import org.gradle.api.file.RegularFileProperty
+6: import org.gradle.api.provider.Property
+7: import org.gradle.api.tasks.Input
+8: import org.gradle.api.tasks.Internal
+9: import org.gradle.api.tasks.OutputFile
+10: import org.gradle.api.tasks.TaskAction
+11: 
+12: /**
+13:  * Task that generates a list of packages that should be included in your app's runtime.
+14:  */
+15: abstract class GeneratePackagesListTask : DefaultTask() {
+16:   init {
+17:     group = "expo"
+18:   }
+19: 
+20:   /**
+21:    * Hash of the current configuration.
+22:    * Used to invalidate the task when the configuration changes.
+23:    */
+24:   @get:Input
+25:   abstract val hash: Property<String>
+26: 
+27:   /**
+28:    * Java package name under which the package list should be placed.
+29:    */
+30:   @get:Input
+31:   abstract val namespace: Property<String>
+32: 
+33:   /**
+34:    * List of modules.
+35:    */
+36: 
+37:   @get:Internal
+38:   lateinit var modules: List<ExpoModule>
+39: 
+40:   /**
+41:    * The output file where the package list should be written.
+42:    */
+43:   @get:OutputFile
+44:   abstract val outputFile: RegularFileProperty
+45: 
+46:   @TaskAction
+47:   fun generatePackagesList() {
+48:     val target = outputFile.get().asFile
+49:     val content = generatePackageListFileContent()
+50: 
+51:     target.writeText(content)
+52:   }
+53: 
+54:   private fun generatePackageListFileContent(): String {
+55:     return """package ${namespace.get()};
+56: 
+57: import expo.modules.core.interfaces.Package;
+58: import expo.modules.kotlin.modules.Module;
+59: import expo.modules.kotlin.ModulesProvider;
+60: 
+61: class ExpoModulesPackageList : ModulesProvider {
+62:   companion object {
+63:     val packagesList: List<Package> = listOf(
+64:     ${
+65:       modules
+66:         .filterNot { it.packageName == "expo" }
+67:         .flatMap { module ->
+68:           module.projects.flatMap { project ->
+69:             project.packages.map { "      ${it}()" }
+70:           }
+71:         }
+72:         .joinToString(",\n")
+73:     }
+74:     )
+75: 
+76:     val modulesMap: Map<Class<out Module>, String?> = mapOf(
+77:     ${
+78:       modules
+79:         .flatMap { module ->
+80:           module.projects.flatMap { project ->
+81:             project.modules.map { (classifier, name) ->
+82:               "      ${classifier}::class.java to ${name?.let { "\"${it}\"" }}"
+83:             }
+84:           }
+85:         }
+86:         .joinToString(",\n")
+87:     } 
+88:     )
+89: 
+90:     @JvmStatic
+91:     fun getPackageList(): List<Package> {
+92:       return packagesList
+93:     }
+94:   }
+95: 
+96:   override fun getModulesMap(): Map<Class<out Module>, String?> {
+97:     return modulesMap
+98:   }
+99:   
+100:   override fun getServices(): List<Class<out expo.modules.kotlin.services.Service>> {
+101:     return listOf<Class<out expo.modules.kotlin.services.Service>>(
+102:     ${
+103:       modules
+104:         .flatMap { module ->
+105:           module.projects.flatMap { project ->
+106:             project.services.map { "      ${it}::class.java" }
+107:           }
+108:         }
+109:         .joinToString(",\n")
+110:     }
+111:     )
+112:   }
+113: }
+114: 
+115: """.trimIndent()
+116:   }
+117: }
+
+FILE: mobile-app/node_modules/react-native/gradle/libs.versions.toml
+1: [versions]
+2: # Android versions
+3: minSdk = "24"
+4: targetSdk = "36"
+5: compileSdk = "36"
+6: buildTools = "36.0.0"
+7: ndkVersion = "27.1.12297006"
+8: # Dependencies versions
+9: agp = "8.12.0"
+10: androidx-annotation = "1.6.0"
+11: androidx-appcompat = "1.7.0"
+12: androidx-autofill = "1.3.0"
+13: androidx-benchmark-macro-junit4 = "1.3.3"
+14: androidx-profileinstaller = "1.4.1"
+15: androidx-swiperefreshlayout = "1.1.0"
+16: androidx-test = "1.5.0"
+17: androidx-test-junit = "1.2.1"
+18: androidx-tracing = "1.1.0"
+19: androidx-window = "1.5.1"
+20: assertj = "3.21.0"
+21: binary-compatibility-validator = "0.13.2"
+22: download = "5.4.0"
+23: espresso-core = "3.6.1"
+24: fbjni = "0.7.0"
+25: fresco = "3.6.0"
+26: infer-annotation = "0.18.0"
+27: javax-annotation-api = "1.3.2"
+28: javax-inject = "1"
+29: jsc-android = "2026004.0.1"
+30: jsr305 = "3.0.2"
+31: junit = "4.13.2"
+32: kotlin = "2.1.20"
+33: ktfmt = "0.22.0"
+34: mockito = "3.12.4"
+35: mockito-kotlin = "3.2.0"
+36: nexus-publish = "2.0.0"
+37: okhttp = "4.9.2"
+38: okio = "2.9.0"
+39: robolectric = "4.15.1"
+40: soloader = "0.12.1"
+41: uiautomator = "2.3.0"
+42: xstream = "1.4.20"
+43: yoga-proguard-annotations = "1.19.0"
+44: # Native Dependencies
+45: boost="1_83_0"
+46: doubleconversion="1.1.6"
+47: fastFloat="8.0.0"
+48: fmt="12.1.0"
+49: folly="2024.11.18.00"
+50: glog="0.3.5"
+51: gflags="2.2.0"
+52: nlohmannjson="3.11.2"
+53: 
+54: [libraries]
+55: androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+56: androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+57: androidx-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidx-appcompat" }
+58: androidx-autofill = { module = "androidx.autofill:autofill", version.ref = "androidx-autofill" }
+59: androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidx-benchmark-macro-junit4" }
+60: androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+61: androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
+62: androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidx-profileinstaller" }
+63: androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidx-swiperefreshlayout" }
+64: androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+65: androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
+66: androidx-tracing = { module = "androidx.tracing:tracing", version.ref = "androidx-tracing" }
+67: androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+68: androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
+69: 
+70: fbjni = { module = "com.facebook.fbjni:fbjni", version.ref = "fbjni" }
+71: fresco = { module = "com.facebook.fresco:fresco", version.ref = "fresco" }
+72: fresco-middleware = { module = "com.facebook.fresco:middleware", version.ref = "fresco" }
+73: fresco-imagepipeline-okhttp3 = { module = "com.facebook.fresco:imagepipeline-okhttp3", version.ref = "fresco" }
+74: fresco-ui-common = { module = "com.facebook.fresco:ui-common", version.ref = "fresco" }
+75: infer-annotation = { module = "com.facebook.infer.annotation:infer-annotation", version.ref = "infer-annotation" }
+76: soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
+77: yoga-proguard-annotations = { module = "com.facebook.yoga:proguard-annotations", version.ref = "yoga-proguard-annotations" }
+78: 
+79: jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+80: okhttp3-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttp" }
+81: okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+82: okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+83: javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+84: javax-annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation-api" }
+85: jsc-android = { module = "io.github.react-native-community:jsc-android", version.ref = "jsc-android" }
+86: 
+87: junit = {module = "junit:junit", version.ref = "junit" }
+88: assertj = {module = "org.assertj:assertj-core", version.ref = "assertj" }
+89: mockito = {module = "org.mockito:mockito-inline", version.ref = "mockito" }
+90: mockito-kotlin = {module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+91: robolectric = {module = "org.robolectric:robolectric", version.ref = "robolectric" }
+92: thoughtworks = {module = "com.thoughtworks.xstream:xstream", version.ref = "xstream" }
+93: 
+94: [plugins]
+95: android-application = { id = "com.android.application", version.ref = "agp" }
+96: android-library = { id = "com.android.library", version.ref = "agp" }
+97: download = { id = "de.undercouch.download", version.ref = "download" }
+98: ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
+99: nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
+100: kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+101: binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
+102: android-test = { id = "com.android.test", version.ref = "agp" }
+
+FILE: mobile-app/node_modules/expo-modules-core/expo-module-gradle-plugin/src/main/kotlin/expo/modules/plugin/ProjectConfiguration.kt
+1: // Copyright 2015-present 650 Industries. All rights reserved.
+2: 
+3: package expo.modules.plugin
+4: 
+5: import com.android.build.gradle.LibraryExtension
+6: import expo.modules.plugin.android.PublicationInfo
+7: import expo.modules.plugin.android.applyLinterOptions
+8: import expo.modules.plugin.android.applyPublishingVariant
+9: import expo.modules.plugin.android.applySDKVersions
+10: import expo.modules.plugin.android.createEmptyExpoPublishTask
+11: import expo.modules.plugin.android.createEmptyExpoPublishToMavenLocalTask
+12: import expo.modules.plugin.android.createExpoPublishTask
+13: import expo.modules.plugin.android.createExpoPublishToMavenLocalTask
+14: import expo.modules.plugin.android.createReleasePublication
+15: import expo.modules.plugin.gradle.ExpoModuleExtension
+16: import io.github.lukmccall.pika.PikaGradleExtension
+17: import org.gradle.api.Project
+18: import org.gradle.api.publish.PublishingExtension
+19: import org.gradle.internal.extensions.core.extra
+20: import java.io.File
+21: 
+22: internal fun Project.applyDefaultPlugins() {
+23:   if (!plugins.hasPlugin("com.android.library")) {
+24:     plugins.apply("com.android.library")
+25:   }
+26:   if (!plugins.hasPlugin("kotlin-android")) {
+27:     plugins.apply("kotlin-android")
+28:   }
+29:   if (!plugins.hasPlugin("maven-publish")) {
+30:     plugins.apply("maven-publish")
+31:   }
+32: }
+33: 
+34: internal fun Project.applyPikaPlugin() {
+35:   if (!plugins.hasPlugin("io.github.lukmccall.pika")) {
+36:     plugins.apply("io.github.lukmccall.pika")
+37:   }
+38: 
+39:   val pika = extensions.getByType(PikaGradleExtension::class.java)
+40:   pika.introspectableAnnotation("expo.modules.kotlin.types.OptimizedRecord")
+41:   pika.introspectableAnnotation("expo.modules.kotlin.views.OptimizedComposeProps")
+42: }
+43: 
+44: internal fun Project.configurePika(shouldBeEnabled: Boolean = true) {
+45:   val pika = extensions.getByType(PikaGradleExtension::class.java)
+46:   pika.enabled = shouldBeEnabled
+47: }
+48: 
+49: internal fun Project.applyKotlin(kotlinVersion: String, kspVersion: String) {
+50:   extra.set("kotlinVersion", kotlinVersion)
+51:   extra.set("kspVersion", kspVersion)
+52: 
+53:   project.dependencies.add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
+54:   // kotlinx-coroutines-core requires annotations:23.0.0 while kotlin-stdlib uses 13.0.
+55:   // Gradle 9's consistent resolution rejects this mismatch, so we force the higher version.
+56:   project.dependencies.add("implementation", "org.jetbrains:annotations:23.0.0")
+57: }
+58: 
+59: internal fun Project.applyDefaultDependencies() {
+60:   val modulesCore = rootProject.project(":expo-modules-core")
+61:   if (project != modulesCore) {
+62:     project.dependencies.add("compileOnly", modulesCore)
+63: 
+64:     project.dependencies.add("testImplementation", modulesCore)
+65:     project.dependencies.add("androidTestImplementation", modulesCore)
+66:   }
+67: }
+68: 
+69: internal fun Project.applyDefaultAndroidSdkVersions() {
+70:   with(androidLibraryExtension()) {
+71:     applySDKVersions(
+72:       compileSdk = rootProject.extra.safeGet("compileSdkVersion")
+73:         ?: logger.warnIfNotDefined("compileSdkVersion", 36),
+74:       minSdk = rootProject.extra.safeGet("minSdkVersion")
+75:         ?: logger.warnIfNotDefined("minSdkVersion", 24),
+76:       targetSdk = rootProject.extra.safeGet("targetSdkVersion")
+77:         ?: logger.warnIfNotDefined("targetSdkVersion", 36)
+78:     )
+79:     applyLinterOptions()
+80:   }
+81: }
+82: 
+83: /**
+84:  * Applies the necessary configuration for publishing to the local Maven repository.
+85:  * It need to be called when DSL is finalized.
+86:  */
+87: internal fun Project.applyPublishing(expoModulesExtension: ExpoModuleExtension) {
+88:   if (!expoModulesExtension.canBePublished) {
+89:     createEmptyExpoPublishTask()
+90:     createEmptyExpoPublishToMavenLocalTask()
+91:     return
+92:   }
+93: 
+94:   val libraryExtension = androidLibraryExtension()
+95: 
+96:   libraryExtension
+97:     .applyPublishingVariant()
+98: 
+99:   afterEvaluate {
+100:     val publicationInfo = PublicationInfo(this)
+101: 
+102:     publishingExtension()
+103:       .publications
+104:       .createReleasePublication(
+105:         publicationInfo,
+106:         expoModulesExtension.pomConfigurator
+107:       )
+108: 
+109:     createExpoPublishToMavenLocalTask(publicationInfo, expoModulesExtension)
+110: 
+111:     val npmLocalRepositoryRelativePath = "local-maven-repo"
+112:     val npmLocalRepository = File("${project.projectDir.parentFile}/${npmLocalRepositoryRelativePath}").toURI()
+113:     publishingExtension().repositories.mavenLocal { mavenRepo ->
+114:       mavenRepo.name = "NPMPackage"
+115:       mavenRepo.url = npmLocalRepository
+116:     }
+117: 
+118:     createExpoPublishTask(publicationInfo, expoModulesExtension, npmLocalRepositoryRelativePath)
+119:   }
+120: }
+121: 
+122: internal fun Project.androidLibraryExtension() = extensions.getByType(LibraryExtension::class.java)
+123: 
+124: internal fun Project.publishingExtension() = extensions.getByType(PublishingExtension::class.java)

@@ -40,13 +40,17 @@ export default function ProfileScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      let active = true;
+      setProfile(null);
+      setReferralsEnabled(false);
       if (!user) return;
       fetchUserProfile(user.id)
-        .then(setProfile)
+        .then(value => { if (active && getCurrentUser()?.id === user.id) setProfile(value); })
         .catch((err) => logError("Failed to load profile:", err));
       fetchReferralSettings()
-        .then((s) => setReferralsEnabled(!!s?.enabled))
-        .catch(() => setReferralsEnabled(false));
+        .then((s) => { if (active && getCurrentUser()?.id === user.id) setReferralsEnabled(!!s?.enabled); })
+        .catch(() => { if (active) setReferralsEnabled(false); });
+      return () => { active = false; };
     }, [user])
   );
 
@@ -251,6 +255,8 @@ const styles = StyleSheet.create({
 
   statsRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACING.md,
     marginBottom: 25,
   },
 });

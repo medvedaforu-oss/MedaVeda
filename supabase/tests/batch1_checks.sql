@@ -59,6 +59,15 @@ exception when others then return 'ERR: ' || sqlerrm; end $$;
 create function pg_temp.j(t text) returns jsonb
 language plpgsql as $$ begin return t::jsonb; exception when others then return null; end $$;
 
+-- Assert the database invariant independently of PostgreSQL/trigger wording.
+create function pg_temp.rejection_state(p_sql text) returns text
+language plpgsql as $$
+begin
+  execute p_sql;
+  return 'accepted';
+exception when others then return sqlstate;
+end $$;
+
 create function pg_temp.mkorder(p_uid uuid, p_product text, p_wallet boolean default false) returns jsonb
 language plpgsql as $$
 declare r jsonb;
@@ -369,7 +378,10 @@ select pg_temp.mkorder(:O::uuid, 'pb_n12') as o3 \gset
 select pg_temp.chk('O3 a different product is unaffected', (:'o3'::jsonb->>'ok')::boolean, :'o3');
 select pg_temp.attempt('service_role', null, format($$insert into public.purchases(user_id, scope, course_id, product_id, status)
   values (%L, 'chapter', 'bams', 'pb_n11', 'success')$$, :O)) as r \gset
-select pg_temp.chk('O4 the DATABASE refuses a second successful purchase of the same product', :'r' like 'ERR:%duplicate%', :'r');
+select pg_temp.chk('O4 the DATABASE refuses a second successful purchase of the same product',
+  (:'r' = 'ERR: Successful purchase ownership already exists' or :'r' like 'ERR:%duplicate key%')
+  and pg_temp.rejection_state(format($$insert into public.purchases(user_id, scope, course_id, product_id, status)
+    values (%L, 'chapter', 'bams', 'pb_n11', 'success')$$, :O)) = '23505', :'r');
 select pg_temp.attempt('service_role', null, format($$insert into public.purchases(user_id, scope, course_id, product_id, status)
   values (%L, 'chapter', 'bams', 'pb_n11', 'refunded')$$, :O)) as r \gset
 select pg_temp.chk('O5 ... but a refunded / duplicate row for it is fine', :'r' = 'OK', :'r');
@@ -377,8 +389,10 @@ select pg_temp.attempt('service_role', null, format($$insert into public.purchas
   values (%L, 'chapter', 'bams', 'pb_n11', 'lost')$$, :O)) as r \gset
 select pg_temp.chk('O6 purchases.status is a closed vocabulary', :'r' like 'ERR:%check%', :'r');
 select pg_temp.attempt('service_role', null, format($$insert into public.purchases(user_id, scope, course_id, product_id, status)
-  values (%L, 'chapter', 'bams', 'pb_n11', null)$$, :O)) as r \gset
-select pg_temp.chk('O7 ... and NOT NULL', :'r' like 'ERR:%null%', :'r');
+  values (%L, 'chapter', 'bams', 'pb_n12', null)$$, :O)) as r \gset
+select pg_temp.chk('O7 ... and NOT NULL', :'r' like 'ERR:%null%'
+  and pg_temp.rejection_state(format($$insert into public.purchases(user_id, scope, course_id, product_id, status)
+    values (%L, 'chapter', 'bams', 'pb_n12', null)$$, :O)) = '23502', :'r');
 -- two checkouts created before either is paid, both paid: second is recorded as duplicate, settlement does not fail
 select pg_temp.mkorder(:DU::uuid, 'pb_n10') as u1 \gset
 select pg_temp.mkorder(:DU::uuid, 'pb_n10') as u2 \gset

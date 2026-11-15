@@ -1,5 +1,6 @@
+import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
 import { paymentProvider } from "../../config/paymentProvider";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   View,
   Text,
@@ -14,16 +15,14 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import ProductPosterCard from "../../components/ProductPosterCard";
 import SectionHeader from "../../components/SectionHeader";
 import EmptyState from "../../components/EmptyState";
+import ErrorState from "../../components/ErrorState";
+import useStoreCatalog from "../../hooks/useStoreCatalog";
+import type { YearBlock } from "../../services/storeCatalogService";
 import BottomNav from "../../components/BottomNav";
 
-import {
-  fetchProductsByYear,
-  fetchProductsBySubject,
-  Product,
-} from "../../services/productsService";
-import { fetchYears, Year } from "../../services/yearsService";
-import useCourseYear from "../../hooks/useCourseYear";
-import { fetchSubjectsByYear, Subject } from "../../services/subjectsService";
+import type { Product } from "../../services/productsService";
+import type { Year } from "../../services/yearsService";
+import type { Subject } from "../../services/subjectsService";
 import usePurchases from "../../hooks/usePurchases";
 import usePurchase from "../../hooks/usePurchase";
 
@@ -31,14 +30,6 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
-import { logError } from "../../utils/logger";
-
-type YearBlock = {
-  year: Year;
-  yearProduct: Product | null;
-  subjects: Subject[];
-  subjectProducts: Record<string, Product | null>;
-};
 
 // Store is grouped by Year - each Year gets its own horizontal row of
 // poster cards, one per Subject (with its own Notes price + owned state).
@@ -48,50 +39,10 @@ type YearBlock = {
 // buyable from the pill next to the Year title.
 export default function StoreScreen() {
   const navigation = useNavigation<any>();
-  const [blocks, setBlocks] = useState<YearBlock[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { blocks, loading, status, error, refresh } = useStoreCatalog();
 
-  const { isOwned, refresh: refreshPurchases } = usePurchases();
+  const { isOwned, refresh: refreshPurchases, loading: purchasesOwnershipLoading, error: purchasesOwnershipError } = usePurchases();
   const { buy, purchasing } = usePurchase();
-
-  const { ready, courseId } = useCourseYear();
-
-  useEffect(() => {
-    if (!ready) return;
-    setLoading(true);
-    fetchYears(courseId)
-      .then(async (allYears) => {
-        const sorted = [...allYears].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-        const loaded = await Promise.all(
-          sorted.map(async (year) => {
-            const [yearProducts, subjects] = await Promise.all([
-              fetchProductsByYear(year.id),
-              fetchSubjectsByYear(year.id),
-            ]);
-
-            const subjectProductLists = await Promise.all(
-              subjects.map((s) => fetchProductsBySubject(s.id))
-            );
-            const subjectProducts: Record<string, Product | null> = {};
-            subjects.forEach((s, i) => {
-              subjectProducts[s.id] = subjectProductLists[i][0] ?? null;
-            });
-
-            return {
-              year,
-              yearProduct: yearProducts[0] ?? null,
-              subjects,
-              subjectProducts,
-            };
-          })
-        );
-
-        setBlocks(loaded);
-      })
-      .catch((err) => logError("Failed to load Store:", err))
-      .finally(() => setLoading(false));
-  }, [ready, courseId]);
 
   useFocusEffect(
     useCallback(() => {
@@ -100,7 +51,7 @@ export default function StoreScreen() {
   );
 
   const handleBuy = useCallback((product: Product | null) => {
-    if (!product || isOwned(product)) return;
+    if (paymentProvider === "disabled" || !product || isOwned(product)) return;
     buy(product);
   }, [buy, isOwned]);
 
@@ -126,11 +77,14 @@ export default function StoreScreen() {
               styles.fullYearPill,
               yearOwned && styles.fullYearPillOwned,
             ]}
-            activeOpacity={0.85}
+            activeOpacity={1}
+            accessibilityRole="button"
+            accessibilityLabel={`${block.year.title}. ${yearOwned ? "Full Year Notes Owned" : paymentProvider === "disabled" ? "New purchases unavailable" : `Review Full Year Notes purchase, ₹${block.yearProduct.price}`}`}
+            accessibilityState={{ disabled: yearOwned || purchasing || paymentProvider === "disabled", busy: purchasing }}
             onPress={() => handleBuy(block.yearProduct)}
-            disabled={yearOwned}
+            disabled={yearOwned || purchasing || paymentProvider === "disabled"}
           >
-            <Text style={styles.fullYearPillText}>
+            <Text style={[styles.fullYearPillText, yearOwned && styles.fullYearPillOwnedText]}>
               {yearOwned
                 ? "✓ Full Year Notes Owned"
                 : paymentProvider === "disabled" ? "New purchases unavailable" : `Buy Full Year Notes · ₹${block.yearProduct.price}`}
@@ -151,24 +105,32 @@ export default function StoreScreen() {
 
   return (
     <View style={styles.screen}>
+      <PurchaseOwnershipStatus loading={purchasesOwnershipLoading} error={purchasesOwnershipError} refresh={refreshPurchases} />
       <View style={styles.container}>
         <Text style={styles.title}>Notes</Text>
         <Text style={styles.subtitle}>{paymentProvider === "disabled" ? "New purchases are unavailable in this app version. Previously purchased Notes remain accessible through your account." : "Buy a Year, a Subject, or just one Chapter"}</Text>
 
-        {loading ? (
-          <ActivityIndicator size="large" color={COLORS.accent} />
-        ) : (
+        {error && <ErrorState message={blocks.length ? `${error} Showing previously loaded Notes; catalog may be out of date.` : error} onRetry={refresh} busy={loading} />}
+        {loading && blocks.length === 0 ? (
+          <View>
+            <ActivityIndicator size="large" color={COLORS.accent} />
+            <Text style={styles.nestedEmptyText}>{status === "retrying" ? "Retrying Notes…" : "Loading Notes…"}</Text>
+          </View>
+        ) : (blocks.length > 0 || status === "empty") ? (
           <FlatList initialNumToRender={3} windowSize={7} maxToRenderPerBatch={3}
             data={blocks}
+            refreshing={loading}
+            onRefresh={refresh}
+            ListHeaderComponent={loading ? <Text style={styles.nestedEmptyText}>Refreshing Notes… Previously loaded catalog may be out of date.</Text> : null}
             keyExtractor={(block) => block.year.id}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: SPACING.xl }}
             renderItem={renderYearBlock}
             ListEmptyComponent={<EmptyState title="🔍 No Academic Years Found" />}
           />
-        )}
+        ) : null}
       </View>
-
+      
       <BottomNav active="Store" />
 
       {purchasing && (
@@ -243,6 +205,10 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   fullYearPill: {
+    minHeight: 48,
+    minWidth: 48,
+    maxWidth: "100%",
+    justifyContent: "center",
     alignSelf: "flex-start",
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.full,
@@ -255,8 +221,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.success,
   },
+  fullYearPillOwnedText: { color: COLORS.text },
   fullYearPillText: {
-    color: COLORS.white,
+    color: COLORS.background,
     fontWeight: "700",
     fontSize: FONT.small,
   },

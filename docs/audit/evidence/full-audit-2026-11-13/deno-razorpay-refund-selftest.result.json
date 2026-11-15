@@ -1,0 +1,16 @@
+{
+  "name": "deno-razorpay-refund-selftest",
+  "cwd": ".",
+  "command": [
+    "deno",
+    "run",
+    "--cached-only",
+    "--config",
+    "supabase/deno.json",
+    "--allow-read",
+    "--allow-env",
+    "supabase/tests/razorpay-refund-selftest.ts"
+  ],
+  "exit": 0,
+  "seconds": 0.15
+}

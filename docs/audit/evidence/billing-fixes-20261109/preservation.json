@@ -1,0 +1,102 @@
+{
+  "protected": {
+    "mobile-app/App.tsx": {
+      "before": "dd05b5bc4a9c55832c0e00503cdeb64417f2e741eb27adab53f39feeff8b40b5",
+      "after": "dd05b5bc4a9c55832c0e00503cdeb64417f2e741eb27adab53f39feeff8b40b5",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/auth/SplashScreen.tsx": {
+      "before": "8f4dab09a447f6169e2d8aadc2d79d56e37636bea2cabf4209f6df932984ef40",
+      "after": "8f4dab09a447f6169e2d8aadc2d79d56e37636bea2cabf4209f6df932984ef40",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/auth/LoginScreen.tsx": {
+      "before": "85d24d6a3c5f9a02215b1cba64e392a9211938a3b4a4100e96eb8196a6585199",
+      "after": "85d24d6a3c5f9a02215b1cba64e392a9211938a3b4a4100e96eb8196a6585199",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/videos/VideosScreen.tsx": {
+      "before": "1abf8160b1ee17ffcb370aa27bbf47ac2308e5f3af638caff9390c31a6087ea7",
+      "after": "1abf8160b1ee17ffcb370aa27bbf47ac2308e5f3af638caff9390c31a6087ea7",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/quiz/QuizScreen.tsx": {
+      "before": "e1a0c7c60b57a7291f659fb6e18afceb0ea38b8fcdd1c4e3369e007108c18770",
+      "after": "e1a0c7c60b57a7291f659fb6e18afceb0ea38b8fcdd1c4e3369e007108c18770",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/quiz/TestListScreen.tsx": {
+      "before": "3966ac9ecb64dffb841f7d7cf189420fb38654d97f1b288fcbf0e386bddcc5db",
+      "after": "3966ac9ecb64dffb841f7d7cf189420fb38654d97f1b288fcbf0e386bddcc5db",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/notes/NotesScreen.tsx": {
+      "before": "49c8f570fde8ba91789678a5377f27cee657e18bbc39c75bd361a0050b448f1f",
+      "after": "49c8f570fde8ba91789678a5377f27cee657e18bbc39c75bd361a0050b448f1f",
+      "unchanged": true
+    },
+    "mobile-app/src/screens/pdf/PdfViewerScreen.native.tsx": {
+      "before": "bad5be63287b389c5252ecb2db00e3a0e52c7abd193ec630afa1f99192b9ad06",
+      "after": "bad5be63287b389c5252ecb2db00e3a0e52c7abd193ec630afa1f99192b9ad06",
+      "unchanged": true
+    },
+    "mobile-app/src/services/purchasesService.ts": {
+      "before": "895568f67d262c29442bb1a174b4462403771bd0d965f0e87e795cf179f13121",
+      "after": "895568f67d262c29442bb1a174b4462403771bd0d965f0e87e795cf179f13121",
+      "unchanged": true
+    },
+    "mobile-app/src/config/paymentProvider.ts": {
+      "before": "9b45cb57fafaa3ac341bf061a729b7f4638d99da1cf0cdb616609cf5c086226e",
+      "after": "9b45cb57fafaa3ac341bf061a729b7f4638d99da1cf0cdb616609cf5c086226e",
+      "unchanged": true
+    },
+    "mobile-app/app.config.js": {
+      "before": "e34b481cdab09c58a59e8d25f8a27bf8c2a61700c372a5ea11b0560d540432a3",
+      "after": "e34b481cdab09c58a59e8d25f8a27bf8c2a61700c372a5ea11b0560d540432a3",
+      "unchanged": true
+    },
+    "mobile-app/app.json": {
+      "before": "87edff40f924260c91f63f35482e9fcf8f727847973a6ece63b76450729685e6",
+      "after": "87edff40f924260c91f63f35482e9fcf8f727847973a6ece63b76450729685e6",
+      "unchanged": true
+    },
+    "mobile-app/eas.json": {
+      "before": "019253c61fe041f9031b735d375dc24d71a68cb9ecdef2aca839801329a8401c",
+      "after": "019253c61fe041f9031b735d375dc24d71a68cb9ecdef2aca839801329a8401c",
+      "unchanged": true
+    },
+    "mobile-app/package.json": {
+      "before": "5326e0fe2362f51badb814fba669f4e0f71cd62a4556fc5fbaf18c2e1c801283",
+      "after": "5326e0fe2362f51badb814fba669f4e0f71cd62a4556fc5fbaf18c2e1c801283",
+      "unchanged": true
+    },
+    "mobile-app/package-lock.json": {
+      "before": "9c31167671de53e8741e5854e60cf88efeae94474994d8a2fb7e018f5debaf91",
+      "after": "9c31167671de53e8741e5854e60cf88efeae94474994d8a2fb7e018f5debaf91",
+      "unchanged": true
+    },
+    "admin-panel/src/components/RouteErrorBoundary.tsx": {
+      "before": "a2244e7b0c007b33ba717ad67ce3f71e6c2192a70ffb8ee0ccd41d8d87bfff20",
+      "after": "a2244e7b0c007b33ba717ad67ce3f71e6c2192a70ffb8ee0ccd41d8d87bfff20",
+      "unchanged": true
+    },
+    "admin-panel/src/hooks/useDashboard.ts": {
+      "before": "a3ce1f15cb25ccbd1d3c6a90b8dec4a62282e6d19a5d8e81d4399107682c74f5",
+      "after": "a3ce1f15cb25ccbd1d3c6a90b8dec4a62282e6d19a5d8e81d4399107682c74f5",
+      "unchanged": true
+    },
+    "supabase/migrations/20261108100000_notes_choice_checkout.sql": {
+      "before": "bf0452bc97960bc15c7954d44303cb1009f7f8dfb66721ea627a6f952aff4427",
+      "after": "bf0452bc97960bc15c7954d44303cb1009f7f8dfb66721ea627a6f952aff4427",
+      "unchanged": true
+    }
+  },
+  "website_files_unchanged": 72,
+  "removed": [],
+  "unrelated_admin_lint_sources_unchanged": true,
+  "remote_writes": 0,
+  "staging_actions": 0,
+  "enrolment_actions": 0,
+  "deployments": 0,
+  "payment_activation": false
+}

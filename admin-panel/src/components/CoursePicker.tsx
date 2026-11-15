@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Course } from "../types/course";
 
 type Props = {
@@ -27,14 +28,19 @@ export default function CoursePicker({
   placeholder = "-- Select --",
   disabled,
 }: Props) {
+  const id = useId();
   return (
     <div>
       {label && (
-        <label className="mb-1.5 block text-sm font-medium text-gray-700">
+        <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-gray-700">
           {label}
         </label>
       )}
       <select
+        id={id}
+        aria-label={label || "Course"}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
@@ -48,7 +54,7 @@ export default function CoursePicker({
           </option>
         ))}
       </select>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p id={`${id}-error`} role="alert" className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );
 }

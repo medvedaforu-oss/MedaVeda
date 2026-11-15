@@ -1,0 +1,239 @@
+{
+  "target": "xbvenkfmesugrbjuufyw",
+  "baseline_latest_migration": "20261104110000",
+  "candidates": {
+    "B1": {
+      "slug": "verify-payment",
+      "verify_jwt": false,
+      "entrypoint_sha256": "4c99c5ca0b6568741448977165ebb2558f57e8b0173e38cafab7dd7c1450372a",
+      "sources": {
+        "functions/_shared/cors.ts": {
+          "sha256": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+          "imports": []
+        },
+        "functions/_shared/rateLimit.ts": {
+          "sha256": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+          "imports": [
+            "./supabaseAdmin.ts"
+          ]
+        },
+        "functions/_shared/razorpay.ts": {
+          "sha256": "66ba2463606862b57daaaff1bb029bf640fbe066b7f422baed93f653d2ca6f77",
+          "imports": []
+        },
+        "functions/_shared/settle.ts": {
+          "sha256": "c16b4238ba56512a9ebb48f76111f9040c8d6e809b7889afc132071d6aeec3da",
+          "imports": [
+            "./supabaseAdmin.ts",
+            "./razorpay.ts",
+            "./ucbAlert.ts"
+          ]
+        },
+        "functions/_shared/supabaseAdmin.ts": {
+          "sha256": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+          "imports": [
+            "npm:@supabase/supabase-js@2.118.0"
+          ]
+        },
+        "functions/_shared/ucbAlert.ts": {
+          "sha256": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+          "imports": []
+        },
+        "functions/verify-payment/index.ts": {
+          "sha256": "4c99c5ca0b6568741448977165ebb2558f57e8b0173e38cafab7dd7c1450372a",
+          "imports": [
+            "../_shared/cors.ts",
+            "../_shared/supabaseAdmin.ts",
+            "../_shared/razorpay.ts",
+            "../_shared/settle.ts",
+            "../_shared/rateLimit.ts"
+          ]
+        }
+      },
+      "closure_sha256": "37a01ae11a163433c77ab150e6600ef66235837f3c077661ec9f091c09e5dfe8",
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "archive": "supabase/releases/phase-b-20261111/artifacts/B1-verify-payment-source.tar",
+      "archive_sha256": "e1d0ede56f0eeb873492b639a86ca8b81e723cd08c5c3f81bba7c34a357f5ab1",
+      "local_javascript_build_sha256": "14cdd736ea99e2929d66522f1a0d885631bd20e4ddcab8107bce727558447f7b",
+      "required_environment": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "APP_ENV=production",
+        "RAZORPAY_KEY_ID (live prefix)",
+        "RAZORPAY_KEY_SECRET",
+        "UCB_SENTRY_DSN (optional alert transport)"
+      ]
+    },
+    "B2": {
+      "slug": "razorpay-webhook",
+      "verify_jwt": false,
+      "entrypoint_sha256": "a9d1221581b3c5955e2020c39dc440b48cd4bafe3db1d6a18e4bf2366103a9d4",
+      "sources": {
+        "functions/_shared/razorpay.ts": {
+          "sha256": "66ba2463606862b57daaaff1bb029bf640fbe066b7f422baed93f653d2ca6f77",
+          "imports": []
+        },
+        "functions/_shared/settle.ts": {
+          "sha256": "c16b4238ba56512a9ebb48f76111f9040c8d6e809b7889afc132071d6aeec3da",
+          "imports": [
+            "./supabaseAdmin.ts",
+            "./razorpay.ts",
+            "./ucbAlert.ts"
+          ]
+        },
+        "functions/_shared/supabaseAdmin.ts": {
+          "sha256": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+          "imports": [
+            "npm:@supabase/supabase-js@2.118.0"
+          ]
+        },
+        "functions/_shared/ucbAlert.ts": {
+          "sha256": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8",
+          "imports": []
+        },
+        "functions/razorpay-webhook/index.ts": {
+          "sha256": "a9d1221581b3c5955e2020c39dc440b48cd4bafe3db1d6a18e4bf2366103a9d4",
+          "imports": [
+            "../_shared/settle.ts",
+            "../_shared/supabaseAdmin.ts"
+          ]
+        }
+      },
+      "closure_sha256": "62612f9abd52e11e859e1988c32d781b4f0eed6e5cb9d197e8b6e9a3f9f9545c",
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "archive": "supabase/releases/phase-b-20261111/artifacts/B2-razorpay-webhook-source.tar",
+      "archive_sha256": "c7e04f3fad722e73e030d453112ff429a8f8280f987a9e726d3acd0b75000d4a",
+      "local_javascript_build_sha256": "c4837dc26cfeae6f56a4c2bb2f041af7ebfc84320cbc41efc74afa8222efcee0",
+      "required_environment": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "APP_ENV=production",
+        "RAZORPAY_KEY_ID (live prefix)",
+        "RAZORPAY_KEY_SECRET",
+        "RAZORPAY_WEBHOOK_SECRET",
+        "RAZORPAY_WEBHOOK_PREVIOUS_SECRET (optional)",
+        "UCB_SENTRY_DSN (optional alert transport)"
+      ]
+    },
+    "B3": {
+      "slug": "create-order",
+      "verify_jwt": true,
+      "entrypoint_sha256": "63221e542d583f6b77c2c1703a3f1cb7f49d7aff5226aa2e95c2def27e4b4398",
+      "sources": {
+        "functions/_shared/cors.ts": {
+          "sha256": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f",
+          "imports": []
+        },
+        "functions/_shared/rateLimit.ts": {
+          "sha256": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3",
+          "imports": [
+            "./supabaseAdmin.ts"
+          ]
+        },
+        "functions/_shared/razorpay.ts": {
+          "sha256": "66ba2463606862b57daaaff1bb029bf640fbe066b7f422baed93f653d2ca6f77",
+          "imports": []
+        },
+        "functions/_shared/supabaseAdmin.ts": {
+          "sha256": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791",
+          "imports": [
+            "npm:@supabase/supabase-js@2.118.0"
+          ]
+        },
+        "functions/create-order/index.ts": {
+          "sha256": "63221e542d583f6b77c2c1703a3f1cb7f49d7aff5226aa2e95c2def27e4b4398",
+          "imports": [
+            "../_shared/cors.ts",
+            "../_shared/supabaseAdmin.ts",
+            "../_shared/razorpay.ts",
+            "../_shared/rateLimit.ts"
+          ]
+        }
+      },
+      "closure_sha256": "0cb977cf0e7df3fda5bf90905da23107d5fbc7247e4e114c93f9684270cc99a1",
+      "external_imports": [
+        "npm:@supabase/supabase-js@2.118.0"
+      ],
+      "archive": "supabase/releases/phase-b-20261111/artifacts/B3-create-order-source.tar",
+      "archive_sha256": "72e5c74183d814a3a54cc4819647951f429e935925d3c612b1b976d4a086a9ef",
+      "local_javascript_build_sha256": "88389a065803d91e73e14689ae659908896b52c5b05f33df3ece83ec0c52c103",
+      "required_environment": [
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "APP_ENV=production",
+        "RAZORPAY_KEY_ID (live prefix)",
+        "RAZORPAY_KEY_SECRET"
+      ]
+    }
+  },
+  "required_migrations": {
+    "20261110100000_mv003_razorpay_entitlement_commitment.sql": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b",
+    "20261110120000_mv005_razorpay_order_transitions.sql": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730",
+    "20261110130000_mv006_purchase_ownership_guard.sql": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c"
+  },
+  "npm_closure": {
+    "@supabase/auth-js@2.118.0": {
+      "dependencies": [
+        "tslib@2.8.1"
+      ],
+      "integrity": "sha512-xWfPXyhS2KDSfAneMtI6p/tBnbdiz/5vaRKXEqUfzfC9WCniKr2Ds5o5G7RIGig0bom4z6wUY9zaV07WDVTfnQ=="
+    },
+    "@supabase/functions-js@2.118.0": {
+      "dependencies": [
+        "tslib@2.8.1"
+      ],
+      "integrity": "sha512-4ofletPa/noKAU6KHeqsd3FztGzRPUEJRey1MKY0o+PIHaVePqRPShIXtl37gcVyIWaFM+zNg6r9zh0uUSFOSA=="
+    },
+    "@supabase/phoenix@0.4.5": {
+      "dependencies": [],
+      "integrity": "sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw=="
+    },
+    "@supabase/postgrest-js@2.118.0": {
+      "dependencies": [
+        "tslib@2.8.1"
+      ],
+      "integrity": "sha512-JXy+37KPApHsyotaQACovv/Jy9E22rfiWLRuT+2UjoEAcAIelDFIrsF/FY47Dy19mO7lI0Tq+zDCX8oJ2Ozfiw=="
+    },
+    "@supabase/realtime-js@2.118.0": {
+      "dependencies": [
+        "@supabase/phoenix@0.4.5",
+        "tslib@2.8.1"
+      ],
+      "integrity": "sha512-pzCIEWjqD5/xqEZQerpt+q9rsgYkcrkgCJgf0W2ULqC4fYUeB/p9CFa3t9vn+IVh6dMN9r4ZCE262lZvUC+Bfw=="
+    },
+    "@supabase/storage-js@2.118.0": {
+      "dependencies": [
+        "iceberg-js@0.8.1",
+        "tslib@2.8.1"
+      ],
+      "integrity": "sha512-5MNkKt2Moy7Jud/sPX7/28BwdDxZMCVHGJT00b8op3KRa9LKSjOAYU5IcfGWIstaasAqY8GkbA6oI3IRDgB1YQ=="
+    },
+    "@supabase/supabase-js@2.118.0": {
+      "dependencies": [
+        "@supabase/auth-js@2.118.0",
+        "@supabase/functions-js@2.118.0",
+        "@supabase/postgrest-js@2.118.0",
+        "@supabase/realtime-js@2.118.0",
+        "@supabase/storage-js@2.118.0"
+      ],
+      "integrity": "sha512-FxI8UXMVC2UG7IkeiI8fuQZqq2oI3JeSuN8MPIC2RLVaoEAxKS0nqE6kii9Ewpq8f9gNPM6git1Y8f0vN/QLFw=="
+    },
+    "iceberg-js@0.8.1": {
+      "dependencies": [],
+      "integrity": "sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA=="
+    },
+    "tslib@2.8.1": {
+      "dependencies": [],
+      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="
+    }
+  },
+  "shared_configuration": {
+    "config.toml": "096f81b769cd161462aa37b3a953192f94bc46792d72ea861f642650906315fd",
+    "deno.json": "c8db67544fd9a052ae87a644e256402e0a380f2bec03943f79eedfad40d60378",
+    "deno.lock": "46a8cce8704f9a42b532dd1a96b6e6bf8f92d414d9be97e604c128bea7652ade"
+  }
+}

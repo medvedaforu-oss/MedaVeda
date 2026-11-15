@@ -1,0 +1,146 @@
+[
+  {
+    "path": "mobile-app/eas.json",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/app.config.js",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/app.json",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/package.json",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/package-lock.json",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/plugins/withAndroidRelease.js",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/android/gradle.properties",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/android/build.gradle",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/android/app/build.gradle",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/android/gradle/wrapper/gradle-wrapper.properties",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/FoundationTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/core/VaultModel.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/core/PdfContainer.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/core/AtomicVault.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/Registry.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/OwnerKeys.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/NativeLeases.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/DurableGenerations.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/VaultAcquisition.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/ContentJournal.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/ViewWorkspace.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/ContentCoordinator.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/integration/NativeHttpsSource.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/androidTest/java/in/medveda/offline/NativeSecurityTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/androidTest/java/in/medveda/offline/ContentSecurityTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/expo/modules/medvedaoffline/MedvedaOfflineVaultModule.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidKeys.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultControl.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidVaultLifecycle.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidPdfResource.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/android/src/main/java/in/medveda/offline/AndroidContentControl.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/phase1b/Phase1BTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/acquisition/AcquisitionTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/content/ContentTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/content/TransportTest.kt",
+    "unchanged": true
+  },
+  {
+    "path": "mobile-app/modules/medveda-offline-vault/tests/content/CrashTest.kt",
+    "unchanged": true
+  }
+]

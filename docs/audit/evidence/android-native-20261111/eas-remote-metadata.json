@@ -1,0 +1,33 @@
+{
+  "data": {
+    "app": {
+      "byId": {
+        "id": "2d642c70-8ec1-4d7b-a388-2f2f99e8a8df",
+        "androidAppCredentials": [
+          {
+            "applicationIdentifier": "in.medveda.app",
+            "googleServiceAccountKeyForFcmV1": null,
+            "androidAppBuildCredentialsList": [
+              {
+                "name": "Build Credentials rEPhFBfQj8",
+                "isDefault": true,
+                "isLegacy": false,
+                "androidKeystore": {
+                  "type": "JKS",
+                  "sha256CertificateFingerprint": "8c9598e4ea0722bcd6f2690b1060b001d9fff619f7c18b4b3bb5b092a4cbf300",
+                  "updatedAt": "2026-10-15T20:02:23.890Z"
+                }
+              }
+            ]
+          }
+        ],
+        "environmentVariables": [],
+        "ownerAccount": {
+          "environmentVariables": []
+        }
+      }
+    }
+  },
+  "observed_at_utc": "2026-11-11T08:05:01.738568+00:00",
+  "scope": "Metadata only; no keystore/password/alias, environment value, build or mutation requested."
+}

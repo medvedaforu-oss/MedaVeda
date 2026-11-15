@@ -1,0 +1,251 @@
+ M .github/workflows/ci.yml
+ M docs/RELEASE_GATES.md
+ M mobile-app/App.tsx
+ M mobile-app/DATA_SAFETY_AUDIT.md
+ M mobile-app/PLAY_STORE_SUBMISSION.md
+ M mobile-app/app.config.js
+ M mobile-app/app.json
+ M mobile-app/eas.json
+ M mobile-app/package-lock.json
+ M mobile-app/package.json
+ M mobile-app/scripts/check-staging-build.cjs
+ M mobile-app/scripts/list-states-selftest.cjs
+ M mobile-app/scripts/login-submit-selftest.cjs
+ M mobile-app/scripts/navigation-lazy-selftest.cjs
+ M mobile-app/scripts/notes-open-selftest.cjs
+ M mobile-app/scripts/payment-poll-selftest.cjs
+ M mobile-app/scripts/payment-provider-selftest.cjs
+ M mobile-app/scripts/payment-request-selftest.cjs
+ M mobile-app/scripts/payment-routing-selftest.cjs
+ M mobile-app/scripts/payment-summary-selftest.cjs
+ M mobile-app/scripts/payment-verdict-selftest.cjs
+ M mobile-app/scripts/pdf-lifecycle-selftest.cjs
+ M mobile-app/scripts/purchases-selftest.cjs
+ M mobile-app/scripts/purchases-unavailable-ui-selftest.cjs
+ M mobile-app/scripts/razorpay-internal-test-selftest.cjs
+ M mobile-app/scripts/readiness-selftest.cjs
+ M mobile-app/scripts/release-payments-disabled-selftest.cjs
+ M mobile-app/scripts/search-lazy-hook-selftest.cjs
+ M mobile-app/scripts/staging-build-selftest.cjs
+ M mobile-app/scripts/ui-harness.cjs
+ M mobile-app/src/components/BottomNav.tsx
+ M mobile-app/src/components/CustomButton.tsx
+ M mobile-app/src/components/ErrorState.tsx
+ M mobile-app/src/components/ProductCard.tsx
+ M mobile-app/src/components/ProductPosterCard.tsx
+ M mobile-app/src/components/SideDrawer.tsx
+ M mobile-app/src/components/UnlockOptionsPanel.tsx
+ M mobile-app/src/config/paymentProvider.ts
+ M mobile-app/src/config/supabase.ts
+ M mobile-app/src/features/auth/authService.ts
+ M mobile-app/src/hooks/useGlobalSearch.ts
+ M mobile-app/src/hooks/useMaintenanceMode.ts
+ M mobile-app/src/hooks/usePurchases.ts
+ M mobile-app/src/navigation/AppNavigator.tsx
+ M mobile-app/src/repositories/chaptersRepository.ts
+ M mobile-app/src/repositories/notesRepository.ts
+ M mobile-app/src/repositories/productsRepository.ts
+ M mobile-app/src/repositories/purchasesRepository.ts
+ M mobile-app/src/repositories/referralsRepository.ts
+ M mobile-app/src/repositories/usersRepository.ts
+ M mobile-app/src/screens/auth/LoginScreen.tsx
+ M mobile-app/src/screens/auth/SplashScreen.tsx
+ M mobile-app/src/screens/chapters/ChaptersScreen.tsx
+ M mobile-app/src/screens/details/ChapterDetailsScreen.tsx
+ M mobile-app/src/screens/home/HomeScreen.tsx
+ M mobile-app/src/screens/maintenance/MaintenanceScreen.tsx
+ M mobile-app/src/screens/notes/NotesScreen.tsx
+ M mobile-app/src/screens/payment/OrderSummaryScreen.tsx
+ M mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx
+ M mobile-app/src/screens/payment/PaymentFailedScreen.tsx
+ M mobile-app/src/screens/payment/PaymentSuccessScreen.tsx
+ M mobile-app/src/screens/payment/checkoutHtmlTemplate.ts
+ M mobile-app/src/screens/pdf/PdfViewerScreen.native.tsx
+ M mobile-app/src/screens/purchases/MyPurchasesScreen.tsx
+ M mobile-app/src/screens/quiz/QuizScreen.tsx
+ M mobile-app/src/screens/quiz/TestListScreen.tsx
+ M mobile-app/src/screens/search/SearchScreen.tsx
+ M mobile-app/src/screens/store/StoreScreen.tsx
+ M mobile-app/src/screens/subjects/SubjectsScreen.tsx
+ M mobile-app/src/screens/videos/VideosScreen.tsx
+ M mobile-app/src/screens/years/YearsScreen.tsx
+ M mobile-app/src/services/authState.ts
+ M mobile-app/src/services/chaptersService.ts
+ M mobile-app/src/services/maintenanceService.ts
+ M mobile-app/src/services/ordersService.ts
+ M mobile-app/src/services/paymentService.ts
+ M mobile-app/src/services/productsService.ts
+ M mobile-app/src/services/purchasesService.ts
+ M mobile-app/src/services/secureNotesService.ts
+ M mobile-app/src/types/navigation.ts
+ M scripts/ucb-deploy.sh
+ M supabase/config.toml
+ M supabase/functions/_shared/externalReporting.ts
+ M supabase/functions/_shared/googlePlay.ts
+ M supabase/functions/_shared/razorpay.ts
+ M supabase/functions/_shared/settle.ts
+ M supabase/functions/attach-external-token/index.ts
+ M supabase/functions/create-order/index.ts
+ M supabase/functions/create-play-order/index.ts
+ M supabase/functions/razorpay-webhook/index.ts
+ M supabase/functions/report-external-transaction/index.ts
+ M supabase/functions/verify-payment/index.ts
+ M supabase/functions/verify-play-purchase/index.ts
+ M supabase/tests/compensation-worker-selftest.cjs
+ M supabase/tests/critical_fixes_checks.sql
+ M supabase/tests/google-reporting-selftest.cjs
+ M supabase/tests/play-consumption-selftest.cjs
+ M supabase/tests/play-order-selftest.cjs
+ M supabase/tests/play-reconcile-fairness-selftest.cjs
+ M supabase/tests/play-verification-selftest.cjs
+ M supabase/tests/razorpay-routing-selftest.cjs
+ M supabase/tests/razorpay-security-selftest.cjs
+ M supabase/tests/recovery-selftest.cjs
+ M supabase/tests/run-all.sh
+ M supabase/tests/settle-timestamp-selftest.cjs
+ M supabase/tests/webhook-harness/run.mjs
+ M supabase/tests/webhook-harness/run.sh
+?? docs/audit/MEDVEDA_ANDROID_IDE_TOOLCHAIN_2026-11-10.md
+?? docs/audit/MEDVEDA_ANDROID_NATIVE_RELEASE_READINESS_2026-11-11.md
+?? docs/audit/MEDVEDA_ANDROID_RELEASE_BLOCKER_FIX_2026-11-11.md
+?? docs/audit/MEDVEDA_BILLING_FIXES_2026-11-09.md
+?? docs/audit/MEDVEDA_CLOSED_TESTING_2026-11-08.md
+?? docs/audit/MEDVEDA_MIGRATION_REPEATABILITY_PREFLIGHT_2026-11-10.md
+?? docs/audit/MEDVEDA_MOBILE_PRODUCTION_FULL_AUDIT_2026-11-10.md
+?? docs/audit/MEDVEDA_MV001_PAYMENT_READINESS_2026-11-11.md
+?? docs/audit/MEDVEDA_MV003_LOCAL_FIX_2026-11-10.md
+?? docs/audit/MEDVEDA_MV004_LOCAL_FIX_2026-11-10.md
+?? docs/audit/MEDVEDA_MV005_LOCAL_FIX_2026-11-10.md
+?? docs/audit/MEDVEDA_MV006_LOCAL_FIX_2026-11-10.md
+?? docs/audit/MEDVEDA_MV007_GOOGLE_PLAY_BILLING_REMOVAL_2026-11-11.md
+?? docs/audit/MEDVEDA_MV008_LOCAL_FIX_2026-11-10.md
+?? docs/audit/MEDVEDA_MV009_LOCAL_FIX_2026-11-11.md
+?? docs/audit/MEDVEDA_MV010_LOCAL_FIX_2026-11-11.md
+?? docs/audit/MEDVEDA_MV011_LOCAL_FIX_2026-11-11.md
+?? docs/audit/MEDVEDA_MV012_LOCAL_FIX_2026-11-11.md
+?? docs/audit/MEDVEDA_NONPLAY_TEST_ISOLATION_2026-11-09.md
+?? docs/audit/MEDVEDA_NOTES_BILLING_CHOICE_2026-11-08.md
+?? docs/audit/MEDVEDA_PHASE_A_FINAL_SAFETY_REVIEW_2026-11-11.md
+?? docs/audit/MEDVEDA_PHASE_A_OPERATOR_RUNBOOK_2026-11-11.md
+?? docs/audit/MEDVEDA_PHASE_B_EDGE_COMPATIBILITY_2026-11-11.md
+?? docs/audit/MEDVEDA_PHASE_C_LOCAL_READINESS_2026-11-11.md
+?? docs/audit/MEDVEDA_PRODUCTION_BUY_NOW_ACTIVATION_READINESS_2026-11-11.md
+?? docs/audit/MEDVEDA_PRODUCTION_DEFAULT_OFF_PREFLIGHT_2026-11-10.md
+?? docs/audit/MEDVEDA_PRODUCTION_DEPLOYMENT_PREFLIGHT_2026-11-11.md
+?? docs/audit/MEDVEDA_PRODUCTION_MIGRATION_EXECUTION_PACKAGE_2026-11-11.md
+?? docs/audit/MEDVEDA_STARTUP_PAYMENTS_2026-11-08.md
+?? docs/audit/evidence/android-blocker-fix-20261111/
+?? docs/audit/evidence/android-native-20261111/
+?? docs/audit/evidence/b-to-c-atomic-20261111/
+?? docs/audit/evidence/billing-fixes-20261109/
+?? docs/audit/evidence/buy-now-activation-20261111/
+?? docs/audit/evidence/closed-testing-20261108/
+?? docs/audit/evidence/migration-repeatability-20261110/
+?? docs/audit/evidence/mv001-20261111/
+?? docs/audit/evidence/mv006-20261110/
+?? docs/audit/evidence/nonplay-test-isolation-20261109/
+?? docs/audit/evidence/notes-billing-choice-20261108/
+?? docs/audit/evidence/phase-a-final-20261111/
+?? docs/audit/evidence/phase-b-20261111/
+?? docs/audit/evidence/phase-c-20261111/
+?? docs/audit/evidence/production-default-off-20261110/
+?? docs/audit/evidence/production-preflight-20261111/
+?? docs/audit/evidence/startup-payments-20261108/
+?? docs/audit/production-execution-20261111/
+?? mobile-app/plugins/withAndroidRelease.js
+?? mobile-app/release-rules.pro
+?? mobile-app/scripts/VerifyAndroidBundleSignature.java
+?? mobile-app/scripts/android-bundle-validator-selftest.py
+?? mobile-app/scripts/android-release-selftest.cjs
+?? mobile-app/scripts/auth-recovery-selftest.cjs
+?? mobile-app/scripts/checkout-security-selftest.cjs
+?? mobile-app/scripts/closed-testing-selftest.cjs
+?? mobile-app/scripts/inspect-android-bundle.py
+?? mobile-app/scripts/login-network-selftest.cjs
+?? mobile-app/scripts/mv004-recovery-selftest.cjs
+?? mobile-app/scripts/mv007-billing-boundary-selftest.cjs
+?? mobile-app/scripts/mv008-ownership-selftest.cjs
+?? mobile-app/scripts/mv009-store-selftest.cjs
+?? mobile-app/scripts/mv010-options-selftest.cjs
+?? mobile-app/scripts/mv011-accessibility-selftest.cjs
+?? mobile-app/scripts/mv012-history-selftest.cjs
+?? mobile-app/scripts/nonplay-test-isolation-selftest.cjs
+?? mobile-app/scripts/notes-billing-choice-selftest.cjs
+?? mobile-app/scripts/notes-entitlement-selftest.cjs
+?? mobile-app/scripts/payment-success-owner-selftest.cjs
+?? mobile-app/scripts/pdf-remote-retry-selftest.cjs
+?? mobile-app/scripts/quiz-editing-selftest.cjs
+?? mobile-app/scripts/startup-availability-selftest.cjs
+?? mobile-app/scripts/startup-web-smoke.cjs
+?? mobile-app/src/components/PurchaseOwnershipStatus.tsx
+?? mobile-app/src/features/auth/authFetch.ts
+?? mobile-app/src/hooks/useBuyOptions.ts
+?? mobile-app/src/hooks/usePurchaseResource.ts
+?? mobile-app/src/hooks/useStoreCatalog.ts
+?? mobile-app/src/repositories/ordersRepository.ts
+?? mobile-app/src/services/indiaBillingStates.ts
+?? mobile-app/src/services/nonplayTestService.ts
+?? mobile-app/src/services/playBillingService.ts
+?? mobile-app/src/services/playOfferSelection.ts
+?? mobile-app/src/services/storeCatalogService.ts
+?? scripts/nonplay-test-secrets.example.env
+?? scripts/prepare-phase-c-release.py
+?? supabase/functions/_shared/createOrderHandler.ts
+?? supabase/functions/_shared/nonPlayTestCheckout.ts
+?? supabase/functions/_shared/nonplayTestConfig.ts
+?? supabase/functions/_shared/nonplayTestHandlers.ts
+?? supabase/functions/_shared/nonplayTestProvider.ts
+?? supabase/functions/_shared/nonplayTestRuntime.ts
+?? supabase/functions/_shared/notesChoiceAuthorization.ts
+?? supabase/functions/_shared/notesChoiceGate.ts
+?? supabase/functions/_shared/notesChoiceOrder.ts
+?? supabase/functions/create-order-nonplay-test/
+?? supabase/functions/create-order-play-choice/
+?? supabase/functions/get-note-url-nonplay-test/
+?? supabase/functions/nonplay-test-catalog/
+?? supabase/functions/razorpay-webhook-nonplay-test/
+?? supabase/functions/verify-payment-nonplay-test/
+?? supabase/maintenance/
+?? supabase/migrations/20261108100000_notes_choice_checkout.sql
+?? supabase/migrations/20261109100000_billing_settlement_recovery.sql
+?? supabase/migrations/20261109120000_isolated_nonplay_test.sql
+?? supabase/migrations/20261110100000_mv003_razorpay_entitlement_commitment.sql
+?? supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql
+?? supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql
+?? supabase/migrations/20261111100000_phase_c_final_mv003_commitment.sql
+?? supabase/migrations/20261111110000_phase_c_play_entitlement_snapshot.sql
+?? supabase/releases/
+?? supabase/tests/billing-recovery-worker-selftest.cjs
+?? supabase/tests/billing-settlement-recovery.sql
+?? supabase/tests/mv003-entitlement-selftest.cjs
+?? supabase/tests/mv004-recovery-selftest.cjs
+?? supabase/tests/mv005-create-order-selftest.cjs
+?? supabase/tests/mv005-history-selftest.cjs
+?? supabase/tests/mv005-production-readonly.sql
+?? supabase/tests/mv005-transitions-local.py
+?? supabase/tests/mv006-ownership-local.py
+?? supabase/tests/mv006-production-readonly.sql
+?? supabase/tests/mv006-restoration-selftest.cjs
+?? supabase/tests/nonplay-test-integration.ts
+?? supabase/tests/nonplay-test-isolation.sql
+?? supabase/tests/nonplay-test-repeatability.py
+?? supabase/tests/notes-choice-checkout.sql
+?? supabase/tests/notes-choice-concurrency.py
+?? supabase/tests/notes-choice-order-selftest.cjs
+?? supabase/tests/phase-b-dependencies-local.py
+?? supabase/tests/phase-b-handlers-selftest.cjs
+?? supabase/tests/phase-b-history-selftest.cjs
+?? supabase/tests/phase-b-recovery-selftest.cjs
+?? supabase/tests/phase-c-contracts.sql
+?? supabase/tests/phase-c-gates-selftest.cjs
+?? supabase/tests/phase-c-play-duplicates.sql
+?? supabase/tests/razorpay-order-recovery-selftest.ts
+?? supabase/tests/run-mv001-local.py
+?? supabase/tests/run-mv003-local.py
+?? supabase/tests/run-mv005-local.py
+?? supabase/tests/run-mv006-local.py
+?? supabase/tests/run-nonplay-test-local.py
+?? supabase/tests/run-phase-b-local.py
+?? supabase/tests/run-phase-c-local.py
+?? supabase/tests/support/nonplay_test_db.ts
+?? supabase/tests/support/phase_b_production_normalize_phone.sql

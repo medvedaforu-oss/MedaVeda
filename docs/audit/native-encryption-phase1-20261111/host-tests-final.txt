@@ -1,0 +1,36 @@
+PASS independent Node-generated wire fixture authenticates with native codec
+PASS roundtrip verifies complete authenticated identity and exact digest
+PASS all authenticated header regions reject mutation
+PASS wrong owner note version length epoch and content identity fail closed
+PASS chunk order lengths ciphertext tags and completion are authenticated
+PASS equal-size reordered chunks and another file's valid chunks cannot substitute
+PASS truncation at structural boundaries and trailing bytes are rejected
+PASS every truncation and single-byte mutation of minimal container fails closed
+PASS untrusted bounds invalid identities short long and nonPDF input reject
+PASS fresh attempts use different wrapped keys file IDs and nonce material
+PASS owner session revocation foreign sessions and stale tickets deny
+PASS dedicated vault publishes ciphertext only and preserves unrelated existing data
+PASS missing key short stream and write exception never publish final
+PASS foreign-owner metadata is rejected before any foreign key lookup
+PASS A to B to A permits only the active owner's independently keyed files
+PASS revocation at durable-file boundary prevents publication and old ticket reuse
+PASS fsync and publication failures retain only ciphertext and cannot report success
+PASS existing target is never clobbered by atomic publication
+PASS symlink roots and source entries cannot escape vault
+PASS new vault root parent must be durably flushed before creation reports success
+PASS threaded revocation serializes after admitted commit and denies subsequent work
+HOST_DIAGNOSTIC sizeMiB=1 sealAndVerifyMs=77
+HOST_DIAGNOSTIC sizeMiB=10 sealAndVerifyMs=603
+HOST_DIAGNOSTIC sizeMiB=50 sealAndVerifyMs=801
+HOST_DIAGNOSTIC sizeMiB=100 sealAndVerifyMs=1537
+PASS stream 1 10 50 100 MiB under 48 MiB host heap without plaintext spooling
+22 focused foundation tests passed; no Android/iOS/device acceptance claimed
+PASS independent Node AES-GCM codec authenticates Kotlin output
+PASS restart authenticates committed/orphan ciphertext and ignores partials
+PASS forced JVM halt after file: prior final unchanged; ciphertext only
+PASS restart authenticates committed/orphan ciphertext and ignores partials
+PASS forced JVM halt after link: prior final unchanged; ciphertext only
+PASS restart authenticates committed/orphan ciphertext and ignores partials
+PASS forced JVM halt after directory: prior final unchanged; ciphertext only
+PASS restart authenticates committed/orphan ciphertext and ignores partials
+PASS forced JVM halt after cleanup: prior final unchanged; ciphertext only

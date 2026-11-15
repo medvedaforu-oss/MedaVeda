@@ -1,0 +1,14 @@
+{
+  "google_services_local_exists": false,
+  "google_services_environment_path_present": false,
+  "sdk_root_exists": {
+    "/home/ganeshp8545/Android": false,
+    "/usr/lib/android-sdk/platforms": false,
+    "/usr/lib/android-sdk/build-tools": false
+  },
+  "new_native_build_executed": false,
+  "real_device_tests_executed": false,
+  "eas_metadata_refreshed_this_task": false,
+  "play_console_connected": false,
+  "provider_api_invoked": false
+}

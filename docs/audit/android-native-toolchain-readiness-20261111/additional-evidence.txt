@@ -1,0 +1,28 @@
+COMMAND ["/home/ganeshp8545/.gradle/jdks/eclipse_adoptium-17-amd64-linux.2/bin/java", "-version"]
+openjdk version "17.0.19" 2026-04-21
+OpenJDK Runtime Environment Temurin-17.0.19+10 (build 17.0.19+10)
+OpenJDK 64-Bit Server VM Temurin-17.0.19+10 (build 17.0.19+10, mixed mode, sharing)
+EXIT 0
+
+COMMAND ["/home/ganeshp8545/.gradle/jdks/eclipse_adoptium-17-amd64-linux.2/bin/javac", "-version"]
+javac 17.0.19
+EXIT 0
+
+COMMAND ["ls", "-ld", "/home/ganeshp8545/Android", "/usr/lib/android-sdk", "/dev/kvm", "/dev/bus/usb"]
+ls: cannot access '/home/ganeshp8545/Android': No such file or directory
+ls: cannot access '/dev/kvm': No such file or directory
+ls: cannot access '/dev/bus/usb': No such file or directory
+drwxr-xr-x 1 nobody nogroup 28 Jul 26 07:07 /usr/lib/android-sdk
+EXIT 2
+
+COMMAND ["du", "-sh", "/home/ganeshp8545/.gradle", "/home/ganeshp8545/.m2", "mobile-app/node_modules"]
+6.2G	/home/ganeshp8545/.gradle
+456M	/home/ganeshp8545/.m2
+666M	mobile-app/node_modules
+EXIT 0
+
+COMMAND ["find", "/usr/lib/android-sdk", "-maxdepth", "2", "-type", "d"]
+/usr/lib/android-sdk
+/usr/lib/android-sdk/platform-tools
+EXIT 0
+

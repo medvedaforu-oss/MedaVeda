@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+import useDialogFocus from "../hooks/useDialogFocus";
+import { useId, type ReactNode } from "react";
 
 type Props = {
   open: boolean;
@@ -9,13 +10,15 @@ type Props = {
 };
 
 export default function Modal({ open, title, onClose, closeDisabled = false, children }: Props) {
+  const titleId = useId();
+  const card = useDialogFocus(open, onClose, closeDisabled);
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-xl bg-white shadow-xl">
+      <div ref={card} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1} className="w-full max-w-lg rounded-xl bg-white shadow-xl">
         <div className="flex items-center justify-between border-b px-6 py-4">
-          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+          <h3 id={titleId} className="text-lg font-semibold text-gray-800">{title}</h3>
 
           <button
             onClick={onClose}

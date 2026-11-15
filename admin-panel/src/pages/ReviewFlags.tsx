@@ -88,7 +88,7 @@ export default function ReviewFlags() {
         Show resolved flags
       </label>
 
-      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+      {error && <div role="alert" className="mb-4 text-sm text-red-600"><p>{error}</p><button type="button" onClick={() => void load()}>Retry</button></div>}
 
       <div className="overflow-x-auto rounded-xl bg-white shadow">
         <table className="w-full text-left text-sm">
@@ -109,7 +109,7 @@ export default function ReviewFlags() {
                 <td className="p-4 text-gray-500" colSpan={7}>Loading...</td>
               </tr>
             )}
-            {!loading && flags.length === 0 && (
+            {!loading && !error && flags.length === 0 && (
               <tr>
                 <td className="p-4 text-gray-500" colSpan={7}>
                   {showResolved ? "No flags." : "Nothing needs review."}
@@ -161,7 +161,7 @@ export default function ReviewFlags() {
         <p className="mb-3 text-sm text-gray-600">
           Add a short note of what you checked or did. It is saved with your admin account.
         </p>
-        <textarea
+        <textarea aria-label="Resolution note"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           maxLength={500}

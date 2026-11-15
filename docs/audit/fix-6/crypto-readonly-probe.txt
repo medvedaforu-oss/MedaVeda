@@ -1,0 +1,5 @@
+PASS installed pure-JS js-sha256 digest and RFC4231 HMAC-SHA256 vector; no Node crypto implementation used by this import
+PASS installed node-forge NIST AES-GCM vector and bad-tag rejection on host; Hermes/Metro NOT qualified
+REPRODUCED MOB-12: actual v2 adapter accepts known-plaintext equal-length ciphertext tampering; synthetic user A becomes B without keys
+PASS current locked SecureStore read rejects and preserves publication; adapter itself does not swallow native read error
+PASS old v2 reader returns null for v3: rollback to old reader risks sign-out

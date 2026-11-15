@@ -1,0 +1,112 @@
+[
+  {
+    "name": "foundation",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/run-host-tests.py"
+    ],
+    "exit": 0,
+    "seconds": 15.25,
+    "log": "final-foundation.log"
+  },
+  {
+    "name": "control",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/phase1b/run-tests.py"
+    ],
+    "exit": 0,
+    "seconds": 12.84,
+    "log": "final-control.log"
+  },
+  {
+    "name": "acquisition",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/acquisition/run-tests.py"
+    ],
+    "exit": 0,
+    "seconds": 14.2,
+    "log": "final-acquisition.log"
+  },
+  {
+    "name": "content",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/content/run-tests.py"
+    ],
+    "exit": 0,
+    "seconds": 17.15,
+    "log": "final-content.log"
+  },
+  {
+    "name": "preflight",
+    "command": [
+      "node",
+      "mobile-app/scripts/android-vault-preflight-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.06,
+    "log": "final-preflight.log"
+  },
+  {
+    "name": "live-profile",
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-live-testing-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.7,
+    "log": "final-live-profile.log"
+  },
+  {
+    "name": "play-guards",
+    "command": [
+      "node",
+      "mobile-app/scripts/release-payments-disabled-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.07,
+    "log": "final-play-guards.log"
+  },
+  {
+    "name": "offline-download",
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-download-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 1.53,
+    "log": "final-offline-download.log"
+  },
+  {
+    "name": "offline-owner",
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-owner-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.41,
+    "log": "final-offline-owner.log"
+  },
+  {
+    "name": "offline-license",
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-license-storage-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.51,
+    "log": "final-offline-license.log"
+  },
+  {
+    "name": "auth-race",
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-state-race-selftest.cjs"
+    ],
+    "exit": 0,
+    "seconds": 0.36,
+    "log": "final-auth-race.log"
+  }
+]

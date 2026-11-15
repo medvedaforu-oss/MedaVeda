@@ -12,13 +12,13 @@
 // entire flow is skipped there and only runs in a real dev/production
 // build. Safe to call unconditionally from App.tsx.
 
-import { Platform } from "react-native";
+import { AppState, Platform } from "react-native";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 import type * as ExpoNotifications from "expo-notifications";
 
 import { supabase } from "../config/supabase";
 import type { User } from "@supabase/supabase-js";
-import { logDebug, logError } from "../utils/logger";
+import { logError } from "../utils/logger";
 
 // Push is unsupported in Expo Go (SDK 53+) and on web (no vapidPublicKey).
 const isExpoGo =
@@ -31,74 +31,131 @@ if (!isExpoGo) {
   Notifications = require("expo-notifications");
 }
 
-/**
- * Requests permission, gets this device's Expo push token, and upserts
- * it to the `push_tokens` table. Call once at app startup (after the
- * user is signed in) - safe to call on every launch, it's an upsert.
- */
-export async function registerForPushNotifications(user: User | null): Promise<string | null> {
-  if (isExpoGo || !Notifications) {
-    logDebug("Push notifications unavailable in Expo Go/web - skipping registration.");
-    return null;
+// Invalidate synchronously on every account transition, including A → B → A.
+// Writes are serialized and carry the initiating session explicitly; the global
+// Supabase client must never substitute the next student's bearer token.
+let owner: User | null = null;
+let generation = 0;
+let loggingOut = false;
+let token: string | null = null;
+let writeQueue: Promise<unknown> = Promise.resolve();
+let listenersInstalled = false;
+let registration: { generation: number; promise: Promise<string | null> } | null = null;
+
+export function setPushNotificationUser(user: User | null): void {
+  if (owner?.id !== user?.id) {
+    generation++;
+    loggingOut = false;
   }
-
-  if (!user) return null;
-
-  try {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-
-    if (finalStatus !== "granted") {
-      logDebug("Push notification permission denied.");
-      return null;
-    }
-
-    if (Platform.OS === "android") {
-      await Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.DEFAULT,
-      });
-    }
-
-    const projectId = Constants.expoConfig?.extra?.eas?.projectId;
-    const tokenResponse = await Notifications.getExpoPushTokenAsync(
-      projectId ? { projectId } : undefined
-    );
-    const token = tokenResponse.data;
-
-    // register_push_token() moves the token to whoever is signed in on this device (a plain
-    // upsert cannot take over a row that belongs to the previous user of a shared phone).
-    const { error } = await supabase.rpc("register_push_token", {
-      p_token: token,
-      p_platform: Platform.OS,
-    });
-    if (error) throw error;
-
-    return token;
-  } catch (err) {
-    logError("Failed to register for push notifications:", err);
-    return null;
-  }
+  owner = user;
 }
 
-/** Call on logout so a shared/reset device stops receiving this user's pushes. */
-export async function unregisterCurrentDeviceToken(): Promise<void> {
-  if (isExpoGo || !Notifications) return;
+function installTokenListeners(): void {
+  if (listenersInstalled || !Notifications) return;
+  listenersInstalled = true;
+  // A native FCM token change requires a fresh Expo token, not storing the FCM
+  // token in the Expo-token table. Retry transient failures on foreground too.
+  Notifications.addPushTokenListener(() => {
+    if (owner && !loggingOut) {
+      generation++; // supersede an in-flight read of the previous native token
+      void registerForPushNotifications(owner);
+    }
+  });
+  AppState.addEventListener("change", state => {
+    if (state === "active" && owner && !loggingOut) void registerForPushNotifications(owner);
+  });
+}
 
+async function deadline<T>(operation: PromiseLike<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
+    return await Promise.race([operation, new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error("Push operation timed out")), 10_000);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+function serialized<T>(operation: () => Promise<T>): Promise<T> {
+  const pending = writeQueue.then(operation, operation);
+  writeQueue = pending.catch(() => {});
+  return pending;
+}
+
+/** Optional registration; failures never block login or content access. */
+export function registerForPushNotifications(user: User | null): Promise<string | null> {
+  if (isExpoGo || !Notifications || !user || loggingOut || owner?.id !== user.id) return Promise.resolve(null);
+  installTokenListeners();
+  const epoch = generation;
+  if (registration?.generation === epoch) return registration.promise;
+  const current = () => generation === epoch && owner?.id === user.id && !loggingOut;
+  const promise = (async () => {
+    try {
+      // Android 13 permission prompts need a channel first.
+      if (Platform.OS === "android") await deadline(Notifications!.setNotificationChannelAsync("default", {
+        name: "default", importance: Notifications!.AndroidImportance.DEFAULT,
+      }));
+      if (!current()) return null;
+      let { status } = await deadline(Notifications!.getPermissionsAsync());
+      if (!current()) return null;
+      if (status !== "granted") ({ status } = await deadline(Notifications!.requestPermissionsAsync()));
+      if (!current() || status !== "granted") return null;
+      const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+      if (!projectId) return null;
+      const response = await deadline(Notifications!.getExpoPushTokenAsync({ projectId }));
+      if (!current()) return null;
+      const session = (await deadline(supabase.auth.getSession())).data.session;
+      if (!current() || session?.user.id !== user.id || !session.access_token) return null;
+      token = response.data;
+      return await serialized(async () => {
+        if (!current()) return null;
+        const { error } = await supabase.rpc("register_push_token", {
+          p_token: response.data, p_platform: Platform.OS,
+        }).setHeader("Authorization", `Bearer ${session.access_token}`).abortSignal(AbortSignal.timeout(10_000));
+        if (error) throw error;
+        // Logout waits for this write, then removes it with the original owner.
+        return current() ? response.data : null;
+      });
+    } catch (err) {
+      logError("Failed to register for push notifications:", err);
+      return null;
+    }
+  })().finally(() => { if (registration?.promise === promise) registration = null; });
+  registration = { generation: epoch, promise };
+  return promise;
+}
+
+export type PushLogoutHandle = Readonly<{ ownerId: string | null; generation: number }>;
+
+/** Resume only the exact logout attempt that failed, never a later account lifetime. */
+export function resumePushAfterFailedLogout(handle: PushLogoutHandle): boolean {
+  if (!loggingOut || generation !== handle.generation || owner?.id !== handle.ownerId) return false;
+  generation++;
+  loggingOut = false;
+  return true;
+}
+
+/** Cancel pending work immediately; delete only this owner's token before signOut. */
+export async function unregisterCurrentDeviceToken(): Promise<PushLogoutHandle> {
+  generation++;
+  loggingOut = true;
+  const user = owner;
+  const handle = Object.freeze({ ownerId: user?.id ?? null, generation });
+  if (isExpoGo || !Notifications) return handle;
+  try {
+    const session = (await deadline(supabase.auth.getSession())).data.session;
+    if (!user || session?.user.id !== user.id || !session.access_token) return handle;
     const projectId = Constants.expoConfig?.extra?.eas?.projectId;
-    const tokenResponse = await Notifications.getExpoPushTokenAsync(
-      projectId ? { projectId } : undefined
-    );
-    await supabase.from("push_tokens").delete().eq("expo_push_token", tokenResponse.data);
-  } catch (err) {
-    logError("Failed to unregister push token:", err);
-  }
+    const knownToken = token ?? (projectId
+      ? (await deadline(Notifications.getExpoPushTokenAsync({ projectId }))).data : null);
+    if (!knownToken) return handle;
+    await serialized(async () => {
+      const { error } = await supabase.from("push_tokens").delete()
+        .eq("expo_push_token", knownToken).eq("user_id", user.id)
+        .setHeader("Authorization", `Bearer ${session.access_token}`).abortSignal(AbortSignal.timeout(10_000));
+      if (error) throw error;
+    });
+  } catch (err) { logError("Failed to unregister push token:", err); }
+  return handle;
 }
 
 /**

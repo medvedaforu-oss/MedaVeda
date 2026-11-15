@@ -9,7 +9,7 @@ function query(table){return {select(){return this},eq(){return this},neq(){retu
 let handler,consumptionCalls=0;
 const mocks={
  '../_shared/cors.ts':{handleOptions:()=>null,jsonResponse:(body,status=200)=>new Response(JSON.stringify(body),{status})},
- '../_shared/supabaseAdmin.ts':{getUserFromAuthHeader:async()=>({id:userId}),supabaseAdmin:{from:query,rpc:async()=>({data:{ok:true,amount:49},error:null})}},
+ '../_shared/supabaseAdmin.ts':{getUserFromAuthHeader:async()=>({id:userId}),supabaseAdmin:{from:query,rpc:async name=>({data:name==='play_entitlement_committed'?true:{ok:true,amount:49},error:null})}},
  '../_shared/rateLimit.ts':{withinLimit:async()=>true},
  '../_shared/googlePlay.ts':{GoogleApiError:class extends Error{},sha256Hex:async s=>`hash:${s}`,
   getProductPurchase:async()=>({purchaseState:0,refundableQuantity:1,productId:'notes_49',purchaseToken:token,

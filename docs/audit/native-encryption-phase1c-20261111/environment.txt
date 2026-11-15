@@ -1,0 +1,21 @@
+/usr/bin/java
+/usr/bin/javac
+/usr/bin/adb
+/usr/local/bin/node
+/usr/local/bin/npm
+openjdk version "21.0.12.1" 2026-08-18
+OpenJDK Runtime Environment (build 21.0.12.1+1-1-deb13u1-Debian)
+OpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-deb13u1-Debian, mixed mode, sharing)
+ANDROID_HOME=/home/ganeshp8545/Android
+ANDROID_SDK_ROOT=/home/ganeshp8545/Android
+total 0
+drwxr-xr-x 1 nobody nogroup   28 Jul 26 07:07 .
+drwxr-xr-x 1 nobody nogroup 1044 Nov  1 20:48 ..
+drwxr-xr-x 1 nobody nogroup   22 Jul 26 07:07 platform-tools
+/usr/lib/android-sdk/platform-tools/adb
+/usr/lib/android-sdk/platform-tools/fastboot
+ls: cannot access '/home/ganeshp8545/Android': No such file or directory
+ls: cannot access '/home/ganeshp8545/.android/avd': No such file or directory
+ls: cannot access '/dev/kvm': No such file or directory
+ls: cannot access '/dev/bus/usb': No such file or directory
+/opt/google/cros-containers

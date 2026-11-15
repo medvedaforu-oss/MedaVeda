@@ -1,0 +1,27 @@
+[
+  {
+    "script": "run-atomic.py",
+    "exit_code": 0
+  },
+  {
+    "script": "run-proof.py",
+    "exit_code": 0
+  },
+  {
+    "script": "run-forward-ledger.py",
+    "exit_code": 0
+  },
+  {
+    "script": "validate-archives.py",
+    "exit_code": 0
+  },
+  {
+    "script": "run-mv006-local.py",
+    "exit_code": 0
+  },
+  {
+    "script": "run-additional-sql.py",
+    "exit_code": 0,
+    "note": "Subcheck initial curated Play failure is separately retained and subsequently fixed; do not infer all initial subchecks passed."
+  }
+]

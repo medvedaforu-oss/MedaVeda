@@ -1,0 +1,122 @@
+--- a/mobile-app/src/utils/downloadManager.ts
++++ b/mobile-app/src/utils/downloadManager.ts
+@@ -50,6 +50,22 @@
+ // callbacks must not recreate another account's rows after logout or removal.
+ const operations = new Map<string, symbol>();
+ const pausedOperations = new Set<symbol>();
++const controlOperations = new Map<string, Promise<void>>();
++function serializeControl(id: string, action: () => Promise<void>): Promise<void> {
++  const pending = (controlOperations.get(id) ?? Promise.resolve()).catch(() => {}).then(action);
++  controlOperations.set(id, pending);
++  void pending.finally(() => {
++    if (controlOperations.get(id) === pending) controlOperations.delete(id);
++  }).catch(() => {});
++  return pending;
++}
++// Accept only a direct filename in this content type's directory. A prefix alone
++// permits ../ traversal (including percent-encoded traversal) outside our files.
++function ownsFile(uri: unknown, contentType: DownloadItem["contentType"]): uri is string {
++  if (typeof uri !== "string" || !uri.startsWith(dirFor(contentType))) return false;
++  const filename = uri.slice(dirFor(contentType).length);
++  return !!filename && !/[\\/%?#]/.test(filename) && filename !== "." && filename !== "..";
++}
+ let clearing: Promise<void> | null = null;
+ let storageGeneration = 0;
+ let fileSequence = 0;
+@@ -192,6 +208,7 @@
+ 
+ /** Every note transfer obtains a fresh URL through the entitlement-checking backend. */
+ export async function enqueueDownload(request: DownloadRequest): Promise<void> {
++  await controlOperations.get(request.id);
+   await transferDownload(request);
+ }
+ 
+@@ -268,7 +285,10 @@
+   }
+ }
+ 
+-export async function pauseDownload(id: string): Promise<void> {
++export function pauseDownload(id: string): Promise<void> {
++  return serializeControl(id, () => pauseDownloadInternal(id));
++}
++async function pauseDownloadInternal(id: string): Promise<void> {
+   const resumable = activeResumables.get(id);
+   if (!resumable) return;
+   const generation = storageGeneration;
+@@ -288,6 +308,7 @@
+ }
+ 
+ export async function resumeDownload(id: string): Promise<void> {
++  await controlOperations.get(id);
+   const existing = getDownload(id);
+   if (!existing) return;
+   const generation = storageGeneration;
+@@ -299,8 +320,8 @@
+   // validator, stitching bytes from a refreshed signed URL can corrupt the PDF.
+   // Notes restart with a fresh authorized URL; other identical requests can resume.
+   if (existing.contentType === "note" || saved?.url !== existing.sourceUrl ||
+-      !saved?.fileUri?.startsWith(dirFor(existing.contentType))) {
+-    if (saved?.fileUri?.startsWith(dirFor(existing.contentType)))
++      !ownsFile(saved?.fileUri, existing.contentType)) {
++    if (ownsFile(saved?.fileUri, existing.contentType))
+       await FileSystem.deleteAsync(saved.fileUri, { idempotent: true });
+     saved = undefined;
+     await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
+@@ -314,19 +335,27 @@
+ }
+ 
+ /** Cancels + fully removes a download (queued, downloading, or paused). */
+-export async function cancelDownload(id: string): Promise<void> {
++export function cancelDownload(id: string): Promise<void> {
++  // Invalidate immediately, even when an earlier pause is still awaiting native IO.
+   operations.delete(id);
+-  const resumable = activeResumables.get(id);
+-  if (resumable) {
+-    try {
++  return serializeControl(id, async () => {
++    const resumable = activeResumables.get(id);
++    if (resumable) {
+       await resumable.cancelAsync();
+-    } catch {
+-      /* best-effort */
++      activeResumables.delete(id);
+     }
+-    activeResumables.delete(id);
+-  }
+-  await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
+-  await removeDownload(id);
++    const existing = getDownload(id);
++    const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + id);
++    if (raw) {
++      const saved = JSON.parse(raw);
++      if (!existing || !ownsFile(saved?.fileUri, existing.contentType))
++        throw new Error("Invalid partial download path");
++      // Keep the durable pointer and row when deletion fails, so cancellation can retry.
++      await FileSystem.deleteAsync(saved.fileUri, { idempotent: true });
++    }
++    await removeDownload(id);
++    await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
++  });
+ }
+ 
+ /** Deletes a completed download's file + row (used by the trash icon in DownloadsScreen). */
+@@ -337,6 +366,7 @@
+   if (owner) await clearNoteVerification(owner, id);
+   const existing = getDownload(id);
+   if (existing?.localUri) {
++    if (!ownsFile(existing.localUri, existing.contentType)) throw new Error("Invalid download path");
+     await FileSystem.deleteAsync(existing.localUri, { idempotent: true });
+   }
+   const db = getDb();
+@@ -359,9 +389,10 @@
+   clearing = (async () => {
+     await Promise.allSettled(transfers.map((transfer) => transfer.cancelAsync()));
+     await clearAllNoteVerifications();
++    await Promise.allSettled([...controlOperations.values()]);
+     const keys = await AsyncStorage.getAllKeys();
++    await FileSystem.deleteAsync(ROOT_DIR, { idempotent: true });
+     await AsyncStorage.multiRemove(keys.filter((key) => key.startsWith(RESUME_STATE_PREFIX)));
+-    await FileSystem.deleteAsync(ROOT_DIR, { idempotent: true });
+     getDb().runSync(`DELETE FROM downloads;`);
+   })();
+   try { await clearing; } finally { clearing = null; }

@@ -1,0 +1,23 @@
+{
+  "pinned_observed_at": "2026-11-11T03:52:06.012005+00:00",
+  "fresh_observed_at": "2026-11-11T04:08:27.085912+00:00",
+  "identity_unchanged": true,
+  "database_section_changed": {
+    "rls": false,
+    "cron": false,
+    "rpcs": false,
+    "prices": false,
+    "tables": false,
+    "columns": false,
+    "history": false,
+    "indexes": false,
+    "policies": false,
+    "migrations": false,
+    "constraints": false,
+    "table_grants": false,
+    "order_triggers": false,
+    "purchase_triggers": false
+  },
+  "functions_unchanged": true,
+  "bundles_unchanged": true
+}

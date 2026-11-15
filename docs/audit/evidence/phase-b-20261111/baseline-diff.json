@@ -1,0 +1,7 @@
+{
+  "project": true,
+  "identity": true,
+  "database": true,
+  "functions": true,
+  "bundles": true
+}

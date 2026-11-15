@@ -4,7 +4,7 @@ export interface SendNotificationPayload {
   title: string;
   body: string;
   type: string;
-  targetUserIds?: string[];
+  requestId: string;
   data?: Record<string, any>;
 }
 
@@ -30,6 +30,9 @@ export async function sendPushNotification(
   );
 
   if (error) throw error;
+  if (data?.code === "unknown_outcome" || data?.code === "enumeration_failed" || data?.unknown > 0 || data?.success === false) {
+    throw new Error("Unknown outcome - check the notification feed before retrying.");
+  }
 
   return data;
 }

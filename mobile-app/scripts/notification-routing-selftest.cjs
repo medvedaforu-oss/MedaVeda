@@ -9,10 +9,14 @@ function load(file, mocks = {}) {
   }).outputText, { exports, require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
   return exports;
 }
-const { notificationTarget, createNotificationRouter } = load('services/notificationRouting.ts');
+const { notificationTarget, createNotificationRouter, createNotificationPresentationGate } = load('services/notificationRouting.ts');
 const response = (id, data) => ({ notification: { request: { identifier: id, content: { data } } } });
 const tick = () => new Promise(resolve => setImmediate(resolve));
 (async () => {
+  const present = createNotificationPresentationGate();
+  assert.equal(present('delivery', {screen:'Home'}),true);
+  assert.equal(present('delivery', {screen:'Home'}),false);
+  assert.equal(present('wrong-owner', {userId:'another-user'}),false);
   const navigated = [];
   const router = createNotificationRouter(target => navigated.push(target));
   router.setReady(true, 'Home');
@@ -42,6 +46,15 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   router.setReady(true, 'Home');
   assert.equal(navigated.at(-1).screen, 'Store');
   assert.equal(navigated.length, 3);
+
+  router.setAccount('A');router.setReady(false, 'SelectCourseYear');
+  router.receive(response('stale-A', {screen:'Store'}));
+  router.setAccount('B');router.setReady(true, 'Home');
+  assert.equal(navigated.length, 3, 'A pending response cannot navigate after B login');
+  for (const data of [{screen:'Profile',targetUserId:'A'}, {screen:'MyPurchases',userId:'B'}, {screen:'Home',targetUserIds:[]}]) {
+    router.receive(response('target-'+JSON.stringify(data), data));
+  }
+  assert.equal(navigated.length, 3, 'broadcast-only client rejects targeted payloads');
 
   let callback, resolveLast, removed = 0, cleared = 0;
   const notifications = {

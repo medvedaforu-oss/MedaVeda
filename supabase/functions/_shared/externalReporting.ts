@@ -11,6 +11,7 @@ type ReportOrder = {
   tax_amount: number | string | null; tax_region_code: string | null;
   tax_administrative_area: string | null; payment_completed_at: string | null;
   payment_provider_time: string | null; payment_time_fallback: boolean;
+  ucb_transaction_time?: string | null;
   external_refund_at: string | null;
 };
 
@@ -24,18 +25,21 @@ function micros(value: number | string): string {
 
 async function loadOrder(orderId: string): Promise<ReportOrder> {
   const { data, error } = await supabaseAdmin.from("orders")
-    .select("id,provider,status,amount,external_transaction_token,external_transaction_id,external_report_status,tax_pre_amount,tax_amount,tax_region_code,tax_administrative_area,payment_completed_at,payment_provider_time,payment_time_fallback,external_refund_at")
+    .select("id,provider,status,amount,external_transaction_token,external_transaction_id,external_report_status,tax_pre_amount,tax_amount,tax_region_code,tax_administrative_area,payment_completed_at,payment_provider_time,payment_time_fallback,external_refund_at,ucb_transaction_time")
     .eq("id", orderId).maybeSingle();
   if (error || !data) throw new Error("External report order unavailable");
   return data as ReportOrder;
 }
 
-async function updateReport(orderId: string, status: "failed" | "reported", error?: string): Promise<void> {
-  const { error: dbError } = await supabaseAdmin.from("orders").update({
+async function updateReport(orderId: string, status: "failed" | "reported", error?: string, testPurchase?: boolean): Promise<void> {
+  let update = supabaseAdmin.from("orders").update({
     external_report_status: status, external_report_error: error ?? null,
-    ...(status === "reported" ? { external_reported_at: new Date().toISOString() } : {}),
+    ...(status === "reported" ? { external_reported_at: new Date().toISOString(), external_report_test_purchase: testPurchase } : {}),
     external_report_attempted_at: new Date().toISOString(),
   }).eq("id", orderId);
+  // A slower failed attempt cannot overwrite a concurrent successful report.
+  if (status === "failed") update = update.neq("external_report_status", "reported");
+  const { error: dbError } = await update;
   if (dbError) throw new Error("External report state update failed");
 }
 
@@ -44,18 +48,20 @@ async function updateReport(orderId: string, status: "failed" | "reported", erro
 export async function reportExternalOrder(orderId: string): Promise<"skipped" | "reported"> {
   const order = await loadOrder(orderId);
   if (!order.external_transaction_token) return "skipped";
-  if (order.provider !== "razorpay" || !["paid", "refunded"].includes(order.status) || !order.external_transaction_id)
+  if (order.provider !== "razorpay" || (!order.ucb_transaction_time && !["paid", "refunded"].includes(order.status)) || !order.external_transaction_id)
     throw new Error("External transaction is not settled");
   if (order.external_report_status === "reported") return "reported";
   const amount = Number(order.amount);
   const pre = Number(order.tax_pre_amount);
   const tax = Number(order.tax_amount);
+  const transactionTime = order.ucb_transaction_time ?? order.payment_provider_time ?? order.payment_completed_at;
   if (order.tax_pre_amount === null || order.tax_amount === null || !Number.isFinite(amount)
       || !Number.isFinite(pre) || !Number.isFinite(tax) || pre < 0 || tax < 0
       || Math.round((pre + tax) * 100) !== Math.round(amount * 100)
       || order.tax_region_code !== "IN" || !order.tax_administrative_area
       || !INDIA_ADMINISTRATIVE_AREAS.has(order.tax_administrative_area)
-      || !order.payment_completed_at || !Number.isFinite(Date.parse(order.payment_completed_at))) {
+      || (!order.ucb_transaction_time && !order.payment_completed_at)
+      || !transactionTime || !Number.isFinite(Date.parse(transactionTime))) {
     await updateReport(orderId, "failed", "Missing authoritative tax, Indian buyer state or completion time");
     throw new Error("External transaction details incomplete");
   }
@@ -63,10 +69,12 @@ export async function reportExternalOrder(orderId: string): Promise<"skipped" | 
     p_order_id: orderId, p_refund: false,
   });
   if (attemptError) throw new Error("Cannot record external report attempt");
+  const appEnv = Deno.env.get("APP_ENV");
+  if (appEnv !== "staging" && appEnv !== "production") throw new Error("External reporting environment unavailable");
   const price = (value: number | string) => ({ currency: "INR", priceMicros: micros(value) });
   const body = {
     originalPreTaxAmount: price(order.tax_pre_amount), originalTaxAmount: price(order.tax_amount),
-    transactionTime: new Date(order.payment_provider_time ?? order.payment_completed_at).toISOString(),
+    transactionTime: new Date(transactionTime).toISOString(),
     oneTimeTransaction: { externalTransactionToken: order.external_transaction_token },
     userTaxAddress: { regionCode: "IN", administrativeArea: order.tax_administrative_area },
   };
@@ -92,13 +100,20 @@ export async function reportExternalOrder(orderId: string): Promise<"skipped" | 
       || existing.userTaxAddress?.administrativeArea !== order.tax_administrative_area
       || !existing.oneTimeTransaction
       || !existing.transactionTime
-      || Date.parse(existing.transactionTime) !== Date.parse(order.payment_provider_time ?? order.payment_completed_at)
+      || Date.parse(existing.transactionTime) !== Date.parse(transactionTime)
       || (existing.oneTimeTransaction?.externalTransactionToken
           && existing.oneTimeTransaction.externalTransactionToken !== order.external_transaction_token)) {
     await updateReport(orderId, "failed", "Google returned mismatched external transaction");
     throw new Error("External transaction reconciliation mismatch");
   }
-  await updateReport(orderId, "reported");
+  // Google derives this OUTPUT-only marker from the authentic Play token.
+  // Never manufacture a test token or send testPurchase as an input field.
+  const testPurchase = existing.testPurchase != null;
+  if (testPurchase !== (appEnv === "staging")) {
+    await updateReport(orderId, "failed", "Google test purchase mode does not match server environment");
+    throw new Error("External transaction test mode mismatch");
+  }
+  await updateReport(orderId, "reported", undefined, testPurchase);
   return "reported";
 }
 
@@ -113,21 +128,26 @@ export async function reportExternalFullRefund(orderId: string): Promise<"skippe
   });
   if (attemptError) throw new Error("Cannot record external refund attempt");
   const existing = await getExternalTransaction(order.external_transaction_id);
+  if (existing.packageName !== packageName() || existing.externalTransactionId !== order.external_transaction_id)
+    throw new Error("External refund transaction mismatch");
   if (existing.transactionState === "TRANSACTION_CANCELED") {
-    await supabaseAdmin.from("orders").update({ external_refund_status: "reported", external_refund_error: null })
+    const { error } = await supabaseAdmin.from("orders").update({ external_refund_status: "reported", external_refund_error: null })
       .eq("id", orderId);
+    if (error) throw new Error("Cannot record external refund result");
     return "reported";
   }
   try {
     const result = await refundExternalTransaction(order.external_transaction_id, order.external_refund_at);
     if (result.transactionState !== "TRANSACTION_CANCELED") throw new Error("Google refund state mismatch");
-    await supabaseAdmin.from("orders").update({ external_refund_status: "reported", external_refund_error: null })
+    const { error } = await supabaseAdmin.from("orders").update({ external_refund_status: "reported", external_refund_error: null })
       .eq("id", orderId);
+    if (error) throw new Error("Cannot record external refund result");
     return "reported";
   } catch (error) {
-    await supabaseAdmin.from("orders").update({ external_refund_status: "failed",
+    const { error: stateError } = await supabaseAdmin.from("orders").update({ external_refund_status: "failed",
       external_refund_error: error instanceof GoogleApiError ? `Google API ${error.status}` : "Google refund unavailable" })
-      .eq("id", orderId);
+      .eq("id", orderId).neq("external_refund_status", "reported");
+    if (stateError) throw new Error("Cannot record external refund failure");
     throw error;
   }
 }
@@ -138,10 +158,12 @@ type RefundEvent = {
 };
 
 async function markRefundEvent(refundId: string, status: "failed" | "reported", error?: string): Promise<void> {
-  const { error: dbError } = await supabaseAdmin.from("ucb_external_refunds").update({
+  let update = supabaseAdmin.from("ucb_external_refunds").update({
     status, error: error ?? null,
     ...(status === "reported" ? { reported_at: new Date().toISOString() } : {}),
   }).eq("refund_id", refundId);
+  if (status === "failed") update = update.neq("status", "reported");
+  const { error: dbError } = await update;
   if (dbError) throw new Error("Cannot record external refund result");
 }
 
@@ -152,7 +174,12 @@ export async function reportExternalRefundEvent(refundId: string): Promise<"skip
     p_refund_id: refundId,
   });
   if (claimError) throw new Error("Cannot claim external refund");
-  if (!claim?.ok) return "skipped";
+  if (!claim?.ok) {
+    const { data: current, error } = await supabaseAdmin.from("ucb_external_refunds")
+      .select("status").eq("refund_id", refundId).maybeSingle();
+    if (!error && current?.status === "reported") return "reported";
+    throw new Error("External refund awaits its claim or earlier refund");
+  }
   try {
     const { data, error } = await supabaseAdmin.from("ucb_external_refunds")
       .select("refund_id,order_id,amount_paise,pre_tax_paise,refund_time,is_full,status")
@@ -214,7 +241,7 @@ export async function reportExternalRefundEvent(refundId: string): Promise<"skip
     return "reported";
   } catch (error) {
     await markRefundEvent(refundId, "failed", error instanceof GoogleApiError
-      ? `Google API ${error.status}` : String(error));
+      ? `Google API ${error.status}` : "External refund report unavailable");
     throw error;
   }
 }

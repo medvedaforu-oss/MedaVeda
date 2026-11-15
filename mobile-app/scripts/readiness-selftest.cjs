@@ -24,6 +24,7 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
         return Promise.resolve(mode === 'error' ? { error: {} } : { data: mode }); } };
     } } },
   }, { setTimeout: (fn, ms) => { assert.equal(ms, 6000); timer = fn; return 1; }, clearTimeout: () => {} });
+  assert.equal(maintenance.getLastConfirmedMaintenanceMode(), null);
   for (mode of [null, 'true', 'error', 'throw']) assert.equal(await maintenance.checkMaintenanceMode(), false);
   mode = 'hang'; let pending = maintenance.checkMaintenanceMode(); timer();
   assert.equal(await pending, false); assert.equal(signal.aborted, true);
@@ -35,14 +36,17 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   mode = false; assert.equal(await maintenance.checkMaintenanceMode(), false);
   mode = 'error'; assert.equal(await maintenance.checkMaintenanceMode(), false); // confirmed false also survives errors
 
+  mode = true; await maintenance.checkMaintenanceMode();
+
   // Exercise launch/resume/retry hook and listener cleanup with a small hook harness.
   let states = [], cursor = 0, effect, resume, removed = false, reads = 0;
   const hook = load('src/hooks/useMaintenanceMode.ts', {
     react: { useState: initial => { const i = cursor++; states[i] = initial; return [initial, v => { states[i] = v; }]; },
       useRef: current => ({ current }), useCallback: fn => fn, useEffect: fn => { effect = fn; } },
     'react-native': { AppState: { addEventListener: (_, fn) => { resume = fn; return { remove: () => { removed = true; } }; } } },
-    '../services/maintenanceService': { checkMaintenanceMode: async () => { reads++; return maintenance.checkMaintenanceMode(); } },
+    '../services/maintenanceService': { getLastConfirmedMaintenanceMode: maintenance.getLastConfirmedMaintenanceMode, checkMaintenanceMode: async () => { reads++; return maintenance.checkMaintenanceMode(); } },
   }).default();
+  assert.equal(states[0], true, "remount immediately preserves confirmed maintenance");
   mode = true; const cleanup = effect(); await tick(); assert.equal(states[0], true);
   mode = 'error'; await hook.retry(); assert.equal(states[0], true, 'fetch error must not reopen confirmed maintenance');
   mode = 'hang'; pending = hook.retry(); timer(); await pending; assert.equal(states[0], true);

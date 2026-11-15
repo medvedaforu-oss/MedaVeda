@@ -1,0 +1,62 @@
+[
+  {
+    "phase": "before",
+    "id": "MOB-17",
+    "exit": 3
+  },
+  {
+    "phase": "before",
+    "id": "ADM-03",
+    "exit": 3
+  },
+  {
+    "phase": "before",
+    "id": "ADM-08",
+    "exit": 3
+  },
+  {
+    "phase": "before",
+    "id": "BACK-08",
+    "exit": 3
+  },
+  {
+    "phase": "before",
+    "id": "BACK-11",
+    "exit": 3
+  },
+  {
+    "phase": "before",
+    "id": "BACK-13",
+    "exit": 3
+  },
+  {
+    "phase": "after",
+    "id": "MOB-17",
+    "exit": 0
+  },
+  {
+    "phase": "after",
+    "id": "ADM-03",
+    "exit": 0
+  },
+  {
+    "phase": "after",
+    "id": "ADM-08",
+    "exit": 0
+  },
+  {
+    "phase": "after",
+    "id": "BACK-08",
+    "exit": 0
+  },
+  {
+    "phase": "after",
+    "id": "BACK-11",
+    "exit": 3
+  },
+  {
+    "phase": "after",
+    "id": "BACK-13",
+    "exit": 3
+  }
+]

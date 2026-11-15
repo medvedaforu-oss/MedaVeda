@@ -1,0 +1,13 @@
+{
+  "name": "expo-dependencies",
+  "cwd": "mobile-app",
+  "command": [
+    "npx",
+    "--no-install",
+    "expo",
+    "install",
+    "--check"
+  ],
+  "exit": 1,
+  "seconds": 7.01
+}

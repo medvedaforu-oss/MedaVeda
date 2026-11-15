@@ -1,3 +1,4 @@
+import { fetchAllPages } from "../utils/filters";
 import { supabase } from "../config/supabase";
 
 export type BillingStatus = {
@@ -13,9 +14,9 @@ export type BillingStatus = {
 };
 
 export async function getBillingStatuses(): Promise<Record<string, BillingStatus>> {
-  const { data, error } = await supabase.from("admin_play_billing_status").select("*");
-  if (error) throw error;
-  return Object.fromEntries(((data ?? []) as BillingStatus[]).map((row) => [row.product_id, row]));
+  const data = await fetchAllPages<BillingStatus>(() =>
+    supabase.from("admin_play_billing_status").select("*").order("product_id"));
+  return Object.fromEntries(data.map((row) => [row.product_id, row]));
 }
 
 export async function retryBillingPrice(price: number): Promise<void> {

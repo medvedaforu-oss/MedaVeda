@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
-import { checkMaintenanceMode } from "../services/maintenanceService";
+import { checkMaintenanceMode, getLastConfirmedMaintenanceMode } from "../services/maintenanceService";
 
 export default function useMaintenanceMode() {
-  const [enabled, setEnabled] = useState<boolean | null>(null);
+  const [enabled, setEnabled] = useState<boolean | null>(getLastConfirmedMaintenanceMode());
   const [checking, setChecking] = useState(true);
   const alive = useRef(false);
   const running = useRef(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Switch } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Switch, Alert } from "react-native";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/typography";
@@ -18,6 +18,7 @@ import { NotificationType } from "../../services/notificationsService";
 // want (e.g. turn off "Offers" but keep "Exam Reminders"). Purely
 // device-local - see utils/notificationPreferences.ts.
 export default function NotificationPreferencesScreen() {
+  const [saving, setSaving] = useState(false);
   const [prefs, setPrefs] = useState<Record<NotificationType, boolean> | null>(null);
 
   useEffect(() => {
@@ -25,8 +26,14 @@ export default function NotificationPreferencesScreen() {
   }, []);
 
   async function toggle(type: NotificationType, value: boolean) {
-    setPrefs((prev) => (prev ? { ...prev, [type]: value } : prev)); // optimistic
-    await setNotificationPreference(type, value);
+    if (saving || !prefs) return;
+    setSaving(true);
+    try {
+      const saved = await setNotificationPreference(type, value);
+      setPrefs(saved);
+    } catch {
+      Alert.alert("Preferences Not Saved", "Please try again.");
+    } finally { setSaving(false); }
   }
 
   return (
@@ -36,7 +43,7 @@ export default function NotificationPreferencesScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>Notification Preferences</Text>
-      <Text style={styles.subtitle}>Choose what you want to hear about</Text>
+      <Text style={styles.subtitle}>Choose what you see in the in-app feed and hear about while the app is open. These toggles do not control background or closed-app delivery.</Text>
 
       {NOTIFICATION_CATEGORIES.map((category) => (
         <View key={category.type} style={styles.row}>
@@ -45,6 +52,8 @@ export default function NotificationPreferencesScreen() {
             <Text style={styles.rowDescription}>{category.description}</Text>
           </View>
           <Switch
+            accessibilityLabel={category.label}
+            disabled={!prefs || saving}
             value={prefs ? prefs[category.type] !== false : true}
             onValueChange={(value) => toggle(category.type, value)}
             trackColor={{ false: COLORS.surfaceMuted, true: COLORS.accent }}

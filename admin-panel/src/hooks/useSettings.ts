@@ -41,6 +41,7 @@ export default function useSettings() {
   }
 
   async function saveSettings(data: AppSettings) {
+    if (!hasLoaded || loading) throw new Error("Load settings successfully before saving.");
     await updateSettings(data);
     setSettings(data);
   }

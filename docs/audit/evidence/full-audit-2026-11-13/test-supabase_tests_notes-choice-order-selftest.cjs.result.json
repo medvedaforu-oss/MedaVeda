@@ -1,0 +1,11 @@
+{
+  "name": "test-supabase_tests_notes-choice-order-selftest.cjs",
+  "cwd": ".",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "supabase/tests/notes-choice-order-selftest.cjs"
+  ],
+  "exit": 0,
+  "seconds": 4.91
+}

@@ -1,0 +1,15 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+group = 'in.medveda.offline'
+version = '0.1.0'
+android {
+  namespace 'in.medveda.offline'
+  defaultConfig {
+    minSdkVersion 24
+    versionName '0.1.0'
+    testInstrumentationRunner 'android.test.InstrumentationTestRunner'
+  }
+  sourceSets.main.java.srcDirs += ['../core', '../integration']
+}

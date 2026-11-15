@@ -1,0 +1,11 @@
+{
+  "name": "tooling-npm-audit",
+  "cwd": "tooling",
+  "command": [
+    "npm",
+    "audit",
+    "--json"
+  ],
+  "exit": 1,
+  "seconds": 119.38
+}

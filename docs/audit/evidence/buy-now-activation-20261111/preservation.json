@@ -1,0 +1,11 @@
+{
+  "baseline_files": 2239,
+  "changed": [
+    "mobile-app/scripts/nonplay-test-isolation-selftest.cjs",
+    "mobile-app/src/screens/payment/PaymentSuccessScreen.tsx",
+    "mobile-app/src/screens/payment/PaymentFailedScreen.tsx"
+  ],
+  "deleted": [],
+  "unchanged": 2236,
+  "expected_changed_only": true
+}

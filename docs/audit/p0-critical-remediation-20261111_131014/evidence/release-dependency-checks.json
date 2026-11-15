@@ -1,0 +1,114 @@
+{
+  "verify-payment": {
+    "rpc_roots": [
+      "claim_ucb_external_refund",
+      "handle_payment_dispute",
+      "handle_payment_refund",
+      "mark_ucb_report_attempt",
+      "rate_limit_hit",
+      "razorpay_entitlement_committed",
+      "record_notes_choice_authorization",
+      "record_payment_capture",
+      "settle_razorpay_payment"
+    ],
+    "missing_rpcs": [],
+    "table_roots": [
+      "orders",
+      "payment_captures",
+      "payment_compensations",
+      "provider_events",
+      "purchases",
+      "ucb_external_refunds"
+    ],
+    "external_imports": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
+  },
+  "razorpay-webhook": {
+    "rpc_roots": [
+      "claim_ucb_external_refund",
+      "handle_payment_dispute",
+      "handle_payment_refund",
+      "mark_ucb_report_attempt",
+      "razorpay_entitlement_committed",
+      "record_notes_choice_authorization",
+      "record_payment_capture",
+      "record_provider_event",
+      "settle_razorpay_payment"
+    ],
+    "missing_rpcs": [],
+    "table_roots": [
+      "orders",
+      "payment_captures",
+      "payment_compensations",
+      "provider_events",
+      "purchases",
+      "ucb_external_refunds"
+    ],
+    "external_imports": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
+  },
+  "report-external-transaction": {
+    "rpc_roots": [
+      "claim_payment_jobs",
+      "claim_play_void_sweep",
+      "claim_ucb_external_refund",
+      "enqueue_payment_jobs",
+      "finish_payment_job",
+      "handle_payment_dispute",
+      "handle_payment_refund",
+      "mark_ucb_report_attempt",
+      "razorpay_entitlement_committed",
+      "record_notes_choice_authorization",
+      "record_payment_capture",
+      "reverse_play_payment",
+      "settle_razorpay_payment"
+    ],
+    "missing_rpcs": [],
+    "table_roots": [
+      "orders",
+      "payment_captures",
+      "payment_compensations",
+      "payment_queue_metrics",
+      "play_void_sweep_metrics",
+      "play_void_sweep_state",
+      "provider_events",
+      "purchases",
+      "ucb_external_refunds"
+    ],
+    "external_imports": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
+  },
+  "create-order": {
+    "rpc_roots": [
+      "create_priced_order",
+      "rate_limit_hit"
+    ],
+    "missing_rpcs": [],
+    "table_roots": [
+      "orders",
+      "products",
+      "profiles"
+    ],
+    "external_imports": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
+  },
+  "send-push-notification": {
+    "rpc_roots": [
+      "rate_limit_hit"
+    ],
+    "missing_rpcs": [],
+    "table_roots": [
+      "admin_settings",
+      "admins",
+      "notifications",
+      "push_tokens"
+    ],
+    "external_imports": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
+  }
+}

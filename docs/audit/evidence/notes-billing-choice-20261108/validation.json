@@ -1,0 +1,81 @@
+{
+  "source_date": "2026-11-08",
+  "handoff_completed_date": "2026-11-09",
+  "scope": "Local source validation only. No deployment, Play submission or real payment.",
+  "mobile_typescript": {
+    "result": "passed",
+    "command": "mobile-app/node_modules/.bin/tsc --noEmit -p mobile-app/tsconfig.json"
+  },
+  "focused_eslint": {
+    "result": "passed",
+    "scope": "changed mobile purchase/config/navigation files"
+  },
+  "deno_check": {
+    "result": "passed",
+    "config": "supabase/deno.json",
+    "entrypoints": [
+      "create-order-play-choice",
+      "razorpay-webhook",
+      "verify-payment",
+      "report-external-transaction"
+    ]
+  },
+  "android_js_export": {
+    "result": "passed",
+    "observed_date": "2026-11-08",
+    "engine": "Hermes",
+    "modules": 2863,
+    "native_compile_or_signed_artifact": false,
+    "artifact_retained": false
+  },
+  "play_native_config_introspection": {
+    "result": "passed",
+    "package": "in.medveda.app",
+    "runtime": "1.2.2-play-notes-choice-v1",
+    "billing_permission": true,
+    "india_ucb_enrolled": false,
+    "ucb_test_accepted": false,
+    "native_compile": false
+  },
+  "postgres": {
+    "result": "passed",
+    "version": 17,
+    "environment": "disposable local database with all repository migrations and synthetic seed",
+    "tests": [
+      "notes-choice-checkout.sql",
+      "notes-choice-concurrency.py"
+    ],
+    "claims": [
+      "authenticated token/account/product binding",
+      "server-calculated discounts/wallet/tax",
+      "one reserved order and provider-creation claim",
+      "stable authorization reporting deadline",
+      "no entitlement or debit before capture",
+      "one entitlement/payment/debit on repeated capture",
+      "concurrent sessions grant once",
+      "historical fixture purchase retained"
+    ],
+    "real_provider_payment": false
+  },
+  "existing_webhook_harness": {
+    "result": "passed",
+    "environment": "local PostgreSQL with synthetic provider responses",
+    "coverage": "signature checks, partial/full refunds, disputes, replay, refund/dispute-before-capture and interleaving"
+  },
+  "adb": {
+    "observed_date": "2026-11-08",
+    "result": "List of devices attached: empty",
+    "device_verification": "none"
+  },
+  "hosted_acceptance": {
+    "result": "not performed",
+    "reasons": [
+      "owner has no confirmed India user-choice enrolment",
+      "no authorised Alpha/license tester or device",
+      "staging project paused",
+      "deployed Android choice/token/reporting endpoints missing",
+      "production Play tier catalog empty and Play jobs inactive"
+    ]
+  },
+  "temporary_artifacts": "Earlier /tmp build and database artifacts are no longer available after the interrupted session; these results summarize captured tool outputs. No claim of a retained signed AAB."
+}

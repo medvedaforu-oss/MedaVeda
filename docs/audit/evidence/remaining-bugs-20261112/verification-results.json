@@ -1,0 +1,346 @@
+[
+  {
+    "name": "remaining-audit-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/remaining-audit-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.77
+  },
+  {
+    "name": "audit-reminder-service-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/audit-reminder-service-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.35
+  },
+  {
+    "name": "audit-navigation-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/audit-navigation-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.37
+  },
+  {
+    "name": "audit-icon-controls-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/audit-icon-controls-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.45
+  },
+  {
+    "name": "audit-firebase-profile-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/audit-firebase-profile-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.05
+  },
+  {
+    "name": "navigation-lazy-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/navigation-lazy-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.52
+  },
+  {
+    "name": "staging-build-selftest.cjs",
+    "command": [
+      "node",
+      "mobile-app/scripts/staging-build-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.05
+  },
+  {
+    "name": "audit-login-body-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/audit-login-body-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.39
+  },
+  {
+    "name": "audit-push-policy-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/audit-push-policy-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.56
+  },
+  {
+    "name": "p1-push-delivery-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.55
+  },
+  {
+    "name": "mv004-recovery-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.51
+  },
+  {
+    "name": "p0-notification-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.6
+  },
+  {
+    "name": "candidate-audit-push-policy-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/audit-push-policy-selftest.cjs"
+    ],
+    "env": {
+      "AUDIT_PUSH_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification",
+      "P0_RELEASE_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification"
+    },
+    "exit": 0,
+    "seconds": 0.58
+  },
+  {
+    "name": "candidate-p1-push-delivery-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "env": {
+      "AUDIT_PUSH_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification",
+      "P0_RELEASE_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification"
+    },
+    "exit": 0,
+    "seconds": 0.52
+  },
+  {
+    "name": "candidate-p0-notification-selftest.cjs",
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "env": {
+      "AUDIT_PUSH_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification",
+      "P0_RELEASE_ROOT": "supabase/releases/audit-remaining-20261112/candidate/send-push-notification"
+    },
+    "exit": 0,
+    "seconds": 0.63
+  },
+  {
+    "name": "candidate-recovery",
+    "command": [
+      "node",
+      "supabase/tests/mv004-recovery-selftest.cjs"
+    ],
+    "env": {
+      "AUDIT_VERIFY_ROOT": "supabase/releases/audit-remaining-20261112/candidate/verify-payment"
+    },
+    "exit": 0,
+    "seconds": 0.48
+  },
+  {
+    "name": "settings",
+    "command": [
+      "node",
+      "admin-panel/scripts/audit-settings-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.34
+  },
+  {
+    "name": "website-verification",
+    "command": [
+      "node",
+      "website/scripts/account-verified-selftest.cjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.04
+  },
+  {
+    "name": "website-links",
+    "command": [
+      "node",
+      "website/scripts/check-links.mjs"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 0.09
+  },
+  {
+    "name": "mobile-tsc",
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "-p",
+      "mobile-app/tsconfig.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 14.62
+  },
+  {
+    "name": "admin-tsc",
+    "command": [
+      "node",
+      "admin-panel/node_modules/typescript/bin/tsc",
+      "-p",
+      "admin-panel/tsconfig.app.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 8.45
+  },
+  {
+    "name": "admin-node-tsc",
+    "command": [
+      "node",
+      "admin-panel/node_modules/typescript/bin/tsc",
+      "-p",
+      "admin-panel/tsconfig.node.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 1.69
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "tooling/node_modules/eslint/bin/eslint.js",
+      "mobile-app/App.tsx",
+      "mobile-app/src",
+      "admin-panel/src"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 9.11
+  },
+  {
+    "name": "deno-workspace",
+    "command": [
+      "deno",
+      "check",
+      "--cached-only",
+      "--config",
+      "supabase/deno.json",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/attach-external-token/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/create-order/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/create-order-nonplay-test/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/create-order-play-choice/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/create-play-order/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/delete-account/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/diagnose-play-matrix/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/diagnose-play-pricing/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/diagnose-play-service-account/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/get-note-url/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/get-note-url-nonplay-test/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/get-video-url/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/login-with-mobile/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/nonplay-test-catalog/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/play-payment-worker/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/razorpay-webhook/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/razorpay-webhook-nonplay-test/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/report-external-transaction/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/request-password-reset-by-mobile/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/send-push-notification/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/sync-play-catalog/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/upload-note-pdf/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/verify-payment/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/verify-payment-nonplay-test/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/functions/verify-play-purchase/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/workers/validate-note-pdf.ts"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 5.58
+  },
+  {
+    "name": "deno-candidates",
+    "command": [
+      "deno",
+      "check",
+      "--cached-only",
+      "--config",
+      "supabase/releases/audit-batch1-20261112/deno.json",
+      "/home/ganeshp8545/AyurPulse/supabase/releases/audit-remaining-20261112/candidate/razorpay-webhook/functions/razorpay-webhook/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/releases/audit-remaining-20261112/candidate/send-push-notification/functions/send-push-notification/index.ts",
+      "/home/ganeshp8545/AyurPulse/supabase/releases/audit-remaining-20261112/candidate/verify-payment/functions/verify-payment/index.ts"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 2.75
+  },
+  {
+    "name": "vault-run-host-tests.py",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/run-host-tests.py"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 31.36
+  },
+  {
+    "name": "vault-phase1b-run-tests.py",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/phase1b/run-tests.py"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 42.07
+  },
+  {
+    "name": "vault-acquisition-run-tests.py",
+    "command": [
+      "python3",
+      "mobile-app/modules/medveda-offline-vault/tests/acquisition/run-tests.py"
+    ],
+    "env": {},
+    "exit": 0,
+    "seconds": 15.11
+  }
+]

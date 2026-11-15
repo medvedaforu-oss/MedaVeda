@@ -28,6 +28,8 @@ async function settle(razorpayOrderId: string, razorpayPaymentId: string): Promi
         { success: false, pending: result.status >= 500 || result.reason === "payment not captured",
           message: result.reason === "payment captured; refund queued"
             ? "Payment was captured but access could not be granted. A refund is queued; contact support with your order ID."
+            : ["payment already refunded", "payment reversed"].includes(result.reason)
+            ? "This payment was refunded or reversed. Contact support with your order ID if you need help."
             : "Payment could not be verified. If money was debited, check My Purchases or contact support before paying again." },
         result.status >= 500 ? 500 : 400
       );
@@ -51,14 +53,25 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
 
   try {
-    const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
+    const input: unknown = await req.json().catch(() => null);
+    if (!input || typeof input !== "object" || Array.isArray(input))
+      return jsonResponse({ error: "Invalid payment details." }, 400);
+    const body = input as Record<string, unknown>;
     const internalOrderId = typeof body.internalOrderId === "string" ? body.internalOrderId : "";
     const recover = body.recover === true;
     if (!internalOrderId || !UUID.test(internalOrderId)) {
       return jsonResponse({ error: "Missing payment details for verification." }, 400);
     }
-    const recoveryUser = recover ? await getUserFromAuthHeader(req) : null;
-    if (recover && !recoveryUser) return jsonResponse({ error: "Please log in before recovering payment." }, 401);
+    let recoveryUser: { id: string } | null = null;
+    if (recover) {
+      // The gateway must allow JWT-free signed callbacks. Authenticate unsigned
+      // recovery here using Auth.getUser, never decoded claims or a body user ID.
+      if (/^Bearer\s+\S+$/i.test(req.headers.get("Authorization") ?? "")) {
+        try { recoveryUser = await getUserFromAuthHeader(req); } catch { /* fail closed */ }
+      }
+      if (!recoveryUser) return jsonResponse({ code: "AUTH_REQUIRED",
+        error: "Sign in to the account used for this payment to check its status." }, 401);
+    }
 
     // Signed callbacks remain signature-verified; unsigned recovery requires a
     // verified user JWT below. Both paths are abuse-limited because they can
@@ -67,19 +80,32 @@ Deno.serve(async (req: Request) => {
     // The per-IP counter is skipped when no client IP is available, so unknown IPs
     // cannot share (and exhaust) one bucket.
     const ip = clientIp(req);
-    if (!(await withinLimit(`verify-order:${internalOrderId}`, 150, 600, recover))
+    if (!(await withinLimit(`verify-order:${recover ? `${recoveryUser!.id}:` : ""}${internalOrderId}`, 150, 600, recover))
         || (ip !== "unknown" && !(await withinLimit(`verify-ip:${ip}`, 600, 600, recover)))) {
       return jsonResponse({ error: "Too many requests. Please wait a moment." }, 429);
     }
 
-    const { data: order, error: orderError } = await supabaseAdmin
+    const razorpayOrderId = typeof body.razorpay_order_id === "string" ? body.razorpay_order_id : "";
+    const razorpayPaymentId = typeof body.razorpay_payment_id === "string" ? body.razorpay_payment_id : "";
+    const razorpaySignature = typeof body.razorpay_signature === "string" ? body.razorpay_signature : "";
+    if (!recover) {
+      if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature)
+        return jsonResponse({ error: "Missing payment details for verification." }, 400);
+      // An unsigned caller cannot bypass recovery authorization by omitting
+      // recover:true and probe order existence through the callback branch.
+      if (!(await verifyPaymentSignature({ razorpayOrderId, razorpayPaymentId, razorpaySignature })))
+        return jsonResponse({ success: false, pending: false, message: "Payment verification failed." }, 400);
+    }
+
+    const orderQuery = supabaseAdmin
       .from("orders")
       .select("id, user_id, status, razorpay_order_id, external_transaction_token")
-      .eq("id", internalOrderId)
-      .maybeSingle();
-    if (orderError || !order) return jsonResponse({ error: "Order not found. Please contact support." }, 404);
-    if (recover && order.user_id !== recoveryUser?.id)
-      return jsonResponse({ error: "This order does not belong to you." }, 403);
+      .eq("id", internalOrderId);
+    if (recover) orderQuery.eq("user_id", recoveryUser!.id);
+    const { data: order, error: orderError } = await orderQuery.maybeSingle();
+    if (orderError) return jsonResponse({ error: "Payment status is temporarily unavailable. Please try later." }, 503);
+    // Wrong owner and missing order are deliberately indistinguishable.
+    if (!order) return jsonResponse({ error: "Order unavailable. Check the signed-in account or contact support." }, 404);
     // Rollout/version/choice gates apply when creating new orders. Existing
     // captured payments must remain recoverable by old installed clients;
     // JWT ownership or callback HMAC and provider capture checks still apply.
@@ -95,16 +121,7 @@ Deno.serve(async (req: Request) => {
       return settle(order.razorpay_order_id, captured.id);
     }
 
-    const razorpayOrderId = typeof body.razorpay_order_id === "string" ? body.razorpay_order_id : "";
-    const razorpayPaymentId = typeof body.razorpay_payment_id === "string" ? body.razorpay_payment_id : "";
-    const razorpaySignature = typeof body.razorpay_signature === "string" ? body.razorpay_signature : "";
-    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
-      return jsonResponse({ error: "Missing payment details for verification." }, 400);
-    }
-
-    const signatureValid = await verifyPaymentSignature({ razorpayOrderId, razorpayPaymentId, razorpaySignature });
-    if (!signatureValid || order.razorpay_order_id !== razorpayOrderId) {
-      console.warn("verify-payment: signature/order mismatch", { internalOrderId, razorpayPaymentId });
+    if (order.razorpay_order_id !== razorpayOrderId) {
       return jsonResponse({ success: false, pending: false, message: "Payment verification failed." }, 400);
     }
 

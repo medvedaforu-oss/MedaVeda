@@ -1,5 +1,6 @@
 const fs=require('fs'),vm=require('vm'),ts=require('../../mobile-app/node_modules/typescript');
 let completed=null,providerTime=null,captureStatus='granted',reported=0,recorded=null;
+let committed=true;
 let orderExists=true,compensatedUnknown=false;
 const order={id:'order-1',user_id:'buyer',product_id:'p',amount:49,status:'created',
  razorpay_order_id:'rzp-order',external_transaction_token:'choice-token'};
@@ -11,7 +12,7 @@ const supabaseAdmin={
     ?!orderExists?null:this.columns.startsWith('payment_completed_at')?{payment_completed_at:completed,
       payment_provider_time:providerTime,payment_time_fallback:!providerTime}:order
     :table==='payment_captures'?{status:captureStatus,failure_reason:captureStatus==='granted'?null:'wallet_shortfall'}:null,error:null}}};return q;},
- rpc:async(name,args)=>{if(name==='record_payment_capture')recorded=args;return {error:null}}};
+ rpc:async(name,args)=>{if(name==='queue_capture_compensation'){compensatedUnknown=true;return {data:'queued',error:null}}if(name==='record_payment_capture')recorded=args;return {data:name==='razorpay_entitlement_committed' && committed,error:null}}};
 const mocks={
  './supabaseAdmin.ts':{supabaseAdmin},
  './razorpay.ts':{fetchPayment:async()=>({status:'captured',order_id:'rzp-order',currency:'INR',amount:4900,created_at:1}),
@@ -33,6 +34,12 @@ const check=(name,condition)=>{console.log(`${condition?'PASS':'FAIL'} ${name}`)
  const present=await call();
  check('F05 authoritative capture timestamp persisted separately from receipt',
    present.ok&&recorded?.p_provider_time===providerTime&&reported===1);
+ committed=false;
+ const uncommitted=await call();
+ check('B01 granted marker without committed purchase stays pending',!uncommitted.ok&&uncommitted.status===503);
+ committed=false;captureStatus='captured';
+ const pending=await call();
+ check('B01 uncommitted capture is retryable rather than compensation',!pending.ok&&pending.status===503);
  captureStatus='compensation_pending';
  const rejected=await call();
  check('F03 UCB wallet shortfall capture is reported despite refused entitlement',

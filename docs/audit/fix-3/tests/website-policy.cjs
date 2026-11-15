@@ -1,0 +1,4 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');const id=process.argv[2];
+if(id==='WEB-03')for(const p of ['website/_src/pages/index.html','website/_src/pages/download.html','index.html','github-original-website/index.html']){const s=fs.readFileSync(p,'utf8');assert.ok(!/Buy notes|browse and buy|unlock notes when|You only pay|buy a single chapter|Purchase a chapter/i.test(s),p+' disabled-sales contradiction');assert.match(s,/New purchases are unavailable/i);}
+if(id==='WEB-04')for(const prefix of ['','github-original-website/'])for(const [p,url] of [['privacy.html','privacy-policy'],['refunds.html','refund-policy'],['terms.html','terms']]){const s=fs.readFileSync(prefix+p,'utf8');assert.ok(!/Mumbai|ap-south-1|delete.*purchase history/i.test(s));assert.ok(s.includes('https://www.medveda.in/'+url),p+' canonical policy reference');}
+console.log('PASS '+id+' source policy consistency');

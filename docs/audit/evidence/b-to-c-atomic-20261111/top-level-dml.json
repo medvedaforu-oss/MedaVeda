@@ -1,0 +1,11 @@
+{
+  "migration_financial_dml": 0,
+  "top_level_writes": [
+    "supabase_migrations.schema_migrations",
+    "supabase_migrations.schema_migrations",
+    "supabase_migrations.schema_migrations",
+    "supabase_migrations.schema_migrations"
+  ],
+  "outer_transactions": 1,
+  "method": "Lex SQL comments/quoted strings/dollar bodies; inspect remaining top-level statements."
+}

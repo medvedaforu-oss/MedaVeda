@@ -47,9 +47,11 @@ export async function settleCapturedPayment(params: {
   });
   if (captureError) return { ok: false, status: 500, reason: "capture record failed" };
   if (alreadyRefunded) {
-    const { error: reversedError } = await supabaseAdmin.from("payment_captures")
-      .update({ status: "reversed", failure_reason: "provider_already_refunded" })
-      .eq("payment_id", razorpayPaymentId);
+    // Revoke purchases and reverse wallet/referral effects in the SAME transaction
+    // as the terminal marker. A marker alone does not protect PDF authorization.
+    const { error: reversedError } = await supabaseAdmin.rpc("reverse_refunded_capture", {
+      p_payment_id: razorpayPaymentId,
+    });
     if (reversedError) return { ok: false, status: 500, reason: "capture reversal record failed" };
   }
 
@@ -61,56 +63,104 @@ export async function settleCapturedPayment(params: {
     .eq("razorpay_order_id", razorpayOrderId)
     .maybeSingle();
   if (orderErr) return { ok: false, status: 500, reason: "order lookup failed" };
+  // A successful historical purchase on an unpaid order is contradictory
+  // evidence, not permission to replay accounting or queue compensation.
+  // Preserve access and require provider evidence plus an approved repair.
+  if (order && ["failed", "cancelled"].includes(order.status)) {
+    const { data: historicalPurchase, error: historyError } = await supabaseAdmin.from("purchases")
+      .select("id").eq("order_id", order.id).eq("status", "success").maybeSingle();
+    if (historyError) return { ok: false, status: 503, reason: "purchase history unavailable" };
+    if (historicalPurchase)
+      return { ok: false, status: 503, reason: "historical payment inconsistency requires manual review" };
+  }
   const expectedPaise = order ? Math.round(Number(order.amount) * 100) : null;
   if (!order || expectedPaise !== payment.amount) {
     if (!alreadyRefunded) {
-      const { error: compensationError } = await supabaseAdmin.from("payment_compensations")
-        .upsert({ payment_id: razorpayPaymentId, order_id: order?.id ?? null,
-          amount_paise: payment.amount, reason: order ? "amount_mismatch" : "unknown_order",
-          refund_request_id: `medveda_comp_${razorpayPaymentId}` },
-          { onConflict: "payment_id", ignoreDuplicates: true });
-      if (compensationError) return { ok: false, status: 500, reason: "compensation queue failed" };
-      const { error: stateError } = await supabaseAdmin.from("payment_captures")
-        .update({ status: "compensation_pending", failure_reason: order ? "amount_mismatch" : "unknown_order" })
-        .eq("payment_id", razorpayPaymentId);
-      if (stateError) return { ok: false, status: 500, reason: "capture status update failed" };
+      const { data: disposition, error: compensationError } = await supabaseAdmin.rpc(
+        "queue_capture_compensation", { p_payment_id: razorpayPaymentId }
+      );
+      if (compensationError) return { ok: false, status: 503, reason: "compensation queue failed" };
+      if (disposition === "reversed" || disposition === "compensated")
+        return { ok: false, status: 409, reason: disposition === "reversed" ? "payment reversed" : "payment already refunded" };
+      if (disposition !== "queued") return { ok: false, status: 503, reason: "capture disposition changed; retry settlement" };
     }
     await alertUcb("Captured Razorpay payment has no matching priced order", order?.id ?? razorpayPaymentId);
     return { ok: false, status: 409, reason: alreadyRefunded
       ? "payment already refunded" : "payment captured; refund queued" };
   }
 
-  // 4. Atomic, idempotent grant of the product stored on the order row. The
-  //    payment's own creation time (from Razorpay, not from the client) lets the
-  //    database tell a payment started inside the order's 30-minute life from
-  //    one started after it expired; in that case the wallet is not debited and
-  //    the order is flagged for admin review (see settle_razorpay_payment).
-  const paidAt = Number.isSafeInteger(payment.created_at)
-    ? new Date((payment.created_at as number) * 1000).toISOString()
-    : null;
-  const { error } = await supabaseAdmin.rpc("settle_razorpay_payment", {
-    p_event_id: eventId,
-    p_razorpay_order_id: razorpayOrderId,
-    p_razorpay_payment_id: razorpayPaymentId,
-    p_amount_paise: payment.amount,
-    p_paid_at: paidAt,
+  // A historical committed purchase may predate capture markers. Check it
+  // before replaying settlement: replay must not compensate a legitimate grant
+  // merely because its old discount reservation has since expired.
+  const commitment = () => supabaseAdmin.rpc("razorpay_entitlement_committed", {
+    p_order_id: order.id, p_payment_id: razorpayPaymentId,
   });
-  if (error) {
-    console.error("settle: grant failed", { code: error.code, message: error.message });
-    if (error.message?.includes("wallet shortfall"))
-      await alertUcb("Captured Razorpay payment blocked by wallet shortfall", order.id);
-    return { ok: false, status: 500, reason: "grant failed" };
-  }
-  const { data: capture, error: captureStatusError } = await supabaseAdmin.from("payment_captures")
-    .select("status,failure_reason").eq("payment_id", razorpayPaymentId).maybeSingle();
-  if (captureStatusError || !capture) return { ok: false, status: 500, reason: "capture status unavailable" };
-  if (capture.status !== "granted") {
-    await alertUcb("Captured Razorpay payment requires compensation or reversal", order.id);
-    if (order.external_transaction_token) {
-      try { await reportExternalOrder(order.id); }
-      catch (reportError) { console.error("settle: UCB rejected capture report queued", String(reportError)); }
+  const initialCommitment = await commitment();
+  if (initialCommitment.error)
+    return { ok: false, status: 503, reason: "entitlement verification unavailable" };
+  if (initialCommitment.data !== true) {
+    if (order?.external_transaction_token && Number.isSafeInteger(payment.created_at) && (payment.created_at ?? 0) > 0) {
+      const { error: authorizationError } = await supabaseAdmin.rpc("record_notes_choice_authorization", {
+        p_order_id: order.id, p_provider_time: new Date(payment.created_at! * 1000).toISOString(),
+      });
+      if (authorizationError) return { ok: false, status: 503, reason: "authorization reporting queue unavailable" };
     }
-    return { ok: false, status: 409, reason: "payment captured; refund queued" };
+    // 4. Atomic, idempotent grant of the product stored on the order row. The
+    //    payment's own creation time (from Razorpay, not from the client) lets the
+    //    database tell a payment started inside the order's 30-minute life from
+    //    one started after it expired; in that case the wallet is not debited and
+    //    the order is flagged for admin review (see settle_razorpay_payment).
+    const paidAt = Number.isSafeInteger(payment.created_at)
+      ? new Date((payment.created_at as number) * 1000).toISOString()
+      : null;
+    const { error } = await supabaseAdmin.rpc("settle_razorpay_payment", {
+      p_event_id: eventId,
+      p_razorpay_order_id: razorpayOrderId,
+      p_razorpay_payment_id: razorpayPaymentId,
+      p_amount_paise: payment.amount,
+      p_paid_at: paidAt,
+    });
+    if (error) {
+      console.error("settle: grant failed", { code: error.code });
+      if (error.message?.includes("wallet shortfall"))
+        await alertUcb("Captured Razorpay payment blocked by wallet shortfall", order.id);
+      return { ok: false, status: 500, reason: "grant failed" };
+    }
+  }
+  // A normal void settlement return includes compensation/reversal outcomes.
+  // Only the independent, exact committed-entitlement proof permits success.
+  const { data: committed, error: committedError } = await commitment();
+  if (committedError)
+    return { ok: false, status: 503, reason: "entitlement verification unavailable" };
+  if (committed !== true) {
+    const { data: capture, error: captureStatusError } = await supabaseAdmin.from("payment_captures")
+      .select("status,failure_reason").eq("payment_id", razorpayPaymentId).maybeSingle();
+    if (captureStatusError || !capture) return { ok: false, status: 500, reason: "capture status unavailable" };
+    if (capture.status === "captured" || capture.status === "reversal_pending")
+      return { ok: false, status: 503, reason: "entitlement pending" };
+    if (["compensation_pending", "compensated", "reversed"].includes(capture.status)) {
+      await alertUcb("Captured Razorpay payment requires compensation or reversal", order.id);
+      if (order.external_transaction_token) {
+        try { await reportExternalOrder(order.id); }
+        catch (reportError) { console.error("settle: UCB rejected capture report queued", String(reportError)); }
+      }
+      return { ok: false, status: 409, reason: capture.status === "reversed" ? "payment reversed"
+        : capture.status === "compensated" ? "payment already refunded" : "payment captured; refund queued" };
+    }
+    return { ok: false, status: 503, reason: "entitlement pending" };
+  }
+  if (initialCommitment.data === true) {
+    // The grant was already durable, so settlement was deliberately skipped.
+    // Finish the capture marker recorded by this request without overwriting
+    // any concurrent compensation/reversal state or changing financial rows.
+    const { error: markerError } = await supabaseAdmin.from("payment_captures")
+      .update({ status: "granted" }).eq("payment_id", razorpayPaymentId).eq("status", "captured");
+    if (markerError) return { ok: false, status: 503, reason: "capture status update failed" };
+    // Complete only this authenticated capture delivery's inbox entry; otherwise
+    // duplicate webhooks would remain pending despite proven fulfillment.
+    const { error: inboxError } = await supabaseAdmin.from("provider_events")
+      .update({ status: "applied" }).eq("event_id", eventId).eq("event_type", "payment.captured");
+    if (inboxError) return { ok: false, status: 503, reason: "capture inbox update failed" };
   }
   if (order.external_transaction_token) {
     const { data: completed, error: timestampError } = await supabaseAdmin.from("orders")
@@ -131,29 +181,47 @@ export type RefundResult =
   | { ok: true; outcome: string }
   | { ok: false; status: number; reason: string };
 
+// Closed vocabulary returned by reverse_payment(). Unknown SQL results must
+// retain provider retries and durable jobs rather than acknowledge a reversal.
+const REVERSAL_RESULTS = new Set([
+  "no_referral_credit", "already_cancelled", "credit_cancelled", "already_reversed",
+  "referrer_gone", "credit_expired", "credit_reversed",
+]);
+
 // refund.processed webhook -> cancel the referrer's still-pending credit.
 // The event payload is NOT trusted: we re-fetch the payment from Razorpay and
 // only act on a FULL refund (amount_refunded >= amount). handle_payment_refund()
 // is idempotent and only cancels a credit that is still inside its hold window.
 export async function settleRefund(params: { razorpayPaymentId: string; razorpayRefundId: string; eventId?: string }): Promise<RefundResult> {
   const payment = await fetchPayment(params.razorpayPaymentId);
+  const refund = await fetchRefund(params.razorpayRefundId);
+  if (refund.payment_id !== params.razorpayPaymentId || refund.status !== "processed" || refund.currency !== "INR"
+      || !Number.isSafeInteger(refund.amount) || refund.amount <= 0 || refund.amount > payment.amount
+      || !Number.isSafeInteger(refund.created_at) || refund.created_at <= 0)
+    return { ok: false, status: 400, reason: "Razorpay refund mismatch" };
   const fullRefund = payment.refund_status === "full"
     || (Number.isSafeInteger(payment.amount_refunded) && (payment.amount_refunded as number) >= payment.amount);
 
+  const { error: factError } = await supabaseAdmin.from("provider_events")
+    .update({ blocks_entitlement: fullRefund }).eq("payment_id", params.razorpayPaymentId)
+    .eq("event_type", "refund.processed");
+  if (factError) return { ok: false, status: 503, reason: "Refund fact persistence failed" };
   const { data, error } = await supabaseAdmin.rpc("handle_payment_refund", {
     p_razorpay_payment_id: params.razorpayPaymentId,
     p_full_refund: fullRefund,
   });
   if (error) {
-    console.error("settle: refund handling failed", { code: error.code, message: error.message });
+    console.error("settle: refund handling failed", { code: error.code });
     return { ok: false, status: 500, reason: "refund handling failed" };
   }
+  const outcome = (data as { status?: unknown } | null)?.status;
+  if (typeof outcome !== "string" || !(fullRefund ? REVERSAL_RESULTS.has(outcome) : outcome === "partial_refund_ignored"))
+    return { ok: false, status: 503, reason: "reversal settlement pending" };
   const { data: order, error: orderError } = await supabaseAdmin.from("orders")
     .select("id,amount,tax_pre_amount,external_transaction_token")
     .eq("razorpay_payment_id", params.razorpayPaymentId).maybeSingle();
   if (orderError) return { ok: false, status: 500, reason: "Refund order lookup failed" };
   if (order?.external_transaction_token) {
-    const refund = await fetchRefund(params.razorpayRefundId);
     if (refund.payment_id !== payment.id || refund.status !== "processed" || refund.currency !== "INR"
         || !Number.isSafeInteger(refund.amount) || refund.amount <= 0 || refund.amount > payment.amount
         || !Number.isSafeInteger(refund.created_at) || refund.created_at <= 0)
@@ -177,8 +245,7 @@ export async function settleRefund(params: { razorpayPaymentId: string; razorpay
     try { await reportExternalRefundEvent(refund.id); }
     catch (reportError) { console.error("settle: UCB refund report queued for retry", String(reportError)); }
   }
-  const outcome = String((data as { status?: string } | null)?.status ?? "unknown");
-  if (params.eventId && outcome !== "unknown_payment") {
+  if (params.eventId) {
     const { error: inboxError } = await supabaseAdmin.from("provider_events")
       .update({ status: "applied" }).eq("event_id", params.eventId);
     if (inboxError) return { ok: false, status: 500, reason: "refund inbox update failed" };
@@ -208,7 +275,17 @@ export async function settleDispute(params: { disputeId: string; eventId?: strin
     return { ok: false, status: 400, reason: "dispute has no payment" };
   }
   const outcome = disputeOutcome(dispute.status);
+  if (outcome) {
+    const { error: factError } = await supabaseAdmin.from("provider_events")
+      .update({ blocks_entitlement: outcome !== "won" }).eq("payment_id", dispute.payment_id)
+      .eq("provider_object_id", params.disputeId);
+    if (factError) return { ok: false, status: 503, reason: "Dispute fact persistence failed" };
+  }
   if (!outcome) {
+    // Closed disputes require a manual decision; unfamiliar provider states
+    // must remain retryable rather than silently completing their inbox job.
+    if (dispute.status !== "closed")
+      return { ok: false, status: 503, reason: "unrecognized dispute status" };
     if (params.eventId) {
       const { error: inboxError } = await supabaseAdmin.from("provider_events")
         .update({ status: "applied" }).eq("event_id", params.eventId);
@@ -222,9 +299,15 @@ export async function settleDispute(params: { disputeId: string; eventId?: strin
     p_outcome: outcome,
   });
   if (error) {
-    console.error("settle: dispute handling failed", { code: error.code, message: error.message });
+    console.error("settle: dispute handling failed", { code: error.code });
     return { ok: false, status: 500, reason: "dispute handling failed" };
   }
+  const applied = (data as { status?: unknown } | null)?.status;
+  const accepted = outcome === "lost" ? REVERSAL_RESULTS
+    : new Set(outcome === "opened" ? ["access_suspended", "nothing_to_suspend"]
+      : ["access_restored", "nothing_to_restore"]);
+  if (typeof applied !== "string" || !accepted.has(applied))
+    return { ok: false, status: 503, reason: "dispute settlement pending" };
   if (outcome === "lost") {
     const { data: order, error: orderError } = await supabaseAdmin.from("orders")
       .select("id,amount,tax_pre_amount,external_transaction_token")
@@ -246,8 +329,7 @@ export async function settleDispute(params: { disputeId: string; eventId?: strin
       catch (reportError) { console.error("settle: UCB dispute report queued for retry", String(reportError)); }
     }
   }
-  const applied = String((data as { status?: string } | null)?.status ?? "unknown");
-  if (params.eventId && applied !== "unknown_payment") {
+  if (params.eventId) {
     const { error: inboxError } = await supabaseAdmin.from("provider_events")
       .update({ status: "applied" }).eq("event_id", params.eventId);
     if (inboxError) return { ok: false, status: 500, reason: "dispute inbox update failed" };

@@ -1,6 +1,7 @@
 import { supabase } from "../config/supabase";
 import { toCamelCase } from "../utils/caseConvert";
 import { Chapter } from "../types/chapter";
+import { isNonplayTestBuild } from "../config/paymentProvider";
 
 // "chapters" only stores subject_id/year_id - subjectTitle/yearTitle are
 // UI-only fields the admin panel strips before writing (see admin's
@@ -25,7 +26,11 @@ export async function getChaptersBySubject(subjectId: string): Promise<Chapter[]
     .eq("subject_id", subjectId)
     .eq("active", true);
   if (error) throw error;
-  return (data ?? []).map(mapRow);
+  const real=(data ?? []).map(mapRow);
+  if (!isNonplayTestBuild) return real;
+  const test=await import("../services/nonplayTestService");
+  const catalog=await test.testCatalog().catch(() => test.EMPTY_TEST_CATALOG);
+  return [...real,...catalog.chapters.filter(c => c.subjectId===subjectId)];
 }
 
 export async function getChaptersOrderedByCreatedAt(

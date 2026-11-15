@@ -18,7 +18,7 @@ export const FAQ = [
 
   // Learning
   { group: "Learning & content", q: "Why can't I see a subject or chapter?", a: "<p>Content is shown for the course and academic year in your profile, and only what has been published by the MedVeda team. Check your selection under Profile → Change Course / Year, and pull down to refresh. If content is still missing, <a href=\"/contact\">tell us</a>.</p>" },
-  { group: "Learning & content", q: "Can I study offline?", a: "<p>You can download PDF notes you have access to and quizzes to your device from within the app and open them from the Downloads screen without a connection; downloads can be paused, resumed or removed. Video lectures open from their online link and need internet.</p>" },
+  { group: "Learning & content", q: "Can I study offline?", a: "<p>You can download quizzes and open them from Downloads without a connection. Video lectures need internet.</p>" },
   { group: "Learning & content", q: "Why can't I take screenshots of notes?", a: "<p>To protect paid content, the app blocks screenshots and screen recording on supported devices.</p>" },
   { group: "Learning & content", q: "Are my quiz scores saved?", a: "<p>Yes. Test scores are recorded to your account. If you finish a test while offline, the score is saved on the device and synced when you're back online.</p>" },
 

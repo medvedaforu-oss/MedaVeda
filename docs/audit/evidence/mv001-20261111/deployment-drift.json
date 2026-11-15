@@ -1,0 +1,20 @@
+{
+  "pending_local_migrations": [
+    "20261108100000_notes_choice_checkout.sql",
+    "20261109100000_billing_settlement_recovery.sql",
+    "20261109120000_isolated_nonplay_test.sql",
+    "20261110100000_mv003_razorpay_entitlement_commitment.sql",
+    "20261110120000_mv005_razorpay_order_transitions.sql",
+    "20261110130000_mv006_purchase_ownership_guard.sql"
+  ],
+  "local_only_functions": [
+    "attach-external-token",
+    "create-order-nonplay-test",
+    "create-order-play-choice",
+    "get-note-url-nonplay-test",
+    "nonplay-test-catalog",
+    "razorpay-webhook-nonplay-test",
+    "report-external-transaction",
+    "verify-payment-nonplay-test"
+  ]
+}

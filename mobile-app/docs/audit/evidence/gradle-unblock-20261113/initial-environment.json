@@ -1,0 +1,65 @@
+{
+  "ram": {
+    "command": [
+      "free",
+      "-h"
+    ],
+    "exit": 0,
+    "output": "               total        used        free      shared  buff/cache   available\nMem:           6.4Gi       4.4Gi        50Mi        21Mi       2.0Gi       2.0Gi\nSwap:             0B          0B          0B\n"
+  },
+  "disk": {
+    "command": [
+      "df",
+      "-h",
+      "/home/ganeshp8545/AyurPulse/mobile-app",
+      "/tmp"
+    ],
+    "exit": 0,
+    "output": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdb         36G   33G  3.0G  92% /\ntmpfs           3.3G  2.8M  3.3G   1% /tmp\n"
+  },
+  "java": {
+    "command": [
+      "java",
+      "-version"
+    ],
+    "exit": 0,
+    "output": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1-1-deb13u1-Debian)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-deb13u1-Debian, mixed mode, sharing)\n"
+  },
+  "java_processes": {
+    "command": [
+      "ps",
+      "-C",
+      "java",
+      "-o",
+      "pid,ppid,etimes,rss,comm"
+    ],
+    "exit": 0,
+    "output": "    PID    PPID ELAPSED   RSS COMMAND\n   2339     305     785 881152 java\n   2628     305     762 1243908 java\n   3142     305     711 562480 java\n   6068    6067      29 105216 java\n   6102    6068      27 349092 java\n"
+  },
+  "locks": {
+    "command": [
+      "lslocks",
+      "-o",
+      "PID,COMMAND,PATH"
+    ],
+    "exit": 0,
+    "output": "  PID COMMAND         PATH\n  297 containerd      /run...\n  443 ld-linux-x86-64 /run/user/1000/wayland-0.lock\n  374 dockerd         /...\n  374 dockerd         /...\n  374 dockerd         /...\n 5567 codex           /home/ganeshp8545/.codex/tmp/arg0-linux/codex-arg0ykL6sF/.lock\n 5599 codex           /home/ganeshp8545/.codex/logs_2.sqlite\n 5599 codex           /home/ganeshp8545/.codex/logs_2.sqlite-shm\n 5599 codex           /home/ganeshp8545/.codex/goals_1.sqlite\n 5599 codex           /home/ganeshp8545/.codex/goals_1.sqlite-shm\n 5567 codex           /home/ganeshp8545/.codex/memories_1.sqlite\n 5567 codex           /home/ganeshp8545/.codex/memories_1.sqlite-shm\n 5599 codex           /home/ganeshp8545/.codex/.sqlite-maintenance.lock\n 6068 java            /tmp...\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/jars-9/jars-9.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/9.3.1/generated-gradle-jars/generated-gradle-jars.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/modules-2/modules-2.lock\n  250 cron            /run...\n  297 containerd      /...\n  374 dockerd         /...\n  374 dockerd         /...\n  374 dockerd         /...\n  456 ld-linux-x86-64 /run/user/1000/DISPLAY-:0-wl.lock\n 5599 codex           /home/ganeshp8545/.codex/tmp/arg0-linux/codex-arg0aBYqE2/.lock\n 5599 codex           /home/ganeshp8545/.codex/state_5.sqlite\n 5599 codex           /home/ganeshp8545/.codex/state_5.sqlite-shm\n 5599 codex           /home/ganeshp8545/.codex/queue_1.sqlite\n 5599 codex           /home/ganeshp8545/.codex/queue_1.sqlite-shm\n 5641 codex           /home/ganeshp8545/.codex/tmp/arg0-linux/codex-arg0bGn6qS/.lock\n 5567 codex           /home/ganeshp8545/.codex/queue_1.sqlite\n 5567 codex           /home/ganeshp8545/.codex/queue_1.sqlite-shm\n 5599 codex           /home/ganeshp8545/.codex/thread-writer-locks/01a1d3bb-d928-7811-8b67-5cae01c1f7d4.lock\n  353 mariadbd        /...\n  458 ld-linux-x86-64 /run/user/1000/DISPLAY-:1-wl.lock\n 2339 java            /tmp...\n 3142 java            /tmp...\n 2339 java            /home/ganeshp8545/.gradle/caches/9.3.1/generated-gradle-jars/generated-gradle-jars.lock\n 2339 java            /home/ganeshp8545/.gradle/caches/modules-2/modules-2.lock\n 5567 codex           /home/ganeshp8545/.codex/logs_2.sqlite\n 5567 codex           /home/ganeshp8545/.codex/logs_2.sqlite-shm\n 5599 codex           /home/ganeshp8545/.codex/thread_history_1.sqlite\n 5599 codex           /home/ganeshp8545/.codex/thread_history_1.sqlite-shm\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/journal-1/journal-1.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/9.3.1/fileHashes/fileHashes.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-project/9.3.1/fileHashes/fileHashes.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-project/buildOutputCleanup/buildOutputCleanup.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-project/9.3.1/checksums/checksums.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/9.3.1/fileContent/fileContent.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/9.3.1/md-supplier/md-supplier.lock\n 6102 java            /home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private/caches/9.3.1/md-rule/md-rule.lock\n  353 mariadbd        /...\n  444 ld-linux-x86-64 /run/user/1000/wayland-1.lock\n  420 pipewire        /run/user/1000/pipewire-0.lock\n  420 pipewire        /run/user/1000/pipewire-0-manager.lock\n 2628 java            /tmp...\n 2628 java            /tmp/kotlin-daemon.2026-11-13.06-57-41-376.00.log.lck\n 3142 java            /tmp/kotlin-daemon.2026-11-13.06-58-32-828.00.log.lck\n 5599 codex           /home/ganeshp8545/.codex/memories_1.sqlite\n 5599 codex           /home/ganeshp8545/.codex/memories_1.sqlite-shm\n 5567 codex           /home/ganeshp8545/.codex/state_5.sqlite\n 5567 codex           /home/ganeshp8545/.codex/state_5.sqlite-shm\n 5567 codex           /home/ganeshp8545/.codex/goals_1.sqlite\n 5567 codex           /home/ganeshp8545/.codex/goals_1.sqlite-shm\n 6102 java            /tmp...\n"
+  },
+  "private_cache_size": {
+    "command": [
+      "du",
+      "-sh",
+      "/home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private"
+    ],
+    "exit": 0,
+    "output": "1.8G\t/home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-private\n"
+  },
+  "preflight": {
+    "command": [
+      "node",
+      "scripts/android-vault-preflight.cjs"
+    ],
+    "exit": 0,
+    "output": "{\n  \"profile\": \"razorpay-live-testing\",\n  \"distribution\": \"internal\",\n  \"artifact\": \"apk\",\n  \"package\": \"in.medveda.app\",\n  \"channel\": \"razorpay-live-testing\",\n  \"environment\": \"production\",\n  \"paymentProvider\": \"razorpay\",\n  \"sdkRoot\": \"/home/ganeshp8545/Android\",\n  \"sdkPackages\": [\n    {\n      \"name\": \"cmdline-tools\",\n      \"present\": true\n    },\n    {\n      \"name\": \"platform-tools\",\n      \"present\": true\n    },\n    {\n      \"name\": \"platforms;android-36\",\n      \"present\": true\n    },\n    {\n      \"name\": \"build-tools;36.0.0\",\n      \"present\": true\n    },\n    {\n      \"name\": \"ndk;27.1.12297006\",\n      \"present\": true\n    },\n    {\n      \"name\": \"cmake;3.22.1\",\n      \"present\": true\n    }\n  ],\n  \"localSdkComplete\": true,\n  \"versions\": {\n    \"compileSdk\": \"36\",\n    \"targetSdk\": \"36\",\n    \"minSdk\": \"24\",\n    \"buildTools\": \"36.0.0\",\n    \"ndk\": \"27.1.12297006\",\n    \"kotlin\": \"2.1.20\",\n    \"agp\": \"8.12.0\"\n  },\n  \"firebase\": \"LOCAL_FALLBACK_VALIDATED_CLOUD_DELIVERY_UNVERIFIED\",\n  \"cloudEnvironment\": \"UNVERIFIED\",\n  \"signing\": \"UNVERIFIED_NO_CREDENTIAL_READ\",\n  \"nativeCompilation\": \"NOT_PERFORMED_BY_PREFLIGHT\",\n  \"deviceAcceptance\": \"PENDING\",\n  \"contentEnabled\": false,\n  \"nativeAccepted\": false,\n  \"command\": \"eas build --platform android --profile razorpay-live-testing\"\n}\n"
+  }
+}

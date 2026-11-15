@@ -6,8 +6,8 @@ let resolveNetwork, calls = 0, reads = 0, fail = false;
 const mocks = {
  '@react-native-community/netinfo': { __esModule: true, default: { fetch: () => { calls++; return fail ? Promise.reject(Error('offline')) : new Promise(r => { resolveNetwork = r; }); } } },
  '../config/database': { OFFLINE_DB_SUPPORTED: true, getDb: () => ({ getAllSync: () => { reads++; return []; } }) },
- '../config/supabase': { supabase: {} }, '../utils/logger': { logDebug: () => {} }, '../services/authState': {},
- './authState': { getCurrentUser: () => ({ id: 'student' }) }
+ '../config/supabase': { supabase: {auth:{getSession:async()=>({data:{session:{user:{id:'student'},access_token:'fixture'}}})}} }, '../utils/logger': { logDebug: () => {} }, '../services/authState': {},
+ './authState': { getCurrentUser: () => ({ id: 'student' }),getAuthEpoch:()=>0 }
 };
 const mod = { exports: {} };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/services/syncEngine.ts', 'utf8'), {

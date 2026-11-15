@@ -1,0 +1,217 @@
+[
+  {
+    "test": "exact A wrapper; 66 -> 69; all baseline public rows preserved",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "all 126 pinned production function preimages reproduced",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-handlers on mv003_ad1c2721d92c",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-recovery on mv003_ad1c2721d92c",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-history on mv003_ad1c2721d92c",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "reviewed C wrapper rejects matching baseline due to newline hash defect",
+    "result": "PASS",
+    "detail": "ERROR:  pinned function drift: accounts_share_network\nCONTEXT:  PL/pgSQL function inline_code_block line 3 at RAISE"
+  },
+  {
+    "test": "hash-only correction exposes invalid FOREACH syntax",
+    "result": "PASS",
+    "detail": "ERROR:  syntax error at or near \"[\"\nLINE 4:  FOREACH t IN ARRAY['orders','payments','purchases','product...\n                           ^"
+  },
+  {
+    "test": "missing evidence gate fails closed",
+    "result": "PASS",
+    "detail": "ERROR:  missing independently signed evidence reference: medveda.c_owner_approval\nCONTEXT:  PL/pgSQL function inline_code_block line 6 at RAISE"
+  },
+  {
+    "test": "forced failure after C1 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C2 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C3 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "forced failure after C4 rolls back schema ledger and rows",
+    "result": "PASS",
+    "detail": "ERROR:  division by zero"
+  },
+  {
+    "test": "exact C wrapper success; all pre-existing public-table rows and prices preserved",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "73 exact versions; seven exact source statements; no duplicate A1 or excluded installer",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "all final function bodies match expected MD5 including strong MV003",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "retry after successful commit fails closed without changes",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-handlers on mv003_f6decdeda87a",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-recovery on mv003_6b4422a39a34",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual phase-b-history on mv003_4323ba14dcbc",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual b-to-c-handlers on mv003_4b6a561c6c8e",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual b-to-c-handlers on mv003_a8e5bce854b6",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "A source ledger drift rejects atomically",
+    "result": "PASS",
+    "detail": "ERROR:  Phase A exact ledger source mismatch\nCONTEXT:  PL/pgSQL function inline_code_block line 2 at RAISE"
+  },
+  {
+    "test": "function drift rejects atomically",
+    "result": "PASS",
+    "detail": "ERROR:  pinned function drift: accounts_share_network\nCONTEXT:  PL/pgSQL function inline_code_block line 3 at RAISE"
+  },
+  {
+    "test": "partial C schema without ledger rejects atomically",
+    "result": "PASS",
+    "detail": "ERROR:  unexpected pre-existing C column\nCONTEXT:  PL/pgSQL function inline_code_block line 5 at RAISE"
+  },
+  {
+    "test": "duplicate token index failure rolls back C1 and C2",
+    "result": "PASS",
+    "detail": "ERROR:  could not create unique index \"orders_external_token_digest_unique\"\nDETAIL:  Key (extensions.digest(external_transaction_token, 'sha256'::text))=(\\x59919324574818f7018f2bb6333cc45637c90d595f66dd04eec7adaffb73b714) is duplicated."
+  },
+  {
+    "test": "paused after C2: observer sees strong A proof and 69 ledger; table readers blocked; competing wrapper hits exact 2s lock timeout",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "client interruption after C2 fully rolls back functions columns indexes triggers rows and ledger",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "retry after precommit interruption succeeds once with 73 ledger versions",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL notes-choice-checkout",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL billing-settlement-recovery",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL razorpay_snapshot_retry_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL phase-c-contracts",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL payment_queue_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL play_payment_pg_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL play_entitlement_snapshot_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL phase-c-play-duplicates",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL play_catalog_queue_regression_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final SQL play_catalog_failure_access_checks",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final concurrency mv005-transitions",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final concurrency mv006-ownership",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "actual mv003-entitlement on mv003_79aee65f8adc",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "final Notes choice concurrency and token uniqueness",
+    "result": "PASS",
+    "detail": null
+  },
+  {
+    "test": "complete rehearsal",
+    "result": "PASS",
+    "detail": null
+  }
+]

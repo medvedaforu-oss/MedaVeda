@@ -9,27 +9,32 @@ export default function useNotificationRouting(
   navigationReady: boolean,
   route: string | undefined,
 ) {
-  const [auth, setAuth] = useState({ ready: false, signedIn: false });
+  const [auth, setAuth] = useState<{ ready: boolean; signedIn: boolean; userId: string | null }>({ ready: false, signedIn: false, userId: null });
   const router = useRef(createNotificationRouter(({ screen, params }) => navigation.navigate(screen, params))).current;
 
   useEffect(() => {
     let active = true;
     let receivedAuthEvent = false;
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return;
       receivedAuthEvent = true;
-      if (active) setAuth({ ready: true, signedIn: !!session });
+      router.setAccount(session?.user.id ?? null);
+      if (active) setAuth({ ready: true, signedIn: !!session, userId: session?.user.id ?? null });
     });
     void supabase.auth.getSession().then(({ data: session }) => {
-      if (active && !receivedAuthEvent) setAuth({ ready: true, signedIn: !!session.session });
+      if (active && !receivedAuthEvent) {
+        router.setAccount(session.session?.user.id ?? null);
+        setAuth({ ready: true, signedIn: !!session.session, userId: session.session?.user.id ?? null });
+      }
     }).catch(() => {
-      if (active && !receivedAuthEvent) setAuth({ ready: true, signedIn: false });
+      if (active && !receivedAuthEvent) setAuth({ ready: true, signedIn: false, userId: null });
     });
     return () => { active = false; data.subscription.unsubscribe(); };
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     router.setReady(navigationReady && auth.signedIn, route);
-  }, [router, navigationReady, auth.signedIn, route]);
+  }, [router, navigationReady, auth.signedIn, auth.userId, route]);
 
   useEffect(() => {
     if (!navigationReady || !auth.ready) return;

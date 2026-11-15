@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-reversal-selftest.cjs"
+    ],
+    "source": "supabase",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-reversal-selftest.cjs"
+    ],
+    "source": "supabase/releases/p0-critical-20261111_131014",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "source": "supabase",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "source": "supabase/releases/p0-critical-20261111_131014",
+    "exit_code": 0
+  }
+]

@@ -19,6 +19,27 @@
 [functions.create-order]
 verify_jwt = true
 
+# Notes-only validated Play choice. Server opt-in and token-bound reservation required.
+[functions.create-order-play-choice]
+verify_jwt = true
+
+# Isolated synthetic lane on the existing project; default OFF, separate credentials/data.
+[functions.create-order-nonplay-test]
+verify_jwt = true
+
+[functions.verify-payment-nonplay-test]
+verify_jwt = true
+
+[functions.nonplay-test-catalog]
+verify_jwt = true
+
+[functions.get-note-url-nonplay-test]
+verify_jwt = true
+
+# Dedicated TEST webhook HMAC; never accepts the live webhook secret.
+[functions.razorpay-webhook-nonplay-test]
+verify_jwt = false
+
 [functions.create-play-order]
 verify_jwt = true
 

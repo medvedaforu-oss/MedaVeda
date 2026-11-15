@@ -11,6 +11,24 @@ const fallback = (): Target => ({ screen: "Notifications" });
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   v !== null && typeof v === "object" && !Array.isArray(v);
 
+/** Current server supports broadcasts only; targeted payloads are stale or invalid. */
+export function isBroadcastNotification(data: unknown): boolean {
+  return !isRecord(data) || !["targetUserId", "target_user_id", "userId", "user_id", "targetUserIds"]
+    .some(key => Object.hasOwn(data, key));
+}
+
+/** Suppress repeated foreground delivery within this process. OS background
+ * display cannot be revoked by JS; keep broadcast content non-sensitive. */
+export function createNotificationPresentationGate() {
+  const seen = new Set<string>();
+  return (identifier: string, data: unknown): boolean => {
+    if (!isBroadcastNotification(data) || seen.has(identifier)) return false;
+    seen.add(identifier);
+    if (seen.size > 64) seen.delete(seen.values().next().value!);
+    return true;
+  };
+}
+
 /** Notification data is untrusted. Never forward arbitrary navigation state,
  * URLs, quiz answers, ownership flags or payment parameters to a screen. */
 export function notificationTarget(data: unknown): Target {
@@ -46,6 +64,7 @@ export function notificationTarget(data: unknown): Target {
  * The OS retains a killed-app response until the listener reads it. */
 export function createNotificationRouter(navigate: (target: Target) => void) {
   let pending: Target | null = null;
+  let account: string | null = null;
   let canNavigate = false;
   const seen = new Set<string>();
   function flush() {
@@ -58,10 +77,21 @@ export function createNotificationRouter(navigate: (target: Target) => void) {
     receive(response: Response) {
       const request = response?.notification?.request;
       if (!request || typeof request.identifier !== "string" || seen.has(request.identifier)) return;
+      const data = request.content?.data;
+      // The current backend/feed is broadcast-only. Never route a targeted
+      // payload left on a shared device, even if its claimed owner matches.
+      if (!isBroadcastNotification(data)) return;
       seen.add(request.identifier);
       if (seen.size > 64) seen.delete(seen.values().next().value!);
       pending = notificationTarget(request.content?.data);
       flush();
+    },
+    setAccount(userId: string | null) {
+      if (account !== userId) {
+        if (account !== null) pending = null;
+        canNavigate = false;
+        account = userId;
+      }
     },
     setReady(signedIn: boolean, route: string | undefined) {
       canNavigate = signedIn && !!route && ![

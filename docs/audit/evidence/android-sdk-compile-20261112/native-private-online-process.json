@@ -1,0 +1,16 @@
+{
+  "pid": 15731,
+  "command": [
+    "/home/ganeshp8545/.gradle/wrapper/dists/gradle-9.3.1-bin/23ovyewtku6u96viwx3xl3oks/gradle-9.3.1/bin/gradle",
+    ":medveda-offline-vault:compileDebugKotlin",
+    ":medveda-offline-vault:compileDebugAndroidTestKotlin",
+    "--no-daemon",
+    "--console=plain",
+    "--max-workers=1",
+    "-Dorg.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=384m",
+    "-Pkotlin.compiler.execution.strategy=in-process",
+    "--project-cache-dir",
+    "/home/ganeshp8545/AyurPulse/mobile-app/android/.gradle-sdk-project",
+    "-Dorg.gradle.parallel=false"
+  ]
+}

@@ -27,17 +27,17 @@ assert.equal(app.slug, "ayurpulse");
 assert.equal(configFor("production").extra.medvedaPaymentProvider, "disabled");
 assert.equal(configFor("internal-testing").extra.medvedaPaymentProvider, "disabled");
 assert.equal(configFor("razorpay-distribution", "razorpay").extra.medvedaPaymentProvider, "razorpay");
-assert.equal(configFor("production").android.runtimeVersion, `${app.version}-disabled`);
-assert.equal(configFor("internal-testing").android.runtimeVersion, `${app.version}-disabled`);
+assert.equal(configFor("production").android.runtimeVersion, `${app.version}-disabled-notes-choice-v1`);
+assert.equal(configFor("internal-testing").android.runtimeVersion, `${app.version}-disabled-notes-choice-v1`);
 assert.equal(configFor("razorpay-distribution", "razorpay").android.runtimeVersion,
-  `${app.version}-razorpay`);
+  `${app.version}-razorpay-notes-choice-v1`);
 assert.equal(configFor(undefined, "razorpay").android.runtimeVersion,
-  `${app.version}-razorpay`);
+  `${app.version}-razorpay-notes-choice-v1`);
 assert.notEqual(configFor(undefined, "razorpay").android.runtimeVersion,
   configFor("production").android.runtimeVersion);
 assert.throws(
   () => configFor("production", "razorpay"),
-  /Android release builds must keep new purchases disabled/
+  /Direct Razorpay checkout requires/
 );
 assert.throws(
   () => configFor("preview", "unexpected"),
@@ -46,8 +46,8 @@ assert.throws(
 assert.equal(eas.production.env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
 assert.equal(eas["internal-testing"].env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
 assert.equal(eas["razorpay-distribution"], undefined);
-assert.throws(() => configFor("custom", "razorpay", "android"), /Android release builds must keep new purchases disabled/);
+assert.throws(() => configFor("custom", "razorpay", "android"), /Direct Razorpay checkout requires/);
 assert.equal(configFor("custom", "disabled").extra.medvedaPaymentProvider, "disabled");
-assert.equal(configFor("production", "play").extra.medvedaPaymentProvider, "disabled");
+assert.throws(() => configFor("production", "play"), /require disabled payments/);
 
 console.log("Payment provider and package configuration checks passed.");

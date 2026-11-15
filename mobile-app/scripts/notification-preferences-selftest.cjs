@@ -33,7 +33,7 @@ function mountPreferences() {
   // Exercise the real notification-center button's destination.
   let destination;
   const center = load('mobile-app/src/screens/notifications/NotificationsScreen.tsx', {
-    react: { useState: value => [value, () => {}], useCallback: fn => fn },
+    react: { useState: value => [value, () => {}], useCallback: fn => fn, useRef: value => ({ current: value }) },
     'react/jsx-runtime': jsx, 'react-native': native, ...theme,
     '@react-navigation/native': {
       useFocusEffect() {}, useNavigation: () => ({ navigate: name => { destination = name; } }),

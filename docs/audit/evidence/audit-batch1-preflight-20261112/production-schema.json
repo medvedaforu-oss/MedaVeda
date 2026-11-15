@@ -1,0 +1,1762 @@
+{
+  "columns": [
+    {
+      "data_type": "uuid",
+      "table_name": "first_discount_reservations",
+      "column_name": "user_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "first_discount_reservations",
+      "column_name": "referral_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "first_discount_reservations",
+      "column_name": "order_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "first_discount_reservations",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "id",
+      "is_nullable": "NO",
+      "column_default": "(gen_random_uuid())::text"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "orders",
+      "column_name": "user_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "product_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "amount",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'created'::text"
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "razorpay_order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "razorpay_payment_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "updated_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "scope",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "chapter_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "subject_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "year_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "ARRAY",
+      "table_name": "orders",
+      "column_name": "year_ids",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "course_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "list_price",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "referral_discount",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "wallet_amount",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "orders",
+      "column_name": "referral_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "expires_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "provider",
+      "is_nullable": "NO",
+      "column_default": "'razorpay'::text"
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "play_sku",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "purchase_token",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "play_consumption_status",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_transaction_token",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_choice_bound_order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_transaction_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_report_status",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "external_reported_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_report_error",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "integer",
+      "table_name": "orders",
+      "column_name": "external_report_attempts",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "external_report_attempted_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_refund_status",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "external_refund_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "external_refund_error",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "integer",
+      "table_name": "orders",
+      "column_name": "external_refund_attempts",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "external_refund_attempted_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "tax_pre_amount",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "tax_amount",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "orders",
+      "column_name": "gst_rate_percent",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "tax_region_code",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "tax_administrative_area",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "payment_completed_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "play_last_checked_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "payment_provider_time",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "payment_received_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "boolean",
+      "table_name": "orders",
+      "column_name": "payment_time_fallback",
+      "is_nullable": "NO",
+      "column_default": "false"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "play_last_attempt_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "orders",
+      "column_name": "play_purchase_option_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "orders",
+      "column_name": "ucb_transaction_time",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "boolean",
+      "table_name": "orders",
+      "column_name": "external_report_test_purchase",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_captures",
+      "column_name": "payment_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_captures",
+      "column_name": "razorpay_order_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_captures",
+      "column_name": "order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "bigint",
+      "table_name": "payment_captures",
+      "column_name": "amount_paise",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_captures",
+      "column_name": "provider_time",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_captures",
+      "column_name": "received_at",
+      "is_nullable": "NO",
+      "column_default": "clock_timestamp()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_captures",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'captured'::text"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_captures",
+      "column_name": "failure_reason",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "payment_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "bigint",
+      "table_name": "payment_compensations",
+      "column_name": "amount_paise",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "reason",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "refund_request_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "provider_refund_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'pending'::text"
+    },
+    {
+      "data_type": "integer",
+      "table_name": "payment_compensations",
+      "column_name": "attempts",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_compensations",
+      "column_name": "next_attempt_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_compensations",
+      "column_name": "lease_until",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_compensations",
+      "column_name": "last_error",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_compensations",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "clock_timestamp()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_jobs",
+      "column_name": "kind",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_jobs",
+      "column_name": "target_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_jobs",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'pending'::text"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_jobs",
+      "column_name": "deadline_at",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_jobs",
+      "column_name": "next_attempt_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "integer",
+      "table_name": "payment_jobs",
+      "column_name": "attempts",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "payment_jobs",
+      "column_name": "lease_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_jobs",
+      "column_name": "lease_until",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payment_jobs",
+      "column_name": "last_error",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payment_jobs",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "clock_timestamp()"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "payments",
+      "column_name": "id",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "order_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "payments",
+      "column_name": "user_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "product_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "payments",
+      "column_name": "amount",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "razorpay_order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "razorpay_payment_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'success'::text"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "payments",
+      "column_name": "verified_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "provider",
+      "is_nullable": "NO",
+      "column_default": "'razorpay'::text"
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "purchase_token",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "payments",
+      "column_name": "play_sku",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "event_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "event_type",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "razorpay_order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "payment_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "provider_object_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "payload_hash",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "provider_events",
+      "column_name": "provider_time",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "provider_events",
+      "column_name": "received_at",
+      "is_nullable": "NO",
+      "column_default": "clock_timestamp()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "provider_events",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'pending'::text"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "provider_events",
+      "column_name": "next_attempt_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "integer",
+      "table_name": "provider_events",
+      "column_name": "attempts",
+      "is_nullable": "NO",
+      "column_default": "0"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "provider_events",
+      "column_name": "lease_until",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "boolean",
+      "table_name": "provider_events",
+      "column_name": "blocks_entitlement",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "id",
+      "is_nullable": "NO",
+      "column_default": "(gen_random_uuid())::text"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "purchases",
+      "column_name": "user_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "product_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "product_title",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "scope",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "chapter_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "subject_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "year_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "ARRAY",
+      "table_name": "purchases",
+      "column_name": "year_ids",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "purchases",
+      "column_name": "amount",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": "'success'::text"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "purchases",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "razorpay_order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "purchases",
+      "column_name": "course_id",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "wallet_ledger",
+      "column_name": "id",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "wallet_ledger",
+      "column_name": "user_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "wallet_ledger",
+      "column_name": "entry_type",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "wallet_ledger",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "numeric",
+      "table_name": "wallet_ledger",
+      "column_name": "amount",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "wallet_ledger",
+      "column_name": "source",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "wallet_ledger",
+      "column_name": "referral_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "wallet_ledger",
+      "column_name": "order_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "uuid",
+      "table_name": "wallet_ledger",
+      "column_name": "reverses_id",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "wallet_ledger",
+      "column_name": "available_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "wallet_ledger",
+      "column_name": "expires_at",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "wallet_ledger",
+      "column_name": "note",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "wallet_ledger",
+      "column_name": "created_at",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "wallet_ledger",
+      "column_name": "status_changed_at",
+      "is_nullable": "YES",
+      "column_default": null
+    }
+  ],
+  "indexes": [
+    {
+      "indexdef": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)",
+      "indexname": "orders_pkey",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE INDEX orders_user_id_idx ON public.orders USING btree (user_id)",
+      "indexname": "orders_user_id_idx",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX orders_razorpay_order_id_unique ON public.orders USING btree (razorpay_order_id)",
+      "indexname": "orders_razorpay_order_id_unique",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_orders_course_id ON public.orders USING btree (course_id)",
+      "indexname": "idx_orders_course_id",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_orders_product_id ON public.orders USING btree (product_id)",
+      "indexname": "idx_orders_product_id",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_orders_referral_id ON public.orders USING btree (referral_id)",
+      "indexname": "idx_orders_referral_id",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX orders_play_purchase_token_unique ON public.orders USING btree (purchase_token) WHERE (purchase_token IS NOT NULL)",
+      "indexname": "orders_play_purchase_token_unique",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX orders_external_id_unique ON public.orders USING btree (external_transaction_id) WHERE (external_transaction_id IS NOT NULL)",
+      "indexname": "orders_external_id_unique",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX orders_external_token_digest_unique ON public.orders USING btree (digest(external_transaction_token, 'sha256'::text)) WHERE (external_transaction_token IS NOT NULL)",
+      "indexname": "orders_external_token_digest_unique",
+      "tablename": "orders"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payment_captures_pkey ON public.payment_captures USING btree (payment_id)",
+      "indexname": "payment_captures_pkey",
+      "tablename": "payment_captures"
+    },
+    {
+      "indexdef": "CREATE INDEX payment_captures_order_idx ON public.payment_captures USING btree (order_id)",
+      "indexname": "payment_captures_order_idx",
+      "tablename": "payment_captures"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payment_compensations_pkey ON public.payment_compensations USING btree (payment_id)",
+      "indexname": "payment_compensations_pkey",
+      "tablename": "payment_compensations"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payment_compensations_refund_request_id_key ON public.payment_compensations USING btree (refund_request_id)",
+      "indexname": "payment_compensations_refund_request_id_key",
+      "tablename": "payment_compensations"
+    },
+    {
+      "indexdef": "CREATE INDEX payment_compensations_due_idx ON public.payment_compensations USING btree (next_attempt_at, created_at) WHERE (status = ANY (ARRAY['pending'::text, 'processing'::text]))",
+      "indexname": "payment_compensations_due_idx",
+      "tablename": "payment_compensations"
+    },
+    {
+      "indexdef": "CREATE INDEX payment_compensations_order_idx ON public.payment_compensations USING btree (order_id)",
+      "indexname": "payment_compensations_order_idx",
+      "tablename": "payment_compensations"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payments_pkey ON public.payments USING btree (id)",
+      "indexname": "payments_pkey",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payments_razorpay_payment_id_key ON public.payments USING btree (razorpay_payment_id)",
+      "indexname": "payments_razorpay_payment_id_key",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_payments_product_id ON public.payments USING btree (product_id)",
+      "indexname": "idx_payments_product_id",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_payments_user_id ON public.payments USING btree (user_id)",
+      "indexname": "idx_payments_user_id",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_payments_order_id ON public.payments USING btree (order_id)",
+      "indexname": "idx_payments_order_id",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX payments_play_purchase_token_unique ON public.payments USING btree (purchase_token) WHERE (purchase_token IS NOT NULL)",
+      "indexname": "payments_play_purchase_token_unique",
+      "tablename": "payments"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX provider_events_pkey ON public.provider_events USING btree (event_id)",
+      "indexname": "provider_events_pkey",
+      "tablename": "provider_events"
+    },
+    {
+      "indexdef": "CREATE INDEX provider_events_pending_payment_idx ON public.provider_events USING btree (payment_id, received_at) WHERE (status = 'pending'::text)",
+      "indexname": "provider_events_pending_payment_idx",
+      "tablename": "provider_events"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX purchases_pkey ON public.purchases USING btree (id)",
+      "indexname": "purchases_pkey",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX purchases_order_id_unique ON public.purchases USING btree (order_id)",
+      "indexname": "purchases_order_id_unique",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_purchases_course_id ON public.purchases USING btree (course_id)",
+      "indexname": "idx_purchases_course_id",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX purchases_one_success_per_product ON public.purchases USING btree (user_id, product_id) WHERE ((status = 'success'::text) AND (id <> '66c151c8-bd1e-42ca-b22e-73091554fbae'::text))",
+      "indexname": "purchases_one_success_per_product",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_purchases_product_id ON public.purchases USING btree (product_id)",
+      "indexname": "idx_purchases_product_id",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_purchases_chapter_id ON public.purchases USING btree (chapter_id)",
+      "indexname": "idx_purchases_chapter_id",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_purchases_subject_id ON public.purchases USING btree (subject_id)",
+      "indexname": "idx_purchases_subject_id",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX idx_purchases_year_id ON public.purchases USING btree (year_id)",
+      "indexname": "idx_purchases_year_id",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE INDEX purchases_user_id_all_rows_idx ON public.purchases USING btree (user_id)",
+      "indexname": "purchases_user_id_all_rows_idx",
+      "tablename": "purchases"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX wallet_ledger_pkey ON public.wallet_ledger USING btree (id)",
+      "indexname": "wallet_ledger_pkey",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX wallet_ledger_one_credit_per_referral ON public.wallet_ledger USING btree (referral_id) WHERE ((entry_type = 'credit'::text) AND (source = 'referral_reward'::text))",
+      "indexname": "wallet_ledger_one_credit_per_referral",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX wallet_ledger_one_debit_per_order ON public.wallet_ledger USING btree (order_id) WHERE ((entry_type = 'debit'::text) AND (source = 'order_payment'::text))",
+      "indexname": "wallet_ledger_one_debit_per_order",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX wallet_ledger_one_restore_per_order ON public.wallet_ledger USING btree (order_id) WHERE ((entry_type = 'credit'::text) AND (source = 'order_refund'::text))",
+      "indexname": "wallet_ledger_one_restore_per_order",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX wallet_ledger_one_reversal_per_entry ON public.wallet_ledger USING btree (reverses_id) WHERE (entry_type = 'reversal'::text)",
+      "indexname": "wallet_ledger_one_reversal_per_entry",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE INDEX wallet_ledger_user_idx ON public.wallet_ledger USING btree (user_id, created_at DESC)",
+      "indexname": "wallet_ledger_user_idx",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE INDEX wallet_ledger_due_idx ON public.wallet_ledger USING btree (available_at) WHERE (status = 'pending'::text)",
+      "indexname": "wallet_ledger_due_idx",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE INDEX wallet_ledger_order_id_all_rows_idx ON public.wallet_ledger USING btree (order_id)",
+      "indexname": "wallet_ledger_order_id_all_rows_idx",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE INDEX wallet_ledger_reverses_id_all_rows_idx ON public.wallet_ledger USING btree (reverses_id)",
+      "indexname": "wallet_ledger_reverses_id_all_rows_idx",
+      "tablename": "wallet_ledger"
+    },
+    {
+      "indexdef": "CREATE INDEX wallet_ledger_referral_id_all_rows_idx ON public.wallet_ledger USING btree (referral_id)",
+      "indexname": "wallet_ledger_referral_id_all_rows_idx",
+      "tablename": "wallet_ledger"
+    }
+  ],
+  "policies": [
+    {
+      "cmd": "ALL",
+      "qual": "am_i_admin()",
+      "roles": [
+        "public"
+      ],
+      "tablename": "notifications",
+      "policyname": "notifications_admin_write",
+      "with_check": "am_i_admin()"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "((active = true) OR am_i_admin())",
+      "roles": [
+        "public"
+      ],
+      "tablename": "notifications",
+      "policyname": "notifications_public_read_active",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())",
+      "roles": [
+        "public"
+      ],
+      "tablename": "orders",
+      "policyname": "orders_select_own_or_admin",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "payments",
+      "policyname": "Users can view own payments",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "am_i_admin()",
+      "roles": [
+        "public"
+      ],
+      "tablename": "payments",
+      "policyname": "payments_admin_read",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "((user_id = ( SELECT auth.uid() AS uid)) OR am_i_admin())",
+      "roles": [
+        "public"
+      ],
+      "tablename": "purchases",
+      "policyname": "purchases_select_own_or_admin",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "am_i_admin()",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "wallet_ledger",
+      "policyname": "wallet_ledger_select_admin",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(user_id = ( SELECT auth.uid() AS uid))",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "wallet_ledger",
+      "policyname": "wallet_ledger_select_own",
+      "with_check": null
+    }
+  ],
+  "triggers": [
+    {
+      "name": "orders_00_guard_client_writes",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_00_guard_client_writes BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_guard_client_writes()"
+    },
+    {
+      "name": "orders_01_discount_reserve",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_01_discount_reserve BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_reserve_first_discount()"
+    },
+    {
+      "name": "orders_01_immutable_columns",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_01_immutable_columns BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_immutable_columns()"
+    },
+    {
+      "name": "orders_02_entitlement_immutable",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_02_entitlement_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_entitlement_immutable()"
+    },
+    {
+      "name": "orders_02_tax_snapshot",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_02_tax_snapshot BEFORE INSERT ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_snapshot_tax()"
+    },
+    {
+      "name": "orders_03_razorpay_transition",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_03_razorpay_transition BEFORE UPDATE OF status ON public.orders FOR EACH ROW EXECUTE FUNCTION guard_razorpay_order_transition()"
+    },
+    {
+      "name": "orders_before_write",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_before_write BEFORE INSERT OR UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_derive_course()"
+    },
+    {
+      "name": "orders_play_option_immutable",
+      "table": "orders",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER orders_play_option_immutable BEFORE UPDATE ON public.orders FOR EACH ROW EXECUTE FUNCTION orders_play_option_immutable()"
+    },
+    {
+      "name": "purchases_00_block_client_writes",
+      "table": "purchases",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER purchases_00_block_client_writes BEFORE INSERT OR DELETE OR UPDATE ON public.purchases FOR EACH ROW EXECUTE FUNCTION block_client_writes()"
+    },
+    {
+      "name": "purchases_play_order_snapshot",
+      "table": "purchases",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER purchases_play_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION play_purchase_entitlement_from_order()"
+    },
+    {
+      "name": "purchases_razorpay_order_snapshot",
+      "table": "purchases",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER purchases_razorpay_order_snapshot BEFORE INSERT ON public.purchases FOR EACH ROW EXECUTE FUNCTION razorpay_purchase_entitlement_from_order()"
+    },
+    {
+      "name": "purchases_zz_success_ownership",
+      "table": "purchases",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER purchases_zz_success_ownership BEFORE INSERT OR UPDATE ON public.purchases FOR EACH ROW EXECUTE FUNCTION guard_purchase_success_ownership()"
+    },
+    {
+      "name": "wallet_ledger_00_block_client_writes",
+      "table": "wallet_ledger",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER wallet_ledger_00_block_client_writes BEFORE INSERT OR DELETE OR UPDATE ON public.wallet_ledger FOR EACH ROW EXECUTE FUNCTION block_client_writes()"
+    },
+    {
+      "name": "wallet_ledger_01_append_only",
+      "table": "wallet_ledger",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER wallet_ledger_01_append_only BEFORE DELETE OR UPDATE ON public.wallet_ledger FOR EACH ROW EXECUTE FUNCTION wallet_ledger_append_only()"
+    },
+    {
+      "name": "wallet_ledger_02_no_truncate",
+      "table": "wallet_ledger",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER wallet_ledger_02_no_truncate BEFORE TRUNCATE ON public.wallet_ledger FOR EACH STATEMENT EXECUTE FUNCTION wallet_ledger_no_truncate()"
+    },
+    {
+      "name": "wallet_ledger_03_no_overdraw",
+      "table": "wallet_ledger",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER wallet_ledger_03_no_overdraw BEFORE INSERT ON public.wallet_ledger FOR EACH ROW EXECUTE FUNCTION wallet_ledger_no_overdraw()"
+    }
+  ],
+  "functions": [
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "",
+      "name": "admin_mfa_required",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.admin_mfa_required()\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  select coalesce((select require_mfa from public.admin_settings where id), false)\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+      "args": "p_course_id text, p_year_id text, p_subject_id text, p_chapter_id text",
+      "name": "content_is_published",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.content_is_published(p_course_id text, p_year_id text, p_subject_id text DEFAULT NULL::text, p_chapter_id text DEFAULT NULL::text)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  select\n    exists (select 1 from public.courses co where co.id = p_course_id and co.active)\n    and (p_year_id is null or exists (\n      select 1 from public.years y\n      where y.id = p_year_id and y.course_id = p_course_id and y.active\n    ))\n    and (p_subject_id is null or exists (\n      select 1 from public.subjects s\n      where s.id = p_subject_id and s.course_id = p_course_id and s.year_id = p_year_id and s.active\n    ))\n    and (p_chapter_id is null or exists (\n      select 1 from public.chapters c\n      join public.subjects s on s.id = c.subject_id and s.active\n        and s.course_id = p_course_id and s.year_id = p_year_id\n      where c.id = p_chapter_id and c.course_id = p_course_id and c.year_id = p_year_id and c.active\n        and (p_subject_id is null or c.subject_id = p_subject_id)\n    ));\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_razorpay_payment_id text, p_outcome text",
+      "name": "handle_payment_dispute",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.handle_payment_dispute(p_razorpay_payment_id text, p_outcome text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare\n  v_order public.orders%rowtype;\n  v_uid uuid;\n  v_n integer := 0;\nbegin\n  if p_outcome not in ('opened', 'won', 'lost') then\n    raise exception 'handle_payment_dispute: unknown outcome %', p_outcome;\n  end if;\n\n  if p_outcome = 'lost' then\n    return public.reverse_payment(p_razorpay_payment_id, 'chargeback', false)\n           || jsonb_build_object('dispute', 'lost');\n  end if;\n\n  select user_id into v_uid from public.orders where razorpay_payment_id = p_razorpay_payment_id;\n  if v_uid is not null then\n    perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text, 0));\n  end if;\n  select * into v_order from public.orders where razorpay_payment_id = p_razorpay_payment_id for update;\n  if not found then return jsonb_build_object('status', 'unknown_payment'); end if;\n\n  if p_outcome = 'opened' then\n    update public.purchases set status = 'disputed' where order_id = v_order.id and status = 'success';\n    get diagnostics v_n = row_count;\n    return jsonb_build_object('status', case when v_n > 0 then 'access_suspended' else 'nothing_to_suspend' end,\n                              'purchases_suspended', v_n);\n  end if;\n\n  -- won: restore, unless the student bought the same product again meanwhile\n  -- (then this one is the duplicate; it keeps no access of its own).\n  update public.purchases pu\n     set status = case when exists (select 1 from public.purchases o\n                                     where o.user_id = pu.user_id and o.product_id = pu.product_id\n                                       and o.id <> pu.id and o.status = 'success')\n                       then 'duplicate' else 'success' end\n   where pu.order_id = v_order.id and pu.status = 'disputed';\n  get diagnostics v_n = row_count;\n  return jsonb_build_object('status', case when v_n > 0 then 'access_restored' else 'nothing_to_restore' end,\n                            'purchases_restored', v_n);\nend;\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_razorpay_payment_id text, p_full_refund boolean",
+      "name": "handle_payment_refund",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.handle_payment_refund(p_razorpay_payment_id text, p_full_refund boolean)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\nbegin\n  if not exists (select 1 from public.orders where razorpay_payment_id = p_razorpay_payment_id) then\n    return jsonb_build_object('status', 'unknown_payment');\n  end if;\n  if not coalesce(p_full_refund, false) then\n    return jsonb_build_object('status', 'partial_refund_ignored');\n  end if;\n  return public.reverse_payment(p_razorpay_payment_id, 'refunded', true);\nend;\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_order_id text, p_payment_id text",
+      "name": "razorpay_entitlement_committed",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.razorpay_entitlement_committed(p_order_id text, p_payment_id text)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'public', 'pg_temp'\nAS $function$\n  select exists (\n    select 1 from public.orders o\n    join public.payments m on m.order_id=o.id\n    join public.purchases p on p.order_id=o.id\n    where o.id=p_order_id and p_payment_id is not null and p_payment_id<>''\n      and o.provider='razorpay' and o.status='paid'\n      and o.razorpay_payment_id=p_payment_id\n      and o.razorpay_order_id is not null and o.razorpay_order_id<>''\n      and o.user_id is not null and o.product_id is not null\n      and o.amount>0 and o.course_id is not null\n      and o.scope in ('chapter','subject','year','bundle')\n      and case o.scope\n        when 'chapter' then o.chapter_id is not null\n        when 'subject' then o.subject_id is not null\n        when 'year' then o.year_id is not null\n        when 'bundle' then coalesce(cardinality(o.year_ids),0)>0\n          and array_position(o.year_ids,null) is null\n        else false end\n      and m.provider='razorpay' and m.status='success'\n      and m.razorpay_payment_id=p_payment_id and m.razorpay_order_id=o.razorpay_order_id\n      and m.user_id=o.user_id and m.product_id=o.product_id and m.amount=o.amount\n      and p.status='success' and p.user_id=o.user_id\n      and p.product_id=o.product_id and p.amount=o.amount\n      and p.razorpay_order_id=o.razorpay_order_id\n      and row(p.scope,p.chapter_id,p.subject_id,p.year_id,p.year_ids,p.course_id)\n        is not distinct from row(o.scope,o.chapter_id,o.subject_id,o.year_id,o.year_ids,o.course_id)\n      -- Absence is allowed for historical purchases. An existing capture must\n      -- match exactly and must not be awaiting or have completed reversal.\n      and not exists (select 1 from public.payment_captures c\n        where c.payment_id=p_payment_id and (\n          c.order_id is distinct from o.id or c.razorpay_order_id is distinct from o.razorpay_order_id\n          or c.amount_paise is distinct from round(o.amount*100)::bigint\n          or c.status not in ('captured','granted')))\n      -- Even parked compensation is unresolved; no compensation state grants.\n      and not exists (select 1 from public.payment_compensations c where c.payment_id=p_payment_id)\n      -- C recovery classifies provider facts before linking/settlement. A\n      -- verified partial refund or won dispute may still await inbox application\n      -- when the exact purchase transaction checks this proof. Unclassified,\n      -- blocking and parked reversals continue to deny commitment.\n      and not exists (select 1 from public.provider_events e\n        where e.payment_id=p_payment_id and e.status in ('pending','parked')\n          and (e.status='parked' or e.blocks_entitlement is distinct from false)\n          and e.event_type in ('refund.processed','payment.dispute.created',\n            'payment.dispute.under_review','payment.dispute.action_required','payment.dispute.lost'))\n  );\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_payment_id text, p_razorpay_order_id text, p_amount_paise bigint, p_provider_time timestamp with time zone",
+      "name": "record_payment_capture",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.record_payment_capture(p_payment_id text, p_razorpay_order_id text, p_amount_paise bigint, p_provider_time timestamp with time zone)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare v_order_id text; v_capture public.payment_captures%rowtype;\nbegin\n  if p_payment_id is null or p_razorpay_order_id is null or p_amount_paise is null or p_amount_paise<=0\n    then raise exception 'invalid capture'; end if;\n  select id into v_order_id from public.orders where razorpay_order_id=p_razorpay_order_id;\n  insert into public.payment_captures(payment_id,razorpay_order_id,order_id,amount_paise,provider_time)\n  values(p_payment_id,p_razorpay_order_id,v_order_id,p_amount_paise,p_provider_time)\n  on conflict(payment_id) do update set provider_time=coalesce(public.payment_captures.provider_time,excluded.provider_time),\n    order_id=coalesce(public.payment_captures.order_id,excluded.order_id);\n  select * into v_capture from public.payment_captures where payment_id=p_payment_id;\n  if v_capture.razorpay_order_id<>p_razorpay_order_id or v_capture.amount_paise<>p_amount_paise\n    then raise exception 'capture identity mismatch'; end if;\nend $function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_event_id text, p_event_type text, p_razorpay_order_id text, p_payment_id text, p_provider_object_id text, p_payload_hash text, p_provider_time timestamp with time zone",
+      "name": "record_provider_event",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.record_provider_event(p_event_id text, p_event_type text, p_razorpay_order_id text, p_payment_id text, p_provider_object_id text, p_payload_hash text, p_provider_time timestamp with time zone)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare v_hash text;\nbegin\n  if p_event_id is null or p_event_id='' or p_event_type is null or p_event_type=''\n    or p_payload_hash !~ '^[0-9a-f]{64}$' then raise exception 'invalid provider event'; end if;\n  insert into public.provider_events(event_id,event_type,razorpay_order_id,payment_id,\n    provider_object_id,payload_hash,provider_time)\n  values(p_event_id,p_event_type,p_razorpay_order_id,p_payment_id,p_provider_object_id,p_payload_hash,p_provider_time)\n  on conflict(event_id) do nothing;\n  select payload_hash into v_hash from public.provider_events where event_id=p_event_id;\n  if v_hash is distinct from p_payload_hash then raise exception 'provider event id reused with another payload'; end if;\nend $function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_razorpay_payment_id text, p_purchase_status text, p_restore_wallet boolean",
+      "name": "reverse_payment",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.reverse_payment(p_razorpay_payment_id text, p_purchase_status text, p_restore_wallet boolean)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare\n  v_uid uuid;\n  v_order public.orders%rowtype;\n  v_credit public.wallet_ledger%rowtype;\n  v_debit public.wallet_ledger%rowtype;\n  v_restored numeric(10, 2) := 0;\n  v_revoked integer := 0;\n  v_rows integer := 0;\n  v_avail numeric(10, 2);\n  v_reversed numeric(10, 2);\n  v_status jsonb;\nbegin\n  if p_purchase_status not in ('refunded', 'chargeback') then\n    raise exception 'reverse_payment: bad purchase status %', p_purchase_status;\n  end if;\n\n  -- Same lock order as settle_razorpay_payment (wallet lock, THEN the order row)\n  -- so a refund cannot deadlock with a replayed capture event.\n  select user_id into v_uid from public.orders where razorpay_payment_id = p_razorpay_payment_id;\n  if v_uid is not null then\n    perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text, 0));\n  end if;\n\n  select * into v_order from public.orders where razorpay_payment_id = p_razorpay_payment_id for update;\n  if not found then return jsonb_build_object('status', 'unknown_payment'); end if;\n\n  -- ---- Take the access back ----------------------------------------------\n  update public.orders set status = 'refunded', updated_at = now()\n   where id = v_order.id and status = 'paid';\n\n  update public.purchases set status = p_purchase_status\n   where order_id = v_order.id and status not in ('refunded', 'chargeback');\n  get diagnostics v_revoked = row_count;\n\n  -- ---- Give the wallet amount this order used back to the student ---------\n  if p_restore_wallet then\n    select * into v_debit from public.wallet_ledger\n     where order_id = v_order.id and entry_type = 'debit' and source = 'order_payment';\n    if found and v_debit.user_id is not null then\n      perform set_config('app.trusted_order_write', 'true', true);\n      insert into public.wallet_ledger (user_id, entry_type, status, amount, source, order_id, note)\n      values (v_debit.user_id, 'credit', 'available', v_debit.amount, 'order_refund', v_order.id,\n              'Wallet amount restored after refund')\n      on conflict (order_id) where entry_type = 'credit' and source = 'order_refund' do nothing;\n      get diagnostics v_rows = row_count;   -- 1 on first insert, 0 on replay\n      perform set_config('app.trusted_order_write', 'false', true);\n      v_restored := case when v_rows > 0 then v_debit.amount else 0 end;\n    end if;\n  end if;\n\n  -- ---- The referrer's credit for this friend's purchase --------------------\n  -- Looked up by the ledger row's own order_id, NOT through referrals: the\n  -- referrals row is deleted when the friend deletes their account.\n  select * into v_credit from public.wallet_ledger\n   where order_id = v_order.id and entry_type = 'credit' and source = 'referral_reward'\n   for update;\n\n  if not found then\n    v_status := jsonb_build_object('status', 'no_referral_credit');\n\n  elsif v_credit.status = 'cancelled' then\n    v_status := jsonb_build_object('status', 'already_cancelled');\n\n  elsif v_credit.status = 'pending' then\n    -- Still held (even if the hold has technically run out but the release job\n    -- has not run yet): cancel it.\n    perform set_config('app.trusted_order_write', 'true', true);\n    update public.wallet_ledger set status = 'cancelled' where id = v_credit.id;\n    perform set_config('app.trusted_order_write', 'false', true);\n    update public.referrals\n       set status = 'rejected', reject_reason = 'friend_payment_reversed'\n     where id = v_credit.referral_id and status <> 'rejected';\n    v_status := jsonb_build_object('status', 'credit_cancelled', 'amount', v_credit.amount);\n\n  elsif exists (select 1 from public.wallet_ledger\n                 where entry_type = 'reversal' and reverses_id = v_credit.id) then\n    v_status := jsonb_build_object('status', 'already_reversed', 'ledger_id', v_credit.id);\n\n  elsif v_credit.user_id is null then\n    v_status := jsonb_build_object('status', 'referrer_gone', 'ledger_id', v_credit.id);\n\n  elsif v_credit.expires_at is not null and v_credit.expires_at <= now() then\n    v_status := jsonb_build_object('status', 'credit_expired', 'ledger_id', v_credit.id);\n\n  else\n    -- Released ('available'): reverse it with a ledger row, but never by more\n    -- than the referrer still has (the ledger refuses to overdraw). What cannot\n    -- be recovered is flagged for a manual decision.\n    perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_credit.user_id::text, 0));\n    select available into v_avail from public.wallet_balance_of(v_credit.user_id);\n    v_reversed := least(v_credit.amount, coalesce(v_avail, 0));\n    if v_reversed > 0 then\n      perform set_config('app.trusted_order_write', 'true', true);\n      insert into public.wallet_ledger (user_id, entry_type, status, amount, source, reverses_id, referral_id, order_id, note)\n      values (v_credit.user_id, 'reversal', 'available', v_reversed, 'order_refund', v_credit.id, v_credit.referral_id, v_order.id,\n              'Friend''s payment was reversed')\n      on conflict (reverses_id) where entry_type = 'reversal' do nothing;\n      perform set_config('app.trusted_order_write', 'false', true);\n    end if;\n    update public.referrals\n       set status = 'rejected', reject_reason = 'friend_payment_reversed'\n     where id = v_credit.referral_id and status <> 'rejected';\n    if v_reversed < v_credit.amount then\n      insert into public.order_review_flags (order_id, user_id, reason, wallet_amount, referral_discount, details)\n      values (v_order.id, v_credit.user_id, 'referral_credit_unrecovered', 0, 0,\n              jsonb_build_object(\n                'credit_ledger_id', v_credit.id,\n                'credit_amount', v_credit.amount,\n                'reversed', v_reversed,\n                'unrecovered', v_credit.amount - v_reversed,\n                'razorpay_payment_id', p_razorpay_payment_id,\n                'recommended_action',\n                  'The friend''s payment was reversed but the referrer had already spent part of the credit. '\n                  || 'Only what was still in their wallet was taken back; decide whether to recover the rest.'))\n      on conflict (order_id, reason) where order_id is not null do nothing;\n    end if;\n    v_status := jsonb_build_object('status', 'credit_reversed', 'ledger_id', v_credit.id,\n                                   'amount', v_credit.amount, 'reversed', v_reversed);\n  end if;\n\n  return v_status || jsonb_build_object('wallet_restored', v_restored, 'purchases_revoked', v_revoked);\nend;\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+      "name": "settle_razorpay_payment",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.settle_razorpay_payment(p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone DEFAULT NULL::timestamp with time zone)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare v_order public.orders%rowtype; v_capture public.payment_captures%rowtype;\n  v_reason text; v_reversal boolean; v_error text; v_uid uuid;\nbegin\n  -- Match creation, refund and legacy settlement lock order: user, then order.\n  select user_id into v_uid from public.orders where razorpay_order_id=p_razorpay_order_id;\n  if v_uid is not null then\n    perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text,0));\n  end if;\n  select * into v_order from public.orders where razorpay_order_id=p_razorpay_order_id for update;\n  if not found then raise exception 'Razorpay order is not linked'; end if;\n  if round(v_order.amount*100)::bigint<>p_amount_paise then raise exception 'capture amount mismatch'; end if;\n  perform public.record_payment_capture(p_razorpay_payment_id,p_razorpay_order_id,p_amount_paise,null);\n  select * into v_capture from public.payment_captures where payment_id=p_razorpay_payment_id for update;\n  if v_capture.status in ('compensation_pending','compensated') then\n    update public.provider_events set status='applied'\n      where event_id=p_event_id and event_type='payment.captured';\n    return;\n  end if;\n  if v_order.razorpay_payment_id is not null and v_order.razorpay_payment_id<>p_razorpay_payment_id then\n    insert into public.payment_compensations(payment_id,order_id,amount_paise,reason,refund_request_id)\n      values(p_razorpay_payment_id,v_order.id,p_amount_paise,'additional_capture',\n        'medveda_comp_' || md5(p_razorpay_payment_id)) on conflict(payment_id) do nothing;\n    update public.payment_captures set status='compensation_pending',failure_reason='additional_capture'\n      where payment_id=p_razorpay_payment_id;\n    update public.provider_events set status='applied' where event_id=p_event_id and event_type='payment.captured';\n    return;\n  end if;\n  -- Link the verified capture so an earlier reversal inbox can be reconciled\n  -- even while entitlement is held. This does not mark the order paid.\n  update public.orders set razorpay_payment_id=p_razorpay_payment_id\n    where id=v_order.id and razorpay_payment_id is null;\n  -- A successful capture replay must not become stale merely because time passed.\n  -- Reversals still take precedence and never restore access.\n  if v_capture.status='granted' and v_order.status='paid' then\n    update public.provider_events set status='applied'\n      where event_id=p_event_id and event_type='payment.captured';\n    return;\n  end if;\n  -- Unknown reversal facts and open disputes HOLD settlement. A later won\n  -- dispute clears the hold; an authenticated full refund/lost dispute reverses.\n  -- Never infer a full refund from a refund.processed event alone.\n  if v_order.status<>'refunded' and v_capture.status<>'reversed' and exists(\n    select 1 from public.provider_events e where e.payment_id=p_razorpay_payment_id\n      and e.status in ('pending','applied')\n      and e.event_type in ('refund.processed','payment.dispute.created','payment.dispute.under_review',\n        'payment.dispute.action_required','payment.dispute.lost')\n      and (e.blocks_entitlement is null or (e.blocks_entitlement and\n        e.event_type in ('payment.dispute.created','payment.dispute.under_review','payment.dispute.action_required')))) then\n    return;\n  end if;\n  select v_order.status='refunded' or v_capture.status='reversed' or exists(\n    select 1 from public.provider_events e where e.payment_id=p_razorpay_payment_id\n      and e.blocks_entitlement and e.status in ('pending','applied')\n      and e.event_type in ('refund.processed','payment.dispute.lost')) into v_reversal;\n  if v_reversal then v_reason:='reversal_received';\n  elsif v_order.user_id is null then v_reason:='account_deleted';\n  elsif v_order.scope is null or v_order.scope not in ('chapter','subject','year','bundle')\n      or (v_order.scope='chapter' and v_order.chapter_id is null)\n      or (v_order.scope='subject' and v_order.subject_id is null)\n      or (v_order.scope='year' and v_order.year_id is null)\n      or (v_order.scope='bundle' and coalesce(array_length(v_order.year_ids,1),0)=0)\n      or v_order.course_id is null then v_reason:='missing_entitlement_snapshot';\n  elsif v_order.referral_discount>0 and (v_order.status in ('cancelled','failed')\n      or (v_order.expires_at is not null and coalesce(p_paid_at,now())>v_order.expires_at)) then\n    v_reason:='stale_discount';\n  elsif v_order.referral_discount>0 and not exists(select 1 from public.first_discount_reservations\n      where order_id=v_order.id and user_id=v_order.user_id) then v_reason:='discount_reused';\n  elsif exists(select 1 from public.purchases where user_id=v_order.user_id\n      and product_id=v_order.product_id and status='success' and order_id is distinct from v_order.id) then\n    v_reason:='already_owned';\n  elsif v_order.amount<>v_order.list_price-v_order.referral_discount-v_order.wallet_amount then\n    v_reason:='underpriced_order';\n  end if;\n  if v_reason is null then\n    begin\n      perform public.settle_razorpay_payment_legacy(p_event_id,p_razorpay_order_id,\n        p_razorpay_payment_id,p_amount_paise,p_paid_at);\n    exception when others then\n      v_error:=sqlerrm;\n      if v_error like 'wallet shortfall:%' then v_reason:='wallet_shortfall';\n      else raise; end if;\n    end;\n  end if;\n  if v_reason is not null then\n    update public.orders set status=case when v_reversal then 'refunded' else 'paid' end,\n      razorpay_payment_id=p_razorpay_payment_id, updated_at=now(),\n      payment_completed_at=coalesce(payment_completed_at,clock_timestamp())\n      where id=v_order.id and status<>'refunded';\n    insert into public.payment_compensations(payment_id,order_id,amount_paise,reason,refund_request_id)\n      select p_razorpay_payment_id,v_order.id,p_amount_paise,v_reason,\n        'medveda_comp_' || md5(p_razorpay_payment_id)\n      where not v_reversal on conflict(payment_id) do nothing;\n    update public.payment_captures set status=case when v_reversal then 'reversed' else 'compensation_pending' end,\n      failure_reason=v_reason where payment_id=p_razorpay_payment_id;\n  else\n    if not public.razorpay_entitlement_committed(v_order.id,p_razorpay_payment_id) then\n      raise exception 'Razorpay entitlement not committed';\n    end if;\n    update public.payment_captures set status='granted' where payment_id=p_razorpay_payment_id;\n  end if;\n  update public.orders set payment_provider_time=coalesce(payment_provider_time,v_capture.provider_time),\n    payment_received_at=coalesce(payment_received_at,v_capture.received_at),\n    payment_completed_at=coalesce(payment_completed_at,clock_timestamp()),\n    payment_time_fallback=(v_capture.provider_time is null)\n    where id=v_order.id;\n  update public.provider_events set status='applied'\n    where event_id=p_event_id and event_type='payment.captured';\nend $function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres}",
+      "args": "p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone",
+      "name": "settle_razorpay_payment_legacy",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.settle_razorpay_payment_legacy(p_event_id text, p_razorpay_order_id text, p_razorpay_payment_id text, p_amount_paise bigint, p_paid_at timestamp with time zone DEFAULT NULL::timestamp with time zone)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare\n  v_uid uuid;\n  v_order public.orders%rowtype;\n  v_product public.products%rowtype;\n  v_existing_payment_order_id text;\n  v_set public.referral_settings%rowtype;\n  v_ref public.referrals%rowtype;\n  v_balance numeric(10, 2);\n  v_debit numeric(10, 2) := 0;\n  v_stale boolean;\n  v_first boolean;                 -- first settlement of this order (not a replay)\n  v_debited boolean := false;\n  v_discount_owner text;\n  v_discount_dup boolean := false;\n  v_owned_purchase text;           -- an existing successful purchase of the same product\n  v_base jsonb;\n  v_other_reserved numeric(10,2);\nbegin\n  if p_event_id is null or p_razorpay_order_id is null or p_razorpay_payment_id is null\n    or p_amount_paise is null or p_amount_paise <= 0 then\n    raise exception 'invalid Razorpay settlement parameters';\n  end if;\n\n  select user_id into v_uid from public.orders where razorpay_order_id = p_razorpay_order_id;\n  if v_uid is not null then\n    perform pg_advisory_xact_lock(hashtextextended('wallet:' || v_uid::text, 0));\n  end if;\n\n  -- Row lock serialises a webhook retry with the client verification path.\n  select * into v_order\n  from public.orders\n  where razorpay_order_id = p_razorpay_order_id\n  for update;\n\n  if not found then\n    raise exception 'Razorpay order % is not linked to an internal order', p_razorpay_order_id;\n  end if;\n  if round(v_order.amount * 100)::bigint <> p_amount_paise then\n    raise exception 'Razorpay amount does not match order amount';\n  end if;\n\n  select order_id into v_existing_payment_order_id\n  from public.payments\n  where razorpay_payment_id = p_razorpay_payment_id;\n  if found and v_existing_payment_order_id <> v_order.id then\n    raise exception 'Razorpay payment is already linked to another order';\n  end if;\n\n  -- Account deleted while the payment was in flight: keep the accounting row,\n  -- grant nothing, debit nothing, reward nothing (refund manually).\n  if v_order.user_id is null then\n    insert into public.payments (\n      order_id, user_id, product_id, amount, razorpay_order_id,\n      razorpay_payment_id, status, verified_at\n    ) values (\n      v_order.id, null, v_order.product_id, v_order.amount,\n      p_razorpay_order_id, p_razorpay_payment_id, 'success', now()\n    ) on conflict (razorpay_payment_id) do nothing;\n\n    update public.orders\n    set status = 'paid', razorpay_payment_id = p_razorpay_payment_id, updated_at = now(),\n        payment_completed_at = case when external_transaction_token is not null\n          then coalesce(payment_completed_at, clock_timestamp()) else payment_completed_at end\n    where id = v_order.id and status <> 'refunded';\n\n    insert into public.razorpay_webhook_events(event_id, razorpay_payment_id, event_type)\n    values (p_event_id, p_razorpay_payment_id, 'payment.captured')\n    on conflict (event_id) do nothing;\n\n    raise warning 'grant_razorpay_payment: payment % for order % arrived after the account was deleted; no access granted - refund manually', p_razorpay_payment_id, v_order.id;\n    return;\n  end if;\n\n  select * into v_product from public.products where id = v_order.product_id;\n  if not found then\n    raise exception 'Order % references unknown product %', v_order.id, v_order.product_id;\n  end if;\n\n  v_first := v_order.status not in ('paid', 'refunded');\n\n  -- A cancelled/expired checkout may have released its reservation. Never\n  -- grant a captured payment unless the whole wallet discount can be debited.\n  if v_first and v_order.wallet_amount > 0 then\n    perform public.release_due_wallet_credits(v_order.user_id);\n    select available into v_balance from public.wallet_balance_of(v_order.user_id);\n    select coalesce(sum(r.amount),0) into v_other_reserved\n      from public.wallet_order_reservations r join public.orders o on o.id=r.order_id\n      where r.user_id=v_order.user_id and r.order_id<>v_order.id\n        and o.status='created' and r.expires_at>now();\n    if coalesce(v_balance,0)-v_other_reserved < v_order.wallet_amount then\n      raise exception 'wallet shortfall: captured payment requires manual refund or compensation';\n    end if;\n  end if;\n\n  -- ---- Friend discount is usable ONCE per referral -------------------------\n  -- The first discounted order to settle claims referrals.discount_order_id; any\n  -- other discounted order is a second use of the same discount. Serialised per\n  -- user by the wallet advisory lock above; replays of the winner see their own\n  -- id and pass. A second use is still granted (the customer paid what checkout\n  -- charged) but gets no referrer credit, and is flagged below.\n  if v_order.referral_discount > 0 and v_order.referral_id is not null then\n    update public.referrals set discount_order_id = v_order.id\n     where id = v_order.referral_id and discount_order_id is null;\n    select discount_order_id into v_discount_owner from public.referrals where id = v_order.referral_id;\n    v_discount_dup := found and v_discount_owner is not null and v_discount_owner <> v_order.id;\n  end if;\n\n  insert into public.payments (\n    order_id, user_id, product_id, amount, razorpay_order_id,\n    razorpay_payment_id, status, verified_at\n  ) values (\n    v_order.id, v_order.user_id, v_order.product_id, v_order.amount,\n    p_razorpay_order_id, p_razorpay_payment_id, 'success', now()\n  ) on conflict (razorpay_payment_id) do nothing;\n\n  -- ---- Already owns this product? -----------------------------------------\n  select id into v_owned_purchase from public.purchases\n   where user_id = v_order.user_id and product_id = v_product.id\n     and status = 'success' and order_id is distinct from v_order.id\n   limit 1;\n\n  insert into public.purchases (\n    user_id, order_id, product_id, product_title, scope, chapter_id,\n    subject_id, year_id, year_ids, course_id, amount, status, razorpay_order_id\n  ) values (\n    v_order.user_id, v_order.id, v_product.id, coalesce(v_product.title, 'Your content'),\n    v_order.scope, v_order.chapter_id, v_order.subject_id, v_order.year_id,\n    v_order.year_ids, v_order.course_id, v_order.amount,\n    case when v_owned_purchase is null then 'success' else 'duplicate' end,\n    p_razorpay_order_id\n  ) on conflict (order_id) do nothing;\n\n  update public.orders\n  set status = 'paid', razorpay_payment_id = p_razorpay_payment_id,\n      course_id = v_order.course_id, updated_at = now(),\n      payment_completed_at = case when external_transaction_token is not null\n        then coalesce(payment_completed_at, clock_timestamp()) else payment_completed_at end\n  where id = v_order.id and status <> 'refunded';\n\n  -- Remember who bought (hashed email / phone) so a deleted-and-recreated account is not\n  -- treated as a first-time buyer. Never removed on refund or account deletion.\n  if v_owned_purchase is null then\n    perform public.record_purchase_identity(v_order.user_id);\n  end if;\n\n  -- ---- Stale order? -------------------------------------------------------\n  -- v_order is the row as it was BEFORE this settlement flipped it to 'paid'.\n  -- Replays see 'paid' and rely on the flag written the first time.\n  v_stale := exists (select 1 from public.order_review_flags\n                      where order_id = v_order.id and reason = 'stale_order_paid')\n          or v_order.status in ('cancelled', 'failed')\n          or (v_order.status = 'created' and v_order.expires_at is not null\n              and coalesce(p_paid_at, now()) > v_order.expires_at);\n\n  -- ---- Wallet debit: ALWAYS, on the first settlement, clamped ---------------\n  if v_first and v_order.wallet_amount > 0\n     and not exists (select 1 from public.wallet_ledger\n                      where order_id = v_order.id and entry_type = 'debit' and source = 'order_payment') then\n    perform public.release_due_wallet_credits(v_order.user_id);\n    select available into v_balance from public.wallet_balance_of(v_order.user_id);\n    v_debit := v_order.wallet_amount;\n    if v_debit > 0 then\n      insert into public.wallet_ledger (user_id, entry_type, status, amount, source, order_id, note)\n      values (v_order.user_id, 'debit', 'available', v_debit, 'order_payment', v_order.id, 'Wallet used at checkout')\n      on conflict (order_id) where entry_type = 'debit' and source = 'order_payment' do nothing;\n      v_debited := true;\n    end if;\n  end if;\n\n  -- ---- Review flags (one per order and reason; replays add nothing) ---------\n  v_base := jsonb_build_object(\n    'product_id', v_product.id,\n    'product_title', v_product.title,\n    'amount_paid', v_order.amount,\n    'list_price', v_order.list_price,\n    'razorpay_order_id', p_razorpay_order_id,\n    'razorpay_payment_id', p_razorpay_payment_id);\n\n  if v_first and v_order.wallet_amount > 0 and v_debit < v_order.wallet_amount then\n    insert into public.order_review_flags (order_id, user_id, reason, wallet_amount, referral_discount, details)\n    values (v_order.id, v_order.user_id, 'wallet_shortfall', v_order.wallet_amount, v_order.referral_discount,\n            v_base || jsonb_build_object(\n              'wallet_amount_applied', v_order.wallet_amount,\n              'wallet_debited', v_debit,\n              'shortfall', v_order.wallet_amount - v_debit,\n              'access_granted', true,\n              'recommended_action',\n                format('Checkout applied Rs %s of wallet balance but only Rs %s was still available, so Rs %s of the discount was not paid for. Access was granted. Decide whether to accept it or refund payment %s in Razorpay (a full refund revokes the access).',\n                       v_order.wallet_amount, v_debit, v_order.wallet_amount - v_debit, p_razorpay_payment_id)))\n    on conflict (order_id, reason) where order_id is not null do nothing;\n    raise warning 'settle_razorpay_payment: order % wanted % wallet credit but only % was available',\n      v_order.id, v_order.wallet_amount, v_debit;\n  end if;\n\n  if v_stale and (v_order.wallet_amount > 0 or v_order.referral_discount > 0) then\n    insert into public.order_review_flags (order_id, user_id, reason, wallet_amount, referral_discount, details)\n    values (v_order.id, v_order.user_id, 'stale_order_paid', v_order.wallet_amount, v_order.referral_discount,\n            v_base || jsonb_build_object(\n              'order_status', v_order.status, 'expires_at', v_order.expires_at, 'paid_at', p_paid_at,\n              'wallet_debited', (select coalesce(sum(amount), 0) from public.wallet_ledger\n                                  where order_id = v_order.id and entry_type = 'debit' and source = 'order_payment'),\n              'access_granted', true,\n              'recommended_action',\n                'This payment arrived for a checkout that was already cancelled or had expired. Access was granted and the wallet amount was debited as normal. No action needed unless the amount looks wrong.'))\n    on conflict (order_id, reason) where order_id is not null do nothing;\n    raise warning 'settle_razorpay_payment: order % was % / expired when payment % arrived; flagged for review',\n      v_order.id, v_order.status, p_razorpay_payment_id;\n  end if;\n\n  if v_discount_dup then\n    insert into public.order_review_flags (order_id, user_id, reason, wallet_amount, referral_discount, details)\n    values (v_order.id, v_order.user_id, 'discount_reused', v_order.wallet_amount, v_order.referral_discount,\n            v_base || jsonb_build_object(\n              'discount_first_order_id', v_discount_owner,\n              'discount_not_owed', v_order.referral_discount,\n              'order_status', v_order.status,\n              'access_granted', true,\n              'referrer_credited', false,\n              'recommended_action',\n                format('Access was granted. This student already used their one friend discount on order %s, so this order was under-charged by Rs %s (paid Rs %s instead of Rs %s). To reverse it, issue a FULL refund of payment %s in the Razorpay dashboard: the refund webhook then revokes the access and gives back any wallet amount used, and the student can buy again at full price. Do nothing to keep the sale as it is.',\n                       v_discount_owner, v_order.referral_discount, v_order.amount,\n                       v_order.amount + v_order.referral_discount, p_razorpay_payment_id)))\n    on conflict (order_id, reason) where order_id is not null do nothing;\n    raise warning 'settle_razorpay_payment: order % reuses the friend discount already used by order %; access granted, no referrer credit, flagged for review',\n      v_order.id, v_discount_owner;\n  end if;\n\n  if v_owned_purchase is not null then\n    insert into public.order_review_flags (order_id, user_id, reason, wallet_amount, referral_discount, details)\n    values (v_order.id, v_order.user_id, 'duplicate_purchase', v_order.wallet_amount, v_order.referral_discount,\n            v_base || jsonb_build_object(\n              'existing_purchase_id', v_owned_purchase,\n              'access_granted', false,\n              'recommended_action',\n                format('The student already owned \"%s\" and paid for it again (Rs %s). The new purchase is stored as ''duplicate'' and adds no access. Refund payment %s in the Razorpay dashboard.',\n                       v_product.title, v_order.amount, p_razorpay_payment_id)))\n    on conflict (order_id, reason) where order_id is not null do nothing;\n    raise warning 'settle_razorpay_payment: order % is a duplicate purchase of product %; flagged for refund', v_order.id, v_product.id;\n  end if;\n\n  -- ---- Referrer credit ----------------------------------------------------\n  -- Only the friend's FIRST successful purchase counts, and only once.\n  select * into v_ref from public.referrals where referred_id = v_order.user_id for update;\n  if found and not v_discount_dup and v_ref.first_order_id is null and v_ref.status in ('pending', 'qualified')\n     and v_owned_purchase is null\n     and not exists (select 1 from public.purchases\n                      where user_id = v_order.user_id and order_id <> v_order.id and status = 'success') then\n    select * into v_set from public.referral_settings where id = true;\n\n    -- Batch 3 / F5: no credit unless BOTH sides have a verified mobile number at the\n    -- moment of the purchase (a number changed after applying the code loses its\n    -- verification). The referral is consumed: this was the friend's first purchase.\n    if v_set.require_verified_phone\n       and not (coalesce((select mobile_verified from public.profiles where id = v_order.user_id), false)\n            and coalesce((select mobile_verified from public.profiles where id = v_ref.referrer_id), false)) then\n      update public.referrals\n         set first_order_id = v_order.id, status = 'rejected', reject_reason = 'phone_not_verified_at_purchase'\n       where id = v_ref.id;\n      raise warning 'settle_razorpay_payment: no referrer credit for order %: a mobile number was not verified', v_order.id;\n      v_ref.status := 'rejected';\n    elsif public.has_prior_purchase_identity(v_order.user_id) then\n      -- Same email / phone already bought under another (maybe deleted) account.\n      update public.referrals\n         set first_order_id = v_order.id, status = 'rejected', reject_reason = 'returning_customer'\n       where id = v_ref.id;\n      raise warning 'settle_razorpay_payment: no referrer credit for order %: the buyer is a returning customer', v_order.id;\n      v_ref.status := 'rejected';\n    else\n      update public.referrals\n         set first_order_id = v_order.id, status = 'qualified', qualified_at = coalesce(qualified_at, now())\n       where id = v_ref.id;\n    end if;\n\n    if v_ref.status <> 'rejected' and v_set.enabled and v_set.referrer_credit_amount > 0\n       and exists (select 1 from public.profiles where id = v_ref.referrer_id and not blocked) then\n      insert into public.wallet_ledger (\n        user_id, entry_type, status, amount, source, referral_id, order_id,\n        available_at, expires_at, note\n      ) values (\n        v_ref.referrer_id, 'credit', 'pending', v_set.referrer_credit_amount::numeric(10, 2),\n        'referral_reward', v_ref.id, v_order.id,\n        now() + make_interval(days => v_set.credit_hold_days),\n        case when v_set.credit_expiry_days is null then null\n             else now() + make_interval(days => v_set.credit_hold_days + v_set.credit_expiry_days) end,\n        'Friend''s first purchase'\n      ) on conflict (referral_id) where entry_type = 'credit' and source = 'referral_reward' do nothing;\n    end if;\n  end if;\n\n  insert into public.razorpay_webhook_events(event_id, razorpay_payment_id, event_type)\n  values (p_event_id, p_razorpay_payment_id, 'payment.captured')\n  on conflict (event_id) do nothing;\nend;\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "args": "p_user uuid, p_note_id text",
+      "name": "user_can_access_note",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.user_can_access_note(p_user uuid, p_note_id text)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  select p_user is not null\n    and exists (select 1 from public.profiles pr\n      where pr.id = p_user and not coalesce(pr.blocked, false))\n    and exists (\n      select 1 from public.notes n\n      join public.chapters c on c.id = n.chapter_id\n      where n.id = p_note_id and n.active\n        and public.content_is_published(n.course_id, n.year_id, c.subject_id, n.chapter_id)\n        and (\n          (n.is_free_preview and exists (select 1 from public.profiles pr\n            where pr.id = p_user and pr.course_id = n.course_id))\n          or (not public.admin_mfa_required()\n            and exists (select 1 from public.admins a where a.id = p_user))\n          or exists (\n            select 1 from public.purchases p\n            where p.user_id = p_user and p.status = 'success'\n              and p.course_id = c.course_id\n              and ((p.scope = 'chapter' and p.chapter_id = c.id)\n                or (p.scope = 'subject' and p.subject_id = c.subject_id)\n                or (p.scope = 'year' and p.year_id = c.year_id)\n                or (p.scope = 'bundle' and c.year_id = any(p.year_ids)))\n          )\n        )\n    );\n$function$\n"
+    }
+  ],
+  "constraints": [
+    {
+      "name": "orders_amount_positive",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK ((amount > (0)::numeric))"
+    },
+    {
+      "name": "orders_course_id_fkey",
+      "table": "orders",
+      "validated": true,
+      "definition": "FOREIGN KEY (course_id) REFERENCES courses(id)"
+    },
+    {
+      "name": "orders_phase2_amounts",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK (((referral_discount >= (0)::numeric) AND (wallet_amount >= (0)::numeric) AND ((list_price IS NULL) OR (((list_price - referral_discount) - wallet_amount) = amount))))"
+    },
+    {
+      "name": "orders_pkey",
+      "table": "orders",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "orders_product_id_fkey",
+      "table": "orders",
+      "validated": true,
+      "definition": "FOREIGN KEY (product_id) REFERENCES products(id)"
+    },
+    {
+      "name": "orders_referral_id_fkey",
+      "table": "orders",
+      "validated": true,
+      "definition": "FOREIGN KEY (referral_id) REFERENCES referrals(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "orders_status_check",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['created'::text, 'paid'::text, 'failed'::text, 'cancelled'::text, 'pending'::text, 'refunded'::text])))"
+    },
+    {
+      "name": "orders_ucb_choice_check",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK (((provider <> 'play'::text) OR ((play_sku IS NOT NULL) AND (razorpay_order_id IS NULL))))"
+    },
+    {
+      "name": "orders_ucb_consumption_check",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK (((play_consumption_status IS NULL) OR (play_consumption_status = ANY (ARRAY['pending'::text, 'failed'::text, 'consumed'::text]))))"
+    },
+    {
+      "name": "orders_ucb_provider_check",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK ((provider = ANY (ARRAY['razorpay'::text, 'play'::text])))"
+    },
+    {
+      "name": "orders_ucb_report_check",
+      "table": "orders",
+      "validated": true,
+      "definition": "CHECK (((external_report_status IS NULL) OR (external_report_status = ANY (ARRAY['pending'::text, 'failed'::text, 'reported'::text]))))"
+    },
+    {
+      "name": "orders_user_id_fkey",
+      "table": "orders",
+      "validated": true,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "purchases_chapter_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "purchases_course_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (course_id) REFERENCES courses(id)"
+    },
+    {
+      "name": "purchases_order_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (order_id) REFERENCES orders(id)"
+    },
+    {
+      "name": "purchases_pkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "purchases_product_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (product_id) REFERENCES products(id)"
+    },
+    {
+      "name": "purchases_scope_check",
+      "table": "purchases",
+      "validated": true,
+      "definition": "CHECK ((scope = ANY (ARRAY['chapter'::text, 'subject'::text, 'year'::text, 'bundle'::text])))"
+    },
+    {
+      "name": "purchases_status_check",
+      "table": "purchases",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['success'::text, 'refunded'::text, 'disputed'::text, 'chargeback'::text, 'duplicate'::text])))"
+    },
+    {
+      "name": "purchases_subject_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "purchases_user_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "purchases_year_id_fkey",
+      "table": "purchases",
+      "validated": true,
+      "definition": "FOREIGN KEY (year_id) REFERENCES years(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "payments_order_id_fkey",
+      "table": "payments",
+      "validated": true,
+      "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "payments_pkey",
+      "table": "payments",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "payments_product_id_fkey",
+      "table": "payments",
+      "validated": true,
+      "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "payments_razorpay_payment_id_key",
+      "table": "payments",
+      "validated": true,
+      "definition": "UNIQUE (razorpay_payment_id)"
+    },
+    {
+      "name": "payments_ucb_provider_check",
+      "table": "payments",
+      "validated": true,
+      "definition": "CHECK ((((provider = 'razorpay'::text) AND (razorpay_order_id IS NOT NULL) AND (razorpay_payment_id IS NOT NULL) AND (purchase_token IS NULL)) OR ((provider = 'play'::text) AND (razorpay_order_id IS NULL) AND (razorpay_payment_id IS NULL) AND (purchase_token IS NOT NULL) AND (play_sku IS NOT NULL))))"
+    },
+    {
+      "name": "payments_user_id_fkey",
+      "table": "payments",
+      "validated": true,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "wallet_ledger_amount_check",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK ((amount > (0)::numeric))"
+    },
+    {
+      "name": "wallet_ledger_entry_type_check",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK ((entry_type = ANY (ARRAY['credit'::text, 'debit'::text, 'reversal'::text])))"
+    },
+    {
+      "name": "wallet_ledger_only_credits_pend",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK (((entry_type = 'credit'::text) OR (status <> 'pending'::text)))"
+    },
+    {
+      "name": "wallet_ledger_order_id_fkey",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "wallet_ledger_pending_needs_date",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK (((status <> 'pending'::text) OR (available_at IS NOT NULL)))"
+    },
+    {
+      "name": "wallet_ledger_pkey",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "wallet_ledger_referral_id_fkey",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "FOREIGN KEY (referral_id) REFERENCES referrals(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "wallet_ledger_reverses_id_fkey",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "FOREIGN KEY (reverses_id) REFERENCES wallet_ledger(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "wallet_ledger_source_check",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK ((source = ANY (ARRAY['referral_reward'::text, 'order_payment'::text, 'order_refund'::text, 'admin_adjustment'::text])))"
+    },
+    {
+      "name": "wallet_ledger_status_check",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'available'::text, 'cancelled'::text])))"
+    },
+    {
+      "name": "wallet_ledger_user_id_fkey",
+      "table": "wallet_ledger",
+      "validated": true,
+      "definition": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE SET NULL"
+    },
+    {
+      "name": "provider_events_payload_hash_check",
+      "table": "provider_events",
+      "validated": true,
+      "definition": "CHECK ((payload_hash ~ '^[0-9a-f]{64}$'::text))"
+    },
+    {
+      "name": "provider_events_pkey",
+      "table": "provider_events",
+      "validated": true,
+      "definition": "PRIMARY KEY (event_id)"
+    },
+    {
+      "name": "provider_events_status_check",
+      "table": "provider_events",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'applied'::text, 'parked'::text])))"
+    },
+    {
+      "name": "payment_captures_amount_paise_check",
+      "table": "payment_captures",
+      "validated": true,
+      "definition": "CHECK ((amount_paise > 0))"
+    },
+    {
+      "name": "payment_captures_order_id_fkey",
+      "table": "payment_captures",
+      "validated": true,
+      "definition": "FOREIGN KEY (order_id) REFERENCES orders(id)"
+    },
+    {
+      "name": "payment_captures_pkey",
+      "table": "payment_captures",
+      "validated": true,
+      "definition": "PRIMARY KEY (payment_id)"
+    },
+    {
+      "name": "payment_captures_status_check",
+      "table": "payment_captures",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['captured'::text, 'granted'::text, 'compensation_pending'::text, 'reversal_pending'::text, 'reversed'::text, 'compensated'::text])))"
+    },
+    {
+      "name": "payment_compensations_amount_paise_check",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "CHECK ((amount_paise > 0))"
+    },
+    {
+      "name": "payment_compensations_order_id_fkey",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "FOREIGN KEY (order_id) REFERENCES orders(id)"
+    },
+    {
+      "name": "payment_compensations_payment_id_fkey",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "FOREIGN KEY (payment_id) REFERENCES payment_captures(payment_id)"
+    },
+    {
+      "name": "payment_compensations_pkey",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "PRIMARY KEY (payment_id)"
+    },
+    {
+      "name": "payment_compensations_refund_request_id_key",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "UNIQUE (refund_request_id)"
+    },
+    {
+      "name": "payment_compensations_status_check",
+      "table": "payment_compensations",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'processing'::text, 'refunded'::text, 'parked'::text])))"
+    }
+  ]
+}

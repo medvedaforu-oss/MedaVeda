@@ -1,0 +1,95 @@
+$ node supabase/tests/mv004-recovery-selftest.cjs
+PASS missing authentication denied before order/provider/settlement
+PASS expired authentication denied before order/provider/settlement
+PASS forged authentication denied before order/provider/settlement
+PASS raw token authentication denied before order/provider/settlement
+PASS Basic scheme authentication denied before order/provider/settlement
+PASS wrong owner and missing order use verified identity filters and identical non-disclosing responses; body user ID ignored
+PASS invalid UUID and failed recovery limiter never reach provider/settlement
+PASS valid owner and duplicate recovery deliveries reach settlement (SQL idempotency covered by MV003)
+PASS valid signed callback without JWT reaches shared helper; invalid/missing signature rejected before order lookup
+razorpay-webhook: processed { eventId: 'evt_mv004', paymentId: 'pay_Fixture004' }
+razorpay-webhook: invalid signature { eventId: 'evt_mv004' }
+razorpay-webhook: invalid signature { eventId: 'evt_mv004' }
+PASS valid raw-body webhook HMAC; modified body/invalid HMAC rejected before inbox/settlement
+PASS MV004 backend isolated fixtures; zero real HTTP requests
+
+$ node mobile-app/scripts/mv004-recovery-selftest.cjs
+PASS same-account 401 refresh sends fresh Bearer once; same pending order and deadline preserved
+PASS refresh failure/timeout/foreign session/repeated 401 stop all retries with sign-in guidance and uncertain payment
+PASS signed out, switch during response/refresh and switch between retries cannot return success or send another request
+PASS bounded pending retries preserve original identifier; successful historical recovery requires no new checkout
+PASS screen coalesces duplicate recovery, ignores old-account success, stops auth polling, preserves pending order and offers My Purchases/support
+
+$ node supabase/tests/mv005-create-order-selftest.cjs
+PASS all four actual create-order failure branches condition on created; paid/refunded states preserved (12 cases)
+
+$ node supabase/tests/recovery-selftest.cjs
+PASS unsigned recover denied: 401
+PASS wrong owner denied: 404
+PASS recovery limiter fails closed before provider lookup: 429, lookups=0
+
+$ node supabase/tests/settle-timestamp-selftest.cjs
+settle: UCB completion timestamp missing undefined
+PASS F05 missing settlement receipt cannot return success
+PASS F05 authoritative capture timestamp persisted separately from receipt
+PASS B01 granted marker without committed purchase stays pending
+PASS B01 uncommitted capture is retryable rather than compensation
+PASS F03 UCB wallet shortfall capture is reported despite refused entitlement
+PASS F03 verified capture for an unknown local order is recorded and compensated
+
+$ node supabase/tests/razorpay-security-selftest.cjs
+PASS malformed callback bodies return 400 without settlement
+PASS production rejects test-mode key before provider request
+PASS actual HMAC implementation accepts authentic and rejects forged/malformed signatures
+PASS missing callback signature
+PASS forged callback signature
+PASS callback order swapped
+verify-payment: not settled { reason: 'payment not captured', razorpayPaymentId: 'pay_audit0001' }
+PASS authorized payment cannot unlock
+verify-payment: not settled { reason: 'currency mismatch', razorpayPaymentId: 'pay_audit0001' }
+PASS wrong payment currency cannot unlock
+verify-payment: not settled {
+  reason: 'payment/order mismatch',
+  razorpayPaymentId: 'pay_audit0001'
+}
+PASS provider payment/order mismatch cannot unlock
+verify-payment: not settled {
+  reason: 'razorpay order amount mismatch',
+  razorpayPaymentId: 'pay_audit0001'
+}
+PASS provider amount mismatch cannot unlock
+verify-payment: not settled {
+  reason: 'payment captured; refund queued',
+  razorpayPaymentId: 'pay_audit0001'
+}
+PASS stored amount mismatch cannot unlock
+PASS valid captured callback reaches server settlement
+PASS refunded recovery is terminal without provider call or regrant
+PASS recovery owner=undefined status=401
+PASS recovery owner=other status=404
+PASS recovery owner=buyer status=200
+
+$ node supabase/tests/mv006-restoration-selftest.cjs
+PASS actual repository/service restores historic duplicates after logout/login and process reload; preserves display rows; one refund retains access, full refund denies, owner/status filtering holds
+
+$ node mobile-app/scripts/purchases-selftest.cjs
+PASS repository filters success
+PASS only successful scopes returned
+PASS partial refund with successful purchase stays owned
+PASS refunded scope denied by helpers
+PASS chargeback scope denied by helpers
+PASS partial_refund scope denied by helpers
+
+$ node mobile-app/scripts/notes-entitlement-selftest.cjs
+PASS paid note local restriction, authorized opening/reopening with fresh links, and authoritative server denial despite a stale unlocked route
+
+$ node mobile-app/scripts/payment-verdict-selftest.cjs
+PASS structured pending, legacy unconfirmed and network failures recover then show pending without failed writes
+PASS checkout authentication failure preserves pending order and passes sign-in guidance without failed writes
+PASS only server-confirmed verification/recovery navigates to success; explicit rejection remains terminal
+PASS UPI resume confirmation cannot be replaced or duplicated by a delayed callback verdict or network error
+
+$ node mobile-app/scripts/release-payments-disabled-selftest.cjs
+PASS release Android actual provider config → navigation/service/checkout: no Razorpay order or checkout, including hostile Razorpay config
+

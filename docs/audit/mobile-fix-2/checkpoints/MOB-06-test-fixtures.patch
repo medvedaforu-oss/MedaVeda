@@ -1,0 +1,25 @@
+--- a/mobile-app/scripts/password-recovery.test.cjs
++++ b/mobile-app/scripts/password-recovery.test.cjs
+@@ -302,6 +302,7 @@
+     createElement: (type, props, ...children) => ({ type, props: { ...props, children: children.flat(Infinity) } }),
+     Fragment: 'Fragment',
+     useState(init) { const i = cursor++; if (!(i in slots)) slots[i] = typeof init === 'function' ? init() : init; return [slots[i], value => { slots[i] = value; }]; },
++    useSyncExternalStore(subscribe, getSnapshot) { return getSnapshot(); },
+     useRef(value) { const i = cursor++; if (!(i in slots)) slots[i] = { current: value }; return slots[i]; },
+     useCallback(fn, deps) { const i = cursor++; if (!slots[i] || changed(slots[i].deps, deps)) slots[i] = { fn, deps }; return slots[i].fn; },
+     useEffect(fn, deps) { const i = cursor++; if (changed(slots[i], deps)) { slots[i] = deps; pending.push(fn); } },
+@@ -314,12 +315,12 @@
+     module, exports: module.exports, Error,
+     require(name) {
+       if (name === 'react') return hooks;
+-      if (name === 'react-native') return { ...Object.fromEntries(['ActivityIndicator', 'Text', 'TextInput', 'TouchableOpacity', 'View'].map(k => [k, k])), StyleSheet: { create: s => s }, Alert: { alert: (...a) => alerts.push(a) }, Linking: { openURL() {} } };
++      if (name === 'react-native') return { ...Object.fromEntries(['ActivityIndicator', 'Text', 'TextInput', 'TouchableOpacity', 'View', 'ScrollView', 'KeyboardAvoidingView'].map(k => [k, k])), StyleSheet: { create: s => s }, Alert: { alert: (...a) => alerts.push(a) }, Platform: { OS: 'android' }, Linking: { openURL: async () => {} } };
+       if (name === '@react-navigation/native') return { useNavigation: () => navigation };
+       if (name === 'react-hook-form') return { Controller: 'Controller', useForm: () => form };
+       if (name === '@hookform/resolvers/yup') return { yupResolver() {} };
+       if (name.endsWith('/authService')) return service.exports;
+-      if (name.endsWith('/deepLinkStore')) return { getLastDeepLinkUrl: () => link, clearLastDeepLinkUrl: () => { link = null; } };
++      if (name.endsWith('/deepLinkStore')) return { getRecoveryLinkRevision: () => 0, subscribeRecoveryLinks: () => () => {}, getLastDeepLinkUrl: () => link, clearLastDeepLinkUrl: () => { link = null; } };
+       if (name.endsWith('/resetPasswordSchema')) return { resetPasswordSchema: {} };
+       for (const key of ['COLORS', 'RADIUS', 'SPACING']) if (name.toUpperCase().endsWith('/' + key)) return { [key]: {} };
+       throw Error('Unexpected dependency: ' + name);

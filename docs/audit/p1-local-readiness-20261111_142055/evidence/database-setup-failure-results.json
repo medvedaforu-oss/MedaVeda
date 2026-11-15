@@ -1,0 +1,38 @@
+[
+  {
+    "name": "database",
+    "command": [
+      "bash",
+      "supabase/tests/run-all.sh"
+    ],
+    "exit_code": 2,
+    "seconds": 0.06
+  },
+  {
+    "name": "mv003-006",
+    "command": [
+      "python3",
+      "supabase/tests/run-mv006-local.py"
+    ],
+    "exit_code": 1,
+    "seconds": 0.11
+  },
+  {
+    "name": "phase-b",
+    "command": [
+      "python3",
+      "supabase/tests/run-phase-b-local.py"
+    ],
+    "exit_code": 1,
+    "seconds": 0.11
+  },
+  {
+    "name": "phase-c",
+    "command": [
+      "python3",
+      "supabase/tests/run-phase-c-local.py"
+    ],
+    "exit_code": 1,
+    "seconds": 0.11
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "eslint",
+  "cwd": ".",
+  "command": [
+    "npm",
+    "run",
+    "lint",
+    "--prefix",
+    "tooling"
+  ],
+  "exit": 0,
+  "seconds": 49.69
+}

@@ -1,0 +1,12 @@
+{
+  "applications": 2,
+  "unchanged": {
+    "purchases": "ed37742717b719d6d5495a26612cb5c0",
+    "payments": "c23329e4bd0a873c6d5af09efcf9ebc2",
+    "orders": "65a8a75b02e2de3d5675f7c053ba946a",
+    "products": "730585c7eceba7655b69faaa30725056",
+    "wallet": "65fa68e005e7aee8f3276ed3a601572c",
+    "referrals": "26bfc7c3ee6953bc6fa7a15fe8c30a05"
+  },
+  "regressions_passed": true
+}

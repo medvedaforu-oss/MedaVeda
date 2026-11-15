@@ -1,0 +1,22 @@
+{
+  "date_utc": "2026-11-09",
+  "local_source_status": "verified for confirmed B01-B19 defects",
+  "production": "NO-GO",
+  "alpha_payment_acceptance": "blocked by external prerequisites; guards retained",
+  "standalone_suites_passed": 28,
+  "fresh_database_suite": "ALL SUITES PASSED",
+  "database": "disposable local PostgreSQL 17; synthetic fixtures",
+  "webhook_cases": 25,
+  "mobile_types": "passed",
+  "mobile_lint": "passed",
+  "repository_lint": "failed: 2 unchanged admin duplicate imports",
+  "deno_entrypoints_checked": 11,
+  "android": "Hermes JS export passed; native compilation and real device NOT VERIFIED",
+  "real_payments": "NOT VERIFIED; none attempted",
+  "real_external_reporting": "NOT VERIFIED; mocks only",
+  "excluded": [
+    "programme enrolment",
+    "all staging operations"
+  ],
+  "no_remote_writes": true
+}

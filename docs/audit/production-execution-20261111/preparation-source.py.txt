@@ -1,0 +1,128 @@
+from pathlib import Path
+import hashlib,json,re,shutil,os
+R=Path('/home/ganeshp8545/AyurPulse'); O=R/'docs/audit/production-execution-20261111'
+h=lambda b:hashlib.sha256(b).hexdigest()
+# Preserve pre-existing work; no credentials, dependency trees or Git internals read.
+prune={'.git','node_modules','.expo','.gradle','build','dist','.next','.vercel','.aws','.codex','.agents','__pycache__'}
+initial={}
+for base,dirs,files in os.walk(R):
+ dirs[:]=[d for d in dirs if d not in prune and Path(base)/d!=O]
+ for f in files:
+  p=Path(base)/f
+  if p.is_file() and not p.is_symlink() and not f.startswith('.env'):
+   initial[str(p.relative_to(R))]=h(p.read_bytes())
+(O/'preservation-before.json').write_text(json.dumps(initial,indent=2)+'\n')
+M=json.loads((R/'supabase/releases/phase-c-20261111/manifest.json').read_text())
+base=json.loads((R/'docs/audit/evidence/production-preflight-20261111/deployment-manifest.json').read_text())['baseline_versions']
+rows=[]
+for label,a in zip(['A1','A2','A3','C1','C2','C3','C4'],M['migrations']):
+ p=R/'supabase'/a['path']; b=p.read_bytes()
+ assert h(b)==a['sha256'] and b==(R/'supabase/releases/phase-c-20261111'/a['path']).read_bytes()
+ (O/'sources').mkdir(exist_ok=True); (O/'sources'/p.name).write_bytes(b)
+ rows.append(dict(order=label,version=p.name.split('_',1)[0],name=p.stem.split('_',1)[1],source=str(p.relative_to(R)),copy='sources/'+p.name,sha256=h(b)))
+shutil.copyfile(R/'docs/audit/evidence/phase-a-final-20261111/operator-phase-a-proposed.sql',O/'01-phase-a.sql')
+shutil.copyfile(R/'docs/audit/evidence/phase-a-final-20261111/independent-postchecks-readonly.sql',O/'02-phase-a-postchecks-readonly.sql')
+def lit(x):return "'"+x.replace("'","''")+"'"
+def arr(xs):return 'ARRAY['+','.join(map(lit,xs))+']::text[]'
+def ledger_assert(versions):return 'IF (SELECT array_agg(version ORDER BY version) FROM supabase_migrations.schema_migrations) IS DISTINCT FROM '+arr(sorted(versions))+" THEN RAISE EXCEPTION 'exact ledger version-set mismatch'; END IF;\n"
+def body(row):
+ s=(O/row['copy']).read_text(); lines=s.splitlines(keepends=True)
+ starts=[i for i,l in enumerate(lines) if l.strip().lower()=='begin;']; ends=[i for i,l in enumerate(lines) if l.strip().lower()=='commit;']
+ assert len(starts)==len(ends)==1 and starts[0]<ends[0]
+ return ''.join(l for i,l in enumerate(lines) if i not in starts+ends)
+def ledger(row):
+ s=(O/row['copy']).read_text(); assert '$exact_source$' not in s
+ return 'INSERT INTO supabase_migrations.schema_migrations(version,name,statements) VALUES ('+lit(row['version'])+','+lit(row['name'])+',ARRAY[$exact_source$'+s+'$exact_source$]::text[]);\n'
+# Final bodies keyed by exact SQL signature. prosrc checks are not normalized-definition hashes.
+sigs={'prepare_notes_choice_checkout':'uuid,text,text,boolean,text','attach_ucb_external_token':'uuid,text,text','record_notes_choice_authorization':'text,timestamptz','enqueue_payment_jobs':'','razorpay_entitlement_committed':'text,text','settle_razorpay_payment':'text,text,text,bigint,timestamptz','play_entitlement_committed':'text,text','get_my_play_fulfillment':'text','play_purchase_entitlement_from_order':''}
+final={}
+for row in rows:
+ for match in re.finditer(r'create or replace function public\.(\w+)\s*\(.*?\bas\s*\$\$(.*?)\$\$;',body(row),re.I|re.S):
+  name,src=match.groups()
+  if name in sigs:
+   final[name]={'signature':name+'('+sigs[name]+')','prosrc_md5':hashlib.md5(src.encode()).hexdigest(),'source_sha256':row['sha256'],'search_path':'pg_catalog, public, pg_temp' if name in ('razorpay_entitlement_committed','play_entitlement_committed','play_purchase_entitlement_from_order') else 'public'}
+assert len(final)==9,final
+# C3 must restore precisely A1 function body.
+a1=re.search(r'as \$\$(.*?)\$\$;',body(rows[0]),re.S).group(1)
+assert hashlib.md5(a1.encode()).hexdigest()==final['razorpay_entitlement_committed']['prosrc_md5']
+checks='DO $final_contracts$\nDECLARE r record; p pg_proc%rowtype;\nBEGIN\n'
+for name,d in final.items():
+ sig='public.'+d['signature']; acl_auth=name=='get_my_play_fulfillment'
+ checks+=' SELECT * INTO p FROM pg_proc WHERE oid=to_regprocedure('+lit(sig)+');\n'
+ checks+=' IF NOT FOUND OR md5(p.prosrc) IS DISTINCT FROM '+lit(d['prosrc_md5'])+" OR NOT p.prosecdef OR pg_get_userbyid(p.proowner)<>'postgres' OR p.proconfig IS DISTINCT FROM "+arr(['search_path='+d['search_path']])+" THEN RAISE EXCEPTION 'final definition/owner/path mismatch: "+name+"'; END IF;\n"
+ checks+=" IF EXISTS(SELECT 1 FROM aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a WHERE a.grantee=0 AND a.privilege_type='EXECUTE') OR has_function_privilege('anon',p.oid,'EXECUTE') OR has_function_privilege('authenticated',p.oid,'EXECUTE') IS DISTINCT FROM "+str(acl_auth).lower()+" OR NOT has_function_privilege('service_role',p.oid,'EXECUTE') THEN RAISE EXCEPTION 'final execute ACL mismatch: "+name+"'; END IF;\n"
+checks+=" IF NOT EXISTS (SELECT 1 FROM pg_index WHERE indexrelid=to_regclass('public.orders_external_token_digest_unique') AND indisunique AND indisvalid AND indisready) OR to_regclass('public.orders_external_token_unique') IS NOT NULL THEN RAISE EXCEPTION 'token index replacement incomplete'; END IF;\n"
+checks+=" IF NOT EXISTS(SELECT 1 FROM pg_class WHERE oid='public.notes_choice_checkouts'::regclass AND relrowsecurity) OR EXISTS(SELECT 1 FROM public.notes_choice_checkouts) THEN RAISE EXCEPTION 'reservation RLS/empty-table mismatch'; END IF;\n"
+checks+=" IF NOT EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid='public.purchases'::regclass AND tgname='purchases_play_order_snapshot' AND tgenabled='O' AND tgfoid='public.play_purchase_entitlement_from_order()'::regprocedure AND tgtype=7) THEN RAISE EXCEPTION 'Play trigger mismatch'; END IF;\n"
+checks+='END $final_contracts$;\n'
+(O/'expected-final-functions.json').write_text(json.dumps(final,indent=2)+'\n')
+# DDL-only preservation under approved quiescence, no financial functions invoked.
+tables=['orders','payments','purchases','products','payment_captures','payment_compensations','provider_events','payment_jobs','ucb_external_refunds']
+def fingerprint(verify=False):
+ s='DO $preservation$\nDECLARE t text; v text;\nBEGIN\n FOREACH t IN '+arr(tables)+' LOOP\n'
+ s+=" EXECUTE format('SELECT md5(coalesce(string_agg(j::text, E''\\n'' ORDER BY j::text),'''')) FROM (SELECT to_jsonb(x) - ARRAY[''ucb_transaction_time'',''external_report_test_purchase'',''blocks_entitlement''] AS j FROM public.%I x) q',t) INTO v;\n"
+ if verify:s+=" IF v IS DISTINCT FROM current_setting('medveda.before_'||t) THEN RAISE EXCEPTION 'preservation mismatch: %',t; END IF;\n"
+ else:s+=" PERFORM set_config('medveda.before_'||t,v,true);\n"
+ return s+' END LOOP;\nEND $preservation$;\n'
+pre='''-- PREPARED ONLY. Never run without the signed runbook gates. No automatic progression.
+\\set ON_ERROR_STOP on
+BEGIN ISOLATION LEVEL READ COMMITTED;
+SET LOCAL standard_conforming_strings=on;
+SET LOCAL lock_timeout='2s';
+SET LOCAL statement_timeout='15s';
+SET LOCAL idle_in_transaction_session_timeout='15s';
+DO $approval$
+DECLARE k text;
+BEGIN
+ IF current_user<>'postgres' THEN RAISE EXCEPTION 'approved postgres operator required'; END IF;
+ FOREACH k IN ARRAY ARRAY['medveda.c_owner_approval','medveda.recovery_evidence','medveda.window_approval','medveda.phase_b_verified','medveda.quiescence_evidence','medveda.drift_approval'] LOOP
+  IF nullif(current_setting(k,true),'') IS NULL THEN RAISE EXCEPTION 'missing independently signed evidence reference: %',k; END IF;
+ END LOOP;
+END $approval$;
+LOCK TABLE supabase_migrations.schema_migrations IN SHARE ROW EXCLUSIVE MODE;
+-- Fixed order: short outage includes readers. Not a substitute for ingress quiescence.
+LOCK TABLE public.orders IN ACCESS EXCLUSIVE MODE;
+LOCK TABLE public.purchases IN ACCESS EXCLUSIVE MODE;
+LOCK TABLE public.provider_events IN ACCESS EXCLUSIVE MODE;
+'''
+pre+='DO $baseline$\nBEGIN\n'+ledger_assert(base+[r['version'] for r in rows[:3]])
+pre+="IF to_regclass('public.notes_choice_checkouts') IS NOT NULL OR to_regclass('public.orders_external_token_digest_unique') IS NOT NULL THEN RAISE EXCEPTION 'unexpected C object; no first-install approval'; END IF;\n"
+pre+="IF EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND ((table_name='orders' AND column_name IN ('ucb_transaction_time','external_report_test_purchase')) OR (table_name='provider_events' AND column_name='blocks_entitlement'))) THEN RAISE EXCEPTION 'unexpected pre-existing C column'; END IF;\n"
+pre+="IF to_regprocedure('extensions.digest(text,text)') IS NULL OR to_regclass('public.orders_external_token_unique') IS NULL THEN RAISE EXCEPTION 'pgcrypto/token-index prerequisite missing'; END IF;\n"
+pre+="IF NOT EXISTS(SELECT 1 FROM pg_trigger WHERE tgrelid='public.purchases'::regclass AND tgname='purchases_play_order_snapshot' AND tgenabled='O') THEN RAISE EXCEPTION 'baseline Play trigger missing'; END IF;\n"
+pre+="IF md5((SELECT prosrc FROM pg_proc WHERE oid='public.razorpay_entitlement_committed(text,text)'::regprocedure)) IS DISTINCT FROM "+lit(final['razorpay_entitlement_committed']['prosrc_md5'])+" THEN RAISE EXCEPTION 'strong A1 prerequisite mismatch'; END IF;\n"
+pre+='END $baseline$;\n'+fingerprint()
+sql=pre
+for r in rows[3:]:sql+='\n-- '+r['order']+' SOURCE SHA256 '+r['sha256']+'\n'+body(r)+'\n'+ledger(r)
+sql+=checks+fingerprint(True)+'DO $ledger$ BEGIN\n'+ledger_assert(base+[r['version'] for r in rows])+'END $ledger$;\nCOMMIT;\n'
+(O/'03-phase-c-atomic.sql').write_text(sql)
+(O/'04-phase-c-postchecks-readonly.sql').write_text('''-- Independent observer: catalog/aggregate reads only, no application RPC calls.
+\\set ON_ERROR_STOP on
+BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY;
+SET LOCAL statement_timeout='15s';
+SET LOCAL lock_timeout='2s';
+'''+checks+'''SELECT version,name,cardinality(statements) AS statement_entries,
+ md5(array_to_string(statements,'')) AS exact_source_md5
+FROM supabase_migrations.schema_migrations ORDER BY version;
+SELECT p.oid::regprocedure,pg_get_functiondef(p.oid),p.proacl,p.proconfig,
+ pg_get_userbyid(p.proowner),p.provolatile,p.prosecdef
+FROM pg_proc p WHERE p.pronamespace='public'::regnamespace AND p.proname IN ('''+','.join(map(lit,final))+''');
+SELECT c.relname,c.relrowsecurity,c.relforcerowsecurity,c.relacl
+FROM pg_class c WHERE c.oid='public.notes_choice_checkouts'::regclass;
+SELECT * FROM pg_policies WHERE schemaname='public' AND tablename='notes_choice_checkouts';
+SELECT tgrelid::regclass,tgname,tgenabled,pg_get_triggerdef(oid) FROM pg_trigger
+WHERE NOT tgisinternal AND tgrelid IN ('public.orders'::regclass,'public.purchases'::regclass) ORDER BY tgrelid,tgname;
+SELECT i.indexrelid::regclass,i.indisunique,i.indisvalid,i.indisready,pg_get_indexdef(i.indexrelid)
+FROM pg_index i WHERE i.indrelid IN ('public.orders'::regclass,'public.purchases'::regclass);
+SELECT table_name,column_name,data_type,is_nullable,column_default FROM information_schema.columns
+WHERE table_schema='public' AND ((table_name='orders' AND column_name IN ('ucb_transaction_time','external_report_test_purchase'))
+ OR (table_name='provider_events' AND column_name='blocks_entitlement'));
+SELECT price,count(*) FROM public.products WHERE active GROUP BY price ORDER BY price;
+SELECT count(*) AS notes_choice_rows FROM public.notes_choice_checkouts;
+ROLLBACK;
+''')
+# All ledger source comparisons are full-source MD5; file approvals remain SHA256.
+for r in rows:r['ledger_source_md5']=hashlib.md5((O/r['copy']).read_bytes()).hexdigest()
+manifest={'status':'PREPARED; NO-GO; NEVER EXECUTED','project':'xbvenkfmesugrbjuufyw','order':['A1','A2','A3','STOP: separately approve/verify Phase B','C1','C2','C3','C4'],'baseline_versions':base,'phase_a_versions':sorted(base+[r['version'] for r in rows[:3]]),'phase_c_versions':sorted(base+[r['version'] for r in rows]),'migrations':rows,'excluded':'20261109120000_isolated_nonplay_test.sql is not copied, executed, or recorded; future MV006 index excluded','phase_a_sql_sha256':h((O/'01-phase-a.sql').read_bytes()),'phase_c_sql_sha256':h((O/'03-phase-c-atomic.sql').read_bytes()),'validation':'offline structural/source checks only; no SQL executed'}
+(O/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+print(json.dumps({k:v for k,v in manifest.items() if k.endswith('sha256')}))

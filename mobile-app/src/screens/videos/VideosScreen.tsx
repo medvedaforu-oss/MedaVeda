@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     padding: SPACING.lg,
-    paddingTop: 60,
+    paddingTop: SPACING.md,
   },
   title: {
     fontSize: FONT.title,

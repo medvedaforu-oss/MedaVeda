@@ -189,7 +189,7 @@ export default function Login() {
               </p>
             </div>
           )}
-          <input
+          <input aria-label="Authenticator code"
             inputMode="numeric"
             pattern="[0-9]{6}"
             maxLength={6}
@@ -238,7 +238,7 @@ export default function Login() {
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Email
         </label>
-        <input
+        <input aria-label="Email"
           type="email"
           required
           autoComplete="email"
@@ -250,7 +250,7 @@ export default function Login() {
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Password
         </label>
-        <input
+        <input aria-label="Password"
           type="password"
           required
           autoComplete="current-password"

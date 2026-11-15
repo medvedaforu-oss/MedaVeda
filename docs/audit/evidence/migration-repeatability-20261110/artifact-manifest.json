@@ -1,0 +1,86 @@
+[
+  {
+    "path": "supabase/migrations/20261109120000_isolated_nonplay_test.sql",
+    "sha256": "4dad6d8b92ee247bc2d399448e757dde1d3e898abf7ece2e8a4d19fbb2db1584"
+  },
+  {
+    "path": "supabase/tests/nonplay-test-repeatability.py",
+    "sha256": "b63c259ab52a1ae99b9a845a27c69c12d636850b714bc8bc9939e6f5ab361a2b"
+  },
+  {
+    "path": "supabase/tests/run-nonplay-test-local.py",
+    "sha256": "5b8404fd7c353fab1ab7ec543a4421a60764de12f17c43d4438f59575527fb68"
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MIGRATION_REPEATABILITY_PREFLIGHT_2026-11-10.md",
+    "sha256": "018a4341d69054a8de0a2f5f702ba99c0817ffe953962a7ce222e27b0db4e5ee"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/deployment-source-manifest.json",
+    "sha256": "01f767f160dd2bcefdad261effb17809c1bb02165e5ab406e812fa4c58540d1e"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/edge-types.log",
+    "sha256": "ff8641b26653979655032fe2aec3835fda9708da5b030888173c2c41991bd8bb"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/full-regressions-first-attempt.log",
+    "sha256": "550cd6614871c84c24248e232d9df3aef945b9c71c2f55034b0c2e61ecab6f48"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/full-regressions.log",
+    "sha256": "bfec2039280cf253688f2c750449e378b17131dbed081695293155b7d172982e"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/initdb.log",
+    "sha256": "0622b841359389e5877893d6a4a469fdafd492c0a89911f9a445a9e950cea1b2"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/isolated-verification-first-attempt.log",
+    "sha256": "415eb14710c93a96532fb5a5a11f111f909c216abc594740f2b6b35e231eca5a"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/isolated-verification.log",
+    "sha256": "4017de8a9ab45a1443d554233fb4c1203bd44fc784004a4fe52019a426dd01b6"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/mobile-isolation.log",
+    "sha256": "3ac0318cbafd3015a03dfdfde02352691e18bb8cb2ac0a39ebfe8555754d9f25"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/mobile-payment-regressions.log",
+    "sha256": "4f28b79ced4d5eaf47293f938cf74387d8d269927d3dfe1be955c947e1431f78"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/mobile-payment-results.json",
+    "sha256": "1420ad4471b14fe4e8a87d1c83194b1444b6d63fdcc03772947962dae9e5c876"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/off-gates.log",
+    "sha256": "f38e581b2b80ea6b9e20e26cbd951d8a6f1fa08e768bbc4e406e345987fe6b18"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/off-gates.ts",
+    "sha256": "dfc55d34530be4003d67f122e843536f7d96c5f188d5290b910299a53ee8d2ff"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/production-metadata-after.json",
+    "sha256": "c9a20b0e6fc5ee8ca585ba8f8284c8990811255bea3f595898b0fc72ff4cba10"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/production-metadata-before.json",
+    "sha256": "19c6ed90b372c14807c7978580537d7b9fae7b1cceaf686c8b67ebebd4f2248a"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/read-only-metadata.py",
+    "sha256": "703b80210ec919a4b3f3212f0fa2e4e97551024ef0e566d339b77845d88e37cf"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/source-preservation.json",
+    "sha256": "6b8cb3527429ec0a5f072b22ef2d6fa03e172a27eb488f5e71beb89e136bc542"
+  },
+  {
+    "path": "docs/audit/evidence/migration-repeatability-20261110/validation.json",
+    "sha256": "d4804fa1e1abfb734c42bcfe434c9a17ba58f4fae5b356a3988c014f9812fc3a"
+  }
+]

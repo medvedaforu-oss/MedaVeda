@@ -1,0 +1,703 @@
+[
+  {
+    "path": "docs/audit/DIAGNOSTICS_RETIREMENT_20261026.md",
+    "sha256": "3844821a73d543a11c7932cb779122de0e0aa4591f651773b62951c4e47b777e",
+    "sections": [
+      "# Diagnostic surface and later retirement"
+    ],
+    "opening": [
+      "# Diagnostic surface and later retirement",
+      "",
+      "All diagnostic functions remain available in source for the unresolved Play 403",
+      "investigation. Nothing was deployed or removed from Supabase."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_IDE_TOOLCHAIN_2026-11-10.md",
+    "sha256": "2f697026ad4d0dc4b47bdd5633b15ccc6bb256da83c509765c3e065d0ccb2378",
+    "sections": [
+      "# Local Android / VS Code Toolchain Audit",
+      "## Outcome",
+      "## A. Root Causes By Reported Error",
+      "## B. Shared Causes",
+      "## C. Changed Files",
+      "## D. Before / After Versions",
+      "## E. Verification",
+      "## F. Remaining Local Steps",
+      "## G. Production Safety",
+      "## Evidence And References"
+    ],
+    "opening": [
+      "# Local Android / VS Code Toolchain Audit",
+      "",
+      "Date: 2026-11-10. Scope: local diagnosis and editor configuration only.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_NATIVE_RELEASE_READINESS_2026-11-11.md",
+    "sha256": "11eb755de525de15f432185ae659447f791031c8a0be536b54f8f3a0cc11936a",
+    "sections": [
+      "# MedVeda Android native release readiness \u2014 2026-11-11",
+      "## 1. Evidence and prior reports",
+      "## 2. Native configuration audit",
+      "## 3. Permissions and security configuration",
+      "## 4. Google Play Billing dependency status",
+      "## 5. Razorpay library status",
+      "## 6. Build environment and EAS cloud readiness",
+      "## 7. Firebase and signing",
+      "## 8. Fresh local verification",
+      "## 9. Exact blockers and unresolved acceptance",
+      "## 10. Manual owner actions and safe next build command",
+      "## 11. Exact real-device acceptance checklist \u2014 planned, not executed",
+      "## 12. Exact files changed and final decision"
+    ],
+    "opening": [
+      "# MedVeda Android native release readiness \u2014 2026-11-11",
+      "",
+      "**Final decision: NO-GO today for certifying and creating the requested production-compatible, disabled-payment AAB.** The existing production EAS profile and remote signing metadata are usable, but Firebase/FCM setup is absent, the unmodified regression run has one failing test fixture, and the retained artifact inspector has an obsolete Billing-permission rejection. Native compilation of the current source remains unverified. These findings do not establish that Gradle would fail to compile the application.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_ANDROID_RELEASE_BLOCKER_FIX_2026-11-11.md",
+    "sha256": "e93f9aa650f0fec46fc2c98e9ba7cb3862f53a2548f6f47dc6850062d4a41ffc",
+    "sections": [
+      "# MedVeda Android release blocker fixes \u2014 2026-11-11",
+      "## 1. Exact stale Auth mock fix",
+      "## 2. Exact AAB validator correction",
+      "## 3. Firebase / FCM status",
+      "## 4. Safe owner actions for Firebase",
+      "## 5. Local verification",
+      "## 6. Remaining blockers and build prerequisites",
+      "## 7. Exact task-attributable file inventory"
+    ],
+    "opening": [
+      "# MedVeda Android release blocker fixes \u2014 2026-11-11",
+      "",
+      "**Locally fixable verification defects: FIXED. Current decision: NO-GO for a release-ready payment-disabled AAB build until genuine Firebase/FCM inputs are supplied and checked, followed by separate build authorization.** Local SDK absence does not prevent a future EAS cloud build. No current-source native compilation or device acceptance is claimed.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_BILLING_FIXES_2026-11-09.md",
+    "sha256": "3bc145c20d8eb1515e43364dbe824cdd53991755d8ba5f9ee29102d674b4acbb",
+    "sections": [
+      "# MedVeda billing fixes and verification \u2014 9 November 2026",
+      "## A. Final status",
+      "## B. Resolved issue checklist",
+      "## C. Incomplete or blocked items",
+      "## Pricing and preservation",
+      "## D. Exact files changed",
+      "## E. Tests and evidence",
+      "## F. Production preparation \u2014 instructions only, not executed",
+      "## G. Remaining risks",
+      "## H. Final verdict"
+    ],
+    "opening": [
+      "# MedVeda billing fixes and verification \u2014 9 November 2026",
+      "",
+      "## A. Final status",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_CLOSED_TESTING_2026-11-08.md",
+    "sha256": "73d8bee14ad9d1e2567ffb40836f19f8493d37d5bca5b9a84be71b13d72069e8",
+    "sections": [],
+    "opening": [
+      "**MedVeda closed-testing preparation \u2014 8 November 2026**",
+      "",
+      "Candidate: **1.2.2 (13)**, Android package `in.medveda.app`. Final artifact verification is recorded below. Play submission is left to the owner. This is a closed-testing candidate, with device and Console acceptance still required.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MIGRATION_REPEATABILITY_PREFLIGHT_2026-11-10.md",
+    "sha256": "018a4341d69054a8de0a2f5f702ba99c0817ffe953962a7ce222e27b0db4e5ee",
+    "sections": [
+      "# Isolated test migration repeatability \u2014 10 November 2026",
+      "## A. Exact failure and root cause",
+      "## B. Exact files modified",
+      "## C. SQL statements fixed",
+      "## D. First application",
+      "## E. Second application",
+      "## F. Security and regression results",
+      "## G. Updated production deployment preflight",
+      "## H. Remaining deployment prerequisites",
+      "## I. Single next action"
+    ],
+    "opening": [
+      "# Isolated test migration repeatability \u2014 10 November 2026",
+      "",
+      "Local migration verification: **PASS**, including the final uninterrupted expanded run.",
+      "Production deployment preflight: **FAIL / blocked**, for the remaining prerequisites"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MOBILE_PRODUCTION_FULL_AUDIT_2026-11-10.md",
+    "sha256": "c9c68ae3848696a77b49eeed9d94a356f144f3f8d136a7af84bc1844189322b7",
+    "sections": [
+      "# MedVeda Android production audit \u2014 2026-11-10",
+      "## A. Executive Summary",
+      "### Audit controls and baseline",
+      "## B. Razorpay Payment Audit",
+      "### Actual integration and runtime",
+      "### Actual execution-path ledger",
+      "### Production pricing",
+      "### Failure, retry, cancellation and recovery",
+      "## C. Notes Unlock Audit",
+      "## D. Production Database Audit",
+      "### Read-only observations",
+      "### Constraints, RLS and function privileges",
+      "### Deployment/migration compatibility",
+      "## E. Complete Screen and Feature Inventory",
+      "## F. UI/UX Findings",
+      "## G. Stability and Performance",
+      "## H. Android Release Readiness",
+      "### Current source configuration",
+      "### Existing artifact inspected read-only",
+      "### Google Play payment policy",
+      "## I. Test Execution Evidence",
+      "### Status vocabulary",
+      "### Commands and safeguards",
+      "### Production query evidence sufficient to reproduce key findings",
+      "### Feature/test matrix \u2014 80 assessed items",
+      "## J. Prioritized Issue Table",
+      "### Detailed issue records",
+      "### Additional concerns \u2014 not confirmed bugs",
+      "## K. Payment Readiness Decision",
+      "## L. Safe Fix Plan \u2014 recommendations only, not implemented",
+      "## M. Final Production Decision"
+    ],
+    "opening": [
+      "# MedVeda Android production audit \u2014 2026-11-10",
+      "",
+      "## A. Executive Summary",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MOBILE_RELEASE_REVIEW_2026-11-04.md",
+    "sha256": "802e18cbfa410b0cb21fead43c05a1c48efbbdc7c222aa3e873f77a9b0a32bc5",
+    "sections": [],
+    "opening": [
+      "**NO-GO for the production AAB \u2014 4 November 2026.** Android remote push configuration is missing. One reproduced course/year selection race was fixed; affected local checks pass. No AAB was built or submitted.",
+      "",
+      "This is a focused review of the current dirty checkout at HEAD `d8ad06a`, preserving the owner's existing changes. The last retained verified mobile run is the Notes acceptance run ending around 06:48 UTC today, supplemented by the cleanup run's 05:45 UTC results. Its starting hashes and explicit preservation delta identify the subsequently changed build/provider routing, course/year selection/state and payment summary/checkout paths. See [scope](evidence/mobile-release-review-20261104/review-scope.json). Unchanged implementations retain their previous local results; broad audits, dependency audits and settlement suites were not repeated.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV001_PAYMENT_READINESS_2026-11-11.md",
+    "sha256": "6a9a65a6dfda58c61622035edeec68920580cb7f7f824838dfd3d95187d85d4e",
+    "sections": [
+      "# MV001 \u2014 production payment readiness \u2014 2026-11-11",
+      "## Scope and preservation",
+      "## Exact task changes",
+      "## Google Play India requirements and unresolved approvals",
+      "## Fresh production compatibility evidence",
+      "## Prepared flow and limits",
+      "## Verification commands and results",
+      "## Release readiness matrix",
+      "## Safe owner-approved implementation and deployment plan \u2014 not executed",
+      "## Rollback strategy"
+    ],
+    "opening": [
+      "# MV001 \u2014 production payment readiness \u2014 2026-11-11",
+      "",
+      "**NO-GO. Production Buy Now remains disabled.** Safe local guards and deterministic regressions pass. Production payment activation is **BLOCKED** by missing Google Play enrollment/acceptance evidence, undeployed backend contracts and workers, unresolved financial history, and native/device acceptance gaps. No production payment-to-Notes success is claimed.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV003_LOCAL_FIX_2026-11-10.md",
+    "sha256": "a6850a28756f1a502fe980693886886e76f7e17cc63eb7bc0b10683a7bd81f93",
+    "sections": [
+      "# MV003 \u2014 local entitlement commitment fix \u2014 2026-11-10",
+      "## Scope and production contract evidence",
+      "## Behavior",
+      "## Exact changed files",
+      "## Exact verification commands and results",
+      "## Remaining risk and deployment handoff"
+    ],
+    "opening": [
+      "# MV003 \u2014 local entitlement commitment fix \u2014 2026-11-10",
+      "",
+      "Status: **FIXED \u2014 LOCAL VERIFIED**. Production remains **NOT FIXED / NOT VERIFIED** by this patch: nothing was deployed. Android payment processing and Buy Now remain disabled.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV004_LOCAL_FIX_2026-11-10.md",
+    "sha256": "6fa6da9da39537a0eda5115a19270c0a1f5f7113c6b5527b821320a86a5b8c3a",
+    "sections": [
+      "# MV004 \u2014 payment recovery authorization \u2014 2026-11-10",
+      "## Root cause and preserved work",
+      "## Implementation and authorization evidence",
+      "## Exact files changed by this task",
+      "## Local verification commands and results",
+      "## Android compatibility, remaining risks and owner handoff"
+    ],
+    "opening": [
+      "# MV004 \u2014 payment recovery authorization \u2014 2026-11-10",
+      "",
+      "| Scope | Status |",
+      "| --- | --- |"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV005_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3f593970f426317a1cc4e7cec57b9ace5f40abdb2498ac7f75a023ce015b4f45",
+    "sections": [
+      "# MV005 \u2014 Razorpay financial state consistency \u2014 2026-11-10",
+      "## Investigation and evidence boundary",
+      "## Exact production results",
+      "## Root cause conclusion",
+      "## Local changes and transitions",
+      "## Automated verification",
+      "## Read-only historical reconciliation plan",
+      "## Separately reviewable repair proposal \u2014 NOT EXECUTED",
+      "## Exact task file list",
+      "## Deployment requirements, risks and blockers"
+    ],
+    "opening": [
+      "# MV005 \u2014 Razorpay financial state consistency \u2014 2026-11-10",
+      "",
+      "| Scope | Final status |",
+      "| --- | --- |"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV006_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3757710c189711bdbe422c5b0879c52e2cb08c24de57733d23d8a52471290a44",
+    "sections": [
+      "# MV006 \u2014 successful purchase ownership \u2014 2026-11-10",
+      "## Scope and preservation",
+      "## Production evidence and root cause",
+      "## Purchase model and exact implementation",
+      "## Restoration and Notes authorization",
+      "## Commands and verification results",
+      "## Read-only reconciliation proposal \u2014 not executed",
+      "## Required safeguards for any future production repair",
+      "## Migration safety and future deployment order",
+      "## Exact changed-file inventory"
+    ],
+    "opening": [
+      "# MV006 \u2014 successful purchase ownership \u2014 2026-11-10",
+      "",
+      "**MV006: FIXED \u2014 LOCAL VERIFIED (prevention). PRODUCTION: NOT FIXED.** Historical canonicalization and approved deployment remain outstanding. No production records were changed. New purchases remain disabled.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV007_GOOGLE_PLAY_BILLING_REMOVAL_2026-11-11.md",
+    "sha256": "d6613e5c8705f27c6e885084b6f86d37c9779defd5a51684b9950d6f8f1e77e5",
+    "sections": [
+      "# MV007 \u2014 Google Play Billing removal gate and safe cleanup \u2014 2026-11-11",
+      "## Status",
+      "## Policy gate and evidence limits",
+      "## Repository inspection and exact safe changes",
+      "## Reference classification and disposition",
+      "## Razorpay integration integrity",
+      "## Exact task-attributable file inventory",
+      "## Deterministic verification commands and results",
+      "## MV003\u2013MV012 regression results",
+      "## Native/device gaps and manual owner actions"
+    ],
+    "opening": [
+      "# MV007 \u2014 Google Play Billing removal gate and safe cleanup \u2014 2026-11-11",
+      "",
+      "**FULL REMOVAL BLOCKED \u2014 POLICY OR REQUIRED INTEGRATION.** The owner confirmed India-only Google Play distribution. The requested Razorpay-only sales architecture conflicts with the reviewed India alongside-Play program; no approved exception was supplied. The existing Play library is also used by required user-choice APIs and historical receipt recovery. No dependency, service, native plugin or permission was deleted. Standalone Play-only new-sales eligibility was removed from runtime selection, and standalone purchase entry points now fail closed. The connected, disabled user-choice implementation is deliberately retained. This is a partial local change, not complete Billing removal or Play policy approval.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV008_LOCAL_FIX_2026-11-10.md",
+    "sha256": "3b05a10de431ba10506c0a08b745fddcd512f781230d655f11552cf0f8ec67bf",
+    "sections": [
+      "# MV008 \u2014 purchase ownership refresh race \u2014 2026-11-10",
+      "## Investigation and root cause",
+      "## Exact implementation",
+      "## Changed files attributable to MV008",
+      "## Deterministic race and isolation evidence",
+      "## Executed verification commands and final counts",
+      "## Previous fixes, payment gates and pricing",
+      "## Owner handoff and limits"
+    ],
+    "opening": [
+      "# MV008 \u2014 purchase ownership refresh race \u2014 2026-11-10",
+      "",
+      "**MV008 LOCAL: FIXED \u2014 LOCAL VERIFIED.**",
+      "**MV008 PRODUCTION: NOT VERIFIED / NOT DEPLOYED.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV009_LOCAL_FIX_2026-11-11.md",
+    "sha256": "ebb7fe4777ff764faf6967ce087dafc8220e9bc6ba2e549e0e19c2e92460afb6",
+    "sections": [
+      "# MV009 \u2014 Store network, empty and retry handling \u2014 2026-11-11",
+      "## Investigation and confirmed root cause",
+      "## Implemented behavior and exact changes",
+      "## Exact changed-file inventory",
+      "## Lifecycle and deterministic evidence",
+      "## Commands and results",
+      "## Regression status",
+      "## Remaining issues, production requirements and owner actions"
+    ],
+    "opening": [
+      "# MV009 \u2014 Store network, empty and retry handling \u2014 2026-11-11",
+      "",
+      "**MV009 LOCAL: FIXED \u2014 LOCAL VERIFIED.**",
+      "**MV009 PRODUCTION: NOT DEPLOYED / NOT VERIFIED.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV010_LOCAL_FIX_2026-11-11.md",
+    "sha256": "f9c036c5128b28880b26fe430a89bd5a515ec00b21292366257878f1d31f2ccc",
+    "sections": [
+      "# MV010 \u2014 Notes purchase options errors, retry and isolation \u2014 2026-11-11",
+      "## Scope, investigation and preservation",
+      "## Root cause and complete flow",
+      "## Exact changes and complete changed-file inventory",
+      "## Error / empty / retry and freshness verification",
+      "## Required deterministic coverage and isolation evidence",
+      "## Commands and final results",
+      "## Regression status",
+      "## Limitations, production release requirements and manual owner actions"
+    ],
+    "opening": [
+      "# MV010 \u2014 Notes purchase options errors, retry and isolation \u2014 2026-11-11",
+      "",
+      "**MV010 LOCAL: FIXED \u2014 LOCAL VERIFIED.**  ",
+      "**MV010 PRODUCTION: NOT DEPLOYED / NOT VERIFIED.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV011_LOCAL_FIX_2026-11-11.md",
+    "sha256": "6562fd4fb2a9a309a28d56f9ac324e620e9ab015bc0f796331823e801f55b9d5",
+    "sections": [
+      "# MV011 \u2014 Purchase action contrast, semantics and readability \u2014 2026-11-11",
+      "## Investigation, scope and preservation",
+      "## Exact colors and calculated contrast",
+      "## Complete task-attributable modified-file inventory",
+      "## Accessibility behavior and deterministic coverage",
+      "## Commands and results",
+      "## Regression status",
+      "## Remaining device checks, owner actions and deployment"
+    ],
+    "opening": [
+      "# MV011 \u2014 Purchase action contrast, semantics and readability \u2014 2026-11-11",
+      "",
+      "**MV011 LOCAL: FIXED \u2014 LOCAL VERIFIED.**  ",
+      "**MV011 PRODUCTION: NOT DEPLOYED / NOT VERIFIED.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_MV012_LOCAL_FIX_2026-11-11.md",
+    "sha256": "036a0b3adf9b53cab9c053303d23aee27e4fb83dc84b477a04462837e453d222",
+    "sections": [
+      "# MV012 \u2014 My Purchases chronological sorting \u2014 2026-11-11",
+      "## Investigation and root cause",
+      "## Exact implementation and before/after behavior",
+      "## Complete task-attributable changed-file inventory",
+      "## Deterministic test coverage and results",
+      "## Verification commands",
+      "## Regression and production status",
+      "## Remaining limitations and manual owner actions"
+    ],
+    "opening": [
+      "# MV012 \u2014 My Purchases chronological sorting \u2014 2026-11-11",
+      "",
+      "**MV012 LOCAL: FIXED \u2014 LOCAL VERIFIED.**  ",
+      "**MV012 PRODUCTION: NOT DEPLOYED / NOT VERIFIED.**"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_NONPLAY_TEST_ISOLATION_2026-11-09.md",
+    "sha256": "4c746f3f2a15155bcf821b73ea121a2b269cb7a823996b51dc5f759ffc1efcb4",
+    "sections": [
+      "# Isolated Razorpay Test Mode implementation \u2014 9 November 2026",
+      "## A. Exact files changed",
+      "## B. New migration, tables and functions",
+      "## C. Isolation guarantees and operational limits",
+      "## D. Validation and limitations",
+      "## E. Existing live flow",
+      "## F. Required configuration for a future authorised test",
+      "## G. Future deployment commands \u2014 NOT EXECUTED",
+      "# Owner supplies this connection securely; do not echo it or store it in the repo.",
+      "# Only after successful migration/application verification:",
+      "# This external owner-reviewed file must contain only NONPLAY_TEST_* names,",
+      "# including NONPLAY_TEST_CHECKOUT_ENABLED=false for preparation.",
+      "## H. APK readiness",
+      "## I. Single next owner action"
+    ],
+    "opening": [
+      "# Isolated Razorpay Test Mode implementation \u2014 9 November 2026",
+      "",
+      "Local implementation only, for production project `xbvenkfmesugrbjuufyw` and the",
+      "separately distributed package `in.medveda.razorpaytest`. No remote backend calls, payment"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_NOTES_BILLING_CHOICE_2026-11-08.md",
+    "sha256": "0754ed6bb75edf6432f9f8bbc9c036aec23f0913ced22bb9993a2ad8b8e58675",
+    "sections": [
+      "# Paid Notes billing choice \u2014 8 November 2026",
+      "## Single next action",
+      "## What is prepared",
+      "## Official programme requirements checked",
+      "## Fresh read-only deployment check",
+      "## Exact remaining Alpha test setup",
+      "## Verification and its limits",
+      "## Exact files changed by this task"
+    ],
+    "opening": [
+      "# Paid Notes billing choice \u2014 8 November 2026",
+      "",
+      "Locally implemented and tested; **not enabled for existing Play builds, deployed,",
+      "submitted, or verified with a real payment/device**. Owner confirmed that India"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PERF_ANDROID_CHECKLIST_2026-10-27.md",
+    "sha256": "233322c942cc9ef764e607e6f07882f9b932f57e71908adfeb8d7b3d5f804630",
+    "sections": [
+      "# Android regression and performance checklist \u2014 27 October 2026",
+      "## Identical behavior and UI",
+      "## Performance",
+      "## Extra gate for any R8 trial"
+    ],
+    "opening": [
+      "# Android regression and performance checklist \u2014 27 October 2026",
+      "",
+      "Use the [current release gates](../RELEASE_GATES.md) and",
+      "[production build/submission guide](../../mobile-app/PLAY_STORE_SUBMISSION.md)."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_A_FINAL_SAFETY_REVIEW_2026-11-11.md",
+    "sha256": "17d5251109e6b0351031bf2ab0ace862339acfc8572d8f3072c25100c42f4949",
+    "sections": [
+      "# MedVeda Phase A final safety review \u2014 2026-11-11"
+    ],
+    "opening": [
+      "# MedVeda Phase A final safety review \u2014 2026-11-11",
+      "",
+      "**Overall Phase A deployment readiness: BLOCKED. Nothing is AUTHORIZED TO DEPLOY.** All three unchanged migration artifacts are **TECHNICALLY REVIEWED** and pass isolated acceptance on the production-compatible baseline. Current backup/recovery readiness is not demonstrated, and the privileged operator, recovery/window approval and explicit production execution authorization are outstanding. Passing local tests does not approve deployment.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_A_OPERATOR_RUNBOOK_2026-11-11.md",
+    "sha256": "ecea346b78184bbdb6f603e34e33fb4cf6c123e3415da6474dc785a633db9723",
+    "sections": [
+      "# MedVeda Phase A operator runbook \u2014 2026-11-11"
+    ],
+    "opening": [
+      "# MedVeda Phase A operator runbook \u2014 2026-11-11",
+      "",
+      "**BLOCKED. Prepared for review; production execution is NOT AUTHORIZED.** This document grants no approval. Resolve the final safety report's recovery and operator-approval blockers first. Do not proceed to Phase B. All times are UTC.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_B_EDGE_COMPATIBILITY_2026-11-11.md",
+    "sha256": "c3d3c9ab34eca9fee1e1f9313424b314bc3c7393c86edc4e5dd229d29b2f5d71",
+    "sections": [
+      "# MedVeda Phase B Edge compatibility \u2014 2026-11-11",
+      "## 1. Independently inspected baseline",
+      "## 2. Narrow candidate behavior and status",
+      "## 3. Exact artifacts, inventories and hashes",
+      "## 4. SQL dependency matrix",
+      "## 5. Handler, SQL and regression results",
+      "## 6. Function configuration and deployment prerequisites",
+      "## 7. Remaining blockers, risks and owner actions",
+      "## 8. Exact task-attributable changed files"
+    ],
+    "opening": [
+      "# MedVeda Phase B Edge compatibility \u2014 2026-11-11",
+      "",
+      "**B1 / B2 / B3: LOCAL VERIFIED for the reviewed production baseline plus exactly Phase A A1/A2/A3. Production delivery: NOT DEPLOYED / NOT VERIFIED. Production rollout: BLOCKED pending operational prerequisites and separate authorization. Buy Now remains disabled.**",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PHASE_C_LOCAL_READINESS_2026-11-11.md",
+    "sha256": "f3622646c5364879be18dcd32a7a7b2dd864e383955af83c71b01c3bbab29c01",
+    "sections": [
+      "# MedVeda Phase C billing integration local readiness \u2014 2026-11-11",
+      "## 1. Local implementation status",
+      "## 2. Exact SQL dependencies and ordering",
+      "## 3. Google Play India integration",
+      "## 4. Razorpay Notes-choice integration",
+      "## 5. External reporting",
+      "## 6. Worker readiness",
+      "## 7. Local test commands and results",
+      "## 8. Missing Console evidence",
+      "## 9. Native/device blockers",
+      "## 10. Exact changed-file inventory and release artifacts",
+      "## 11. Manual owner requirements",
+      "## 12. Remaining production blockers and fail-safe",
+      "## 13. Future deployment order and final decision"
+    ],
+    "opening": [
+      "# MedVeda Phase C billing integration local readiness \u2014 2026-11-11",
+      "",
+      "**Final decision: NO-GO for production deployment or purchase activation. Local review package prepared and deterministic acceptance PASS. Purchases remain disabled.** No migration, function, schedule, secret, catalog or price was deployed or changed remotely. No real order, financial worker, provider receipt, authorization token or Google acceptance was created. No staging contact occurred.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PLAY_PATCH_403_2026-10-27.md",
+    "sha256": "387037a2a91e1bfa0b1d95a0f507d9dbb759e77f82659dcb89274836b1278dca",
+    "sections": [
+      "# MedVeda One-time Products PATCH 403",
+      "## Reconstructed production request and contract comparison",
+      "## What the parser loses and what diagnostics can recover",
+      "## Safe local change and validation"
+    ],
+    "opening": [
+      "# MedVeda One-time Products PATCH 403",
+      "",
+      "Investigated 2026-10-27 UTC. **The cause of Google's PATCH denial is not provable from retained evidence. A diagnostic information-loss defect is confirmed and corrected locally.** No deployment, worker invocation, job retry, price change, Cron change, or Google Play catalog write was performed. Existing uncommitted India-pricing changes were preserved.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_BACKUP_RESTORE_READINESS_20261023.md",
+    "sha256": "f30c800b514f6a1d3da2a3b4369167ce88c6fb120b050a0e614ee41ca7f79920",
+    "sections": [
+      "# MedVeda backup restore audit \u2014 2026-10-23"
+    ],
+    "opening": [
+      "# MedVeda backup restore audit \u2014 2026-10-23",
+      "",
+      "**Final verdict: BLOCKED for a complete rollback.** The application tables passed an isolated restore and integrity check, but the complete `data.sql` restore failed against the cached Supabase PostgreSQL image because its managed Auth schema differs from production. Production rollback is **not verified**. No production connection or write was made.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_DEFAULT_OFF_PREFLIGHT_2026-11-10.md",
+    "sha256": "abe562d4d8c6384e9a64156c9e60f0d56227177123445e55e8e54ee686d0d595",
+    "sections": [
+      "# Production default-OFF preflight \u2014 10 November 2026",
+      "## Blockers",
+      "## Audit results",
+      "## Pending migrations",
+      "## Exact proposed files",
+      "## Conditional deployment plan \u2014 NOT EXECUTED",
+      "## Rollback and interrupted-deployment recovery \u2014 NOT EXECUTED",
+      "## Production preservation and remaining configuration"
+    ],
+    "opening": [
+      "# Production default-OFF preflight \u2014 10 November 2026",
+      "",
+      "**Preflight: FAIL. Nothing deployed or enabled.**",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_PRODUCTION_DEPLOYMENT_PREFLIGHT_2026-11-11.md",
+    "sha256": "367cb9c31eca6f375a2f815c20eef0a0d4d695329edec0dd2bb7802fb5e7888e",
+    "sections": [
+      "# MedVeda production deployment preflight \u2014 2026-11-11",
+      "## 1. Readiness and evidence rules",
+      "## 2. Audit inputs, source state and earlier reports",
+      "## 3. Complete bug status matrix",
+      "## 4. Fresh production backend compatibility",
+      "## 5. Isolated migration manifest",
+      "### Phase A \u2014 smallest independently reviewable prevention package",
+      "### Phase C \u2014 future full choice/recovery prerequisites, blocked",
+      "## 6. Required Edge Function manifest",
+      "## 7. Required Android build changes and acceptance",
+      "## 8. Exact safe deployment order \u2014 plan only",
+      "## 9. Payment safety checks",
+      "## 10. Historical reconciliation blockers \u2014 no repair",
+      "## 11. Current Google Play India requirements and owner actions",
+      "## 12. Fresh local release verification",
+      "## 13. Exact modified-file inventory and preservation",
+      "## 14. Rollback, fail-safe and final owner decisions"
+    ],
+    "opening": [
+      "# MedVeda production deployment preflight \u2014 2026-11-11",
+      "",
+      "**Final decision: NO-GO for a production payment-enabled release.** The completed deterministic fixes are locally verified; none is production-complete. A three-migration, prevention-only backend package is ready for owner deployment review while Android purchases remain disabled. Current complete local Edge bundles are **BLOCKED for the minimal rollout** because they include additional undeployed contracts. No deployment is authorized by this report.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RAZORPAY_FIXES_2026-11-04.md",
+    "sha256": "7b417cd8fb8d63ce916c059793501d699ad9618ae35ba5c6040e29788d494bc0",
+    "sections": [
+      "# Razorpay deployment, acceptance and rollback handoff"
+    ],
+    "opening": [
+      "# Razorpay deployment, acceptance and rollback handoff",
+      "",
+      "**Current routing correction, 2026-11-04:** a later local follow-up added the",
+      "separate [non-Play internal-test APK](MEDVEDA_RAZORPAY_INTERNAL_TEST_ROUTING_2026-11-04.md)."
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RAZORPAY_INTERNAL_TEST_ROUTING_2026-11-04.md",
+    "sha256": "7f353889dc89894744357d8283e75f8a3156139da0114bf37290300631f0e857",
+    "sections": [],
+    "opening": [
+      "**Local routing enabled for the new `razorpay-internal-test` Android profile. Hosted payment and Notes unlock remain UNVERIFIED.**",
+      "",
+      "This is the scoped follow-up to the Notes acceptance report, not another backend audit. No Supabase/device access was required to implement or test the app routing. No remote calls, deployment, payment, settlement changes or Play Billing restoration occurred in this follow-up.",
+      ""
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_RELEASE_COMPATIBILITY_STAGING_READINESS_20261023.md",
+    "sha256": "abb38be8176208320ab61b07da15cf3ef90ad47f875355273b5bddb2364520f2",
+    "sections": [
+      "# Quiz and admin URL migration: compatibility and recovery",
+      "## Migration provenance and dependencies",
+      "## Client compatibility boundary",
+      "## URL helpers and deployment sequence",
+      "## Required hosted and device evidence",
+      "## Stop and rollback rules"
+    ],
+    "opening": [
+      "# Quiz and admin URL migration: compatibility and recovery",
+      "",
+      "Retained operational handoff, refreshed 4 November 2026. Hosted cutover and",
+      "old/new installed-client acceptance remain unverified. The original October"
+    ]
+  },
+  {
+    "path": "docs/audit/MEDVEDA_STARTUP_PAYMENTS_2026-11-08.md",
+    "sha256": "9deb17137a2d405c915ea95f3d904c473815ba5523d04759f9f7445068eb9f63",
+    "sections": [
+      "# MedVeda startup and Notes checkout \u2014 8 November 2026",
+      "## Source and preservation",
+      "## Startup",
+      "## Payments: cause, implementation and remaining limits",
+      "## Current official India Play requirements",
+      "## Fresh hosted evidence and exact next step",
+      "## Validation and changed files"
+    ],
+    "opening": [
+      "# MedVeda startup and Notes checkout \u2014 8 November 2026",
+      "",
+      "Startup: **verified on Expo Web; implemented but unverified on an Android device**.",
+      "Payments: **blocked for hosted acceptance; isolated staging route implemented and locally verified with fixtures**."
+    ]
+  },
+  {
+    "path": "docs/audit/PRIVACY_OWNER_ACTIONS_20261026.md",
+    "sha256": "90283d52ea5d97bd84b7fafe288d965aa4f67afba893785ccc8e04d50db17496",
+    "sections": [
+      "# Privacy wording and owner operations"
+    ],
+    "opening": [
+      "# Privacy wording and owner operations",
+      "",
+      "Only app/website text and its source contract test changed. No migration,",
+      "schema, RLS, function deployment, scheduler, provider or Console was changed."
+    ]
+  }
+]

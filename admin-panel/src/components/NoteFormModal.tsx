@@ -248,7 +248,7 @@ export default function NoteFormModal({
           PDF File
         </label>
 
-        <input
+        <input aria-label="PDF upload"
           ref={fileInputRef}
           type="file"
           accept="application/pdf"

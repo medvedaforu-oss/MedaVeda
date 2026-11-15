@@ -1,0 +1,153 @@
+[
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/auth-state-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-00.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/offline-owner-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-01.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-02.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/push-lifecycle-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-03.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-account-hook-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-04.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notification-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-05.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/play-catalog-contract-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-06.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/notes-billing-choice-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-07.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/navigation-lazy-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-08.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/scripts/firebase-config-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-09.log"
+  },
+  {
+    "command": [
+      "node",
+      "admin-panel/scripts/p1-financial-ui-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-10.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p1-push-delivery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-11.log"
+  },
+  {
+    "command": [
+      "node",
+      "supabase/tests/p0-notification-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-12.log"
+  },
+  {
+    "command": [
+      "node",
+      "mobile-app/node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "mobile-app/tsconfig.json"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-13.log"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "lint",
+      "--prefix",
+      "tooling"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-14.log"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "log": "final-affected-15.log"
+  }
+]

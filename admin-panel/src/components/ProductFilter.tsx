@@ -8,7 +8,7 @@ export default function ProductFilter({
   onChange,
 }: Props) {
   return (
-    <select
+    <select aria-label="Product scope"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="border rounded-lg px-4 py-2"

@@ -1,0 +1,4 @@
+Verified signed payload entries: 1313
+Unsigned payload entries: 0
+Duplicate ZIP entries: 0
+Signer SHA-256: [8c9598e4ea0722bcd6f2690b1060b001d9fff619f7c18b4b3bb5b092a4cbf300]

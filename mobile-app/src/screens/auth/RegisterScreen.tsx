@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -27,6 +27,7 @@ export default function RegisterScreen() {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false);
+  const submitting = useRef(false);
   const { control, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(registerSchema),
     mode: "onBlur",
@@ -40,11 +41,12 @@ export default function RegisterScreen() {
   const register = async (data: FormData) => {
     // Guard against double-submits (double-tap, slow network + repeat
     // tap) in addition to the button's own `disabled` state.
-    if (loading) return;
+    if (submitting.current) return;
 
     const email = parseAuthIdentifier(data.email);
     const mobile = parseAuthIdentifier(data.mobileNumber);
     if (email?.kind !== "email" || mobile?.kind !== "phone") return;
+    submitting.current = true;
     setLoading(true);
     try {
       const { error } = await registerWithEmailAndMobile({
@@ -56,22 +58,27 @@ export default function RegisterScreen() {
       // session, so keep it on the device until the student logs in. It never
       // affects whether registration succeeds.
       const referralCode = data.referralCode?.trim().toUpperCase();
-      if (referralCode) await savePendingReferral(referralCode, email.value);
+      let referralSaved = true;
+      if (referralCode) {
+        try { await savePendingReferral(referralCode, email.value); }
+        catch { referralSaved = false; }
+      }
 
       Alert.alert(
         "Verification email sent",
-        "A verification email has been sent. Please verify your email before logging in.",
+        "A verification email has been sent. Please verify your email before logging in." +
+          (referralSaved ? "" : " Your referral code could not be saved on this device. Keep the code and contact support if needed."),
         [{ text: "Back to Login", onPress: () => navigation.replace("Login") }]
       );
     } catch {
       // Do not identify which unique field or account state caused failure.
       Alert.alert("Unable to create account", "Please check your details and try again.");
-    } finally { setLoading(false); }
+    } finally { submitting.current = false; setLoading(false); }
   };
 
   const field = (name: keyof FormData, placeholder: string, secure = false) => <>
-    <Controller control={control} name={name} render={({ field: { onChange, onBlur, value } }) => <TextInput style={styles.input} placeholder={placeholder} placeholderTextColor={COLORS.subtitle} value={value} onChangeText={onChange} onBlur={onBlur} secureTextEntry={secure} autoCapitalize="none" editable={!loading} />} />
-    {errors[name] && <Text style={styles.error}>{errors[name]?.message}</Text>}
+    <Controller control={control} name={name} render={({ field: { onChange, onBlur, value } }) => <TextInput style={styles.input} accessibilityLabel={placeholder} placeholder={placeholder} placeholderTextColor={COLORS.subtitle} value={value} onChangeText={onChange} onBlur={onBlur} secureTextEntry={secure} autoCapitalize="none" editable={!loading} />} />
+    {errors[name] && <Text accessibilityLiveRegion="polite" style={styles.error}>{errors[name]?.message}</Text>}
   </>;
 
   return <ScrollView style={styles.container} contentContainerStyle={[styles.content, { paddingTop: Math.max(SPACING.xl, insets.top), paddingBottom: Math.max(SPACING.xl, insets.bottom) }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
@@ -102,10 +109,10 @@ export default function RegisterScreen() {
 
     {field("confirmPassword", "Confirm Password", true)}
 
-    <Controller control={control} name="referralCode" render={({ field: { onChange, onBlur, value } }) => <TextInput style={styles.input} placeholder="Referral code (optional)" placeholderTextColor={COLORS.subtitle} value={value} onChangeText={(text) => onChange(text.toUpperCase())} onBlur={onBlur} autoCapitalize="characters" autoCorrect={false} maxLength={10} editable={!loading} />} />
-    {errors.referralCode && <Text style={styles.error}>{errors.referralCode.message}</Text>}
-    <TouchableOpacity style={[styles.button, loading && styles.disabled]} disabled={loading} onPress={handleSubmit(register)}>{loading ? <ActivityIndicator color={COLORS.textOnPrimary} /> : <Text style={styles.buttonText}>Create Account</Text>}</TouchableOpacity>
-    <TouchableOpacity onPress={() => navigation.navigate("Login")} disabled={loading}><Text style={styles.link}>Already have an account? Login</Text></TouchableOpacity>
+    <Controller control={control} name="referralCode" render={({ field: { onChange, onBlur, value } }) => <TextInput style={styles.input} accessibilityLabel="Referral code (optional)" placeholder="Referral code (optional)" placeholderTextColor={COLORS.subtitle} value={value} onChangeText={(text) => onChange(text.toUpperCase())} onBlur={onBlur} autoCapitalize="characters" autoCorrect={false} maxLength={10} editable={!loading} />} />
+    {errors.referralCode && <Text accessibilityLiveRegion="polite" style={styles.error}>{errors.referralCode.message}</Text>}
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel="Create Account" accessibilityState={{ disabled: loading, busy: loading }} style={[styles.button, loading && styles.disabled]} disabled={loading} onPress={handleSubmit(register)}>{loading ? <ActivityIndicator color={COLORS.textOnPrimary} /> : <Text style={styles.buttonText}>Create Account</Text>}</TouchableOpacity>
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel="Login to an existing account" onPress={() => navigation.navigate("Login")} disabled={loading}><Text style={styles.link}>Already have an account? Login</Text></TouchableOpacity>
   </ScrollView>;
 }
 
@@ -114,14 +121,14 @@ const styles = StyleSheet.create({
   content: { flexGrow: 1, justifyContent: "center", padding: 25 },
   logo: { alignSelf: "center", marginBottom: SPACING.sm },
   title: { color: COLORS.text, fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: SPACING.xl },
-  input: { color: COLORS.text, backgroundColor: COLORS.card, borderColor: COLORS.border, borderWidth: 1, borderRadius: RADIUS.md, padding: SPACING.md, marginBottom: SPACING.xs },
+  input: { minHeight: 48, color: COLORS.text, backgroundColor: COLORS.card, borderColor: COLORS.border, borderWidth: 1, borderRadius: RADIUS.md, padding: SPACING.md, marginBottom: SPACING.xs },
   error: { color: COLORS.error, marginBottom: SPACING.sm },
   strengthWrap: { marginTop: -SPACING.xs / 2, marginBottom: SPACING.sm },
   strengthTrack: { flexDirection: "row", gap: 4 },
   strengthSegment: { flex: 1, height: 4, borderRadius: 2, backgroundColor: COLORS.border },
   strengthLabel: { fontSize: 12, fontWeight: "600", marginTop: SPACING.xs / 2 },
-  button: { backgroundColor: COLORS.accent, padding: 16, borderRadius: RADIUS.md, marginTop: SPACING.sm },
-  disabled: { opacity: 0.6 },
-  buttonText: { color: COLORS.textOnPrimary, fontWeight: "bold", textAlign: "center", fontSize: 17 },
+  button: { minHeight: 48, backgroundColor: COLORS.accent, padding: 16, borderRadius: RADIUS.md, marginTop: SPACING.sm },
+  disabled: { backgroundColor: COLORS.accent },
+  buttonText: { color: COLORS.background, fontWeight: "bold", textAlign: "center", fontSize: 17 },
   link: { color: COLORS.accentLight, textAlign: "center", marginTop: SPACING.lg },
 });

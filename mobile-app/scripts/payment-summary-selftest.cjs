@@ -2,11 +2,13 @@ const assert=require('node:assert/strict');
 const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
 async function scenario(changed){
  const h=harness();let finish,creates=0,navigations=0,alerts=0;
+ const navigation={isFocused:()=>true,addListener:()=>()=>{},replace:()=>navigations++,goBack(){}};
  const mocks={react:h.react,'react/jsx-runtime':jsx,
  'react-native':{View:'View',Text:'Text',ScrollView:'Scroll',Switch:'Switch',ActivityIndicator:'Spinner',StyleSheet:{create:x=>x},Platform:{OS:'android'},Alert:{alert:()=>alerts++}},
- '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>({replace:()=>navigations++,goBack(){}})},
+ '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>navigation},
  '../../components/CustomButton':{__esModule:true,default:'PayButton'},'../../components/ErrorState':{__esModule:true,default:'Error'},
  '../../services/referralsService':{fetchOrderQuote:async()=>({ok:true,amount:49}),fetchReferralSettings:async()=>({enabled:false}),formatRupees:String,walletProductsText:()=>''},
+ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
  '../../services/paymentService':{purchaseProduct:()=>{creates++;return new Promise(r=>finish=r);}},'../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
  const Screen=load('mobile-app/src/screens/payment/OrderSummaryScreen.tsx',mocks).default;
@@ -17,14 +19,16 @@ async function scenario(changed){
 }
 async function failedRefresh(reject) {
  const h=harness();let reads=0,creates=0,complete;
+ const navigation={isFocused:()=>true,addListener:()=>()=>{},replace(){},goBack(){}};
  const mocks={react:h.react,'react/jsx-runtime':jsx,
  'react-native':{View:'View',Text:'Text',ScrollView:'Scroll',Switch:'Switch',ActivityIndicator:'Spinner',StyleSheet:{create:x=>x},Platform:{OS:'android'},Alert:{alert(){}}},
- '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>({replace(){},goBack(){}})},
+ '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>navigation},
  '../../components/CustomButton':{__esModule:true,default:'PayButton'},'../../components/ErrorState':{__esModule:true,default:'Error'},
  '../../services/referralsService':{
   fetchOrderQuote:()=>++reads===1?Promise.resolve({ok:true,amount:49,walletEligible:true,walletAvailable:10})
    :new Promise((resolve,rejectPromise)=>{complete=()=>reject?rejectPromise(new Error('offline')):resolve({ok:false});}),
   fetchReferralSettings:async()=>({enabled:true}),formatRupees:String,walletProductsText:()=>''},
+ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
  '../../services/paymentService':{purchaseProduct:async()=>{creates++;return {amountPaise:4900};}},
  '../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
