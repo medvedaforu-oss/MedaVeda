@@ -5,7 +5,7 @@ const {load,jsx}=require('./ui-harness.cjs');
  for(const configured of ['play','razorpay','disabled',undefined]) {
   const provider=load('mobile-app/src/config/paymentProvider.ts',{
    'expo-constants':{__esModule:true,default:{expoConfig:{extra:{medvedaPaymentProvider:configured,
-    medvedaDistribution:'non-play-internal-test',medvedaBuildTarget:'production'}}}},
+    medvedaDistribution:'non-play-internal-test'}}}},
    'react-native':{Platform:{OS:'android'}},'expo-application':{applicationId:'in.medveda.app'},
   },{__DEV__:false,process:{env:{EXPO_PUBLIC_SUPABASE_URL:'https://xbvenkfmesugrbjuufyw.supabase.co'}}}).paymentProvider;
   assert.equal(provider,'disabled');
@@ -14,7 +14,7 @@ const {load,jsx}=require('./ui-harness.cjs');
    '../config/supabase':{supabase:{auth:{getSession:async()=>{sessions++;return {data:{session:{access_token:'fixture'}}};}}}},
    'react-native':{Platform:{OS:'android'}},'expo-application':{nativeApplicationVersion:'1.2.1'},'../config/paymentProvider':{paymentProvider:provider},'./authState':{getCurrentUser:()=>null},
   },{__DEV__:false,process:{env:{}},fetch:async()=>{network++;throw Error('unexpected Razorpay order');}});
-  await assert.rejects(service.purchaseProduct('notes'),/Start with the Google Play payment choice/);assert.equal(network,0);assert.equal(sessions,0);
+  await assert.rejects(service.purchaseProduct('notes'),/Razorpay checkout is unavailable/);assert.equal(network,0);assert.equal(sessions,0);
   const buy=load('mobile-app/src/hooks/usePurchase.ts',{
    '@react-navigation/native':{useNavigation:()=>({navigate:screen=>navigation.push(screen)})},'react-native':{Platform:{OS:'android'},Alert:{alert(){}}},'../config/paymentProvider':{paymentProvider:provider},
   },{__DEV__:false}).default().buy;
@@ -27,5 +27,5 @@ const {load,jsx}=require('./ui-harness.cjs');
  }
  const source=fs.readFileSync('mobile-app/src/navigation/AppNavigator.tsx','utf8');
  assert.match(source,/paymentProvider !== "disabled"/);
- console.log('PASS release Android actual provider config → navigation/service/checkout: no Razorpay order or checkout, including hostile Razorpay config');
+ console.log('PASS release Android actual provider config → navigation/service/checkout: no Razorpay order or checkout, including incomplete Razorpay config');
 })().catch(e=>{console.error(e);process.exitCode=1;});

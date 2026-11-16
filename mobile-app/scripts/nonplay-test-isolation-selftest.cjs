@@ -52,6 +52,15 @@ const plain=v=>JSON.parse(JSON.stringify(v));
  await assert.rejects(payment.purchaseProduct(pid,true));await assert.rejects(payment.purchaseProduct(pid,false,'play-choice'));
  transport=async()=>Response.json(valid);await payment.purchaseProduct(pid);
  transport=async()=>Response.json({success:false,pending:true});await payment.verifyPayment(valid.verifyUrl,{internalOrderId:oid});await payment.recoverPayment(valid.verifyUrl,oid);
+ before=calls.length;
+ const changedOwner=await payment.recoverPayment(valid.verifyUrl,oid,'original-buyer');
+ assert.equal(changedOwner.authRequired,true,'isolated recovery must retain the original buyer');
+ assert.equal(calls.length,before,'account change must stop recovery before HTTP');
+ transport=async()=>{uid='other-user';return Response.json({success:true});};
+ const switchedDuringRecovery=await payment.recoverPayment(valid.verifyUrl,oid,'synthetic-user');
+ assert.equal(switchedDuringRecovery.success,false);
+ assert.equal(switchedDuringRecovery.authRequired,true);
+ uid='synthetic-user';
  console.log('PASS payment facade delegates test creation/verification/recovery and refuses wallet or Play choices');
 
  const catalog={products:[{id:pid,scope:'chapter',chapterId:chapter,courseId:'bams'}],chapters:[{id:chapter,subjectId:'seed_s'}],notes:[{id:nid,chapterId:chapter}],purchases:[{id:oid,status:'success',scope:'chapter',chapterId:chapter}]};

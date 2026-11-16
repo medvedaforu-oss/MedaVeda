@@ -31,14 +31,10 @@ export async function handleCreateOrder(req: Request, nonPlayTest = false): Prom
     const user = await getUserFromAuthHeader(req);
     if (!user) return jsonResponse({ error: "Please log in before purchasing." }, 401);
     if (!await newOrdersEnabled(supabaseAdmin)) return jsonResponse({ error: "New purchases are disabled in this release.", code: "sales_disabled" }, 403);
-    // Current/legacy native callers send this header. Website Razorpay calls
-    // do not. This is a routing guard, not proof of platform or authentication;
-    // clients that omit the header cannot be identified as Android here.
+    // Standard Android and website callers share authenticated Razorpay pricing.
+    // The separate legacy test handler retains its explicit allowlist.
     if (nonPlayTest && !allowNonPlayTestCheckout(req, user.id))
       return jsonResponse({ error: "Isolated test checkout is unavailable.", code: "nonplay_test_unavailable" }, 403);
-    if (!nonPlayTest && req.headers.has("x-medveda-app-version"))
-      return jsonResponse({ error: "Android purchases use Google Play Billing. Please update the app.",
-        code: "play_billing_required" }, 403);
 
     const input: unknown = await req.json().catch(() => null);
     if (!input || typeof input !== "object" || Array.isArray(input))

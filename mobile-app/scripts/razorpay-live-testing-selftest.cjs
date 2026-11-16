@@ -41,11 +41,9 @@ assert.equal(enabled.paymentProvider, 'razorpay');
 assert.equal(enabled.isStandaloneRazorpayLiveBuild, true);
 assert.equal(enabled.isNonplayTestBuild, false, 'must use real catalog and entitlements');
 for (const change of [
-  { channel: 'production' }, { channel: 'internal-testing' }, { channel: null },
-  { runtimeVersion: `${app.version}-disabled-notes-choice-v1` },
   { applicationId: 'in.medveda.razorpaytest' }, { applicationId: null },
   { url: 'https://other.invalid' },
-  ...['medvedaBuildProfile', 'medvedaDistribution', 'medvedaBuildTarget'].map(key => ({ extra: { ...config.extra, [key]: 'wrong' } })),
+  ...['medvedaBuildTarget', 'medvedaPaymentProvider'].map(key => ({ extra: { ...config.extra, [key]: 'wrong' } })),
 ]) assert.equal(providerFor(change).paymentProvider, 'disabled', JSON.stringify(change));
 for (const change of [
   { EAS_BUILD_PROFILE: 'production' }, { EAS_BUILD_PROFILE: 'internal-testing' },
@@ -58,10 +56,10 @@ for (const change of [
 assert.equal(configFor({ ...env, EAS_BUILD_PROFILE: undefined }).android.runtimeVersion, config.android.runtimeVersion);
 for (const existing of ['production', 'internal-testing', 'preview', 'development', 'screenshots', 'shrink-test']) {
   const other = configFor({ ...build[existing].env, EAS_BUILD_PROFILE: existing, EAS_BUILD_PLATFORM: 'android' });
-  assert.equal(other.extra.medvedaPaymentProvider, 'disabled', existing);
-  assert.equal(providerFor({ extra: config.extra, channel: existing }).paymentProvider, 'disabled', 'live OTA flags cannot activate '+existing);
+  assert.equal(other.extra.medvedaPaymentProvider, 'razorpay', existing);
+  assert.equal(providerFor({ extra: other.extra, channel: existing }).paymentProvider, 'razorpay', existing);
 }
-console.log('PASS dedicated live APK; exact build guards; native channel/runtime isolate Play; existing Firebase/package retained');
+console.log('PASS dedicated live APK; exact build guards; standard live profiles supported; existing Firebase/package retained');
 
 let response, calls = [];
 const session = { access_token: 'synthetic-session', user: { id: 'buyer' } };

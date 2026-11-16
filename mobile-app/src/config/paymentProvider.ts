@@ -6,17 +6,12 @@ export type PaymentProvider = "play" | "razorpay" | "disabled";
 
 const extra = Constants.expoConfig?.extra;
 const configuredProvider = extra?.medvedaPaymentProvider;
-// Read the native build identity only for this distribution. OTA extras alone
-// cannot enable a production/Closed Testing binary, even with the same package.
-const liveNative = extra?.medvedaDistribution === "non-play-live-testing"
-  ? require("expo-updates") as typeof import("expo-updates") : null;
+// Standard Android builds use the live catalog and live Razorpay endpoints.
+// The isolated test package below keeps its own credentials and entitlements.
 export const isStandaloneRazorpayLiveBuild = Platform.OS === "android" &&
   Application.applicationId === "in.medveda.app" &&
-  extra?.medvedaDistribution === "non-play-live-testing" &&
+  configuredProvider === "razorpay" &&
   extra?.medvedaBuildTarget === "production" &&
-  extra?.medvedaBuildProfile === "razorpay-live-testing" &&
-  liveNative?.channel === "razorpay-live-testing" &&
-  liveNative?.runtimeVersion === `${Constants.expoConfig?.version}-razorpay-live-testing` &&
   process.env.EXPO_PUBLIC_SUPABASE_URL === "https://xbvenkfmesugrbjuufyw.supabase.co";
 export const isNonplayTestBuild = Platform.OS === "android" &&
   Application.applicationId === "in.medveda.razorpaytest" &&
@@ -26,20 +21,10 @@ export const isNonplayTestBuild = Platform.OS === "android" &&
   extra?.medvedaNonplayTestEnvironment === "production-isolated-razorpay-test-v1" &&
   process.env.EXPO_PUBLIC_SUPABASE_URL === "https://xbvenkfmesugrbjuufyw.supabase.co";
 
-// Only the isolated test package or dedicated native live-testing build may
-// opt Android into checkout. Stale/OTA extras cannot enable a Play binary.
-// Keep historical receipt restoration independent of permission to start sales.
-export const playRestorationEnabled = Platform.OS === "android" && Application.applicationId === "in.medveda.app";
-const approvedUserChoice = extra?.medvedaIndiaUcbEnrolled === true &&
-  (extra?.medvedaUcbTestAccepted === true ||
-    (extra?.medvedaDistribution === "play-alpha-validation" &&
-     process.env.EXPO_PUBLIC_SUPABASE_URL === "https://nsmsqsogedzohwboripd.supabase.co"));
+// Keep retired Play branches/types for historical code compatibility, but never
+// initialize native Play Billing or offer it as a payment method.
+export const playRestorationEnabled = false;
 export const paymentProvider: PaymentProvider =
-  configuredProvider === "play" && playRestorationEnabled && approvedUserChoice
-    ? "play" : configuredProvider === "razorpay" && (Platform.OS !== "android" || isNonplayTestBuild || isStandaloneRazorpayLiveBuild)
+  configuredProvider === "razorpay" && (isNonplayTestBuild || isStandaloneRazorpayLiveBuild)
     ? "razorpay" : "disabled";
-
-// Separate build-time approval gates. Defaults and all existing Play profiles
-// remain off until programme enrolment AND authorised Alpha acceptance exist.
-export const userChoiceBillingEnabled = paymentProvider === "play" &&
-  approvedUserChoice;
+export const userChoiceBillingEnabled = false;

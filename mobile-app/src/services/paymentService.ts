@@ -1,15 +1,14 @@
 import { supabase } from "../config/supabase";
 import { Platform } from "react-native";
 import * as Application from "expo-application";
-import { paymentProvider, userChoiceBillingEnabled, isNonplayTestBuild, isStandaloneRazorpayLiveBuild } from "../config/paymentProvider";
+import { paymentProvider, isNonplayTestBuild, isStandaloneRazorpayLiveBuild } from "../config/paymentProvider";
 import { getCurrentUser } from "./authState";
 
-// The isolated APK delegates to nonplayTestService before this retained Play
-// choice / legacy verification code. Its records and credentials are separate.
+// The isolated APK delegates to nonplayTestService; live checkout never uses
+// its separate credentials, endpoints or entitlement records.
 const projectUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-// The explicitly selected standalone live binary reuses the deployed live
-// route. Never fall back between live and isolated-test endpoints on failure.
-const CREATE_ORDER_URL = `${projectUrl}/functions/v1/${isStandaloneRazorpayLiveBuild ? "create-order" : "create-order-nonplay-test"}`;
+// Never fall back between live and isolated-test endpoints on failure.
+const CREATE_ORDER_URL = `${projectUrl}/functions/v1/create-order`;
 const VERIFY_PAYMENT_URL = `${projectUrl}/functions/v1/verify-payment`;
 const PAYMENT_REQUEST_TIMEOUT_MS = 35_000;
 
@@ -102,8 +101,8 @@ export async function purchaseProduct(
     return (await import("./nonplayTestService")).createTestOrder(productId);
   }
   if (Platform.OS !== "android") throw new Error("Purchases are available in the Android app.");
-  if (paymentProvider !== "razorpay" && !(userChoiceBillingEnabled && ucbOrderId))
-    throw new Error("Start with the Google Play payment choice.");
+  if (paymentProvider !== "razorpay" || ucbOrderId || buyerState)
+    throw new Error("Razorpay checkout is unavailable for this request.");
   const { data } = await supabase.auth.getSession();
   const accessToken = data.session?.access_token;
 
@@ -115,7 +114,7 @@ export async function purchaseProduct(
   // an amount. The server reads the price from the products table, applies the
   // friend discount and wallet rules, creates the order and the Razorpay order
   // together, and returns the checkout data. The client cannot write to `orders`.
-  const { res, body } = await paymentRequest(ucbOrderId ? `${projectUrl}/functions/v1/create-order-play-choice` : CREATE_ORDER_URL, {
+  const { res, body } = await paymentRequest(CREATE_ORDER_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -126,7 +125,6 @@ export async function purchaseProduct(
     body: JSON.stringify({
       productId,
       useWallet,
-      ...(ucbOrderId ? { ucbOrderId, buyerState } : {}),
     }),
   });
 
@@ -136,9 +134,7 @@ export async function purchaseProduct(
   // A malformed/stale deployment must fail before opening the payment UI.
   // Each native distribution requires its own explicit provider key mode.
   if (!body || typeof body.keyId !== "string" ||
-      !(ucbOrderId ? body.keyId.startsWith(projectUrl === "https://nsmsqsogedzohwboripd.supabase.co" ? "rzp_test_" : "rzp_live_") && body.isLiveMode === body.keyId.startsWith("rzp_live_")
-        : isStandaloneRazorpayLiveBuild ? body.keyId.startsWith("rzp_live_") && body.isLiveMode === true
-        : body.keyId.startsWith("rzp_test_") && body.isLiveMode === false) ||
+      !(isStandaloneRazorpayLiveBuild && body.keyId.startsWith("rzp_live_") && body.isLiveMode === true) ||
       typeof body.razorpayOrderId !== "string" || !/^order_[a-zA-Z0-9_]+$/.test(body.razorpayOrderId) ||
       typeof body.internalOrderId !== "string" || !body.internalOrderId ||
       !Number.isSafeInteger(body.amountPaise) || body.amountPaise < 100 ||
@@ -259,10 +255,21 @@ export async function recoverPayment(
   internalOrderId: string,
   expectedUserId = getCurrentUser()?.id
 ): Promise<VerifyResult> {
-  if (isNonplayTestBuild) return (await import("./nonplayTestService")).verifyTestPayment(verifyUrl,{internalOrderId,recover:true});
-  assertVerifyUrl(verifyUrl);
+  if (!isNonplayTestBuild) assertVerifyUrl(verifyUrl);
   const sameAccount = () => !!expectedUserId && getCurrentUser()?.id === expectedUserId;
   if (!sameAccount()) return recoveryAuthRequired();
+  if (isNonplayTestBuild) {
+    try {
+      // Keep retries bound to the original buyer, including a switch in flight.
+      const result = await (await import("./nonplayTestService")).verifyTestPayment(
+        verifyUrl, { internalOrderId, recover: true }
+      );
+      return sameAccount() ? result : recoveryAuthRequired();
+    } catch (error) {
+      if (!sameAccount()) return recoveryAuthRequired();
+      throw error;
+    }
+  }
   let session;
   try {
     const { data, error } = await recoveryAuthRead(supabase.auth.getSession());

@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2.118.0";
-import { newOrdersEnabled } from "./newOrderGate.ts";
 import {
   type EnvReader,
   NONPLAY_TEST_ENVIRONMENT,
@@ -73,10 +72,19 @@ export function createNonplayTestHandlers(
     }
     const user = await authenticate(req);
     if (!user) fail(401, "Please log in.");
-    // Before eligibility RPCs (including their rate-limit writes), body reads,
-    // order reservation or test-provider work. Recovery keeps its existing gate.
-    if (newOrder && !await newOrdersEnabled(db)) {
-      throw new Refusal(403, "New purchases are disabled in this release.", "sales_disabled");
+    // Server-only create gate, independent of production sales. Check before
+    // eligibility RPCs (including rate-limit writes), body reads or provider work.
+    // Verification, recovery and refunds retain their existing authorization.
+    if (newOrder) {
+      let enabled = false;
+      try {
+        enabled = env("NONPLAY_TEST_NEW_ORDERS_ENABLED") === "true";
+      } catch {
+        // An unavailable environment reader must also fail closed.
+      }
+      if (!enabled) {
+        throw new Refusal(403, "New test purchases are disabled.", "sales_disabled");
+      }
     }
     await permitted(config, user.id);
     return user.id;

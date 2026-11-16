@@ -19,26 +19,15 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = ({ config }) => {
-  const configuredProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "disabled";
-  if (!["play", "razorpay", "disabled"].includes(configuredProvider)) {
-    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be play, razorpay or disabled.");
+  const configuredProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "razorpay";
+  if (!["razorpay", "disabled"].includes(configuredProvider)) {
+    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be razorpay or disabled. Play Billing is retired.");
   }
   const paymentProvider = configuredProvider;
-  // MV007: paid Play distribution remains closed pending owner-specific policy
-  // verification. Environment overrides must not activate either provider.
-  if (["production", "internal-testing", "shrink-test"].includes(process.env.EAS_BUILD_PROFILE) &&
-      paymentProvider !== "disabled") {
-    throw new Error("Production Play profiles require disabled payments pending policy verification. Direct Razorpay checkout requires the isolated non-Play test profile.");
-  }
   require("./scripts/check-staging-build.cjs").checkStagingBuild(process.env);
   const razorpayTest = process.env.MEDVEDA_DISTRIBUTION === "non-play-internal-test";
   const razorpayLiveTesting = process.env.MEDVEDA_DISTRIBUTION === "non-play-live-testing";
   const playValidation = process.env.MEDVEDA_DISTRIBUTION === "play-alpha-validation";
-  if (paymentProvider === "razorpay" &&
-      (["production", "internal-testing"].includes(process.env.EAS_BUILD_PROFILE) ||
-       (process.env.EAS_BUILD_PLATFORM === "android" && !razorpayTest && !razorpayLiveTesting))) {
-    throw new Error("Direct Razorpay checkout requires the isolated non-Play test profile.");
-  }
   const next = { ...config };
   next.extra = { ...next.extra, medvedaPaymentProvider: paymentProvider,
     medvedaIndiaUcbEnrolled: process.env.MEDVEDA_INDIA_UCB_ENROLLED === "true",
@@ -100,7 +89,6 @@ module.exports = ({ config }) => {
     extraProguardRules: fs.readFileSync(path.join(__dirname, "release-rules.pro"), "utf8"),
   };
   next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }], "./plugins/withAndroidRelease.js", "./plugins/withOptionalSentry.cjs"];
-  if (paymentProvider === "play") next.plugins.push("expo-iap");
 
   const cert = path.join(__dirname, "code-signing", "certificate.pem");
   if (fs.existsSync(cert)) {

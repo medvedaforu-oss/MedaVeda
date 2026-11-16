@@ -48,7 +48,8 @@
       "env": {
         "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_fXCKukdHR8Yy05Er-t47wQ_fxHuYMZD",
-        "MEDVEDA_PAYMENT_PROVIDER": "disabled"
+        "MEDVEDA_PAYMENT_PROVIDER": "razorpay",
+        "MEDVEDA_BUILD_TARGET": "production"
       },
       "channel": "production",
       "buildArtifactPaths": [
@@ -63,8 +64,8 @@
       "autoIncrement": true,
       "environment": "preview",
       "env": {
-        "MEDVEDA_BUILD_TARGET": "same-project",
-        "MEDVEDA_PAYMENT_PROVIDER": "disabled",
+        "MEDVEDA_BUILD_TARGET": "production",
+        "MEDVEDA_PAYMENT_PROVIDER": "razorpay",
         "EXPO_PUBLIC_SUPABASE_URL": "https://xbvenkfmesugrbjuufyw.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_fXCKukdHR8Yy05Er-t47wQ_fxHuYMZD"
       },

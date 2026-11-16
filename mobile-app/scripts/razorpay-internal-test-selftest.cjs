@@ -57,10 +57,10 @@ for (const name of ['production', 'internal-testing', 'development', 'preview', 
   const values = { ...build[name].env, EAS_BUILD_PROFILE: name, EAS_BUILD_PLATFORM: 'android' };
   if (name === 'staging-validation') continue;
   const other = configFor(values);
-  assert.equal(other.extra.medvedaPaymentProvider, 'disabled', name);
-  assert.equal(providerFor(other, other.android.package, values.EXPO_PUBLIC_SUPABASE_URL), 'disabled', name);
+  assert.equal(other.extra.medvedaPaymentProvider, 'razorpay', name);
+  assert.equal(providerFor(other, other.android.package, values.EXPO_PUBLIC_SUPABASE_URL), 'razorpay', name);
 }
-console.log('PASS dedicated non-Play APK/package/channel/runtime; production-isolated configuration; existing profiles and Play native package stay disabled');
+console.log('PASS dedicated non-Play APK/package/channel/runtime; production-isolated configuration; standard live profiles enabled; isolated test settings cannot activate another package');
 
 const native = { View: 'View', Text: 'Text', TouchableOpacity: 'Button', ScrollView: 'Scroll',
   Switch: 'Switch', ActivityIndicator: 'Spinner', StyleSheet: { create: x => x },

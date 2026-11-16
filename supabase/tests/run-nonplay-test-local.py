@@ -38,9 +38,10 @@ try:
     run(['python3', 'supabase/tests/nonplay-test-repeatability.py'])
     psql('-f', 'supabase/migrations/20261109120000_isolated_nonplay_test.sql', stdout=subprocess.DEVNULL)
     assert fingerprint() == before, 'additive migration changed pre-existing data'
+    psql('-f', 'supabase/migrations/20261114050000_fix4_new_sales_disabled.sql', stdout=subprocess.DEVNULL)
     print('PASS production-baseline-only migration: all pre-existing data unchanged; no November 8/9 Play migrations required', flush=True)
     psql('-f', 'supabase/tests/nonplay-test-isolation.sql')
-    run(['deno', 'test', '--allow-env', '--allow-run=psql', 'supabase/tests/nonplay-test-integration.ts'])
+    run(['deno', 'test', '--cached-only', '--allow-env', '--allow-run=psql', 'supabase/tests/nonplay-test-integration.ts'])
     print(json.dumps({'result': 'PASS', 'local_database': database, 'hosted_calls': 0, 'provider_calls': 'mock HTTP only'}), flush=True)
 finally:
     psql('-c', f'drop database if exists {database}', db='postgres')

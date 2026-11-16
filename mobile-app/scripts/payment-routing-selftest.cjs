@@ -20,7 +20,7 @@ function load(file, mocks, extra = {}) {
       'react-native': { Platform: { OS: os } },
       'expo-application': { applicationId: 'in.medveda.app' },
     }).paymentProvider;
-    assert.equal(actual, os !== 'android' && configured === 'razorpay' ? 'razorpay' : 'disabled');
+    assert.equal(actual, 'disabled');
   }
   let navigations = 0, notices = 0;
   const disabledPurchase = load('src/hooks/usePurchase.ts', {
@@ -39,11 +39,11 @@ function load(file, mocks, extra = {}) {
       } } } },
       'react-native': { Platform: { OS: 'android' } },
       'expo-application': { nativeApplicationVersion: '1.2.0' },
-      '../config/paymentProvider': { paymentProvider: provider },
+      '../config/paymentProvider': { paymentProvider: provider, isStandaloneRazorpayLiveBuild: provider === 'razorpay' },
       './authState': { getCurrentUser: () => null },
-    }, { fetch: async () => { requests++; return { ok: true, json: async () => ({ internalOrderId: 'fixture', keyId:'rzp_test_fixture', isLiveMode:false, amountPaise:4900, razorpayOrderId:'order_fixture', productTitle:'Notes', verifyUrl:'https://fixture.invalid/functions/v1/verify-payment' }) }; } });
+    }, { fetch: async () => { requests++; return { ok: true, json: async () => ({ internalOrderId: 'fixture', keyId:'rzp_live_fixture', isLiveMode:true, amountPaise:4900, razorpayOrderId:'order_fixture', productTitle:'Notes', verifyUrl:'https://fixture.invalid/functions/v1/verify-payment' }) }; } });
     if (provider === 'disabled') {
-      await assert.rejects(service.purchaseProduct('notes'), /Start with the Google Play payment choice/);
+      await assert.rejects(service.purchaseProduct('notes'), /Razorpay checkout is unavailable/);
       assert.equal(sessions, 0); assert.equal(requests, 0);
     } else {
       assert.equal((await service.purchaseProduct('notes')).internalOrderId, 'fixture');

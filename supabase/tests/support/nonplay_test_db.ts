@@ -74,18 +74,6 @@ export class TestDatabase {
     }
   }
   from(table: string) {
-    // Explicit synthetic setting for existing enabled-checkout fixtures only.
-    // This is not a query/update of the persisted switch (which stays false).
-    // Production handlers now share that switch; deny cases have fake-DB probes.
-    if (table === "purchase_settings") {
-      return {
-        select: (_columns: string) => ({
-          eq: (_key: string, _value: boolean) => ({
-            maybeSingle: () => Promise.resolve({ data: { new_orders_enabled: true }, error: null }),
-          }),
-        }),
-      };
-    }
     if (!table.startsWith("nonplay_test_")) {
       throw new Error("Live table reached from test handler");
     }

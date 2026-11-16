@@ -1,0 +1,10 @@
+{
+  "data_directory": "/tmp/nonplay-security-pg-bcjz76_s/data",
+  "socket": "/tmp/nonplay-security-pg-bcjz76_s/socket",
+  "port": "55449",
+  "listen_addresses": "",
+  "initial_databases": [
+    "postgres"
+  ],
+  "version": "18.7 (Debian 18.7-1.pgdg13+2)"
+}

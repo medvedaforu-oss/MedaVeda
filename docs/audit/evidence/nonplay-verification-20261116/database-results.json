@@ -1,0 +1,42 @@
+[
+  {
+    "suite": "database-init",
+    "exit": 0,
+    "seconds": 0.87
+  },
+  {
+    "suite": "database-start",
+    "exit": 0,
+    "seconds": 0.12
+  },
+  {
+    "suite": "nonplay-sql-isolation",
+    "exit": 0,
+    "seconds": 0.06
+  },
+  {
+    "suite": "nonplay-postgres-integration",
+    "exit": 0,
+    "seconds": 5.24
+  },
+  {
+    "suite": "phase-b-handlers",
+    "exit": 0,
+    "seconds": 11.07
+  },
+  {
+    "suite": "b-to-c-handlers",
+    "exit": 0,
+    "seconds": 10.72
+  },
+  {
+    "suite": "audit-batch1",
+    "exit": 0,
+    "seconds": 4.03
+  },
+  {
+    "suite": "database-stop",
+    "exit": 0,
+    "seconds": 0.12
+  }
+]

@@ -24,30 +24,15 @@ assert.equal(app.android.package, "in.medveda.app");
 assert.equal(app.ios.bundleIdentifier, "com.medveda.app");
 assert.equal(app.scheme, "medveda");
 assert.equal(app.slug, "ayurpulse");
-assert.equal(configFor("production").extra.medvedaPaymentProvider, "disabled");
-assert.equal(configFor("internal-testing").extra.medvedaPaymentProvider, "disabled");
-assert.equal(configFor("razorpay-distribution", "razorpay").extra.medvedaPaymentProvider, "razorpay");
-assert.equal(configFor("production").android.runtimeVersion, `${app.version}-disabled-notes-choice-v1`);
-assert.equal(configFor("internal-testing").android.runtimeVersion, `${app.version}-disabled-notes-choice-v1`);
-assert.equal(configFor("razorpay-distribution", "razorpay").android.runtimeVersion,
-  `${app.version}-razorpay-notes-choice-v1`);
-assert.equal(configFor(undefined, "razorpay").android.runtimeVersion,
-  `${app.version}-razorpay-notes-choice-v1`);
-assert.notEqual(configFor(undefined, "razorpay").android.runtimeVersion,
-  configFor("production").android.runtimeVersion);
-assert.throws(
-  () => configFor("production", "razorpay"),
-  /Direct Razorpay checkout requires/
-);
-assert.throws(
-  () => configFor("preview", "unexpected"),
-  /MEDVEDA_PAYMENT_PROVIDER must be/
-);
-assert.equal(eas.production.env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
-assert.equal(eas["internal-testing"].env.MEDVEDA_PAYMENT_PROVIDER, "disabled");
-assert.equal(eas["razorpay-distribution"], undefined);
-assert.throws(() => configFor("custom", "razorpay", "android"), /Direct Razorpay checkout requires/);
-assert.equal(configFor("custom", "disabled").extra.medvedaPaymentProvider, "disabled");
-assert.throws(() => configFor("production", "play"), /require disabled payments/);
-
-console.log("Payment provider and package configuration checks passed.");
+for (const profile of ["production", "internal-testing", "preview"]) {
+  assert.equal(configFor(profile).extra.medvedaPaymentProvider, "razorpay");
+  assert.equal(configFor(profile).android.runtimeVersion, `${app.version}-razorpay-notes-choice-v1`);
+  assert.equal(configFor(profile, "disabled").extra.medvedaPaymentProvider, "disabled");
+  assert.notEqual(configFor(profile, "disabled").android.runtimeVersion,
+    configFor(profile).android.runtimeVersion, "disabled binaries retain a separate OTA runtime");
+}
+assert.equal(eas.production.env.MEDVEDA_PAYMENT_PROVIDER, "razorpay");
+assert.equal(eas["internal-testing"].env.MEDVEDA_PAYMENT_PROVIDER, "razorpay");
+assert.throws(() => configFor("preview", "unexpected"), /MEDVEDA_PAYMENT_PROVIDER must be/);
+assert.throws(() => configFor("production", "play"), /Play Billing is retired/);
+console.log("PASS Razorpay build configuration; explicit disabled mode; retired Play rejected");

@@ -7,7 +7,7 @@ for(const name of ['production','internal-testing','shrink-test']){
  const config=configure({config:base});const android=config.plugins.find(p=>Array.isArray(p)&&p[0]==='expo-build-properties')[1].android;
  assert.equal(android.enableMinifyInReleaseBuilds,true);assert.equal(android.enableShrinkResourcesInReleaseBuilds,true);
  assert.ok(!/-dont(?:optimize|obfuscate|shrink)|-keep class (?:io\.sentry|com\.ReactNativeBlobUtil|com\.github\.barteksc)\.\*\*/.test(android.extraProguardRules));
- assert.equal(config.android.package,'in.medveda.app');assert.equal(config.extra.medvedaPaymentProvider,'disabled');
+ assert.equal(config.android.package,'in.medveda.app');assert.equal(config.extra.medvedaPaymentProvider,'razorpay');
  assert.ok(profiles.build[name].buildArtifactPaths.some(p=>p.includes('mapping/release')));
  for(const key of Object.keys(process.env)) if(!(key in before))delete process.env[key];Object.assign(process.env,before);
 }
@@ -21,4 +21,4 @@ if(fs.existsSync(path.join(root,'android/app/build.gradle'))){
  assert.match(manifest,/android:windowSoftInputMode="adjustResize"/);assert.match(manifest,/orientation\|screenSize\|screenLayout/);
  assert.ok(!manifest.includes('com.android.vending.BILLING'));
 }
-console.log('PASS release profiles enable R8 + resource shrinking, narrow JNI rules, retained mapping, unchanged payments/package, adaptive orientation and generated release config');
+console.log('PASS release profiles enable R8 + resource shrinking, narrow JNI rules, retained mapping, Razorpay enabled/package retained, adaptive orientation and generated release config');

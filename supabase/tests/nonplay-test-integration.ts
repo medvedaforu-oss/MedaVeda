@@ -19,6 +19,7 @@ const env: Record<string, string> = {
   SUPABASE_URL: NONPLAY_TEST_URL,
   NONPLAY_TEST_ENVIRONMENT,
   NONPLAY_TEST_CHECKOUT_ENABLED: "true",
+  NONPLAY_TEST_NEW_ORDERS_ENABLED: "true",
   NONPLAY_TEST_RAZORPAY_KEY_ID: "rzp_test_fixture",
   NONPLAY_TEST_RAZORPAY_KEY_SECRET: keySecret,
   NONPLAY_TEST_RAZORPAY_WEBHOOK_SECRET: webhookSecret,
@@ -263,6 +264,29 @@ Deno.test("nonplay configuration/package/profile/Auth/product guards fail before
   );
 });
 
+Deno.test("dedicated create gate OFF preserves owned verification, recovery and refund processing", async () => {
+  for (const value of [undefined, "false", "TRUE", " true "]) {
+    const t = await setup(), o = await t.buy(), p = t.payment(o);
+    t.configure({ NONPLAY_TEST_NEW_ORDERS_ENABLED: value });
+    const before = t.counts().creates;
+    assert((await t.create()).status === 403);
+    assert(t.counts().creates === before, "disabled creation reached provider");
+    assert((await (await t.verify(o, p)).json()).success);
+    assert((await (await t.handlers.verify(
+      t.req({ internalOrderId: o.internalOrderId, recover: true }),
+    )).json()).success);
+    assert((await t.hook("evt_gate_capture", p)).status === 200);
+    assert((await t.hook("evt_gate_capture", p)).status === 200);
+    assert(await entCount() === "1");
+    t.payment(o, "refunded", { amount_refunded: 4900 });
+    assert((await t.hook("evt_gate_refund", p, "refund.processed")).status === 200);
+    assert((await t.hook("evt_gate_refund", p, "refund.processed")).status === 200);
+    assert(await entCount() === "0");
+    assert(!(await (await t.verify(o, t.payment(o))).json()).success,
+      "stale capture regranted refunded entitlement while creation disabled");
+  }
+});
+
 Deno.test("one provider CREATE under concurrent requests; permanent receipt recovery after lost response", async () => {
   const t = await setup();
   const responses = await Promise.all([t.create(), t.create(), t.create()]);
@@ -287,6 +311,7 @@ Deno.test("invalid ownership/signature/amount/currency/order/mode notes cannot c
   assert((await t.verify(o, p, {}, "0".repeat(64))).status === 400);
   for (
     const patch of [
+      { id: "pay_other" },
       { amount: 100 },
       { currency: "USD" },
       { order_id: "order_other" },
@@ -295,12 +320,21 @@ Deno.test("invalid ownership/signature/amount/currency/order/mode notes cannot c
     ]
   ) {
     const wrong = t.payment(o, "captured", patch);
-    assert((await t.verify(o, wrong)).status === 503, JSON.stringify(patch));
+    // Keep the signed callback identity fixed; the fetched response must match it.
+    t.payments.set(p.id, wrong);
+    assert((await t.verify(o, p)).status === 503, JSON.stringify(patch));
   }
   t.payment(o);
   const remote = t.remoteOrders.get(o.razorpayOrderId);
-  remote.notes.environment = "live";
-  assert((await t.verify(o, p)).status === 503);
+  for (const [key, value] of Object.entries({
+    environment: "live", user_id: other, product_id: "seed_product", order_id: crypto.randomUUID(),
+  })) {
+    const original = remote.notes[key];
+    remote.notes[key] = value;
+    assert((await t.verify(o, p)).status === 503, `provider binding: ${key}`);
+    assert(await entCount() === "0");
+    remote.notes[key] = original;
+  }
   assert(await entCount() === "0");
 });
 
@@ -391,6 +425,10 @@ Deno.test("synthetic PDF access requires Auth/package/allowlists and captured en
 
 Deno.test("test catalog/quote/history use synthetic records only; payment lane leaves live financial tables unchanged", async () => {
   const t = await setup();
+  assert(
+    await sql("select new_orders_enabled from public.purchase_settings where id=true") === "f",
+    "production sales fixture must remain disabled",
+  );
   const fingerprint = async () =>
     sql(
       `select jsonb_build_object(${
@@ -404,6 +442,7 @@ Deno.test("test catalog/quote/history use synthetic records only; payment lane l
           "first_discount_reservations",
           "provider_events",
           "payment_captures",
+          "purchase_settings",
         ].map((name) =>
           `'${name}',(select md5(coalesce(string_agg(to_jsonb(t)::text,'' order by to_jsonb(t)::text),'')) from public.${name} t)`
         ).join(",")

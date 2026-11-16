@@ -4,12 +4,12 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../../mobile-app/node_modules/typescript');
 const staging = 'https://nsmsqsogedzohwboripd.supabase.co';
-function setup({test = false, environment = {}, user = 'buyer', gate = 'allow', profile = {}, product = {}} = {}) {
+function setup({test = false, environment = {}, user = 'buyer', gate = 'allow', sales = true, profile = {}, product = {}} = {}) {
   let handler, providerCalls=0, writes=0;
   const env = {SUPABASE_URL:staging, APP_ENV:'staging', ENABLE_NONPLAY_TEST_CHECKOUT:'true',
     NONPLAY_TEST_USER_IDS:'buyer', RAZORPAY_KEY_ID:'rzp_test_fixture', RAZORPAY_KEY_SECRET:'synthetic', ...environment};
   const mocks = {
- './newOrderGate.ts':{newOrdersEnabled:async()=>true},
+ './newOrderGate.ts':{newOrdersEnabled:async()=>sales},
     './cors.ts': { handleOptions: () => null, jsonResponse: (body,status=200) => Response.json(body,{status}) },
     './rateLimit.ts': { withinLimit: async () => true },
     './notesChoiceGate.ts': { notesChoiceAllowed: () => false },
@@ -52,14 +52,21 @@ function setup({test = false, environment = {}, user = 'buyer', gate = 'allow', 
 }
 (async()=>{
   for(const version of ['1.2.2','1.1.0','']) {
-    const t=setup(), response=await t.invoke({'x-medveda-app-version':version,'x-medveda-application-id':'in.medveda.razorpaytest'});
-    assert.equal(response.status,403);assert.equal((await response.json()).code,'play_billing_required');
-    assert.deepEqual(t.counts(),{providerCalls:0,writes:0});
+    const t=setup(), response=await t.invoke({'x-medveda-app-version':version,'x-medveda-application-id':'in.medveda.app'});
+    assert.equal(response.status,200);assert.equal((await response.json()).razorpayOrderId,'order_fixture');
+    assert.equal(t.counts().providerCalls,1);
   }
   const t=setup(), response=await t.invoke({});
   assert.equal(response.status,200);assert.equal((await response.json()).razorpayOrderId,'order_fixture');
   assert.equal(t.counts().providerCalls,1);
-  console.log('PASS standard entrypoint: native requests denied before writes; website checkout retained');
+  console.log('PASS standard entrypoint: authenticated native Razorpay and website checkout accepted');
+  for (const options of [{sales:false}, {user:null}, {gate:'choice'}, {gate:'unavailable'}]) {
+    const blocked=setup(options);
+    const result=await blocked.invoke({'x-medveda-app-version':'1.2.2','x-medveda-application-id':'in.medveda.app'});
+    assert.ok(result.status>=400);
+    assert.deepEqual(blocked.counts(),{providerCalls:0,writes:0});
+  }
+  console.log('PASS sales switch, authentication and remote gate failures block provider calls');
   const legacyChoice=setup();assert.equal((await legacyChoice.invoke({}, {productId:'notes',ucbOrderId:'11111111-1111-4111-8111-111111111111',buyerState:'KERALA'})).status,403);
   assert.deepEqual(legacyChoice.counts(),{providerCalls:0,writes:0});
   console.log('PASS ordinary website route cannot bypass programme gates by attaching a legacy UCB body');
