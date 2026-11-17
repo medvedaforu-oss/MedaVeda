@@ -16,7 +16,7 @@ export async function sql(query: string): Promise<string> {
     || !/^ap_ci_[a-z0-9_]+$/.test(Deno.env.get("TEMPLATE_DB") ?? "")
   ) throw new Error("Disposable localhost test database required");
   const childEnv = Object.fromEntries(
-    ["PATH", "PGHOST", "PGPORT", "PGUSER", "PGPASSWORD"].flatMap((k) =>
+    ["PATH", "PGHOST", "PGPORT", "PGUSER", "PGPASSWORD", "PGPASSFILE"].flatMap((k) =>
       Deno.env.get(k) === undefined ? [] : [[k, Deno.env.get(k)!]]
     ),
   );

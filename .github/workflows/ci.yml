@@ -123,6 +123,8 @@ jobs:
         with: { node-version: 22 }
       - uses: denoland/setup-deno@v2
         with: { deno-version: v2.x }
+      # Node harnesses transpile real handlers with the mobile locked compiler.
+      - run: npm ci --prefix mobile-app
       - name: Build a database from the migrations and run every SQL suite + the webhook harness
         run: PGHOST=127.0.0.1 PGPORT=5432 PGUSER=postgres PGPASSWORD=ci supabase/tests/run-all.sh
 
