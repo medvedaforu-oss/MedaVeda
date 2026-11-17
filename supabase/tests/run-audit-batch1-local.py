@@ -9,6 +9,11 @@ root = pathlib.Path(__file__).resolve().parents[2]
 assert os.environ.get("PGHOST", "").startswith("/tmp/") or os.environ.get("PGHOST") in ("127.0.0.1", "localhost"), "explicit local host required"
 db = "audit_batch1_" + uuid.uuid4().hex[:12]
 env = {k: os.environ[k] for k in ("PATH", "HOME", "PGHOST", "PGPORT", "PGUSER")}
+# Retain only explicit libpq authentication settings for the isolated local DB.
+# Never inherit unrelated application/payment secrets.
+for key in ("PGPASSWORD", "PGPASSFILE"):
+    if key in os.environ:
+        env[key] = os.environ[key]
 env.update(WH_DB=db, PGOPTIONS="-c search_path=public,extensions")
 if os.environ.get("AUDIT_BATCH1_ROOT"):
     env["AUDIT_BATCH1_ROOT"] = os.environ["AUDIT_BATCH1_ROOT"]

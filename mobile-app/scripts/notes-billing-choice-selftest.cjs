@@ -134,13 +134,17 @@ function gates() {
  function config(values){process.env={...values};try{return configure({config:app});}finally{process.env=before;}}
  for(const name of ['production','internal-testing']) {
   const c=config({...profiles[name].env,EAS_BUILD_PROFILE:name,EAS_BUILD_PLATFORM:'android'});
-  assert.equal(c.extra.medvedaPaymentProvider,'disabled');assert.equal(c.extra.medvedaIndiaUcbEnrolled,false);
+  assert.equal(c.extra.medvedaPaymentProvider,'razorpay');assert.equal(c.extra.medvedaIndiaUcbEnrolled,false);
  }
- // MV007: test production policy gates only; never load a staging profile.
- for (const name of ['production','internal-testing','shrink-test']) for (const provider of ['play','razorpay']) {
-  assert.throws(()=>config({...profiles[name].env,EAS_BUILD_PROFILE:name,EAS_BUILD_PLATFORM:'android',MEDVEDA_PAYMENT_PROVIDER:provider}), /require disabled payments/);
+ // Retired Play cannot be configured. Explicit disabled builds remain available,
+ // while the existing production Razorpay configuration must be accepted.
+ for (const name of ['production','internal-testing','shrink-test']) {
+  const values={...profiles[name].env,EAS_BUILD_PROFILE:name,EAS_BUILD_PLATFORM:'android'};
+  assert.throws(()=>config({...values,MEDVEDA_PAYMENT_PROVIDER:'play'}), /Play Billing is retired/);
+  assert.equal(config({...values,MEDVEDA_PAYMENT_PROVIDER:'razorpay'}).extra.medvedaPaymentProvider,'razorpay');
+  assert.equal(config({...values,MEDVEDA_PAYMENT_PROVIDER:'disabled'}).extra.medvedaPaymentProvider,'disabled');
  }
- console.log('PASS production Play profiles reject either enabled provider; required user-choice integration retained without activation');
+ console.log('PASS production defaults to Razorpay; retired Play rejected; explicit disabled builds accepted; legacy receipt/choice coverage retained');
 }
 (async()=>{gates();await billing(false);await billing(true);await summary();await summary(true);await recovery();})().catch(e=>{console.error(e);process.exitCode=1;});
 

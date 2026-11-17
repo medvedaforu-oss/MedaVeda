@@ -116,11 +116,30 @@ do $$ begin
   exception when insufficient_privilege then raise notice 'PASS anon cannot call erase_user_data'; end;
 end $$;
 reset role;
--- Phase 1A keeps delete_my_account() as a backward-compatible wrapper (signed-in users only)
-select case when to_regprocedure('public.delete_my_account()') is not null
-             and has_function_privilege('authenticated', 'public.delete_my_account()', 'execute')
-             and not has_function_privilege('anon', 'public.delete_my_account()', 'execute')
-            then 'PASS delete_my_account kept as signed-in-only wrapper'
-            else 'FAIL delete_my_account wrapper missing or exposed to anon' end;
+-- Fix 3 retired the alternate RPC so clients cannot bypass delete-account's
+-- verified caller binding and fail-closed IP/account rate limits.
+do $$ begin
+  assert to_regprocedure('public.delete_my_account()') is not null, 'retained RPC missing';
+  assert not has_function_privilege('authenticated', 'public.delete_my_account()', 'execute'), 'authenticated bypasses deletion endpoint';
+  assert not has_function_privilege('anon', 'public.delete_my_account()', 'execute'), 'anon can delete';
+  assert has_function_privilege('service_role', 'public.erase_user_data(uuid)', 'execute'), 'deletion endpoint cannot erase';
+  raise notice 'PASS deletion RPC retained with client execution revoked; service erasure available';
+end $$;
+set local role authenticated;
+do $$ begin
+  begin
+    perform public.delete_my_account();
+    raise exception 'authenticated bypassed deletion endpoint';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+set local role anon;
+do $$ begin
+  begin
+    perform public.delete_my_account();
+    raise exception 'anon invoked deletion RPC';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
 
 rollback;

@@ -10,9 +10,24 @@ const productionUrl = build.production.env.EXPO_PUBLIC_SUPABASE_URL;
 const testPackage = 'in.medveda.razorpaytest';
 const env = { ...profile.env, EAS_BUILD_PROFILE: 'razorpay-internal-test', EAS_BUILD_PLATFORM: 'android' };
 const plain = value => JSON.parse(JSON.stringify(value));
+// Config evaluation uses a synthetic Firebase client; never depend on an owner
+// secret file or read an ambient GOOGLE_SERVICES_JSON value in this harness.
+const fixtureFs = require('node:fs'), fixtureOs = require('node:os'), fixturePath = require('node:path');
+const firebaseDir = fixtureFs.mkdtempSync(fixturePath.join(fixtureOs.tmpdir(), 'medveda-internal-firebase-'));
+const firebaseFile = fixturePath.join(firebaseDir, 'client.json');
+process.on('exit', () => fixtureFs.rmSync(firebaseDir, {recursive:true,force:true}));
+function resolvedProfile(name) {
+ const current=build[name];
+ const parent=current.extends?resolvedProfile(current.extends):{};
+ return {...parent,...current,env:{...parent.env,...current.env}};
+}
 function configFor(values) {
   const previous = process.env;
-  process.env = { ...values, GOOGLE_SERVICES_JSON: previous.GOOGLE_SERVICES_JSON };
+  const packageName=values.MEDVEDA_DISTRIBUTION==='non-play-internal-test'?testPackage:'in.medveda.app';
+  fixtureFs.writeFileSync(firebaseFile,JSON.stringify({configuration_version:'1',
+    project_info:{project_id:'synthetic-project',project_number:'123456'},
+    client:[{client_info:{mobilesdk_app_id:'1:123456:android:synthetic',android_client_info:{package_name:packageName}},api_key:[{current_key:'synthetic-not-a-key'}]}]}));
+  process.env = { ...values, GOOGLE_SERVICES_JSON: firebaseFile };
   try { return appConfig({ config: app }); }
   finally { process.env = previous; }
 }
@@ -54,7 +69,7 @@ for (const nativeId of ['in.medveda.app', 'in.medveda.staging', null]) {
 assert.equal(providerFor(config, testPackage, 'https://other.invalid'), 'disabled');
 assert.equal(providerFor({ ...config, extra: { ...config.extra, medvedaDistribution: 'standard' } }), 'disabled');
 for (const name of ['production', 'internal-testing', 'development', 'preview', 'screenshots', 'shrink-test', 'staging-validation']) {
-  const values = { ...build[name].env, EAS_BUILD_PROFILE: name, EAS_BUILD_PLATFORM: 'android' };
+  const values = { ...resolvedProfile(name).env, EAS_BUILD_PROFILE: name, EAS_BUILD_PLATFORM: 'android' };
   if (name === 'staging-validation') continue;
   const other = configFor(values);
   assert.equal(other.extra.medvedaPaymentProvider, 'razorpay', name);

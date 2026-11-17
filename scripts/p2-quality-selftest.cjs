@@ -56,11 +56,17 @@ test('Product form rejects invalid MRP and duplicate in-flight saves; retains ex
  }
 });
 
-test('Analytics sums paise exactly and selects only needed fields',async()=>{
- const filters=load('admin-panel/src/utils/filters.ts',{});let projection='';
- const db={from:table=>({select(fields){if(table==='orders')projection=fields;return this},order(){return this},range(){return this},then(resolve){resolve(table==='orders'?{data:[{status:'paid',amount:.1,product_id:'p'},{status:'paid',amount:.2,product_id:'p'}]}:{count:1})}})};
- const api=load('admin-panel/src/services/analyticsService.ts',{'../config/supabase':{supabase:db},'../utils/filters':filters});
- const data=await api.getAnalytics();assert.equal(data.totalRevenue,.3);assert.equal(data.topProducts[0].revenue,.3);assert.ok(!projection.includes('*'));
+test('Analytics uses authorized server snapshot, passes course only and propagates errors',async()=>{
+ let failure=false;
+ const db={rpc:async(name,args)=>{
+  assert.equal(name,'get_admin_analytics');assert.equal(args.p_course_id,'bams');
+  assert.equal(Object.keys(args).join(','),'p_course_id');
+  return failure?{data:null,error:Error('denied')}:{data:{totalRevenue:.3,totalOrders:2,paidOrders:2,pendingOrders:0,failedOrders:0,refundedOrders:0,totalUsers:1,totalProducts:1,topProducts:[{productId:'p',productTitle:'Notes',orders:2,revenue:.3}]},error:null};
+ }};
+ const api=load('admin-panel/src/services/analyticsService.ts',{'../config/supabase':{supabase:db}});
+ const data=await api.getAnalytics({courseId:'bams',yearId:'ignored'});
+ assert.equal(data.totalRevenue,.3);assert.equal(data.topProducts[0].revenue,.3);
+ failure=true;await assert.rejects(api.getAnalytics({courseId:'bams'}),/denied/);
 });
 test('Notification Center can distinguish network failure from genuinely empty data',async()=>{
  const api=load('mobile-app/src/services/notificationsService.ts',{'@react-native-async-storage/async-storage':{getItem:async()=>null},'../config/supabase':{supabase:{from:()=>({select(){return this},eq(){return this},order:async()=>({error:Error('offline')})})}},'./authState':{getCurrentUser:()=>({id:'a'})},'../utils/notificationPreferences':{getNotificationPreferences:async()=>({})},'../utils/logger':{logDebug(){}}});

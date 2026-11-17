@@ -2,7 +2,6 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const ts = require('typescript');
 function harness() {
   let slots = [], cursor = 0, pending = [];
   const react = {
@@ -22,10 +21,14 @@ function harness() {
 }
 function load(relative, mocks, globals = {}) {
   const mod = { exports: {} };
-  const source = fs.readFileSync(
-  path.resolve(__dirname, '../..', relative),
-  'utf8'
-);
+  const sourcePath = path.resolve(__dirname, '../..', relative);
+  // Use the source package's locked compiler. Backend fixtures use the mobile
+  // compiler installed by the database CI job. No sibling app install is needed
+  // when the admin job loads only admin sources.
+  const ts = require(require.resolve('typescript', {
+    paths: [path.dirname(sourcePath), path.resolve(__dirname, '..')],
+  }));
+  const source = fs.readFileSync(sourcePath, 'utf8');
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText,
     { exports: mod.exports, module: mod, console, Error, AbortController, AbortSignal, TextEncoder, TextDecoder, setTimeout, clearTimeout, ...globals,
       require: id => { assert.ok(id in mocks, `Unexpected import ${id}`); return mocks[id]; } });
