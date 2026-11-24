@@ -1,9 +1,0 @@
-{
-  "command": [
-    "node",
-    "/home/ganeshp8545/AyurPulse/docs/audit/p2-final-quality-20261111_150037/evidence/browser-dialog.cjs"
-  ],
-  "exit_code": 0,
-  "seconds": 3.98,
-  "scope": "actual components bundled from current source with local esbuild/production CSS; no backend"
-}

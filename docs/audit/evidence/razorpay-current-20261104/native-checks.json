@@ -1,7 +1,0 @@
-{
-  "prebuild_exit": 0,
-  "native_directory": "/tmp/medveda-razorpay-audit-native",
-  "android_sdk_platforms_present": false,
-  "configured_sdk_present": false,
-  "generated_manifest_billing_permission": false
-}

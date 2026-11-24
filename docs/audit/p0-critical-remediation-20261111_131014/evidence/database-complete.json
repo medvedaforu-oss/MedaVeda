@@ -1,8 +1,0 @@
-{
-  "command": [
-    "bash",
-    "supabase/tests/run-all.sh"
-  ],
-  "exit_code": 0,
-  "seconds": 95.31133907000003
-}

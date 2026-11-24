@@ -1,9 +1,0 @@
-{
-  "production-config": 0,
-  "production-introspect": 0,
-  "production-export": {
-    "exit": 0,
-    "seconds": 57.59,
-    "path": "/tmp/medveda-production-export-nu1y5nzz"
-  }
-}

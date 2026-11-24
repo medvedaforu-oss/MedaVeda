@@ -1,2 +1,0 @@
-{"openingSourceReads":0,"firstSearchCumulativeReads":9,"reopenAfter3MinutesCumulativeReads":9,"forcedRefreshCumulativeReads":18,"concurrentColdSourceReads":9,"indexedRows":4950,"indexBytes":1276683}
-PASS lazy cache read, 15-minute reuse, explicit refresh, single-flight and account/course isolation

@@ -1,5 +1,0 @@
-$ node mobile-app/__tests__/MOB-06.cjs
-DEVICE TEST PENDING: native same-route link replacement and MFA
-PASS MOB-06.cjs
-
-EXIT 0

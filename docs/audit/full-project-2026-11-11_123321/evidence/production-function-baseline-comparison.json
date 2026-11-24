@@ -1,7 +1,0 @@
-{
-  "observed_at": "2026-11-11T12:37:42.621010+00:00",
-  "expected_functions": 126,
-  "observed_functions": 126,
-  "differences": [],
-  "limitation": "Compares recorded public function definition hashes/ACL/owner/search_path/result. Ledger versions inspected; current ledger statement arrays, full managed config and all table data not certified."
-}

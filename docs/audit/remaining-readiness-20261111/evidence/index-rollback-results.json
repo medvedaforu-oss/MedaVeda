@@ -1,6 +1,0 @@
-[
-  "PASS injected precommit failure rolls back all seven indexes and leaves security/function state unchanged",
-  "PASS competing writer/DDL lock aborts within 2-second lock timeout; no partial indexes or security changes",
-  "PASS clean retry after verified abort creates all seven usable index paths",
-  "PASS unexpected existing index/refused post-success repeat leaves complete state unchanged"
-]

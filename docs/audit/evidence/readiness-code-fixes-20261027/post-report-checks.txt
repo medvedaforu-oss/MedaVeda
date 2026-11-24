@@ -1,4 +1,0 @@
-PASS: tracked and nonignored untracked file secret pattern scan after adding report/evidence.
-PASS: website link check, 17 pages.
-PASS: git diff --check.
-Final full cached/decompressed scan is recorded separately in secret-scan.txt.

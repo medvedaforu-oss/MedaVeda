@@ -1,1 +1,0 @@
-const fs=require('fs'),path=require('path');const baseline=JSON.parse(fs.readFileSync(__dirname+'/late-baseline-source.json','utf8'));const original=fs.readFileSync;fs.readFileSync=function(file,...args){const key=path.resolve(String(file));return key in baseline?baseline[key]:original.call(this,file,...args)};require('../../../../scripts/p2-quality-selftest.cjs');

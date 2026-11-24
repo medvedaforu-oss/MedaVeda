@@ -1,8 +1,0 @@
-{
-  "command": [
-    "node",
-    "/home/ganeshp8545/AyurPulse/docs/audit/p2-final-quality-20261111_150037/evidence/replay-late-baseline.cjs"
-  ],
-  "exit_code": 1,
-  "scope": "two source files replayed from HEAD only after proving they equal initial workspace SHA256"
-}

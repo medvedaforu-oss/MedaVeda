@@ -1,5 +1,0 @@
-$ node mobile-app/__tests__/MOB-07.cjs
-DEVICE TEST PENDING: installed staging/isolated manifests, bridge and allowlist
-PASS MOB-07.cjs
-
-EXIT 0

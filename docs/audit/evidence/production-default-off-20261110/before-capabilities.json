@@ -1,8 +1,0 @@
-[
-  {
-    "current_user": "supabase_read_only_user",
-    "transaction_read_only": "on",
-    "uuid_function": "gen_random_uuid()",
-    "lock_hash_function": "hashtextextended(text,bigint)"
-  }
-]

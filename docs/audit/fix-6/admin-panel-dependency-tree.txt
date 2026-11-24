@@ -1,3 +1,0 @@
-ayurpulse-admin-panel@1.0.0 /home/ganeshp8545/AyurPulse/admin-panel
-└── (empty)
-

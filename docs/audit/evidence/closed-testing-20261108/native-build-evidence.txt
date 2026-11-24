@@ -1,5 +1,0 @@
-2026-11-08T12:06:27.259Z Running 'gradlew :app:bundleRelease' in /home/expo/workingdir/build/mobile-app/android
-2026-11-08T12:12:45.193Z > Task :app:minifyReleaseWithR8
-2026-11-08T12:16:24.399Z > Task :app:validateSigningRelease
-2026-11-08T12:22:28.493Z > Task :app:bundleRelease
-2026-11-08T12:22:28.591Z BUILD SUCCESSFUL in 16m 1s

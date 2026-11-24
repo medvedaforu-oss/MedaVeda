@@ -1,5 +1,0 @@
-{
-  "checked_date": "2026-11-11",
-  "url": "https://developers.google.com/android-publisher/api-ref/rest/v3/externaltransactions",
-  "fact": "OneTimeExternalTransaction.externalTransactionToken is input-only; exact CREATE binding and local uniqueness must not depend on token readback."
-}

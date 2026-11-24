@@ -1,9 +1,0 @@
-{
-  "adb_command_completed": true,
-  "attached_device_count": 0,
-  "sdkmanager_available": false,
-  "configured_sdk_platforms": false,
-  "apk_aab_build": "UNVERIFIED",
-  "upi_device_round_trip": "UNVERIFIED",
-  "expo_export": "PASS"
-}

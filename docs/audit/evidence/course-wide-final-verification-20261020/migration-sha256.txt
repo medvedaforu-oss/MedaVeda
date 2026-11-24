@@ -1,1 +1,0 @@
-667cac1b6163f92834f94290044d5a9710379e05342045b5ac79fc19035db2f4  supabase/migrations/20261020104000_course_wide_content_browsing.sql

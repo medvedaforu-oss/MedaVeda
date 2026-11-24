@@ -1,8 +1,0 @@
-{
-  "http_status": 400,
-  "sqlstate": null,
-  "undefined_function": false,
-  "permission_denied": true,
-  "ambiguous_reference": false,
-  "syntax_error": false
-}

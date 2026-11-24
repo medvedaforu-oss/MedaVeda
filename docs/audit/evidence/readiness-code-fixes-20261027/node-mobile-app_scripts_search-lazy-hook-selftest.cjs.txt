@@ -1,1 +1,0 @@
-PASS actual search hook opens without build, lazily builds on first query, reuses on typing and explicitly refreshes

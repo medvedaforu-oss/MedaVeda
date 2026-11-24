@@ -1,5 +1,0 @@
-{
-  "command": "unzip -t /tmp/medveda-versioncode-4.aab",
-  "exit_code": 0,
-  "final_output_tail": "   testing: base/lib/armeabi-v7a/libexpo-sqlite.so   OK\n    testing: base/lib/armeabi-v7a/libexpo-updates.so   OK\n    testing: base/lib/armeabi-v7a/libfbjni.so   OK\n    testing…25173 tokens truncated… base/root/org/bouncycastle/x509/CertPathReviewerMessages.properties   OK\n    testing: base/root/org/bouncycastle/x509/CertPathReviewerMessages_de.properties   OK\n    testing: base/root/play-services-base.properties   OK\n    testing: base/root/play-services-basement.properties   OK\n    testing: base/root/play-services-cloud-messaging.properties   OK\n    testing: base/root/play-services-location.properties   OK\n    testing: base/root/play-services-places-placereport.properties   OK\n    testing: base/root/play-services-stats.properties   OK\n    testing: base/root/play-services-tasks.properties   OK\n    testing: META-INF/A16EF751.SF     OK\n    testing: META-INF/A16EF751.RSA    OK\n    testing: META-INF/MANIFEST.MF     OK\nNo errors detected in compressed data of /tmp/medveda-versioncode-4.aab.\n"
-}

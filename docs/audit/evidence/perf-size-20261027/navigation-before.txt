@@ -1,3 +1,0 @@
-{"provider":"play","registeredRoutes":35,"eagerScreenModules":37,"lazyRoutes":0}
-{"provider":"razorpay","registeredRoutes":36,"eagerScreenModules":37,"lazyRoutes":0}
-PASS route registration, provider gates, eager Sentry and existing error/retry fallback contract

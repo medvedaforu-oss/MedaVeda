@@ -1,2 +1,0 @@
-const assert=require('node:assert/strict'),fs=require('node:fs');const p=process.env.FIX4_ORDER_SOURCE||'supabase/functions/create-play-order/index.ts';const source=fs.readFileSync(p,'utf8');
-const gate=source.indexOf('if (!await newOrdersEnabled(supabaseAdmin))');assert.ok(gate>=0,'new orders lack a server kill switch');assert.ok(gate<source.indexOf('await req.json()'),'kill switch is after order work');console.log('PASS server kill switch precedes parsing, reservations and provider work');

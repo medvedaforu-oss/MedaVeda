@@ -1,7 +1,0 @@
-{
-  "cluster": "/tmp/medveda-phase-a-final/pgdata",
-  "tcp_enabled": false,
-  "postmaster_pid_absent": true,
-  "unix_socket_absent": true,
-  "shutdown": "pg_ctl fast completed successfully on single retry after approval-review timeout"
-}

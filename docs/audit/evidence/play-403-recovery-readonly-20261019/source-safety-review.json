@@ -1,6 +1,0 @@
-{
-  "authorization_guard_identical_to_v2": true,
-  "validated_retry_parity_cases": 20,
-  "validation_manifest_hash_verified": true,
-  "no_worker_invocation_in_recovery": true
-}

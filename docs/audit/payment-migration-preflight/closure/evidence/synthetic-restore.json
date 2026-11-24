@@ -1,8 +1,0 @@
-{
-  "scope": "synthetic PostgreSQL database including stub Auth/Storage metadata; same-cluster roles; no object bytes or managed services",
-  "dump_sha256": "7154ec9ef2256ada0c815808dd6e5bddd33461dee84d13c74d3c7541e0e00767",
-  "bytes": 654508,
-  "elapsed_seconds": 8.912,
-  "schema_and_all_public_auth_storage_table_fingerprints_equal": true,
-  "production_RPO_RTO_proven": false
-}

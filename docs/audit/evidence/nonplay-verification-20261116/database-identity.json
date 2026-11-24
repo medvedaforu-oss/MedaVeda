@@ -1,9 +1,0 @@
-{
-  "data_directory": "/tmp/nonplay-verify-pg-m08evk3w/data",
-  "port": "55449",
-  "listen_addresses": "",
-  "initial_databases": [
-    "postgres"
-  ],
-  "server_version": "18.7 (Debian 18.7-1.pgdg13+2)"
-}
