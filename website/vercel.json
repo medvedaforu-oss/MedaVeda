@@ -150,7 +150,7 @@
     },
     {
       "source": "/question-paper/:paperId",
-      "destination": "/question-paper.html"
+      "destination": "/question-paper"
     },
     {
       "source": "/note/:noteId",

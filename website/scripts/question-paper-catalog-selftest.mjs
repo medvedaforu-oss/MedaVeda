@@ -73,6 +73,15 @@ assert.equal((await request(canonical+'?utm_source=fixture')).headers.location,c
 assert.equal((await request(canonical+'?page=1')).headers.location,canonical);
 const rewritten = await request('/api/question-papers?route='+encodeURIComponent(canonical), 'GET', handler, { route:canonical });
 assert.equal(rewritten.status,200,'Vercel rewritten request');
+for (const path of [BASE,canonical]) {
+  const internal = new URLSearchParams({route:path});
+  if (path !== BASE) internal.set('path',decodeURIComponent(path.slice(BASE.length+1)));
+  const rewrittenPublic = await request(path+'?'+internal,'GET',handler,Object.fromEntries(internal));
+  assert.equal(rewrittenPublic.status,200,'Vercel public pathname with injected route must not redirect to itself');
+  const withTracking = await request(path+'?'+internal+'&utm_source=fixture','GET',handler,Object.fromEntries(internal));
+  assert.equal(withTracking.status,307);
+  assert.equal(withTracking.headers.location,path,'only public query parameters affect canonical redirects');
+}
 assert.equal((await request('/api/question-papers?route='+encodeURIComponent(paths(rows[3])[6]),'GET',handler,{route:decodeURI(paths(rows[3])[6])})).status,200,'Unicode rewrite must not loop');
 
 // Complete lifecycle across fresh requests, without a build or invalidation hook.
@@ -107,6 +116,9 @@ const growth = createCatalog(many);
 const growthHandler = createHandler(async () => many);
 const second = await request(paths(many[0])[5]+'?page=2','GET',growthHandler);
 assert.equal(second.status,200); assert.match(second.html,/noindex, follow/); assert.match(second.html,/Page 2 of 25/);
+const sessionPath = paths(many[0])[5];
+const rewrittenSecond = await request(sessionPath+'?'+new URLSearchParams({route:sessionPath,path:decodeURIComponent(sessionPath.slice(BASE.length+1)),page:'2'}),'GET',growthHandler,{route:sessionPath});
+assert.equal(rewrittenSecond.status,200,'Vercel rewrite must preserve canonical pagination without a redirect loop');
 assert.equal((second.html.match(/class="card qp-card"/g)||[]).length,PAGE_SIZE);
 const entries = sitemapEntries(growth);
 assert.equal(entries.length,many.length+6);

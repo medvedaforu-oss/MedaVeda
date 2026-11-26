@@ -40,7 +40,10 @@ export function createHandler(load = fetchCatalog) {
         return reply(200,sitemapXml(entries.slice(start,start+SITEMAP_SIZE)));
       }
       const query = new URLSearchParams(url.search);
-      if (direct) query.delete('route');
+      // Vercel also appends the rewrite's route and wildcard path queries when
+      // req.url retains the public pathname. Neither is a canonical query.
+      query.delete('route');
+      if (!direct && path.startsWith(BASE+'/')) query.delete('path');
       const rawPage = query.get('page');
       if (query.getAll('page').length > 1 || (rawPage !== null && !/^[1-9]\d*$/.test(rawPage))) return missing();
       const page = rawPage === null ? 1 : Number(rawPage);

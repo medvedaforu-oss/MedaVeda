@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const config=JSON.parse(fs.readFileSync(path.join(root,'vercel.json')));
-assert(config.rewrites?.some(rule=>rule.source==='/question-paper/:paperId'&&rule.destination==='/question-paper.html'),'Permanent URLs must resolve to the public fallback');
+assert(config.cleanUrls===true&&config.rewrites?.some(rule=>rule.source==='/question-paper/:paperId'&&rule.destination==='/question-paper'),'Permanent URLs must resolve to the extensionless public fallback with cleanUrls enabled');
 const codec=require('../../mobile-app/src/features/question-papers/questionPaperLinks.js');
 const id='11111111-1111-4111-8111-111111111111';
 const PLAY='https://play.google.com/store/apps/details?id=in.medveda.app';
