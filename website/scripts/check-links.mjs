@@ -4,6 +4,7 @@
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const files = readdirSync(root).filter((f) => f.endsWith(".html"));
@@ -22,9 +23,12 @@ const resolve = (p) => {
 };
 const idsOf = (html) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
 const cache = Object.fromEntries(files.map((f) => [f, readFileSync(join(root, f), "utf8")]));
+const styleVersion = createHash('sha256').update(readFileSync(join(root, 'assets/css/site.css'))).digest('hex').slice(0, 12);
 
 for (const f of files) {
   const html = cache[f];
+  if (!html.includes(`href="/assets/css/site.css?v=${styleVersion}"`)) err(f, "stylesheet revision does not match the current CSS; rebuild static pages");
+  for (const [svg] of html.matchAll(/<svg\b[^>]*>/g)) if (!/\bwidth="\d+"/.test(svg) || !/\bheight="\d+"/.test(svg)) err(f, "SVG lacks intrinsic dimensions");
   if (!/<title>[^<]{3,}<\/title>/.test(html)) err(f, "missing title");
   if (!/<meta name="description" content="[^"]{20,}"/.test(html)) err(f, "missing meta description");
   if (!/<link rel="canonical"/.test(html)) err(f, "missing canonical");

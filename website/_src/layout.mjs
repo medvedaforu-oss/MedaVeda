@@ -1,5 +1,11 @@
 import { FAQ } from "./faq.mjs";
 import { ICONS } from "./icons.mjs";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
+// Static builds and server-rendered catalog pages must request the same CSS
+// revision. A stable URL let cached pre-redesign CSS style incompatible markup.
+const STYLE_VERSION = createHash('sha256').update(readFileSync(new URL('../assets/css/site.css', import.meta.url))).digest('hex').slice(0, 12);
 
 const SITE = "https://www.medveda.in";
 const YEAR = new Date().getFullYear();
@@ -58,7 +64,7 @@ const FOOT = {
 };
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#39;");
-const icon = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[n] ?? ICONS.book}</svg>`;
+const icon = (n) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[n] ?? ICONS.book}</svg>`;
 
 const playBadge = (cls = "") => `<a class="play-badge ${cls}" href="${PLAY}" aria-label="Get it on Google Play: MedVeda (opens in a new tab)" rel="noopener" target="_blank"><svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path d="M2 1.2 15 14 2 26.8c-.6-.3-1-1-1-1.8V3c0-.8.4-1.500 1-1.800z" fill="#4c9a6b"/><path d="M15 14 19.500 9.500 4.200.6C3.500.2 2.700.2 2 1.200z" fill="#3e8e7e"/><path d="M15 14 2 26.800c.7 1 1.500 1 2.200.6l15.300-8.900z" fill="#e2703d"/><path d="m19.500 18.500 4.700-2.700c1.100-.6 1.100-2 0-2.600L19.500 9.500 15 14z" fill="#c99a3e"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a>`;
 
@@ -175,7 +181,7 @@ ${robots}
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=${STYLE_VERSION}">
 ${ld}
 </head>`;
 }

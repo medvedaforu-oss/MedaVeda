@@ -150,10 +150,14 @@ assert.deepEqual(displayCourse('BAMS'),{name:'BAMS',medium:''});
 const displayFixture = fixture(99,{course_name:'BAMS Marathi Medium',year_title:'BAMS 1st Year',subject_title:'Samhita adhyayan-1'});
 assert.equal(academicContext(displayFixture),'BAMS 1st Year · Marathi Medium');
 const displayCatalog = createCatalog([displayFixture]);
-const expectedHeadings = ['Question Papers','BAMS Question Papers','BAMS 1st Year Question Papers','Samhita Adhyayan – I','Samhita Adhyayan – I','Summer 2023 Question Papers','Samhita Adhyayan – I'];
+const expectedHeadings = ['Question Papers','BAMS Question Papers','BAMS 1st Year Question Papers','Samhita Adhyayan – I','Samhita Adhyayan – I','Summer 2023 Question Papers','Fixture Anatomy Paper'];
 for (const node of displayCatalog.groups.values()) {
   const html = renderNode(node,displayCatalog);
   assert.equal(html.match(/<h1>(.*?)<\/h1>/s)[1],expectedHeadings[node.level]);
+  for (const [svg] of html.matchAll(/<svg\b[^>]*>/g)) {
+    assert(/\bwidth="\d+"/.test(svg) && /\bheight="\d+"/.test(svg), 'icons retain explicit intrinsic dimensions without CSS');
+  }
+  assert.match(html, /href="\/assets\/css\/site\.css\?v=[a-f0-9]{12}"/, 'catalog CSS is versioned alongside the static build');
   assert(html.includes(`rel="canonical" href="${SITE+paths(displayFixture)[node.level]}"`));
   assert(!/<a\b[^>]*class="card qp-card"[^>]*>(?:(?!<\/a>)[\s\S])*<(?:a|button)\b/.test(html),'whole-card links have no nested controls');
 }
