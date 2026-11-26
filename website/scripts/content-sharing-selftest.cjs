@@ -5,7 +5,7 @@ const config = JSON.parse(fs.readFileSync(root + '/vercel.json'));
 const id = '11111111-1111-4111-8111-111111111111', PLAY = 'https://play.google.com/store/apps/details?id=in.medveda.app';
 for (const type of ['question-paper', 'note', 'quiz']) {
   const rewrite = config.rewrites.find(r => r.source.startsWith('/' + type + '/:'));
-  assert.equal(rewrite.destination, '/' + type + '.html');
+  assert.equal(rewrite.destination, type === 'question-paper' ? '/question-paper' : '/' + type + '.html');
   assert(config.headers.find(r => r.source === '/' + type + '/:path*').headers.some(h => h.key === 'X-Robots-Tag' && h.value.includes('noindex')));
   for (const suffix of [id, 'bad', id + '/extra', id + '%3Ftoken=SECRET']) {
     const open = { hidden: true, classList: { remove() {} } }, message = {}, download = { href: PLAY, addEventListener: (_, fn) => { download.click = fn; } };
