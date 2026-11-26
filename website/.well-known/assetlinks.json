@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "in.medveda.app",
+      "sha256_cert_fingerprints": [
+        "78:63:6F:B6:8E:42:91:7E:4D:B9:48:EE:44:AB:BB:8F:6E:13:7A:07:90:CB:F4:8D:C4:C6:4E:DB:72:5A:7E:98",
+        "18:F9:60:52:9F:FB:0D:B2:96:A1:39:E3:1B:06:F1:A4:35:02:F4:D9:7B:B5:39:5E:71:D8:5B:5D:A8:B1:02:92",
+        "0E:28:F9:08:92:71:A0:6A:3E:56:85:6F:81:B7:BF:9A:30:3E:4E:04:67:22:B4:64:EB:05:35:EC:72:85:C7:DA"
+      ]
+    }
+  }
+]
