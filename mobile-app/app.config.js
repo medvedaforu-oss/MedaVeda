@@ -55,6 +55,13 @@ module.exports = ({ config }) => {
     ...(razorpayTest ? { package: "in.medveda.razorpaytest" } : {}),
     runtimeVersion: playTesting ? `${next.version}-standalone-play-testing-v1` : razorpayLiveTesting ? `${next.version}-razorpay-live-testing-no-iap-v1` : razorpayTest ? `${next.version}-razorpay-internal-test-no-iap-v1` : `${next.version}-${paymentProvider}-no-iap-v1`,
   };
+  // Only the production package owns branded Question Paper App Links.
+  if (next.android.package === "in.medveda.app") {
+    next.android.intentFilters = [...(next.android.intentFilters || []), {
+      action: "VIEW", autoVerify: true, category: ["DEFAULT", "BROWSABLE"],
+      data: [{ scheme: "https", host: "www.medveda.in", pathPrefix: "/question-paper/" }],
+    }];
+  }
   if (playTesting) next.updates = { ...next.updates, enabled: false };
   if (razorpayLiveTesting) {
     next.updates = { ...next.updates, requestHeaders: {

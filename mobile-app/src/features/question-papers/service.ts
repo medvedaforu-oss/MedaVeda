@@ -42,3 +42,20 @@ export async function getPaperUrl(id: string, download = false): Promise<string>
   if (error || !data?.signedUrl) throw new Error('This Question Paper is unavailable. Refresh the PDF link and retry.');
   return data.signedUrl;
 }
+
+/** The caller's session/RLS resolves visibility; a shared ID is never an access grant. */
+export async function getPaperDestination(id: string): Promise<{ paperId: string; title: string }> {
+  if (typeof id !== 'string' || !/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) {
+    throw Object.assign(new Error('Invalid Question Paper link.'), { definitive: true });
+  }
+  const account = owner();
+  const { data, error } = await supabase.from('question_papers').select('id,title')
+    .eq('id', id).eq('published', true).maybeSingle();
+  checkOwner(account);
+  if (error) {
+    // Network/service errors are retryable. Do not turn a failed lookup into a visibility decision.
+    throw new Error('Could not load the Question Paper. Check your connection and retry.');
+  }
+  if (!data) throw Object.assign(new Error('Question Paper unavailable.'), { definitive: true });
+  return { paperId: data.id, title: data.title || 'Question paper' };
+}

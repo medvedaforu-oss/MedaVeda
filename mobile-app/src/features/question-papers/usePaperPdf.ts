@@ -5,10 +5,10 @@ import { getCurrentUser, getAuthEpoch } from '../../services/authState';
 import { getPaperUrl } from './service';
 import { downloadPaper } from './download';
 import usePaperResource from './usePaperResource';
-export default function usePaperPdf(paperId: string, routeCourse: string) {
+export default function usePaperPdf(paperId: string, routeCourse: string, linkRevision?: number) {
   const {courseId} = useCourseYear();
   const owner = getCurrentUser()?.id;
-  const scope = `${owner}:${courseId}:${paperId}`;
+  const scope = `${owner}:${courseId}:${paperId}:${linkRevision ?? ""}`;
   const latest = useRef(scope);
   const exportGeneration = useRef(0);
   if (latest.current !== scope) { exportGeneration.current++; latest.current=scope; }
@@ -41,7 +41,7 @@ export default function usePaperPdf(paperId: string, routeCourse: string) {
     } catch(e) { if(exportCurrent()) setDownloadError(e instanceof Error?e.message:'Could not download the PDF.'); }
     finally {pending.current=false;if(alive.current)setBusy(false);}
   }
-  return {...resource,busy,status,download,cancelDownload:()=>{exportGeneration.current++;setStatus('Download cancelled.');},viewerError,error:resource.error || viewerError || downloadError,
+  return {...resource,paperId,busy,status,download,cancelDownload:()=>{exportGeneration.current++;setStatus('Download cancelled.');},viewerError,error:resource.error || viewerError || downloadError,
     onViewerError:()=>{if(current()) setViewerError('We couldn’t open this paper. Try again to request a fresh link.');},
     retry:()=>{setViewerError('');setDownloadError('');resource.retry();}};
 }

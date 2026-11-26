@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import AppNavigator from "./src/navigation/AppNavigator";
+import { capturePaperLinks } from "./src/features/question-papers/paperLinkRuntime";
 import UpdateRequiredScreen from "./src/screens/update/UpdateRequiredScreen";
 import MaintenanceScreen from "./src/screens/maintenance/MaintenanceScreen";
 import useMaintenanceMode from "./src/hooks/useMaintenanceMode";
@@ -23,6 +24,7 @@ import { getCurrentUser } from "./src/services/authState";
 import { logError } from "./src/utils/logger";
 
 export default function App() {
+  useEffect(capturePaperLinks, []);
   // Force-update gate: checked on launch and on every resume; fails open.
   const update = useForceUpdate();
   const maintenance = useMaintenanceMode();

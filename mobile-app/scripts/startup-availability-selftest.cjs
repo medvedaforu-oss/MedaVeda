@@ -5,13 +5,14 @@ const { harness, load, jsx, nodes, tick } = require('./ui-harness.cjs');
 // request is unresolved. Native database/legacy cleanup remains a prerequisite.
 async function check(platform) {
   const h = harness(); let mode = null, required = false, clean;
-  let stopped = false;
+  let stopped = false, captureCount = 0, captureCleaned = 0;
   const App = load('mobile-app/App.tsx', {
     react: h.react, 'react/jsx-runtime': jsx,
     'react-native': { Platform: { OS: platform }, ActivityIndicator: 'Spinner', Text: 'Text', TouchableOpacity: 'Button', View: 'View' },
     'react-native-gesture-handler': { GestureHandlerRootView: 'GestureRoot' },
     'expo-status-bar': { StatusBar: 'Status' },
     'react-native-safe-area-context': { SafeAreaProvider: 'Provider', SafeAreaView: 'SafeArea' },
+    './src/features/question-papers/paperLinkRuntime': { capturePaperLinks() { captureCount++; return () => { captureCleaned++; }; } },
     './src/navigation/AppNavigator': { __esModule: true, default: 'Navigation' },
     './src/screens/update/UpdateRequiredScreen': { __esModule: true, default: 'Update' },
     './src/screens/maintenance/MaintenanceScreen': { __esModule: true, default: 'Maintenance' },
@@ -34,6 +35,8 @@ async function check(platform) {
   mode = null; assert.ok(types().includes('Update'), 'pending availability cannot mask mandatory updates');
   required = false; assert.ok(types().includes('Navigation'));
   h.unmount(); assert.equal(stopped, platform === 'android');
+  assert.equal(captureCount, 1, 'Link capture remains mounted across startup/maintenance/update gates');
+  assert.equal(captureCleaned, 1);
 }
 (async () => {
   await check('web'); await check('android');
@@ -41,6 +44,7 @@ async function check(platform) {
   for (const [session, url, expected] of [
     [null, null, 'Login'], [{ user: { id: 'fixture' } }, null, 'Home'],
     [null, 'medveda://reset-password#type=recovery', 'ResetPassword'],
+    [null, 'https://www.medveda.in/question-paper/invalid?type=recovery', 'Login'],
   ]) {
     const h = harness(); const routes = []; const navigation = { replace: route => routes.push(route) };
     const Splash = load('mobile-app/src/screens/auth/SplashScreen.tsx', {
@@ -48,6 +52,7 @@ async function check(platform) {
       'react-native': { View: 'View', Text: 'Text', StyleSheet: { create: x => x }, ActivityIndicator: 'Spinner', Linking: { getInitialURL: async () => url } },
       '../../config/supabase': { supabase: { auth: { getSession: async () => ({ data: { session } }) } } },
       '../../services/courseState': { resolvePostLoginRoute: async () => 'Home' },
+      '../../features/question-papers/questionPaperLinks': require('../src/features/question-papers/questionPaperLinks.js'),
       '../../components/BrandLogo': { __esModule: true, default: 'Logo' },
       '../../components/ErrorState': { __esModule: true, default: 'Error' },
       '../../theme/colors': { COLORS: {} }, '../../theme/spacing': { SPACING: {} },

@@ -8,7 +8,7 @@ export type RootStackParamList = {
   QuestionPaperYears: undefined;
   QuestionPaperSubjects: { yearId: string; yearTitle: string; courseId: string };
   QuestionPaperSessions: { subjectId: string; subjectTitle: string; yearId: string; yearTitle: string; courseId: string };
-  QuestionPaperPdf: { paperId: string; courseId: string; title: string };
+  QuestionPaperPdf: { paperId: string; courseId: string; title: string; linkRevision?: number };
 
   // Post-login gate: shown while the student has no course/year chosen
   // ("onboarding", no back), and reachable from Profile to change them.

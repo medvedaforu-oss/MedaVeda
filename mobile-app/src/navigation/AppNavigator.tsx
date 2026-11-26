@@ -8,6 +8,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 import useNotificationRouting from "../hooks/useNotificationRouting";
+import useQuestionPaperRouting from "../features/question-papers/useQuestionPaperRouting";
+import { parsePaperLink } from "../features/question-papers/questionPaperLinks";
 
 import { getCurrentUser, subscribeAuthUser } from "../services/authState";
 import { logError } from "../utils/logger";
@@ -107,9 +109,16 @@ const navigationTheme = {
 
 // Use the recovery scheme declared by this installed native build.
 const linking = {
-  prefixes: recoveryLinkPrefix ? [recoveryLinkPrefix] : [],
-  getInitialURL: getInitialDeepLinkUrl,
-  subscribe: subscribeDeepLinks,
+  prefixes: [...(recoveryLinkPrefix ? [recoveryLinkPrefix] : []), "https://www.medveda.in"],
+  // Question Paper links are captured above startup gates and routed only after auth/course readiness.
+  // Keeping them out of automatic state restoration avoids creating protected screens during Splash/Login.
+  getInitialURL: async () => {
+    const url = await getInitialDeepLinkUrl();
+    return parsePaperLink(url) ? null : url;
+  },
+  subscribe: (listener: (url: string) => void) => subscribeDeepLinks(url => {
+    if (!parsePaperLink(url)) listener(url);
+  }),
   config: {
     screens: {
       ResetPassword: "reset-password",
@@ -129,6 +138,7 @@ export default function AppNavigator() {
   const [navigationReady, setNavigationReady] = useState(false);
   const [route, setRoute] = useState<string>();
   useNotificationRouting(navigation, navigationReady, route);
+  useQuestionPaperRouting(navigation, navigationReady, route);
   // Runs once per app launch: makes sure the Android notification channel
   // exists, and re-applies the daily reminder if it was left "on" (mainly
   // a safety net for Android dropping exact alarms after a device

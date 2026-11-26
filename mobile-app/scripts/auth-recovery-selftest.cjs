@@ -8,6 +8,7 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
    react:h.react,'react/jsx-runtime':jsx,'react-native':{View:'View',Text:'Text',StyleSheet:{create:x=>x},ActivityIndicator:'Spinner',Linking:{getInitialURL:async()=>null}},
    '../../config/supabase':{supabase:{auth:{getSession:async()=>{calls++;if(fail){if(mode==='reject')throw Error('offline');return {data:{session:null},error:Error('offline')};}return {data:{session:{user:{id:'student'}}}};}}}},
    '../../services/courseState':{resolvePostLoginRoute:async()=>'SelectCourseYear'},
+   '../../features/question-papers/questionPaperLinks':require('../src/features/question-papers/questionPaperLinks.js'),
    '../../components/BrandLogo':{__esModule:true,default:'Logo'},'../../components/ErrorState':{__esModule:true,default:'Error'},
    '../../theme/colors':{COLORS:{}},'../../theme/spacing':{SPACING:{}},
   },{setTimeout:fn=>{fn();return 1;}}).default;
@@ -22,6 +23,7 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
    react:h.react,'react/jsx-runtime':jsx,'react-native':{View:'View',Text:'Text',StyleSheet:{create:x=>x},ActivityIndicator:'Spinner',Linking:{getInitialURL:async()=>url}},
    '../../config/supabase':{supabase:{auth:{getSession:()=>new Promise(resolve=>{ready=resolve;})}}},
    '../../services/courseState':{resolvePostLoginRoute:async()=>{profileReads++;return destination;}},
+   '../../features/question-papers/questionPaperLinks':require('../src/features/question-papers/questionPaperLinks.js'),
    '../../components/BrandLogo':{__esModule:true,default:'Logo'},'../../components/ErrorState':{__esModule:true,default:'Error'},
    '../../theme/colors':{COLORS:{}},'../../theme/spacing':{SPACING:{}},
   },{setTimeout:fn=>{fn();return 1;}}).default;

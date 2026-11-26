@@ -35,6 +35,8 @@ for (const provider of ['disabled', 'razorpay', 'play']) {
     if (name === '../theme/fonts') return { FONT: { subHeading: 18 } };
     if (name === '../config/paymentProvider') return { paymentProvider: provider };
     if (name === '../components/ErrorBoundary') return { __esModule: true, default: 'ErrorBoundary' };
+    if (name === '../features/question-papers/questionPaperLinks') return require('../src/features/question-papers/questionPaperLinks.js');
+    if (name === '../features/question-papers/useQuestionPaperRouting') return { __esModule: true, default() {} };
     if (name.includes('/hooks/')) return { __esModule: true, default() {} };
     if (name.endsWith('/studyReminderService') || name.endsWith('/deepLinkStore')) return {};
     throw Error(name);

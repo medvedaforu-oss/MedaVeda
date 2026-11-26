@@ -56,6 +56,32 @@
           "value": "no-store"
         }
       ]
+    },
+    {
+      "source": "/.well-known/assetlinks.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/question-paper/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -68,6 +94,12 @@
       "source": "/terms-and-conditions",
       "destination": "/terms",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/question-paper/:paperId",
+      "destination": "/question-paper.html"
     }
   ]
 }

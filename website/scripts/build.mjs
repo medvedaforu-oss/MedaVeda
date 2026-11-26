@@ -9,6 +9,8 @@ import { ICONS } from "../_src/icons.mjs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // The mobile and website recovery flows use the same security controller.
 writeFileSync(join(root, "assets/js/recovery-flow.js"), readFileSync(join(root, "../mobile-app/src/features/auth/recoveryFlow.js")));
+// Share the strict Question Paper codec with the mobile app; the landing page makes no backend requests.
+writeFileSync(join(root, "assets/js/question-paper-links.js"), readFileSync(join(root, "../mobile-app/src/features/question-papers/questionPaperLinks.js")));
 const SITE = "https://www.medveda.in";
 const YEAR = new Date().getFullYear();
 const PLAY = "https://play.google.com/store/apps/details?id=in.medveda.app";

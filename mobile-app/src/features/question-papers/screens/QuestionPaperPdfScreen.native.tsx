@@ -8,8 +8,8 @@ import PaperReaderToolbar, { PaperReaderLoading } from '../PaperReaderToolbar';
 import usePaperPdf from '../usePaperPdf';
 
 export default function QuestionPaperPdfScreen({ route }: NativeStackScreenProps<RootStackParamList, 'QuestionPaperPdf'>) {
-  const { paperId, courseId, title } = route.params ?? {};
-  const pdf = usePaperPdf(paperId, courseId);
+  const { paperId, courseId, title, linkRevision } = route.params ?? {};
+  const pdf = usePaperPdf(paperId, courseId, linkRevision);
   const [page, setPage] = useState<{ source: string; current: number; total: number }>();
   return <View style={paperStyles.screen}>
     <PaperReaderToolbar title={title || 'Paper'} pdf={pdf} />
