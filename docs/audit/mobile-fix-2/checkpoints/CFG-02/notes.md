@@ -1,9 +1,0 @@
-# CFG-02
-
-PARTIALLY FIXED; residual dependency advisory remains. Full online baseline npm audit reproduced four moderate findings in glob/minimatch and their parents (before/CFG-02-online.log, EXIT 1). Parent-first registry inspection found compatible react-native-blob-util 0.24.13 and @expo/fingerprint 0.20.16 releases remove glob. Expo installer upgraded the existing blob-util to ^0.24.13; SDK patch resolution upgraded fingerprint transitively. No force, major override, new module, production-only audit, or hand-edited lockfile was used.
-
-Final full npm audit --json raw log after/CFG-02.log: EXIT 1, three moderate findings: minimatch (GHSA-g3hv-75wg-m249), @expo/fingerprint, expo. Glob and blob-util advisories are removed. fingerprint 0.20.16 uses minimatch ^10.2.6; final lock selects 10.2.6 and the current registry advisory still marks >=7 <11.0.1 vulnerable. The audit suggests Expo 52.0.49 as a semver-major remedy, outside authorized SDK 57 scope. Do not claim zero vulnerabilities.
-
-Registry evidence: after/CFG-02-parent-fingerprint.log and after/CFG-02-parent-blob-util.log. Compatible fingerprint 0.20 line is exhausted at 0.20.16; no compatible parent patch resolves the remaining minimatch major-range advisory. Final doctor 21/21 PASS and Expo compatibility check PASS do not clear this security finding. Checkpoint diffs compare pre-task dirty files to final files and include shared CFG-01 SDK patches.
-
-Follow-up compatibility investigation (14 November): fingerprint consumes Minimatch via build/utils/Path.js (constructor, pattern/negate fields and match). Fixed minimatch11 copies exist elsewhere in the installed Expo graph, but a fingerprint-specific cross-major override has not completed the required compatibility approval. No additional override or manifest/lock change was applied. The independently reviewed partial parent upgrades and residual full audit remain the accepted state.

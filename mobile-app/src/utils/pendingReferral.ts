@@ -18,6 +18,8 @@ export async function savePendingReferral(code: string, email: string): Promise<
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(value));
   } catch (error) {
     logDebug("savePendingReferral failed:", error);
+    // RegisterScreen catches this optional failure and keeps registration successful.
+    throw error;
   }
 }
 

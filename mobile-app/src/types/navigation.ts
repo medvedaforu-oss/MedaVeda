@@ -5,6 +5,10 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
 
   Home: undefined;
+  QuestionPaperYears: undefined;
+  QuestionPaperSubjects: { yearId: string; yearTitle: string; courseId: string };
+  QuestionPaperSessions: { subjectId: string; subjectTitle: string; yearId: string; yearTitle: string; courseId: string };
+  QuestionPaperPdf: { paperId: string; courseId: string; title: string };
 
   // Post-login gate: shown while the student has no course/year chosen
   // ("onboarding", no back), and reachable from Profile to change them.

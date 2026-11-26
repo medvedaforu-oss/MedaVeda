@@ -36,7 +36,7 @@ export default function StudentProfileCard({
   courseLabel,
   onPress,
 }: Props) {
-  const { currentStreak, loading: streakLoading } = useStreak();
+  const { currentStreak, loading: streakLoading, error: streakError } = useStreak();
   const initial = name ? name.charAt(0).toUpperCase() : "?";
 
   return (
@@ -70,7 +70,7 @@ export default function StudentProfileCard({
             <Text style={styles.badgeText}>
               📦 {purchasedCount} {purchasedCount === 1 ? "package" : "packages"}
             </Text>
-            {!streakLoading && <StreakBadge days={currentStreak} />}
+            {!streakLoading && (streakError ? <Text style={styles.badgeText}>Streak unavailable</Text> : <StreakBadge days={currentStreak} />)}
           </View>
         </View>
 

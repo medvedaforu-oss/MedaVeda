@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
+  ScrollView,
   Text,
   StyleSheet,
   Switch,
@@ -24,7 +25,6 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 
 function formatTime(hour: number, minute: number) {
   const period = hour >= 12 ? "PM" : "AM";
@@ -131,7 +131,7 @@ export default function StudyReminderScreen() {
   if (loadError) return (
     <View style={styles.center}>
       <Text accessibilityRole="alert" style={styles.subtitle}>Could not load reminder settings. Please try again.</Text>
-      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Retry reminder settings" onPress={loadSettings}>
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Retry reminder settings" style={styles.retryButton} onPress={loadSettings}>
         <Text style={styles.rowTitle}>Retry</Text>
       </TouchableOpacity>
     </View>
@@ -141,8 +141,8 @@ export default function StudyReminderScreen() {
   pickerValue.setHours(hour, minute, 0, 0);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>⏰ Study Reminder</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text accessibilityRole="header" style={styles.title}>Study Reminder</Text>
       <Text style={styles.subtitle}>
         A daily notification to keep your revision on track - this works
         entirely on your device, so it still arrives even if your phone is
@@ -215,13 +215,14 @@ export default function StudyReminderScreen() {
 
       {Platform.OS === "ios" && showPicker && (
         <TouchableOpacity
+          accessibilityRole="button"
           style={styles.doneButton}
           onPress={() => setShowPicker(false)}
         >
           <Text style={styles.doneButtonText}>Done</Text>
         </TouchableOpacity>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -229,8 +230,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  content: {
+    width: "100%",
+    maxWidth: 840,
+    alignSelf: "center",
     padding: SPACING.lg,
     paddingTop: 60,
+    paddingBottom: 40,
   },
   center: {
     flex: 1,
@@ -239,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   title: {
-    fontSize: FONT.title,
+    fontSize: FONT.heading,
     fontWeight: "bold",
     color: COLORS.text,
   },
@@ -268,14 +275,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg,
-    ...SHADOW.card,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
   },
   divider: {
     height: 1,
@@ -295,14 +301,21 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.accent,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: RADIUS.sm,
   },
   timeBadgeText: {
     color: COLORS.white,
     fontWeight: "700",
     fontSize: FONT.small,
   },
+  retryButton: {
+    minHeight: 48,
+    justifyContent: "center",
+    paddingHorizontal: SPACING.md,
+  },
   doneButton: {
+    minHeight: 48,
+    justifyContent: "center",
     marginTop: SPACING.md,
     backgroundColor: COLORS.accent,
     padding: 14,

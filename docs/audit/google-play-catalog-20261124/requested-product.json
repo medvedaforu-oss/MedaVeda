@@ -1,0 +1,18 @@
+{
+  "packageName": "in.medveda.app",
+  "productId": "notes_1_00_v_066f5677fba745d696d1504b7600f8f7",
+  "listings": [{
+    "languageCode": "en-US",
+    "title": "MedVeda content INR 1",
+    "description": "One purchase of MedVeda digital content selected in the app."
+  }],
+  "purchaseOptions": [{
+    "purchaseOptionId": "buy",
+    "buyOption": {"legacyCompatible": true, "multiQuantityEnabled": false},
+    "regionalPricingAndAvailabilityConfigs": [{
+      "regionCode": "IN",
+      "price": {"currencyCode": "INR", "units": "1", "nanos": 0},
+      "availability": "AVAILABLE"
+    }]
+  }]
+}

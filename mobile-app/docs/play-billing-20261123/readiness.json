@@ -1,0 +1,29 @@
+{
+  "projectId": "2d642c70-8ec1-4d7b-a388-2f2f99e8a8df",
+  "credentials": [
+    {
+      "applicationId": "in.medveda.app",
+      "fcmV1Present": true,
+      "buildCredentials": [
+        {
+          "name": "Build Credentials rEPhFBfQj8",
+          "isDefault": true,
+          "keystorePresent": true,
+          "certificateFingerprintPresent": true
+        }
+      ]
+    }
+  ],
+  "profile": "play-billing-testing",
+  "environment": "preview",
+  "versionCode": 15,
+  "autoIncrement": false,
+  "firebaseLocalValidated": true,
+  "firebasePreviewFileVariablePresent": false,
+  "archiveSizeMiB": 7.2,
+  "archiveStageOnly": true,
+  "cloudBuildSubmitted": false,
+  "deployedVerifierHasCommittedProof": false,
+  "requiredRpcSignaturesPresent": true,
+  "clientCanCreateOrSettlePlayOrders": false
+}

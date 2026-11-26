@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
     ...SHADOW.card,
   },
   content: {

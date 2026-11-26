@@ -1,0 +1,32 @@
+const assert = require('node:assert/strict');
+const {load} = require('../../mobile-app/scripts/ui-harness.cjs');
+let calls=[], response={data:[],count:0,error:null}, uploadError=null, savedResponse=null;
+const query = new Proxy({}, {get:(_,key)=> key==='then' ? (resolve)=>resolve(response) : (...args)=>{calls.push([key,...args]); return query;}});
+const storage={upload:async(...args)=>{calls.push(['upload',...args]);return {error:uploadError};},createSignedUrl:async(...args)=>{calls.push(['sign',...args]);return {data:{signedUrl:'https://example.test/paper'},error:null};}};
+const api={functions:{invoke:async(name,options)=>{calls.push(['invoke',name,options]);return {data:options.body.action==='validate'?{validated:true,sha256:require('node:crypto').createHash('sha256').update('%PDF-content').digest('hex')}:response.error?null:{signedUrl:'https://example.test/paper'},error:options.body.action==='validate'?null:response.error};}},rpc:(name,args)=>{calls.push(['rpc',name,args]);return query;},from:t=>{assert.equal(t,'question_papers');return query;},storage:{from:b=>{assert.equal(b,'question-papers');return storage;}}};
+const validation=load('admin-panel/src/features/question-papers/validation.ts',{});
+const service=load('admin-panel/src/features/question-papers/service.ts',{'./validation':validation,'../../config/supabase':{supabase:api},'../../utils/pdfValidation':{validatePdf:async f=>{if(f.type!=='application/pdf')throw Error('PDF required');}}},{crypto:require('node:crypto').webcrypto});
+(async()=>{
+ const input={subject_id:'subject',exam_year:2025,exam_month:6,paper_type:' Theory ',paper_number:' I ',published:false};
+ assert.deepEqual(JSON.parse(JSON.stringify(service.validateInput(input))),{...input,paper_type:'theory',paper_number:'i'});
+ for(const bad of [{exam_month:0},{exam_month:13},{exam_year:1},{exam_year:2025.5},{subject_id:''},{paper_number:'x'.repeat(41)}]) assert.throws(()=>service.validateInput({...input,...bad}));
+ await service.listPapers({courseId:'bams',yearId:'y',subjectId:'s',examYear:2025,examMonth:6,published:'false',search:'I'},2);
+ assert(calls.some(c=>c[0]==='range'&&c[1]===50&&c[2]===74));
+ assert(calls.some(c=>c[0]==='eq'&&c[1]==='subject.year.course_id'&&c[2]==='bams'));
+ calls=[]; response={data:null,error:Error('unpublished')}; await assert.rejects(service.paperUrl('id')); assert(!calls.some(c=>c[0]==='sign'));
+ response={data:{id:'id',object_path:'file.pdf'},error:null}; calls=[]; await service.paperUrl('id'); assert(calls.some(c=>c[0]==='invoke'&&c[1]==='question-paper-access'&&c[2].body.action==='sign'));
+ const file=new Blob(['%PDF-content'],{type:'application/pdf'}); calls=[]; response={data:{id:'new'},error:null}; await service.savePaper(input,file);
+ assert(calls.some(c=>c[0]==='upload'&&c[3].upsert===false));
+ assert(calls.some(c=>c[0]==='insert'&&c[1].paper_number==='i'));
+ calls=[]; uploadError=Error('transfer failed'); await assert.rejects(service.savePaper(input,file)); assert(!calls.some(c=>c[0]==='insert')); uploadError=null;
+ calls=[]; response={error:{code:'23505'}}; await assert.rejects(service.savePaper(input,file),/already exists/i);
+ assert(!calls.some(c=>c[0]==='remove')); // uncertain writes must never destroy PDFs
+ calls=[]; response={data:{id:'old'},error:null}; await service.savePaper(input,undefined,{id:'old',object_path:'old.pdf',revision:3});
+ assert(calls.some(c=>c[0]==='rpc'&&c[1]==='question_papers_update'&&c[2].p_revision===3&&c[2].p_changes.object_path==='old.pdf')); assert(!calls.some(c=>c[0]==='upload'));
+ await service.setPublication('old',true,3); await service.deletePaper('old',3);
+ assert(calls.some(c=>c[0]==='rpc'&&c[1]==='question_papers_delete'&&c[2].p_revision===3));
+ response={error:{code:'40001'}}; await assert.rejects(service.savePaper(input,undefined,{id:'old',object_path:'old.pdf',revision:3}),/conflict.*reload/i);
+ await assert.rejects(service.setPublication('old',true,3),/conflict.*reload/i);
+ await assert.rejects(service.deletePaper('old',3),/conflict.*reload/i); assert(!calls.some(c=>c[0]==='remove'));
+ console.log('PASS Admin question paper validation, scoped pagination, signing, upload, replacement, duplicates and failure preservation');
+})().catch(e=>{console.error(e);process.exitCode=1});

@@ -35,7 +35,7 @@ assert.equal(submit['razorpay-internal-test'], undefined);
 assert.equal(config.name, 'MedVeda Razorpay Test');
 assert.equal(config.scheme, 'medveda-razorpay-test');
 assert.equal(config.android.package, testPackage);
-assert.equal(config.android.runtimeVersion, `${app.version}-razorpay-internal-test`);
+assert.equal(config.android.runtimeVersion, `${app.version}-razorpay-internal-test-no-iap-v1`);
 assert.equal(provider, 'razorpay');
 for (const change of [
   { MEDVEDA_BUILD_TARGET: 'same-project' }, { MEDVEDA_DISTRIBUTION: undefined },
@@ -122,8 +122,8 @@ async function buyToCheckout() {
     '../../services/referralsService': { fetchOrderQuote: async id => {
       assert.equal(id, product.id); return { ok: true, amount: 49 };
     }, fetchReferralSettings: async () => ({ enabled: false }), formatRupees: String, walletProductsText: () => '' },
-    '../../services/playBillingService': {}, '../../config/supabase': {},
-    '../../services/indiaBillingStates': { INDIA_ADMINISTRATIVE_AREAS: [] },
+    '../../config/supabase': {},
+
     '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/paymentService': service, '../../config/paymentProvider': { paymentProvider: provider, isNonplayTestBuild: true },
     '../../utils/logger': { logError() {} }, ...themes('../../theme/'),
   }).default;

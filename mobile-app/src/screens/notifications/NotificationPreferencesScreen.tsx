@@ -5,7 +5,6 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/typography";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 
 import {
   NOTIFICATION_CATEGORIES,
@@ -42,7 +41,7 @@ export default function NotificationPreferencesScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>Notification Preferences</Text>
+      <Text accessibilityRole="header" style={styles.title}>Notification Preferences</Text>
       <Text style={styles.subtitle}>Choose what you see in the in-app feed and hear about while the app is open. These toggles do not control background or closed-app delivery.</Text>
 
       {NOTIFICATION_CATEGORIES.map((category) => (
@@ -74,16 +73,20 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
     paddingTop: 60,
     paddingBottom: 40,
+    width: "100%",
+    maxWidth: 840,
+    alignSelf: "center",
   },
   title: {
-    fontSize: FONT.title,
+    fontSize: FONT.heading,
     fontWeight: "bold",
     color: COLORS.text,
   },
   subtitle: {
     fontSize: FONT.body,
     color: COLORS.subtitle,
-    marginTop: 6,
+    lineHeight: 24,
+    marginTop: SPACING.xs,
     marginBottom: SPACING.lg,
   },
   row: {
@@ -93,10 +96,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
-    ...SHADOW.card,
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
   },
   rowText: {
     flex: 1,
@@ -108,9 +110,9 @@ const styles = StyleSheet.create({
     color: COLORS.text,
   },
   rowDescription: {
-    fontSize: FONT.tiny,
+    fontSize: FONT.small,
     color: COLORS.subtitle,
     marginTop: 3,
-    lineHeight: 16,
+    lineHeight: 20,
   },
 });

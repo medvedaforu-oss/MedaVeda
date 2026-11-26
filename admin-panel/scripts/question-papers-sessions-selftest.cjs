@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict');
+const {load}=require('../../mobile-app/scripts/ui-harness.cjs');
+const service=load('admin-panel/src/features/question-papers/validation.ts',{'../../config/supabase':{supabase:{}},'../../utils/pdfValidation':{validatePdf:async()=>{}}});
+const input={subject_id:'s',exam_year:2023,exam_month:null,exam_session:' Summer ',title:' Kriya Sharir - I ',paper_type:'Phase III — Section B',paper_number:'I',published:false};
+const value=service.validateInput(input);
+assert.equal(value.exam_session,'Summer');assert.equal(value.exam_month,null);assert.equal(value.title,'Kriya Sharir - I');
+for(const bad of [{exam_session:''},{exam_session:'x'.repeat(61)},{exam_month:6},{title:''},{exam_year:2023.5}])assert.throws(()=>service.validateInput({...input,...bad}));
+assert.equal(service.validateInput({...input,exam_session:'Winter',exam_year:2027}).exam_year,2027);
+assert.equal(service.validateInput({...input,exam_session:'Supplementary'}).exam_session,'Supplementary');
+const legacy={subject_id:'s',exam_year:2020,exam_month:6,paper_type:'',paper_number:'',published:true};
+assert.equal(service.validateInput(legacy).exam_month,6);
+console.log('PASS named sessions, exact titles, future exam years and legacy input validation');

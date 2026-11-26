@@ -45,7 +45,8 @@ select pg_temp.chk('P4 authenticated keeps what the app and the admin panel need
   has_table_privilege('authenticated', 'public.profiles', 'UPDATE') and has_table_privilege('authenticated', 'public.push_tokens', 'INSERT')
   and has_table_privilege('authenticated', 'public.quiz_scores', 'INSERT') and has_table_privilege('authenticated', 'public.analytics_events', 'INSERT')
   and has_table_privilege('authenticated', 'public.chapters', 'INSERT') and has_table_privilege('authenticated', 'public.chapters', 'DELETE')
-  and has_table_privilege('authenticated', 'public.products', 'UPDATE') and has_table_privilege('authenticated', 'public.referral_settings', 'UPDATE')
+  and not has_table_privilege('authenticated', 'public.products', 'UPDATE')
+  and has_function_privilege('authenticated','public.products_update(text,integer,jsonb)','EXECUTE') and has_table_privilege('authenticated', 'public.referral_settings', 'UPDATE')
   and has_table_privilege('authenticated', 'public.orders', 'SELECT'));
 select pg_temp.chk('P5 the money tables are still read-only for clients (as before)',
   not has_table_privilege('authenticated', 'public.orders', 'INSERT') and not has_table_privilege('authenticated', 'public.purchases', 'UPDATE')

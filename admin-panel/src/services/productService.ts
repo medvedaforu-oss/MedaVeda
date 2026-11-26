@@ -47,6 +47,9 @@ function friendlyProductError(error: any): Error {
       "A product already exists for this Year/Subject/Chapter. Edit the existing product instead, or pick a different selection."
     );
   }
+  if (error?.code === "40001") {
+    return new Error("This product changed or was deleted. Close this form, refresh the list, and reopen it before saving.");
+  }
   return error;
 }
 
@@ -56,9 +59,17 @@ export async function addProduct(data: ProductInput) {
   if (error) throw friendlyProductError(error);
 }
 
-export async function updateProduct(id: string, data: ProductInput) {
-  const { chapterTitle, subjectTitle, yearTitle, yearTitles, courseTitle, ...payload } = data;
-  const { error } = await supabase.from(TABLE).update(toSnakeCase(nullifyEmptyIds(payload))).eq("id", id).select("id").single();
+export async function updateProduct(id: string, data: ProductInput, revision: number) {
+  if (!Number.isSafeInteger(revision) || revision <= 0)
+    throw new Error("Reload the product before saving; its revision is missing.");
+  // Allow only persisted, editable fields. A caller cannot submit revision/id,
+  // timestamps, or UI labels even if it bypasses the TypeScript input type.
+  const keys = ["title", "description", "scope", "productType", "price", "originalPrice", "thumbnail",
+    "chapterId", "subjectId", "yearId", "yearIds", "active", "courseId"] as const;
+  const payload = Object.fromEntries(keys.filter(key => Object.hasOwn(data, key)).map(key => [key, data[key]]));
+  const { error } = await supabase.rpc("products_update", {
+    p_id: id, p_revision: revision, p_changes: toSnakeCase(nullifyEmptyIds(payload)),
+  }).single();
   if (error) throw friendlyProductError(error);
 }
 

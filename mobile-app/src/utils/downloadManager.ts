@@ -410,9 +410,11 @@ async function discardPaidDownload(id: string, confirmedPaid = false): Promise<v
 
 /** Cancels + fully removes a download (queued, downloading, or paused). */
 export function cancelDownload(id: string): Promise<void> {
+  const identity = removalIdentity(id);
   // Invalidate immediately, even when an earlier pause is still awaiting native IO.
   operations.delete(id);
   return serializeControl(id, async () => {
+    if (!identity.rebase()) return;
     const resumable = activeResumables.get(id);
     if (resumable) {
       await resumable.cancelAsync();
@@ -420,6 +422,7 @@ export function cancelDownload(id: string): Promise<void> {
     }
     const existing = getDownload(id);
     const raw = await AsyncStorage.getItem(RESUME_STATE_PREFIX + id);
+    if (!identity.current()) return;
     if (raw) {
       const saved = JSON.parse(raw);
       if (!existing || !ownsFile(saved?.fileUri, existing.contentType) ||
@@ -428,30 +431,50 @@ export function cancelDownload(id: string): Promise<void> {
       // Keep the durable pointer and row when deletion fails, so cancellation can retry.
       await FileSystem.deleteAsync(saved.fileUri, { idempotent: true });
     }
-    await removeDownload(id);
+    await removeDownloadInternal(id, identity);
+    if (!identity.current() && getDownload(id)) return;
     await AsyncStorage.removeItem(RESUME_STATE_PREFIX + id);
   });
 }
 
-/** Deletes a completed download's file + row (used by the trash icon in DownloadsScreen). */
-export async function removeDownload(id: string): Promise<void> {
-  if (!OFFLINE_DB_SUPPORTED) return;
-  operations.delete(id);
-  const owner = getCurrentUser()?.id;
+/** Bind removal to the row and account observed before any asynchronous work. */
+function removalIdentity(id: string) {
+  const existing = getDownload(id), owner = getCurrentUser()?.id;
+  const epoch = getAuthEpoch(), generation = storageGeneration;
+  const current = () => {
+    const row = getDownload(id);
+    return epoch === getAuthEpoch() && owner === getCurrentUser()?.id && generation === storageGeneration &&
+      !!existing && row?.localUri === existing.localUri && row?.updatedAt === existing.updatedAt && row?.contentType === existing.contentType;
+  };
+  const rebase = () => {
+    const row = getDownload(id);
+    if (!existing || !row || epoch !== getAuthEpoch() || owner !== getCurrentUser()?.id || generation !== storageGeneration ||
+        row.localUri !== existing.localUri || row.contentType !== existing.contentType) return false;
+    existing.updatedAt = row.updatedAt;
+    return current();
+  };
+  return { existing, owner, current, rebase };
+}
+async function removeDownloadInternal(id: string, identity: ReturnType<typeof removalIdentity>): Promise<void> {
+  const { existing, owner, current } = identity;
+  if (!current() || !existing) return;
   if (owner) await clearNoteVerification(owner, id);
-  const existing = getDownload(id);
-  if (existing?.localUri) {
+  if (!current()) return;
+  if (existing.localUri) {
     if (!ownsFile(existing.localUri, existing.contentType) ||
         (existing.contentType === "note" && !ownsNoteFile(existing.localUri, id))) throw new Error("Invalid download path");
     await FileSystem.deleteAsync(existing.localUri, { idempotent: true });
   }
-  const db = getDb();
-  db.runSync(`DELETE FROM downloads WHERE id = ?;`, [id]);
-  emit({
-    ...(existing as DownloadItem),
-    status: "queued",
-    localUri: null,
-  } as DownloadItem); // signal removal; UI filters by re-querying getAllDownloads()
+  if (!current()) return;
+  getDb().runSync(`DELETE FROM downloads WHERE id = ? AND local_uri IS ? AND updated_at = ?;`, [id, existing.localUri, existing.updatedAt]);
+  emit({ ...existing, status: "queued", localUri: null });
+}
+/** Deletes only the expected file and row; clear-all waits for this control operation. */
+export function removeDownload(id: string): Promise<void> {
+  if (!OFFLINE_DB_SUPPORTED) return Promise.resolve();
+  const identity = removalIdentity(id);
+  operations.delete(id);
+  return serializeControl(id, async () => { if (identity.rebase()) await removeDownloadInternal(id, identity); });
 }
 
 export async function clearAllDownloads(): Promise<void> {
@@ -568,6 +591,7 @@ export async function saveQuizForOffline(params: {
 }): Promise<void> {
   if (!OFFLINE_DB_SUPPORTED) return;
   const admissionEpoch = getAuthEpoch();
+  await controlOperations.get(params.id);
   if (!await waitForOfflineStorage() || admissionEpoch !== getAuthEpoch() || clearing) return;
   const generation = storageGeneration;
   const owner = getCurrentUser()?.id;

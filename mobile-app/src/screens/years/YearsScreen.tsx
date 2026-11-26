@@ -13,7 +13,7 @@ import useCourseYear from "../../hooks/useCourseYear";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 const MODE_LABEL: Record<string, string> = {
   notes: "📚 Notes",
@@ -97,8 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
   modeLabel: {
     fontSize: FONT.small,

@@ -52,8 +52,13 @@ jobs = [
     ("website-links", ["node", "website/scripts/check-links.mjs"]),
 ]
 
-# These three self-tests write a database. Never discover/run them implicitly.
-db_tests = {"content-url-publication-selftest.cjs", "play-cron-config-selftest.cjs", "ucb-cron-config-selftest.cjs"}
+# These tests require a deliberately prepared disposable database. Their existing
+# runners supply the historical schema/fixtures; source-only discovery cannot.
+db_tests = {
+    "content-url-publication-selftest.cjs", "play-cron-config-selftest.cjs", "ucb-cron-config-selftest.cjs",
+    "audit-batch1-selftest.cjs", "b-to-c-handlers-selftest.cjs", "mv003-entitlement-selftest.cjs",
+    "mv005-history-selftest.cjs", "phase-b-handlers-selftest.cjs", "phase-b-history-selftest.cjs",
+}
 node_tests = []
 for directory in ["mobile-app/scripts", "admin-panel/scripts", "supabase/tests", "scripts"]:
     for path in sorted((ROOT / directory).iterdir()):
@@ -66,8 +71,6 @@ for directory in ["mobile-app/scripts", "admin-panel/scripts", "supabase/tests",
         jobs.append(("node-" + relative, ["node", "--experimental-strip-types", relative]))
 
 deno_unit = [
-    "supabase/functions/diagnose-play-pricing/handler_test.ts",
-    "supabase/functions/diagnose-play-pricing/sanitize_test.ts",
     "supabase/tests/play_catalog_api_test.ts", "supabase/tests/play_catalog_unit_test.ts",
     "supabase/tests/play_diagnostic_sanitization_review_test.ts",
     "supabase/tests/note-pdf-hash-test.ts", "supabase/tests/pdf-validation-test.ts",
@@ -76,7 +79,7 @@ deno_unit = [
 ]
 jobs.append(("deno-unit", ["deno", "test", "--cached-only", "--config", "supabase/deno.json",
                            "--allow-read", "--allow-env"] + deno_unit))
-for name in ["payment-backlog-load", "payment-gate", "play-offer", "razorpay-env", "razorpay-refund"]:
+for name in ["payment-backlog-load", "payment-gate", "razorpay-order-recovery", "razorpay-env", "razorpay-refund"]:
     jobs.append(("deno-" + name, ["deno", "run", "--cached-only", "--config", "supabase/deno.json",
                                   "--allow-read", "--allow-env", f"supabase/tests/{name}-selftest.ts"]))
 if args.full:

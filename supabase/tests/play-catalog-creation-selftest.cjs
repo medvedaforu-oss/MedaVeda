@@ -19,7 +19,7 @@ function setup() {
   let handler;
   const state = { product: null, calls: [], rpc: [], error: null, overrides: {}, created: false, activated: false,
     version: '2022/02', ready: 0, eligible: true, leaseValid: true, knownTier: false, candidate: sku,
-    price: '137.25' };
+    price: '137.25', validationError: null, validationUnavailable: false };
   const env = { GOOGLE_PLAY_PACKAGE_NAME: 'in.medveda.app', GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: account,
     PLAY_CATALOG_CRON_SECRET: secret };
   const deno = { env: { get: name => name === 'PLAY_CATALOG_REGIONS_VERSION' ? state.version : env[name] },
@@ -92,6 +92,8 @@ function setup() {
       rpc: async (name, args) => {
         state.rpc.push({ name, args });
         let data = true;
+        if (name === 'play_price_validation') return {data: state.validationError,
+          error: state.validationUnavailable ? {code:'PGRST202'} : null};
         if (name === 'claim_play_price_sync') data = [{ price_inr: state.price, candidate_sku: state.candidate,
           purchase_option_id: 'buy', lease_id: 'fixture-lease' }];
         if (name === 'play_price_has_eligible_product') data = state.eligible;
@@ -119,9 +121,26 @@ function setup() {
   account = JSON.stringify({ client_email: 'fixture@example.invalid',
     private_key: `-----BEGIN PRIVATE KEY-----\n${btoa(String.fromCharCode(...bytes))}\n-----END PRIVATE KEY-----` });
   let cases = 0;
-  // Exercise the confirmed failing prices through the real creation worker,
+  // A stale/older queue cannot bypass the authoritative server pricing rule.
+  for (const price of ['0', '1', '2', '3.99', '84000.01']) {
+    const f = setup(); f.state.price = price;
+    f.state.validationError = 'Google Play India paid price is unsupported.';
+    assert.equal((await f.invoke()).body.status, 'failed');
+    assert.equal(f.state.calls.length, 0, 'unsupported price contacted Google');
+    assert.equal(f.state.ready, 0);
+    assert.equal(f.state.rpc.find(c => c.name === 'fail_play_price_sync').args.p_retry, false);
+    cases++;
+  }
+  {
+    const f = setup(); f.state.validationUnavailable = true;
+    assert.equal((await f.invoke()).body.status, 'failed');
+    assert.equal(f.state.calls.length, 0, 'missing price validation contacted Google');
+    assert.equal(f.state.rpc.find(c => c.name === 'fail_play_price_sync').args.p_retry, false);
+    cases++;
+  }
+  // Exercise supported prices through the real creation worker,
   // including both independent read-backs and an idempotent replay.
-  for (const price of ['1', '2', '1.01', '137.25']) {
+  for (const price of ['4', '5', '10', '20', '4.01', '137.25', '84000']) {
     const f = setup(); f.state.price = price;
     f.state.candidate = `notes_${price.replace('.', '_')}_v_fixture`;
     assert.equal((await f.invoke()).body.status, 'ready');

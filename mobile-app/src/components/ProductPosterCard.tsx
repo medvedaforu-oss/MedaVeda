@@ -8,7 +8,7 @@ import { SPACING } from "../theme/spacing";
 import { RADIUS } from "../theme/radius";
 import { SHADOW } from "../theme/shadows";
 
-const CARD_WIDTH = 156;
+const CARD_WIDTH = 140;
 
 type Props = {
   title: string;
@@ -124,7 +124,7 @@ export default function ProductPosterCard({
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
   cover: {
     width: CARD_WIDTH,

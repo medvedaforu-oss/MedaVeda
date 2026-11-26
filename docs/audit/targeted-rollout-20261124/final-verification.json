@@ -1,0 +1,19 @@
+{
+  "status": "HOLD",
+  "manifest_files_verified": 297,
+  "required_function_count": 3,
+  "pending_migration_count": 2,
+  "relative_imports_resolve": true,
+  "workspace_source_matches_candidate": true,
+  "archive_sha256": "c4bb909fa9fcb72f1563d48b96d057835bab97d9208cee435098ec7c2c247b87",
+  "checks_all_exit_zero": true,
+  "recorded_local_checks": 17,
+  "sql_suites": [
+    "admin_catalog_remediation_checks.sql",
+    "play_terminal_recovery_checks.sql",
+    "admin_mfa_checks.sql (23 pass / 0 fail)"
+  ],
+  "concurrent_sql_sessions": "one edit wins, one stale revision rejects; shared-price job unique",
+  "compensation": "synthetic local clone passed; no production records restored",
+  "production_changes": false
+}

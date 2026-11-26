@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -18,7 +20,6 @@ import { normalizePhoneNumber } from "../../utils/phone";
 
 import { COLORS } from "../../theme/colors";
 import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 import { SPACING } from "../../theme/spacing";
 import { logError } from "../../utils/logger";
 
@@ -116,12 +117,17 @@ export default function EditProfileScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Edit Profile</Text>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
+      <Text accessibilityRole="header" style={styles.title}>Edit Profile</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Enter your name"
+        accessibilityLabel="Enter your name"
         placeholderTextColor={COLORS.subtitle}
         value={name}
         onChangeText={setName}
@@ -130,6 +136,7 @@ export default function EditProfileScreen() {
       <TextInput
         style={styles.input}
         placeholder="Mobile number (e.g. +919876543210)"
+        accessibilityLabel="Mobile number (e.g. +919876543210)"
         placeholderTextColor={COLORS.subtitle}
         value={mobile}
         onChangeText={setMobile}
@@ -137,6 +144,9 @@ export default function EditProfileScreen() {
       />
 
       <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Save profile"
+        accessibilityState={{ disabled: saving, busy: saving }}
         style={[styles.button, saving && styles.buttonDisabled]}
         onPress={handleSave}
         disabled={saving}
@@ -149,7 +159,8 @@ export default function EditProfileScreen() {
           </Text>
         )}
       </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -157,6 +168,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+
+  content: {
+    flexGrow: 1,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center",
     padding: SPACING.lg,
     justifyContent: "center",
   },
@@ -167,7 +185,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     color: COLORS.text,
     marginBottom: SPACING.xl,
@@ -178,8 +196,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     color: COLORS.text,
     borderRadius: RADIUS.md,
-    padding: 16,
-    fontSize: 18,
+    minHeight: 48,
+    padding: SPACING.md,
+    fontSize: 16,
     marginBottom: SPACING.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -187,9 +206,10 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: COLORS.accent,
-    padding: 16,
+    minHeight: 48,
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
-    ...SHADOW.glow,
+    justifyContent: "center",
   },
 
   buttonDisabled: {
@@ -198,7 +218,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: COLORS.textOnPrimary,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },

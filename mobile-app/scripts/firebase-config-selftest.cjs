@@ -17,7 +17,7 @@ try {
  assert.equal(production.autoIncrement,true);
  const withoutSecret = configure({config:structuredClone(base)});
  assert.equal(withoutSecret.android.package,'in.medveda.app');
- assert.equal(withoutSecret.extra.medvedaPaymentProvider,'disabled');
+ assert.equal(withoutSecret.extra.medvedaPaymentProvider,'razorpay');
  // Missing genuine input is an explicit owner blocker, not a made-up replacement.
  if (!fs.existsSync(path.join(__dirname,'../google-services.json'))) assert.equal(configure({config:base}).android.googleServicesFile,undefined);
  process.env.GOOGLE_SERVICES_JSON=file;

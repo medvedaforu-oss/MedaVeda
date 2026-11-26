@@ -19,7 +19,7 @@ export default function UpdateRequiredScreen({ storeUrl }: { storeUrl: string })
   return (
     <View style={styles.container}>
       <BrandLogo size={88} accessibilityLabel="MedVeda logo" />
-      <Text style={styles.title}>Update required</Text>
+      <Text accessibilityRole="header" style={styles.title}>Update required</Text>
       <Text style={styles.message}>
         A newer version of MedVeda is available and this version is no longer supported.
         Please update to continue learning.
@@ -40,16 +40,19 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
     color: COLORS.text,
     marginTop: SPACING.md,
+    textAlign: "center",
   },
   message: {
     fontSize: 16,
+    lineHeight: 24,
+    maxWidth: 440,
     color: COLORS.subtitle,
     marginTop: SPACING.sm,
     textAlign: "center",
   },
-  button: { alignSelf: "stretch", marginTop: SPACING.lg },
+  button: { width: "100%", maxWidth: 440, marginTop: SPACING.lg },
 });

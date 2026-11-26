@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: SPACING.md,
-    marginRight: SPACING.md,
+    padding: 12,
+    marginRight: SPACING.sm,
     ...SHADOW.card,
   },
   emoji: {

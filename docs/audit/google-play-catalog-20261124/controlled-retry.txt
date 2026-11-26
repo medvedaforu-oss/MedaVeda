@@ -1,0 +1,147 @@
+MEDVEDA CONTROLLED SUPPORTED-PRICE CATALOG TEST
+2026-11-24 UTC. HOLD. NOT EXECUTED. Explicit owner approval still required.
+This supersedes the INR 1 retry proposal. Never retry the INR 1 or INR 2 jobs.
+
+TARGET AND CANDIDATE
+
+Project xbvenkfmesugrbjuufyw; package in.medveda.app; proposed INR 5.00; option buy.
+Neither existing INR 5 product is eligible: 65607154-7aa8-4ee2-a267-aebdebc88bec
+(new notes, subject) and e003ae37-5441-4d88-a20e-ba2be49d3326 (new one, chapter)
+have zero Notes in their scopes. Do not change their prices, scopes or PDFs.
+
+Propose ONE new product, subject to separate owner approval:
+  local proposed ID: 95b02982-484b-4c75-8cc4-8c26fe3b9a65 (not inserted/reserved)
+  title: MedVeda catalog validation Notes INR 5
+  price: 5.00; course_id: bams; product_type: notes; scope: year; active: true
+  year_id: 4e178938-7acd-4b49-90e3-676e7f75d38e
+  chapter_id/subject_id/year_ids/original_price: null
+This reuses the currently eligible BAMS 2nd Year Notes scope; its existing product
+22d0ad36-9e30-481f-a884-c7380e2e7270 remains INR 1 and otherwise unchanged.
+The candidate must be active for the existing sync workflow and could appear in
+normal product lists, including Razorpay. Approval must cover this visibility.
+If unacceptable, STOP and choose another populated Notes scope with the owner.
+Do not add a hidden flag, new PDF, bypass or modify existing scopes as a workaround.
+
+Use the ordinary Admin create workflow once; record its actual generated ID if
+it generates its own. Alternatively use the proposed ID in a separately approved
+operator INSERT, never both. Revision defaults to 1. The existing product trigger
+reserves ONE price-5 job/SKU and a queued log. No price-5 SKU is reserved today.
+Read its exact candidate_sku/option after this approved candidate stage, then seek
+approval naming that exact SKU for the single provisioning attempt. Never invent
+a Google SKU or assign a manual SKU per Notes product. Preflight checks that the
+proposed ID and price job do not already exist; an existing ready price tier must
+be read back and reused, not duplicated.
+
+PREREQUISITES
+
+1. Owner-approved encrypted production backup and successful isolated restore of
+   DB/Auth, Storage bytes and deployment/configuration; prior backup runbook applies.
+2. Separate approved deployment, in migration order:
+   20261124063324_play_terminal_recovery.sql
+   20261124064112_admin_catalog_readiness_and_revisions.sql
+   20261124142010_play_india_price_validation.sql
+   Coordinated matching Admin and sync-play-catalog deployment. Prior three
+   verifier/recovery deployments remain release requirements.
+3. Existing regions version explicitly selects reviewed 2022/02. No secret/version
+   changes automatically; published 2022/02 and 2026/01 India minimum is INR 4.00.
+4. Fresh owner matrix and exact-SKU GET evidence using the existing runtime identity;
+   correct application, merchant/account and India app distribution readiness.
+5. All four Play schedules false and all payment gates unchanged. No purchases.
+6. Global queue isolation: only price 5 can be due/claimable; no competing invoker,
+   active lease, queued catalog HTTP or stale-ready eligible job. The worker first
+   runs requeue_stale_play_price_sync. If isolation is false, STOP; do not alter
+   unrelated queues or cron. Refresh plain SELECT evidence immediately beforehand.
+7. Exact target GET establishes absent or matching SKU/buy/price. Unknown collision
+   means STOP. Known prior-tier rotation is outside this attempt's approval scope.
+   Do not repurpose the existing INR 1/2 SKUs.
+
+EXISTING AUTHENTICATED READ-ONLY MATRIX
+
+At https://admin.medveda.in, sign in as an authorized Admin and complete MFA.
+Open Developer Tools > Console and execute once:
+
+  const {s: medvedaClient} = await import('/assets/index-cW8ZpO8D.js');
+  const medvedaMatrix = await medvedaClient.functions.invoke(
+    'diagnose-play-matrix', {body:{}});
+  console.log(JSON.stringify({data:medvedaMatrix.data,
+    error:medvedaMatrix.error?.message},null,2));
+
+The public asset/s export were freshly checked. If import fails after a later
+Admin deployment, stop and report the error; do not inspect storage or extract
+tokens. Share only sanitized output. Do not run the completed identity endpoint.
+
+ACTIVE v4 has gateway JWT=true plus verified Admin and unconditional aal2. It
+runs tokeninfo, legacy list(maxResults=1), oneTimeProducts list(pageSize=1), and a
+non-mutating pricing conversion with INR 1. That old conversion input is NOT a
+provisioning attempt or proof INR 1 is permitted. Check each operation's HTTP
+status/body; overall function HTTP 200 is insufficient.
+
+v4 cannot GET arbitrary SKUs or paginate. Extra body fields are ignored. No owner
+MFA session/usable runtime credential exists in this workspace; management tools
+inspect source but cannot impersonate Admin or perform Google reads. Fresh runtime
+list/GETs were not executed here. Required read-only runtime URLs:
+
+  GET https://androidpublisher.googleapis.com/androidpublisher/v3/applications/in.medveda.app/oneTimeProducts?pageSize=1
+  GET https://androidpublisher.googleapis.com/androidpublisher/v3/applications/in.medveda.app/oneTimeProducts/notes_1_00_v_066f5677fba745d696d1504b7600f8f7
+  GET https://androidpublisher.googleapis.com/androidpublisher/v3/applications/in.medveda.app/oneTimeProducts/notes_2_00_v_d93112f242a94a9b83d5bb2c31ef11a3
+  GET https://androidpublisher.googleapis.com/androidpublisher/v3/applications/in.medveda.app/oneTimeProducts/{exact-price-5-candidate_sku}
+
+Exact GET needs an existing authorized runtime read facility or a separately
+approved read-only matrix extension/deployment, neither assumed available here.
+Do not restore deleted diagnostic sources or deploy now. Play Console > Monetize
+with Play > Products > One-time products permits owner inspection without saving;
+that UI uses owner identity and does not prove runtime GET permission. Read success
+does not establish catalog write authority. Correct-app authorized 404 means absent.
+
+SINGLE FUTURE PROVISIONING ATTEMPT — NOT AUTHORIZED NOW
+
+After candidate reservation, present exact product ID, price, SKU, buy option and
+preflight for owner approval covering precisely the DB/Google mutations below.
+If the job is already pending, do not call Retry. A terminal price-5 job needs
+separate approval for exactly one retry_play_price_sync(p_price => 5), then inspect
+the same SKU. Never retry price 1/2, blanket reset jobs or manually mark a tier ready.
+
+An authorized operator sends exactly ONE POST {} to:
+  https://xbvenkfmesugrbjuufyw.supabase.co/functions/v1/sync-play-catalog
+with the existing x-play-catalog-cron-secret in private server-side execution.
+Never print that secret, put it in browser code/arguments/history, or request a
+replacement. No cron, loop, implicit replay or second POST after timeout/failure.
+A retry/failed/timeout/ambiguous result means STOP and inspect sanitized logs plus
+plain SELECTs. A queued retry does not authorize another attempt. The endpoint is
+global, not targeted; isolation is mandatory. Rotation requires revised approval.
+
+REQUIRED DB AND GOOGLE MUTATIONS
+
+Candidate: one products INSERT (revision1), normal normalization/revision triggers,
+one new price-5 play_price_sync reservation and queued log if absent. No existing
+product prices, scopes, publication or historical records change.
+Worker: requeue_stale_play_price_sync must be a no-op; claim changes only price5
+status/attempts/lease/expiry/update time and claimed log. If absent, at most one
+PATCH with allowMissing=true, reviewed regions version, listing and exact India
+INR5 BUY config. Independent GET after PATCH. If DRAFT, at most one buy activation
+POST, followed by independent GET. Existing matching ACTIVE SKU requires GET only.
+Only genuine exact readback permits finish_play_price_sync: one verified active
+price-5 tier (SKU/buy/IN/INR/verified_at), ready job, cleared lease/error, sync time,
+verified log. Existing same-price supersession must not affect a historical tier
+outside approved preflight. Failure may write failed/pending/backoff, safe error,
+cleared lease and failed/retry log. No direct tier insert/forged finish permitted.
+No orders/payments/purchases/entitlements are created. INR 1/2 jobs/logs stay intact.
+A later candidate deactivation is a separately approved UPDATE plus revision bump;
+retain all product/job/tier/history, no deletion.
+
+ACCEPTANCE
+
+Require independent genuine Google GET with packageName=in.medveda.app and exact
+reserved SKU, exactly one option buy in ACTIVE state, standard buyOption, no rent,
+multiQuantityEnabled=false, exactly one IN config with AVAILABLE, INR units='5',
+nanos=0. Require worker-created tier verification and exact ready sync mapping,
+then Admin Ready for the current product revision. Price support/publication,
+conversion200/PATCH200 or a reserved SKU alone is insufficient. Same-price Notes
+reuse this verified tier; other supported prices enter the existing shared-price
+workflow. INR4/5/10/20 are examples, not mandatory fixed tiers.
+
+HOLD continues through backup, deployment, catalog acceptance and separately
+approved device license-purchase testing. No purchase approval is included.
+Backend-managed products/pricing/Admin fixes do not themselves require an AAB.
+The earlier corrected release AAB prerequisite remains separate and unfulfilled;
+no EAS/native build here. Payment/testing gates, cron and credentials stay unchanged.

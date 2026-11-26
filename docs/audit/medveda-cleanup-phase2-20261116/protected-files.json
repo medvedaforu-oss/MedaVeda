@@ -1,0 +1,622 @@
+[
+  {
+    "path": "mobile-app/src/services/paymentService.ts",
+    "sha256": "3844128bf4dd2e4722afefc72baf6ead6f0ead2be001c1e50fa9b6623f978dc4"
+  },
+  {
+    "path": "mobile-app/src/screens/payment/PaymentCheckoutScreen.tsx",
+    "sha256": "d5914ebd16c3d558029ebc009c85e1eeacd853c7bb0d2d890327bf7495be47c3"
+  },
+  {
+    "path": "mobile-app/src/screens/payment/checkoutHtmlTemplate.ts",
+    "sha256": "41e2e48d4fcb22686b386778812cb33630ebdf89bd3de574b68129b414d8047a"
+  },
+  {
+    "path": "mobile-app/src/screens/payment/PaymentSuccessScreen.tsx",
+    "sha256": "2e037ccfe87af9960418a93a171e7ffe36b6efac7abc6780260d967535c22a94"
+  },
+  {
+    "path": "mobile-app/src/services/secureNotesService.ts",
+    "sha256": "8e4149266ea9dbe692ffabf71eeebf48a449f6369f7494267c546a2631eaf973"
+  },
+  {
+    "path": "mobile-app/src/types/order.ts",
+    "sha256": "7296264b46d2481c73ad4233f4c48abad9240fa2c571d524a65139541fbd01ff"
+  },
+  {
+    "path": "mobile-app/src/types/navigation.ts",
+    "sha256": "4274b97e3cb69d07794c70b289ef4fc6985ffbb4629542d7eb99cd80c2225566"
+  },
+  {
+    "path": "mobile-app/src/config/paymentProvider.ts",
+    "sha256": "f67b95e25e946a29407134c58962b6377d8a2f4f8e87540df322879c95b2f157"
+  },
+  {
+    "path": "supabase/functions/deno.d.ts",
+    "sha256": "cf74b2119fcf62ebeff5de1e846afe5f0f4f24a11e104aa096da78feb418ac0c"
+  },
+  {
+    "path": "supabase/functions/.env.example",
+    "sha256": "eabc981d0de6a917a0a7f0b5a32d5e38a14eefd135449d02387b26c433bc59dd"
+  },
+  {
+    "path": "supabase/functions/_shared/cors.ts",
+    "sha256": "b39957920ab50ff2f51fe20f64adb8ad90ed0db99c2076a938af9f0418f22c5f"
+  },
+  {
+    "path": "supabase/functions/_shared/pages.ts",
+    "sha256": "634f7ed43b2facf58477ab2035b738c73c8e9257a6f3641ee81dfbcfd766b017"
+  },
+  {
+    "path": "supabase/functions/_shared/phone.ts",
+    "sha256": "c37d77f78de90615b25e55011cc6d246cd84ec93e1772eee2304878349e2f476"
+  },
+  {
+    "path": "supabase/functions/_shared/settle.ts",
+    "sha256": "825c31653eb83abd62003ef0b0c43e78123c576ad13a7bf340d6439f5910f903"
+  },
+  {
+    "path": "supabase/functions/_shared/rateLimit.ts",
+    "sha256": "931d0ed483595b6aa4c7ea72ea2768390f9e5e75cde10f4bcd5d225db54e2ea3"
+  },
+  {
+    "path": "supabase/functions/_shared/ucbStates.ts",
+    "sha256": "6075da6bb94458f741cafb825d2c00befd1e4250d52cde2dae470de783fe81f7"
+  },
+  {
+    "path": "supabase/functions/_shared/externalReporting.ts",
+    "sha256": "7d44aad9ad84f8097f68e44b8a5d82f3e6380a4f0238469b0ab0cb4cd169b729"
+  },
+  {
+    "path": "supabase/functions/_shared/ucbAlert.ts",
+    "sha256": "c1b7ebba7ed4a75ad3570ac4b9c2998d87d6e1974375c91d176d8b42ca298ef8"
+  },
+  {
+    "path": "supabase/functions/_shared/paymentGate.ts",
+    "sha256": "751b17c1558b8dfdd23ededaf27575ff91e7a5d6c5b59cbd8ed92b50f935d762"
+  },
+  {
+    "path": "supabase/functions/_shared/paymentQueue.ts",
+    "sha256": "28c20b2eb6e8481f0cc658af9707f4c48e54c2fc7f360f4f34a032be82000714"
+  },
+  {
+    "path": "supabase/functions/_shared/playPurchaseValidation.ts",
+    "sha256": "cfa1a8af6c409fdc5f140f0379d17ffe554af4bf361e296ed0a600de273f1924"
+  },
+  {
+    "path": "supabase/functions/_shared/validatePdfStructure.ts",
+    "sha256": "a246f0a436bfe864445383296cb094f699a4cffd6974ff7a0c17f8e379533917"
+  },
+  {
+    "path": "supabase/functions/_shared/boundedFormData.ts",
+    "sha256": "b3f61bbf436ee3294547a2c1f927f48ef110b3d429e7c6ef4bdd0780b8f2ed8d"
+  },
+  {
+    "path": "supabase/functions/_shared/noteQuarantine.ts",
+    "sha256": "979f52a72ee5e1c5eb0b82d0d095b8431a217859ce7b8c538a381e8e2f598830"
+  },
+  {
+    "path": "supabase/functions/_shared/processNotePdfJob.ts",
+    "sha256": "c123b30e8f9df48e494ad0132db75754e08cd4a28ad42acccb2f276783e85cde"
+  },
+  {
+    "path": "supabase/functions/_shared/notePdfHash.ts",
+    "sha256": "911113393876c5c91a5ecacd7752bd39896acc28404d34989ad49e9d57035fa4"
+  },
+  {
+    "path": "supabase/functions/_shared/notePdfUpload.ts",
+    "sha256": "2d1f25bd969660cbb3a49b9834ab8ab4f96c8a39cbc7af4b20c998494a55f760"
+  },
+  {
+    "path": "supabase/functions/_shared/googlePlay.ts",
+    "sha256": "9a3791f6ecb3375d57a64f1b7ac796650a717238a188dacedef6c165d4fc7470"
+  },
+  {
+    "path": "supabase/functions/_shared/playCatalog.ts",
+    "sha256": "d9e9ae8a593cbf09e8857ca1300b648d307ee2f6fd68d84f337b19e38609c091"
+  },
+  {
+    "path": "supabase/functions/_shared/razorpay.ts",
+    "sha256": "84e91ee2d49062b84f3b1022c2b167544e24142051829111c168931459fcc786"
+  },
+  {
+    "path": "supabase/functions/_shared/supabaseAdmin.ts",
+    "sha256": "8e3eb8faf1f9e568820a4b701524433d5c4758ee01f2488c97b6eb6d69c6d791"
+  },
+  {
+    "path": "supabase/functions/_shared/createOrderHandler.ts",
+    "sha256": "900da945c5e78dfb9129fb5094b25c9d42d868c3326ef94fc2f0d2e6bc03b11c"
+  },
+  {
+    "path": "supabase/functions/_shared/nonPlayTestCheckout.ts",
+    "sha256": "7d9e5d478c372df96d0e3600af99cb041d6d772730e3869776dc2ebdb4b3a560"
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceGate.ts",
+    "sha256": "c2e5893b648583c99522ac4734f25a363c419919490f60e15b99fa6786753f33"
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceOrder.ts",
+    "sha256": "76f147b2b95cd972561c28610f1cbce54e111804a625f20db80ccba9a80298a8"
+  },
+  {
+    "path": "supabase/functions/_shared/notesChoiceAuthorization.ts",
+    "sha256": "149f9f9b997c6037ec7cbe4b1e4a9a7cd7811a9a9b16b5f2e125218ecd4be43b"
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestConfig.ts",
+    "sha256": "cec80f0d5da73288ba29b690bbacb200e27cd03ee5617e86a44ba67661f34300"
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestProvider.ts",
+    "sha256": "f458653a2df6f4414c497000f7bfe55a39cce9463b332bc238dda2ca2c9d9f14"
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestHandlers.ts",
+    "sha256": "6635a1c67e00e52ebad639a393bef76dbeddd2f3c29cb4c01be6e15694f4ea34"
+  },
+  {
+    "path": "supabase/functions/_shared/nonplayTestRuntime.ts",
+    "sha256": "84a0507e41ac5bc08489562c2f1e95dd9f12e2dc156debb61870c60db46a07eb"
+  },
+  {
+    "path": "supabase/functions/_shared/paymentQueueFix3.ts",
+    "sha256": "350ae9b53058ae6975bd00a05a1ce00d5e0f6bb7ac8a3eab79b0beee62bc3cf1"
+  },
+  {
+    "path": "supabase/functions/_shared/newOrderGate.ts",
+    "sha256": "d16531069cfff621e0e28bb056302468d58d36b447145010c7cff9b44f5cdfd7"
+  },
+  {
+    "path": "supabase/functions/delete-account/index.ts",
+    "sha256": "9c7410ad85caaaffa3ba805eefc4f9aa22bc73f916037ea96494308facc0a629"
+  },
+  {
+    "path": "supabase/functions/razorpay-webhook/index.ts",
+    "sha256": "1e061e4ec05891f665b29cb7cee9652b2f0828b3a78fbc147bea016481fefe0d"
+  },
+  {
+    "path": "supabase/functions/send-push-notification/index.ts",
+    "sha256": "79d6eec5d30b995b9753ebf7741d316e42e3a80107d3c04dc1c2c93eba981fa2"
+  },
+  {
+    "path": "supabase/functions/verify-payment/index.ts",
+    "sha256": "6667e4b991d1bf6a87d36d35a3e7ce304859ad0caf008fe022745854e9c12c5a"
+  },
+  {
+    "path": "supabase/functions/login-with-mobile/index.ts",
+    "sha256": "184c265a9770ba9187b30c46b3f4d1b909a44adec1838bee2a2d59f88f964b9c"
+  },
+  {
+    "path": "supabase/functions/request-password-reset-by-mobile/index.ts",
+    "sha256": "ea8c11f2af0c072b8dee669c0b328d010f759c51b1e74f432b3f4b351381f605"
+  },
+  {
+    "path": "supabase/functions/create-order/index.ts",
+    "sha256": "3cc059b42ef38f2b2de2cd2729e0a4f9c246c6e78f9171cc1f198e88a68c577c"
+  },
+  {
+    "path": "supabase/functions/get-note-url/index.ts",
+    "sha256": "ad6a62a388690af9268e2d94a3fab171ca545c7b43e8e6019d1ef9fa9b5ea5b0"
+  },
+  {
+    "path": "supabase/functions/get-video-url/index.ts",
+    "sha256": "91f02c674ee2f23259cffbac9e326287da9ec23e37410199af2ca763d08b6dc0"
+  },
+  {
+    "path": "supabase/functions/create-play-order/index.ts",
+    "sha256": "0221c9462a79df162e53528ded58c2c2d96c17a36fe7fe86898db6dad1027a3e"
+  },
+  {
+    "path": "supabase/functions/attach-external-token/index.ts",
+    "sha256": "a0bd1030871a24676f44853eaf20fbc7a34b3ba40cba001ba1ce41fd1ad60ef2"
+  },
+  {
+    "path": "supabase/functions/verify-play-purchase/index.ts",
+    "sha256": "2fc9acec9d976d9c2d03cd5d6cc9096437433fdca4c648f96c7de6e7225f65db"
+  },
+  {
+    "path": "supabase/functions/report-external-transaction/index.ts",
+    "sha256": "bebd295976f2b43311f801307a431e7b21b9d5c04321084614359cc0f427af92"
+  },
+  {
+    "path": "supabase/functions/report-external-transaction/index.fix3.ts",
+    "sha256": "3610060a9a86a15f0caae600d422119c7556fcdda96c5652b5b94802fa8d7dfa"
+  },
+  {
+    "path": "supabase/functions/play-payment-worker/index.ts",
+    "sha256": "d53528998caf0dd8ae7bdcc9a24ca53e912fbbb979460d63cbb867b0d68c0458"
+  },
+  {
+    "path": "supabase/functions/sync-play-catalog/index.ts",
+    "sha256": "8a58e6b33fb5004fa40ad50cfef49b081f41f57f25d1a54825bfc272245bfc62"
+  },
+  {
+    "path": "supabase/functions/upload-note-pdf/index.ts",
+    "sha256": "a4ab4ff0f1f3098470d0af41d2544f43d3a4a0cbf9673c05023efb289559bbf9"
+  },
+  {
+    "path": "supabase/functions/create-order-nonplay-test/index.ts",
+    "sha256": "ec17a1fa5a8edc0c1b6e062bf1c967318f179768bd1da570809aace144c88143"
+  },
+  {
+    "path": "supabase/functions/create-order-play-choice/index.ts",
+    "sha256": "f73789269b4691af30cbc75cfee776305c9f3a3b8ffc30f92468e625e303ab08"
+  },
+  {
+    "path": "supabase/functions/verify-payment-nonplay-test/index.ts",
+    "sha256": "73a4f8d6ab1a3c5fc36dc577c3d36681565cbe6dfb4cac1133c59ea2706ed771"
+  },
+  {
+    "path": "supabase/functions/razorpay-webhook-nonplay-test/index.ts",
+    "sha256": "b33c1ff43044160ff4f9b8e5fe6affec0bf84ae145714e9ffc52c8b4c575720b"
+  },
+  {
+    "path": "supabase/functions/nonplay-test-catalog/index.ts",
+    "sha256": "668eb6ca175d892fadd51d7902bad677b676d242a392b0f4c86a2f8016b875a6"
+  },
+  {
+    "path": "supabase/functions/get-note-url-nonplay-test/index.ts",
+    "sha256": "031604069af8f5d7b7f78a69b79eca605dad8db2927b5a5d0f972f9de19bb739"
+  },
+  {
+    "path": "supabase/migrations/20260718_payment_backend.sql",
+    "sha256": "d31758cab06e4ad51d7267bef6f79d824e490ba039f7ca286b06d8bd3c239f8d"
+  },
+  {
+    "path": "supabase/migrations/20260721_admin_orders_purchases_access.sql",
+    "sha256": "8bc2d53a156481d61965ddcc83627f958c2d813d917ae1e684098d3a36753c21"
+  },
+  {
+    "path": "supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql",
+    "sha256": "1713787078ebe465c30919af21860986e50d3f82296bd3e09788c3bb26d1e935"
+  },
+  {
+    "path": "supabase/migrations/20260801_auth_verified_identities.sql",
+    "sha256": "7606baf859d9d44cae53ed8d67678f42f386b95c9ac259c1d19126723f7e42c2"
+  },
+  {
+    "path": "supabase/migrations/20260919120000_multi_course_and_referrals.sql",
+    "sha256": "3efee2364e7cef4fe20135edecd27498bc22aa4daab875e13753132c0080febf"
+  },
+  {
+    "path": "supabase/migrations/20260919130000_referral_history_rpc.sql",
+    "sha256": "26da93a0544c023bddd37d6d8a235fd2913972134ec1184c1c80da29541cc8c8"
+  },
+  {
+    "path": "supabase/migrations/20260920120000_null_year_course_fallback.sql",
+    "sha256": "c8ecac2e3f309d1df83e6519fa9eca788d183d4a4627d341400e5d03f9334792"
+  },
+  {
+    "path": "supabase/migrations/20260920130000_app_config.sql",
+    "sha256": "b2c06c94ae710a0d0edd12cf09e7a1f883717dc0de16e61f36c347cf6c4b85ab"
+  },
+  {
+    "path": "supabase/migrations/20260920140000_default_new_profile_course.sql",
+    "sha256": "8b94b4e8184e8b424942503ff5b256404128725060145e04f57a176db4d24c7c"
+  },
+  {
+    "path": "supabase/migrations/20260921120000_analytics_retention.sql",
+    "sha256": "3ed98e21f30bee4f50c7b742a165dd7cf936cf11b55bf463b8dd4fb80bf3cc84"
+  },
+  {
+    "path": "supabase/migrations/20260921130000_account_deletion_support.sql",
+    "sha256": "f2d20c78354f75211e68bac320e786ce113bacd3518883f9f830d085587eb920"
+  },
+  {
+    "path": "supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql",
+    "sha256": "ff415faed591330e1f8ecf7fa83f1e847be63e0969a0a04f4fe93e3c8acde1e6"
+  },
+  {
+    "path": "supabase/migrations/20260923100000_signup_profile_fields.sql",
+    "sha256": "bfb83bff5299d463fbc36b2ab357411a5cd755a0c50c51e9acfba51758aedde8"
+  },
+  {
+    "path": "supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql",
+    "sha256": "cae39194acde0e196fd9835063170835c85bef5dce43a18dfd3e6cd060afa11c"
+  },
+  {
+    "path": "supabase/migrations/20260924110000_critical2_orders_server_only.sql",
+    "sha256": "6ef49e39c6783ccfbb9a67588ec4d897fce7897441a039e17d4d796248178de1"
+  },
+  {
+    "path": "supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql",
+    "sha256": "25784b01969bd71edf4e74d2a163fbc5ac0a004f9b70b4bb13724d6666922eb8"
+  },
+  {
+    "path": "supabase/migrations/20260924130000_signup_name_phone_and_backfill.sql",
+    "sha256": "832f96a542580fba4e14b6b1b257efb17f7bf5de1f9124c4d41b71a6b869dd97"
+  },
+  {
+    "path": "supabase/migrations/20260924140000_auth_rate_limits.sql",
+    "sha256": "6c9c13d2ca0ab9f088eeebeb811fe3a6b22bd3a31084ead7c86a0e85594b87cc"
+  },
+  {
+    "path": "supabase/migrations/20260924150000_free_preview.sql",
+    "sha256": "9699ba9e0be6c72390e7a5f631d7dbe0b193273f4da29b85b25b0c9d9b315fcd"
+  },
+  {
+    "path": "supabase/migrations/20260701000000_baseline_live_schema.sql",
+    "sha256": "c54f69ec9068abf37abb6cc5d6696bfa98636f19ecdd7bf529f1890f00a5170a"
+  },
+  {
+    "path": "supabase/migrations/20260925100000_phase2_referral_config_and_product_type.sql",
+    "sha256": "8ebd7905ce31f87c93b7e7d732100d42e866c3828b465f852cc7fcf656ba6ac4"
+  },
+  {
+    "path": "supabase/migrations/20260925110000_phase2_wallet_ledger.sql",
+    "sha256": "fd9b6d6ab3add7ecc0578fe27ce28f49355a797f768078692f659442dd9bfb3b"
+  },
+  {
+    "path": "supabase/migrations/20260925120000_phase2_orders_pricing_and_settlement.sql",
+    "sha256": "03ce7f89d949a4e9c36a201f74cd10549afc0e37f256833aa099ca9cf259c612"
+  },
+  {
+    "path": "supabase/migrations/20260925130000_drop_debug_whoami.sql",
+    "sha256": "2c349416e767fc1051196e06282230e00943afe2f92d857e80602eb050889e0a"
+  },
+  {
+    "path": "supabase/migrations/20260925140000_phase2_single_use_friend_discount.sql",
+    "sha256": "03a2d6bb93cc0fc18ae30714f44f04971f06dbbba8201671fa08162d36e02804"
+  },
+  {
+    "path": "supabase/migrations/20260926100000_batch1_refund_dispute_revoke_access.sql",
+    "sha256": "b707c26cd1ecfdfda3e86109e8623f039a483e423043a4d612eaf1673a56da42"
+  },
+  {
+    "path": "supabase/migrations/20260926110000_batch1_settle_wallet_and_flags.sql",
+    "sha256": "84b9040932565ca827191b0fe3306ba1997c0e7c39cd32b104cd515a7024835f"
+  },
+  {
+    "path": "supabase/migrations/20260926120000_batch1_block_owned_product.sql",
+    "sha256": "e7f1e33745ed27cda1c9d97ec9eabbcd88d7f7692f35f4dee0268a809eaa5c32"
+  },
+  {
+    "path": "supabase/migrations/20260926130000_batch1_hygiene.sql",
+    "sha256": "04f20207e6dc75a74dbf35d64617e0e5f08ef70b9e4e4a145c735f89f10c0d7c"
+  },
+  {
+    "path": "supabase/migrations/20260927100000_f7_drop_legacy_admin_policies.sql",
+    "sha256": "34d682389853b29a99472daf8f6f809d571eb56a6ab02f4826d0844d6efb33d8"
+  },
+  {
+    "path": "supabase/migrations/20260927110000_f8_revoke_excess_grants.sql",
+    "sha256": "9efb84dd71873a9ba551b242806802e84d973307745515ea792f13cf774e5b5a"
+  },
+  {
+    "path": "supabase/migrations/20260927120000_batch3_referral_hardening.sql",
+    "sha256": "1114fa158aa83658281d143dabaa1a177cbdbcc0f2c7ff9734958a3c57047233"
+  },
+  {
+    "path": "supabase/migrations/20260927130000_batch3b_antifarming.sql",
+    "sha256": "e84c7f72d63df7c733af2712d600ba978c18b7eead7e9f16dab06c5d6cab7373"
+  },
+  {
+    "path": "supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql",
+    "sha256": "1b732059b2fc3226090caf0cd85bcc4c911d0ae312af3ed582ae1f5c01e4f654"
+  },
+  {
+    "path": "supabase/migrations/20260928110000_referral_off_blocks_wallet.sql",
+    "sha256": "187fdc5ad0e2c6ef430fb601a180e7dcbcd703f83fb4dfe9c72c132c8e264c73"
+  },
+  {
+    "path": "supabase/migrations/20260929100000_high_phone_change_rpc_and_notes_storage.sql",
+    "sha256": "ec76860cd463ba1b97e665ddc3298bfe1d3dd4f9f9b3b36deb3124667a300a34"
+  },
+  {
+    "path": "supabase/migrations/20260930100000_medium_db_hardening.sql",
+    "sha256": "d1850bab661cb23831ce444ea16b19929b84998eeb0c81eab31f714d094630bb"
+  },
+  {
+    "path": "supabase/migrations/20260930110000_low_grants_tightening.sql",
+    "sha256": "ff372c8af1c0491005e1df2c68df88a2b65b0ef9f152995d87ded6121ae7a9df"
+  },
+  {
+    "path": "supabase/migrations/20261001100000_admin_mfa_aal2.sql",
+    "sha256": "c604a625526d6275c4e97fee0cfb1f08bd59ccfd69b796335feaa8c9b03edf6c"
+  },
+  {
+    "path": "supabase/migrations/20261012100000_google_play_ucb.sql",
+    "sha256": "b15a2c385e67f4a6a438adb7c9f32ab58e03e10907e3cc4d9b769c1cc47e298a"
+  },
+  {
+    "path": "supabase/migrations/20261012110000_google_play_refunds.sql",
+    "sha256": "3f130e6bcd3582d242b5b2595001b8629272d72ae7c4b0f3e9ddeb60b7d7d3ec"
+  },
+  {
+    "path": "supabase/migrations/20261012120000_ucb_partial_refunds.sql",
+    "sha256": "713d48eea492477c50955d4fe7d97af9062b6596464bda1221f491641beedea2"
+  },
+  {
+    "path": "supabase/migrations/20261013090000_ucb_atomic_completion.sql",
+    "sha256": "d9b0e51d056bd4a4cac6d4f7d468975d8d42cafa46859a394b62e0e707e8a55e"
+  },
+  {
+    "path": "supabase/migrations/20261013100000_wallet_reservations.sql",
+    "sha256": "99f80314020f7fc546764fc14b2f03524867056cc74cab77ebbef78f3f37aa10"
+  },
+  {
+    "path": "supabase/migrations/20261013110000_play_void_cursor.sql",
+    "sha256": "05b3e34b854a0079d114a28b0c6bdaf99aae8c6b0a3f38037b509c7db007638d"
+  },
+  {
+    "path": "supabase/migrations/20261014100000_payment_audit_capture_inbox.sql",
+    "sha256": "1ddeaeadbf485f5be5885fbc15e9fdcbc146d925ef1c9e135411288cc2d87555"
+  },
+  {
+    "path": "supabase/migrations/20261014110000_payment_job_leases.sql",
+    "sha256": "cb27a47965e92dcb10febbb18606515e368dab0cee90b0a6d9589a2dbc7ce4ff"
+  },
+  {
+    "path": "supabase/migrations/20261015100000_play_payment_jobs.sql",
+    "sha256": "d3d99eb64323e2b3fdda8b4ab8115c86e1c4e460cc856ab1be61ce84fced3df7"
+  },
+  {
+    "path": "supabase/migrations/20261015120000_play_entitlement_order_snapshot.sql",
+    "sha256": "dd4d9f41d5a8c0ecd2a41396268a3f796b33205336a2a5fbc57baee23cd63547"
+  },
+  {
+    "path": "supabase/migrations/20261016100000_play_catalog_sync.sql",
+    "sha256": "08c7b195d00dd5ab009d5f87eac804542cd4f13bdc4ad613ff7ed73e833eb270"
+  },
+  {
+    "path": "supabase/migrations/20261016090000_free_video_access.sql",
+    "sha256": "c6362f093c178932491c6b08493b74d3215d4e759e47fe74ec15e2bdde236f63"
+  },
+  {
+    "path": "supabase/migrations/20261018100000_verified_quiz_attempts.sql",
+    "sha256": "7c81e686bbd423138187f03078a29acf8c5503643a30a8d6276c88f5e7041841"
+  },
+  {
+    "path": "supabase/migrations/20261018110000_trusted_note_uploads.sql",
+    "sha256": "1e4af9e6252b51c8c24b93f4bc1d4a7c5b10ee0ad043afe2632bd496f4924b33"
+  },
+  {
+    "path": "supabase/migrations/20261018120000_note_upload_deleted_retry.sql",
+    "sha256": "631d39719676cb2bbcb68f748431f370ad1c765a729fe7ef8beea19483f607a9"
+  },
+  {
+    "path": "supabase/migrations/20261018130000_note_pdf_quarantine.sql",
+    "sha256": "7a082d96f332e9063452209899f9e03c57442fe0a1f81ce5c89fb8e24356cead"
+  },
+  {
+    "path": "supabase/migrations/20261019150000_play_catalog_queue_fences.sql",
+    "sha256": "f2b02b6aacb72b5da9e9e1fc60b7b9b05c7afccf7dd6913ed44d970eccd18cb9"
+  },
+  {
+    "path": "supabase/migrations/20261019151000_play_duplicate_settlement_result.sql",
+    "sha256": "baf612e3528c6255c1c84ca767eae377304922249169ef0ed01811c73a99f146"
+  },
+  {
+    "path": "supabase/migrations/20261020100000_notes_service_reads.sql",
+    "sha256": "dcdbcb228e80f2367894769dfef364ed8908fb8a5e411a8b40c9c0b9db5d715c"
+  },
+  {
+    "path": "supabase/migrations/20261020101000_maintenance_mode_read.sql",
+    "sha256": "274e973df03c9240a1bee8065c96ee462bdf104901ff477d740bf16094bd505a"
+  },
+  {
+    "path": "supabase/migrations/20261020102000_correct_stale_store_url.sql",
+    "sha256": "5090b5cd3138aa51f8ca14593c04feec9951fd6755d7e6621a85d6bebf93cb1c"
+  },
+  {
+    "path": "supabase/migrations/20261020103000_first_purchase_identity_retention.sql",
+    "sha256": "a3078abe64d7d48a4dbc9a75a72453b3ed4a9d314fbbf1b532b05a53f2f8eb88"
+  },
+  {
+    "path": "supabase/migrations/20261020104000_course_wide_content_browsing.sql",
+    "sha256": "5d7428d45beeffdbff1ee6bcb3ebdc21d56ed7cbea8111221578530f42aa2b49"
+  },
+  {
+    "path": "supabase/migrations/20261020105000_quiz_answer_read_boundary.sql",
+    "sha256": "813b202e45f31d030a5f003b115e413762b22fd7780a82a70487123b617852fe"
+  },
+  {
+    "path": "supabase/migrations/20261020110000_admin_url_mfa.sql",
+    "sha256": "1e2a8139fbf192b8ea76cf5a4299305e61c4e9919703997bf9f4ee9f5ad49c4c"
+  },
+  {
+    "path": "supabase/migrations/20261104100000_razorpay_snapshot_discount_retry.sql",
+    "sha256": "6291a65ef76a90c6e8057e73fa6ccb60bef7145d67cddd4de5329da1623ada3b"
+  },
+  {
+    "path": "supabase/migrations/20261104110000_course_year_profile_confirmation.sql",
+    "sha256": "c7f73031abb665822613e9e524d8354f6d874826871ab71dc4d532f3984c1c3c"
+  },
+  {
+    "path": "supabase/migrations/20261108100000_notes_choice_checkout.sql",
+    "sha256": "bf0452bc97960bc15c7954d44303cb1009f7f8dfb66721ea627a6f952aff4427"
+  },
+  {
+    "path": "supabase/migrations/20261109100000_billing_settlement_recovery.sql",
+    "sha256": "d62c8f4b17c75bf75df01d73460646381d8154916d835ec1acebe136dac90dee"
+  },
+  {
+    "path": "supabase/migrations/20261109120000_isolated_nonplay_test.sql",
+    "sha256": "4dad6d8b92ee247bc2d399448e757dde1d3e898abf7ece2e8a4d19fbb2db1584"
+  },
+  {
+    "path": "supabase/migrations/20261110100000_mv003_razorpay_entitlement_commitment.sql",
+    "sha256": "82ae7f73d32c44b0fa627b3d1f33777ce7a2d41f0aef6c25826704ac8898dc0b"
+  },
+  {
+    "path": "supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql",
+    "sha256": "f266859f080e200cffad9ae17b833faa4ac9302d78ed4d641c6c750564984730"
+  },
+  {
+    "path": "supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql",
+    "sha256": "6c6e8704a424e1c0689dcbd3bd8c6ac5bf92ea48e76b2ff0c7cbdd6721609e4c"
+  },
+  {
+    "path": "supabase/migrations/20261111100000_phase_c_final_mv003_commitment.sql",
+    "sha256": "d47d7ee0e8d74e56752c16c034e38c996e7b6b81e029cbb2d309a43151b720f2"
+  },
+  {
+    "path": "supabase/migrations/20261111110000_phase_c_play_entitlement_snapshot.sql",
+    "sha256": "da4f56405f25e8e1a67f077d4ecce1e40ddbf2932efa16882e4ba8a2a2ed08c4"
+  },
+  {
+    "path": "supabase/migrations/20261111120000_p0_classified_reversal_commitment.sql",
+    "sha256": "ee522a5c7a9b9361de69942d5e1607314747a3c8813dcbc046ed68ca1320240f"
+  },
+  {
+    "path": "supabase/migrations/20261111175746_all_row_foreign_key_indexes.sql",
+    "sha256": "aad108622bb5af6579ced72b76e1a4d590977384c56a54e5ceb077467cedd17d"
+  },
+  {
+    "path": "supabase/migrations/20261112104610_audit_batch1_refund_revocation.sql",
+    "sha256": "310fbe7896829ba348ae928f31c81ddebfbbefad21aeb0824c257cbd2d6a700b"
+  },
+  {
+    "path": "supabase/migrations/20261112150427_audit_checkout_publication_guard.sql",
+    "sha256": "214479eff8f239d892d41ff3be438f9df9a3d4662f4950d27496828e57bc2a2d"
+  },
+  {
+    "path": "supabase/migrations/20261114040000_fix3_content_push_and_delete_guards.sql",
+    "sha256": "581953053c0ec0319b3ec7e801cad221168f5b85ad7379d35f34f5f013d94b23"
+  },
+  {
+    "path": "supabase/migrations/20261114040100_fix3_flag_resolution_row_count.sql",
+    "sha256": "515fc8247128eb68375d1cad79b6ab8c96f0179629b71993ad39add2370e0e61"
+  },
+  {
+    "path": "supabase/migrations/20261114050000_fix4_new_sales_disabled.sql",
+    "sha256": "21580d36656954639381fe550a2a842988bb047cfdbb9b9336e5c21e084767ee"
+  },
+  {
+    "path": "supabase/migrations/20261114050200_fix4_notification_requests.sql",
+    "sha256": "1ee9b86fc9f8f30fdc75269438ec266de33306edcdbec5e6bb877fa6671956dc"
+  },
+  {
+    "path": "supabase/migrations/20261114050300_fix4_snapshot_rpcs.sql",
+    "sha256": "882f66f2aecad58f99e914472aef5474433765568982cd0d314e3f1e550cf924"
+  },
+  {
+    "path": "supabase/migrations/20261114050400_fix4_identity_retention_schedule.sql",
+    "sha256": "21e062ada1ec873376eadace0633daab17247e8ac900809ce2f313c53a7ff508"
+  },
+  {
+    "path": "supabase/migrations/20261114090000_fix5_wallet_expiry_facts.sql",
+    "sha256": "b97743b85c0b4e9d421a71634a85cf8e375f90fa2e99687470ad819dbc8ed032"
+  },
+  {
+    "path": "github-original-website/index.html",
+    "sha256": "f69f0e6289c7de15eb9d860544c018950a2ba761ff17718dfa7fa3573f9b0009"
+  },
+  {
+    "path": "github-original-website/privacy.html",
+    "sha256": "2c2b9bbc2fc4b6ca54fda3f5f08bef70ff2c9f8e413b3c727f6d373db4fdc33b"
+  },
+  {
+    "path": "github-original-website/refunds.html",
+    "sha256": "dfda50bb3290b862af6fd04b3b2e8e2c45b690f5e57468819e4c65afa94b52a9"
+  },
+  {
+    "path": "github-original-website/reset-password.html",
+    "sha256": "9306d112da88f49538929ba549a85128d8218be76945ae16e78c994819abe14c"
+  },
+  {
+    "path": "github-original-website/terms.html",
+    "sha256": "233ce335291897cde910064655e965714993d398c836decb09e5d97645d01da4"
+  }
+]

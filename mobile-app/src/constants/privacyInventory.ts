@@ -34,13 +34,13 @@ export const PRIVACY_INVENTORY = [
     "category": "Google Play",
     "data": "Purchase token, product/order IDs and obfuscated account/order identifiers; eligible legacy payment-program reporting identifiers where applicable.",
     "provider": "Google Play and Supabase verification functions.",
-    "purpose": "Verify access and support refunds for earlier Android digital Notes purchases; no new Play purchases in this app version."
+    "purpose": "Verify access and support refunds for Android digital Notes purchases. Google Play Billing is limited to dedicated testing builds; public availability has not been announced."
   },
   {
     "category": "Razorpay",
     "data": "Order/payment IDs and payment status; checkout prefill and billing state for applicable non-Play/legacy channels.",
     "provider": "Razorpay and Supabase.",
-    "purpose": "Process and verify applicable payments in separate permitted distribution builds and support earlier purchases."
+    "purpose": "Process and verify applicable payments in standard Android builds and support earlier purchases."
   },
   {
     "category": "Account email",

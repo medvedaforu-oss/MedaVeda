@@ -341,7 +341,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
         <Text style={styles.question}>{question.question}</Text>
       </View>
 
-      {question.options.map((option: string, index: number) => (
+      {question.options.map((option: string, index: number) => option.trim() ? (
         <OptionCard
           key={index}
           title={option}
@@ -349,7 +349,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
           onPress={() => handleAnswer(index)}
           isSelected={selectedAnswer === index}
         />
-      ))}
+      ) : null)}
 
       <View style={styles.navRow}>
         <TouchableOpacity
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: RADIUS.lg,
-    padding: SPACING.xl,
+    padding: SPACING.md,
     alignItems: "center",
     elevation: 4,
     shadowColor: "#000",
@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
   },
   resultEmoji: { fontSize: 60, marginBottom: SPACING.md },
   statusBadge: {
+    maxWidth: "100%",
     marginTop: SPACING.md,
     paddingHorizontal: SPACING.lg,
     paddingVertical: 8,
@@ -416,8 +417,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    marginBottom: SPACING.lg,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    marginBottom: SPACING.md,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: SPACING.sm,
     alignItems: "center",
   },
   timerLabel: { fontSize: FONT.small, color: COLORS.subtitle },
@@ -426,8 +432,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.lg,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
   },
   questionNumber: {
     fontSize: FONT.small,
@@ -435,7 +441,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: SPACING.sm,
   },
-  container: { flex: 1, backgroundColor: COLORS.background, padding: SPACING.lg },
+  container: { flex: 1, backgroundColor: COLORS.background, paddingHorizontal: SPACING.screen, paddingTop: SPACING.md },
   center: {
     flex: 1,
     justifyContent: "center",
@@ -447,8 +453,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: FONT.body,
     color: COLORS.subtitle,
-    marginTop: 6,
-    marginBottom: SPACING.lg,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.md,
   },
   counter: {
     textAlign: "center",
@@ -462,18 +468,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: COLORS.error,
     textAlign: "right",
-    marginBottom: SPACING.sm,
   },
   question: {
     fontSize: FONT.subHeading,
     fontWeight: "600",
     color: COLORS.text,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
   },
   button: {
     marginTop: SPACING.lg,
     backgroundColor: COLORS.accent,
-    padding: 16,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.sm,
+    minHeight: 48,
+    justifyContent: "center",
     borderRadius: RADIUS.md,
     alignItems: "center",
     width: "100%",
@@ -483,7 +491,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: 16,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.sm,
+    minHeight: 48,
+    justifyContent: "center",
     borderRadius: RADIUS.md,
     alignItems: "center",
     width: "100%",
@@ -491,11 +502,18 @@ const styles = StyleSheet.create({
   buttonText: { color: COLORS.white, fontSize: FONT.body, fontWeight: "700" },
   navRow: {
     flexDirection: "row",
-    marginTop: SPACING.lg,
+    flexWrap: "wrap",
+    gap: SPACING.sm,
+    marginTop: SPACING.sm,
   },
   navButton: {
     flex: 1,
-    padding: 16,
+    flexBasis: 120,
+    minWidth: 0,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.sm,
+    minHeight: 48,
+    justifyContent: "center",
     borderRadius: RADIUS.md,
     alignItems: "center",
   },
@@ -503,7 +521,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 1,
     borderColor: COLORS.border,
-    marginRight: SPACING.md,
   },
   previousButtonText: {
     color: COLORS.text,
@@ -517,12 +534,14 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   finish: {
+    maxWidth: "100%",
     fontSize: FONT.heading,
     color: COLORS.accentLight,
     fontWeight: "700",
     textAlign: "center",
   },
   score: {
+    maxWidth: "100%",
     fontSize: 44,
     fontWeight: "700",
     color: COLORS.accentLight,

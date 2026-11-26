@@ -6,12 +6,15 @@ import "../config/sentry";
 import { NavigationContainer, DefaultTheme, useNavigationContainerRef, type ParamListBase } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
+import { AppState } from "react-native";
 import useNotificationRouting from "../hooks/useNotificationRouting";
 
 import { getCurrentUser, subscribeAuthUser } from "../services/authState";
 import { logError } from "../utils/logger";
 
 import { COLORS } from "../theme/colors";
+import { FONT } from "../theme/fonts";
+import type { RootStackParamList } from "../types/navigation";
 import {
   setupNotificationChannel,
   restoreStudyReminderOnLaunch,
@@ -38,6 +41,10 @@ import { paymentProvider } from "../config/paymentProvider";
 // Auth, recovery, Home, onboarding and Sentry retain their eager ordering.
 declare const require: (path: string) => { default: import("react").ComponentType<any> };
 const deferredScreens = {
+  QuestionPaperYearsScreen: () => require("../features/question-papers/screens/QuestionPaperYearsScreen").default,
+  QuestionPaperSubjectsScreen: () => require("../features/question-papers/screens/QuestionPaperSubjectsScreen").default,
+  QuestionPaperSessionsScreen: () => require("../features/question-papers/screens/QuestionPaperSessionsScreen").default,
+  QuestionPaperPdfScreen: () => require("../features/question-papers/screens/QuestionPaperPdfScreen").default,
   YearsScreen: () => require("../screens/years/YearsScreen").default,
   SubjectsScreen: () => require("../screens/subjects/SubjectsScreen").default,
   ChaptersScreen: () => require("../screens/chapters/ChaptersScreen").default,
@@ -51,7 +58,9 @@ const deferredScreens = {
   EditProfileScreen: () => require("../screens/profile/EditProfileScreen").default,
   ReferralScreen: () => require("../screens/referral/ReferralScreen").default,
   ReferralTermsScreen: () => require("../screens/referral/ReferralTermsScreen").default,
-  OrderSummaryScreen: () => require("../screens/payment/OrderSummaryScreen").default,
+  OrderSummaryScreen: () => paymentProvider === "play"
+    ? require("../screens/payment/PlayOrderSummaryScreen").default
+    : require("../screens/payment/OrderSummaryScreen").default,
   ChangePasswordScreen: () => require("../screens/profile/ChangePasswordScreen").default,
   MyPurchasesScreen: () => require("../screens/purchases/MyPurchasesScreen").default,
   DownloadsScreen: () => require("../screens/downloads/DownloadsScreen").default,
@@ -77,6 +86,10 @@ const studyOptions = (title: string) => ({
   title,
   headerStyle: { backgroundColor: COLORS.background },
   headerTintColor: COLORS.text,
+  headerTitleStyle: { fontSize: FONT.subHeading, fontWeight: "700" as const },
+  headerTitleAlign: "left" as const,
+  headerShadowVisible: false,
+  headerBackButtonDisplayMode: "minimal" as const,
 });
 
 const navigationTheme = {
@@ -125,6 +138,16 @@ export default function AppNavigator() {
       .catch(error => logError("Reminder restoration failed", error));
   }, []);
 
+  useEffect(() => {
+    if (paymentProvider !== "play" || !ownerId) return;
+    const restore = () => {
+      void import("../services/playBillingService").then(service => service.restorePlayPurchases()).catch(() => {});
+    };
+    restore();
+    const subscription = AppState.addEventListener("change", state => { if (state === "active") restore(); });
+    return () => subscription.remove();
+  }, [ownerId]);
+
   // Blocks screenshots/screen recording for the whole app (paid Notes PDF
   // content is the reason, but it's applied globally, not just on the
   // PDF viewer - see hooks/usePreventScreenshot.ts for exact platform
@@ -150,6 +173,10 @@ export default function AppNavigator() {
         <Stack.Group navigationKey={ownerId ?? "signed-out"}>
         {ownerId && <>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="QuestionPaperYears" getComponent={deferredScreens.QuestionPaperYearsScreen} options={studyOptions("Question Papers")} />
+        <Stack.Screen name="QuestionPaperSubjects" getComponent={deferredScreens.QuestionPaperSubjectsScreen} options={studyOptions("Choose subject")} />
+        <Stack.Screen name="QuestionPaperSessions" getComponent={deferredScreens.QuestionPaperSessionsScreen} options={studyOptions("Exam sessions")} />
+        <Stack.Screen name="QuestionPaperPdf" getComponent={deferredScreens.QuestionPaperPdfScreen} options={({ route }) => studyOptions((route.params as RootStackParamList["QuestionPaperPdf"] | undefined)?.title || "Question paper")} />
         <Stack.Screen
           name="SelectCourseYear"
           component={SelectCourseYearScreen}
@@ -182,7 +209,7 @@ export default function AppNavigator() {
         {paymentProvider !== "disabled" && (
           <Stack.Screen name="OrderSummary" getComponent={deferredScreens.OrderSummaryScreen} />
         )}
-        {paymentProvider !== "disabled" && (
+        {paymentProvider === "razorpay" && (
           <Stack.Screen name="PaymentCheckout" getComponent={deferredScreens.PaymentCheckoutScreen} />
         )}
         <Stack.Screen name="About" getComponent={deferredScreens.AboutScreen} />

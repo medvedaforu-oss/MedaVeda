@@ -1,0 +1,402 @@
+BEGIN
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 4
+UPDATE 1
+CREATE FUNCTION
+SELECT 1
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:48: NOTICE:  PASS student cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:53: NOTICE:  PASS MFA deficient Admin cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:59: NOTICE:  PASS Admin deletes empty subject
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:61: NOTICE:  PASS Admin deletes subject with published paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:63: NOTICE:  PASS Admin deletes subject with draft paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:65: NOTICE:  PASS all unrelated records, PDF objects and receipts unchanged
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:66: NOTICE:  PASS only targeted subjects removed
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+ROLLBACK
+PASS subject deletion compatibility
+
+PASS existing table definitions/grants, RLS policies, functions and buckets unchanged
+BEGIN
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 4
+UPDATE 1
+INSERT 0 3
+INSERT 0 3
+INSERT 0 3
+CREATE FUNCTION
+SELECT 1
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:48: NOTICE:  PASS student cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:53: NOTICE:  PASS MFA deficient Admin cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:59: NOTICE:  PASS Admin deletes empty subject
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:61: NOTICE:  PASS Admin deletes subject with published paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:63: NOTICE:  PASS Admin deletes subject with draft paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:65: NOTICE:  PASS all unrelated records, PDF objects and receipts unchanged
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:66: NOTICE:  PASS only targeted subjects removed
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:68: NOTICE:  PASS only targeted paper metadata removed
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:69: NOTICE:  PASS unrelated paper unchanged
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+SET
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:76: NOTICE:  PASS Admin signing lookup cannot resolve deleted metadata
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:77: NOTICE:  PASS Admin cannot read retained PDFs directly
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:81: NOTICE:  PASS student signing lookup cannot resolve deleted metadata
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:82: NOTICE:  PASS student cannot read retained PDFs directly
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+ set_config 
+------------
+ {}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:86: NOTICE:  PASS anonymous metadata still hidden
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:87: NOTICE:  PASS anonymous cannot read retained PDFs
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:89: NOTICE:  PASS retained objects remain in private bucket
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+ROLLBACK
+PASS subject deletion compatibility
+
+PASS complete existing migration chain + additive migration
+PASS two Admin sessions: overlapping edits, stale republish/PDF restore/delete rejected; direct mutation denied
+PASS concurrent duplicate saves: exactly one winner
+BEGIN
+GRANT
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:7: NOTICE:  PASS question papers table exists
+ qp_assert 
+-----------
+ 
+(1 row)
+
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ set_config 
+------------
+ true
+(1 row)
+
+UPDATE 1
+ set_config 
+------------
+ false
+(1 row)
+
+INSERT 0 4
+INSERT 0 2
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"aaa00000-0000-0000-0000-000000000001","role":"authenticated","aal":"aal2"}
+(1 row)
+
+SET
+INSERT 0 1
+RESET
+INSERT 0 1
+SET
+INSERT 0 2
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:40: NOTICE:  PASS normalized identity
+ qp_assert 
+-----------
+ 
+(1 row)
+
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:48: NOTICE:  PASS Admin cannot directly read or sign objects
+ qp_assert 
+-----------
+ 
+(1 row)
+
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:62: NOTICE:  PASS replacement/delete retain existing PDFs
+ qp_assert 
+-----------
+ 
+(1 row)
+
+INSERT 0 1
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"aaa00000-0000-0000-0000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:67: NOTICE:  PASS student sees published only with no purchase
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:68: NOTICE:  PASS student cannot directly read or sign published PDF
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:69: NOTICE:  PASS unrelated thumbnails still visible
+ qp_assert 
+-----------
+ 
+(1 row)
+
+DO
+RESET
+UPDATE 1
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:82: NOTICE:  PASS unpublish withdraws metadata
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:83: NOTICE:  PASS unpublish withdraws signing access
+ qp_assert 
+-----------
+ 
+(1 row)
+
+RESET
+UPDATE 1
+UPDATE 1
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:88: NOTICE:  PASS inactive subject hides paper
+ qp_assert 
+-----------
+ 
+(1 row)
+
+RESET
+UPDATE 1
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"aaa00000-0000-0000-0000-000000000001","role":"authenticated","aal":"aal1"}
+(1 row)
+
+UPDATE 1
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:94: NOTICE:  PASS existing MFA predicate enforced
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:95: NOTICE:  PASS MFA deficient admin cannot see drafts
+ qp_assert 
+-----------
+ 
+(1 row)
+
+RESET
+ set_config 
+------------
+ {}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:99: NOTICE:  PASS anonymous metadata hidden by RLS
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:100: NOTICE:  PASS anonymous unrelated thumbnails unchanged
+ qp_assert 
+-----------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:101: NOTICE:  PASS anonymous PDF read denied
+ qp_assert 
+-----------
+ 
+(1 row)
+
+RESET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_checks.sql:103: NOTICE:  PASS bucket private
+ qp_assert 
+-----------
+ 
+(1 row)
+
+ROLLBACK
+PASS question paper authorization and lifecycle checks
+
+PASS existing content_publication_checks
+PASS existing course_wide_browsing_checks
+PASS existing quiz_answer_and_admin_mfa_checks
+PASS existing admin_mfa_checks
+PASS existing high_phone_and_notes_checks

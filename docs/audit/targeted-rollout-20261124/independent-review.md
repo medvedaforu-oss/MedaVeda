@@ -1,0 +1,9 @@
+# Independent targeted review
+
+Reviewer: separate `targeted_admin_review` agent, given targeted requirements and files without parent conversation history. Verdict: **no additional actionable finding** in the two corrected Admin findings.
+
+Reviewed authoritative revision in the view/service, Products/table revision equality, request sequencing and stale responses, concurrent edits, real product hook scope/lifetime handling, product RPC row lock and revision precondition, existing am_i_admin/MFA gate, explicit Notes/bundle classification and legacy preservation. New race harness exercises the real page/request guard with controlled service delays; it mocks useProducts, so real filter handling is supported separately by static hook review and the existing request-race suite. Current hosted runtime was not independently exercised with an authenticated Admin. Production view lacks product_revision until the pending migration; coordinated rollout is mandatory.
+
+A follow-up independent review compared compensation SQL against captured live predeployment definitions/grants. Terminal function body normalized to the exact captured definition; grants match. Fail-closed view retains sanitized columns, invoker semantics, am_i_admin, revision and ACL, and cannot return ready. Neither script contains financial DML or removes the revision trigger/RPC/MFA gate. Suitable for isolated rehearsal after pending schema is present. Compensation leaves additive schema/helper and migration history installed; normal behavior must be restored through reviewed forward changes.
+
+Parent subsequently rehearsed both scripts only in a synthetic local clone: compile success, unchanged order/purchase hashes and products grants, revision/RPC retained and anonymous/direct-edit denials preserved. This is not production-data restore validation.

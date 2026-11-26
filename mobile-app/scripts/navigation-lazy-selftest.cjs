@@ -25,12 +25,14 @@ for (const provider of ['disabled', 'razorpay', 'play']) {
       return modules.get(name);
     }
     if (name === '../config/sentry') { sentry = true; return {}; }
+    if (name === 'react-native') return { AppState: { addEventListener: () => ({ remove() {} }) } };
     if (name === 'react') return { __esModule: true, default: react, ...react };
     if (name === '@react-navigation/native') return { NavigationContainer: 'NavigationContainer', DefaultTheme: { colors: {} }, useNavigationContainerRef: () => ({}) };
     if (name === '@react-navigation/native-stack') return { createNativeStackNavigator: () => Stack };
     if (name === '../services/authState') return { getCurrentUser: () => ({ id: 'fixture' }), subscribeAuthUser() {} };
     if (name === '../utils/logger') return {logError(){}};
     if (name === '../theme/colors') return { COLORS: {} };
+    if (name === '../theme/fonts') return { FONT: { subHeading: 18 } };
     if (name === '../config/paymentProvider') return { paymentProvider: provider };
     if (name === '../components/ErrorBoundary') return { __esModule: true, default: 'ErrorBoundary' };
     if (name.includes('/hooks/')) return { __esModule: true, default() {} };
@@ -45,7 +47,7 @@ for (const provider of ['disabled', 'razorpay', 'play']) {
   const screens = flatten(tree).filter(n => n?.type === 'Screen');
   assert.equal(new Set(screens.map(n => n.props.name)).size, screens.length);
   assert.equal(screens.some(n => n.props.name === 'PlayBilling'), false);
-  assert.equal(screens.some(n => n.props.name === 'PaymentCheckout'), provider !== 'disabled');
+  assert.equal(screens.some(n => n.props.name === 'PaymentCheckout'), provider === 'razorpay', 'Play distribution must not register Razorpay checkout');
   assert.equal(screens.some(n => n.props.name === 'OrderSummary'), provider !== 'disabled');
   const preferences = screens.find(n => n.props.name === 'NotificationPreferences');
   assert.ok(preferences, 'The notification center preferences destination must be registered');
@@ -56,6 +58,8 @@ for (const provider of ['disabled', 'razorpay', 'play']) {
     assert.equal(loads.length, eager, 'Registering routes does not load deferred screens');
     assert.equal(typeof preferences.props.getComponent(), 'function');
     assert.ok(loads.includes('../screens/notifications/NotificationPreferencesScreen'));
+    const summary = screens.find(n => n.props.name === 'OrderSummary');
+    if (summary) { summary.props.getComponent(); assert.ok(loads.includes(provider === 'play' ? '../screens/payment/PlayOrderSummaryScreen' : '../screens/payment/OrderSummaryScreen')); }
     fail = true; assert.throws(() => pdf.props.getComponent(), /fixture module load failure/); fail = false;
     const loaded = pdf.props.getComponent();
     assert.equal(pdf.props.getComponent(), loaded, 'Repeated navigation preserves component identity');

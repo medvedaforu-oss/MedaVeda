@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { captureStorageOwner, isStorageOwnerCurrent, readOwnedList, updateOwnedList } from "../utils/ownerStorage";
 
 import { supabase } from "../config/supabase";
 import { getNotificationPreferences } from "../utils/notificationPreferences";
@@ -78,35 +78,28 @@ export async function fetchNotifications(options: { strict?: boolean } = {}): Pr
   }
 }
 
-// Read state is purely local (per-device) - unchanged from the Firebase
-// version.
+// Read/archive state is local to the authenticated owner on this device.
 const READ_IDS_KEY = "medveda:notifications:readIds";
 // NOTIFICATIONS SYSTEM - archived (swiped away) notifications, also
-// local-only. Archived items are permanently hidden from this device's
+// local-only. Archived items are permanently hidden from this owner's
 // Notification Center, same mental model as archiving an email.
 const ARCHIVED_IDS_KEY = "medveda:notifications:archivedIds";
 
-async function getArchivedIds(): Promise<Set<string>> {
+async function getArchivedIds(owner: ReturnType<typeof captureStorageOwner>): Promise<Set<string>> {
   try {
-    const raw = await AsyncStorage.getItem(ARCHIVED_IDS_KEY);
-    if (!raw) return new Set();
-    return new Set(JSON.parse(raw) as string[]);
+    return new Set(await readOwnedList<string>(ARCHIVED_IDS_KEY, owner));
   } catch {
     return new Set();
   }
 }
 
 export async function archiveNotification(id: string): Promise<void> {
-  const archived = await getArchivedIds();
-  archived.add(id);
-  await AsyncStorage.setItem(ARCHIVED_IDS_KEY, JSON.stringify([...archived]));
+  await updateOwnedList<string>(ARCHIVED_IDS_KEY, items => [...new Set([...items, id])]);
 }
 
-async function getReadIds(): Promise<Set<string>> {
+async function getReadIds(owner: ReturnType<typeof captureStorageOwner>): Promise<Set<string>> {
   try {
-    const raw = await AsyncStorage.getItem(READ_IDS_KEY);
-    if (!raw) return new Set();
-    return new Set(JSON.parse(raw) as string[]);
+    return new Set(await readOwnedList<string>(READ_IDS_KEY, owner));
   } catch (error) {
     logDebug("getReadIds failed:", error);
     return new Set();
@@ -116,11 +109,14 @@ async function getReadIds(): Promise<Set<string>> {
 export async function fetchNotificationsWithReadState(options: { strict?: boolean } = {}): Promise<{
   notifications: (AppNotification & { read: boolean })[];
 }> {
+  const owner = captureStorageOwner();
   const [notifications, readIds, archivedIds] = await Promise.all([
     fetchNotifications(options),
-    getReadIds(),
-    getArchivedIds(),
+    getReadIds(owner),
+    getArchivedIds(owner),
   ]);
+
+  if (!isStorageOwnerCurrent(owner)) return { notifications: [] };
 
   return {
     notifications: notifications
@@ -133,9 +129,7 @@ export async function fetchNotificationsWithReadState(options: { strict?: boolea
 }
 
 export async function markAllNotificationsRead(ids: string[]): Promise<void> {
-  const readIds = await getReadIds();
-  ids.forEach((id) => readIds.add(id));
-  await AsyncStorage.setItem(READ_IDS_KEY, JSON.stringify([...readIds]));
+  await updateOwnedList<string>(READ_IDS_KEY, items => [...new Set([...items, ...ids])]);
 }
 
 export async function getUnreadNotificationCount(): Promise<number> {

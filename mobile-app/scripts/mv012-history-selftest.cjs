@@ -16,7 +16,7 @@ function screenFor(resource, react, auth, recovery = async () => false, provider
     'react-native': { View: 'View', Text: 'Text', FlatList: 'List', ActivityIndicator: 'Spinner', StyleSheet: { create: x => x } },
     '@react-navigation/native': { useFocusEffect: fn => react.useEffect(fn, [fn]) },
     '../../hooks/usePurchaseResource': { __esModule: true, default: resource }, '../../services/authState': auth,
-    '../../services/purchasesService': {}, '../../services/playBillingService': { restorePlayPurchases() { throw Error('unexpected Play restore'); } },
+    '../../services/purchasesService': {},
     '../../config/paymentProvider': { paymentProvider: provider }, '../../services/paymentService': { recoverMyPendingPayments: recovery },
   };
   for (const name of ['EmptyState', 'ErrorState', 'BottomNav']) mocks['../../components/' + name] = { __esModule: true, default: name };

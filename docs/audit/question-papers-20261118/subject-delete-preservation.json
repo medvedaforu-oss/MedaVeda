@@ -1,0 +1,37 @@
+{
+  "baseline_file_states": 3138,
+  "preserved_file_states": 3136,
+  "changed_existing_paths": [
+    "supabase/migrations/20261118172019_question_papers.sql",
+    "supabase/tests/question-papers-local.py"
+  ],
+  "added_paths": [
+    "docs/audit/question-papers-20261118/subject-delete-baseline-regressions.txt",
+    "docs/audit/question-papers-20261118/subject-delete-full-regressions.txt",
+    "docs/audit/question-papers-20261118/subject-delete-preservation.json",
+    "docs/audit/question-papers-20261118/subject-delete-red.txt",
+    "docs/audit/question-papers-20261118/subject-delete-remediation.md",
+    "docs/audit/question-papers-20261118/subject-delete-sql.txt",
+    "docs/audit/question-papers-20261118/subject-delete-test-results.json",
+    "supabase/tests/question_papers_subject_delete_checks.sql"
+  ],
+  "unchanged_head": "d5536ed075422ccb54c7cfd609dfc829f9757fe1",
+  "original_git_status_entries_preserved": 366,
+  "index_clean": true,
+  "baseline_absent_states_preserved": 251,
+  "verification_commands": {
+    "module_checks": "17/17 PASS",
+    "question_papers_sql_and_five_regressions": "PASS",
+    "full_sql": "38 PASS, 2 FAIL; missing pre-existing diagnostic harness also fails",
+    "edge_type_checks": "handler.ts and index.ts PASS",
+    "diff_check": "PASS"
+  },
+  "changed_hashes": {
+    "supabase/migrations/20261118172019_question_papers.sql": "015be3ef0e9f1ee55d08426635db55fd288d48d380bf581091484825e942de70",
+    "supabase/tests/question-papers-local.py": "5c25dba7b26d6d0409174bb95dee5107af9e1a5086d4d7bd674304074c4aa13a"
+  },
+  "baseline_hashes": {
+    "supabase/migrations/20261118172019_question_papers.sql": "1fc8a452a5a4d21ba2fd4e60866850334c50c06c72c09a24c20a38dc6e112e85",
+    "supabase/tests/question-papers-local.py": "494980f74003aa206d41e9e146c5d04df181e50a3989bf748584533d72bd63e3"
+  }
+}

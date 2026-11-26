@@ -95,8 +95,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    minHeight: 68,
+    marginBottom: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.border,
     ...SHADOW.card,
@@ -104,20 +106,22 @@ const styles = StyleSheet.create({
 
   icon: {
     fontSize: 30,
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
 
   content: {
     flex: 1,
+    minWidth: 0,
   },
 
   titleRow: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACING.xs,
     alignItems: "center",
   },
 
   freeBadge: {
-    marginLeft: 8,
     backgroundColor: COLORS.success,
     borderRadius: RADIUS.sm,
     paddingHorizontal: 8,
@@ -131,6 +135,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    flexShrink: 1,
     fontSize: FONT.body,
     color: COLORS.text,
     fontWeight: "600",
@@ -143,8 +148,8 @@ const styles = StyleSheet.create({
   },
 
   downloadButton: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     borderRadius: 20,
     marginLeft: SPACING.sm,
     alignItems: "center",

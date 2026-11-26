@@ -20,15 +20,14 @@ parser.add_argument('--expect-optimized', action='store_true')
 parser.add_argument('--min-version-code', type=int)
 args = parser.parse_args()
 if args.manifest and not args.release_config:
-    parser.error('--manifest requires --release-config; permission presence cannot establish disabled payments')
+    parser.error('--manifest requires --release-config; permission presence cannot establish payment routing')
 if args.release_config and not args.manifest:
     parser.error('--release-config requires --manifest')
 
 # Reviewed source/library permission inventory. New permissions require review,
-# rather than silently broadening this list. BILLING is required by retained IAP.
+# rather than silently broadening this list. Retired Billing is explicitly rejected.
 BILLING_PERMISSION = 'com.android.vending.BILLING'
 ALLOWED_PERMISSIONS = {
-    BILLING_PERMISSION,
     'android.permission.INTERNET',
     'android.permission.POST_NOTIFICATIONS',
     'android.permission.VIBRATE',
@@ -69,29 +68,29 @@ def validate_release(manifest, config):
     # Include sdk-qualified forms so an unexpected permission cannot hide there.
     permissions = {e.get(android+'name') for e in manifest
                    if e.tag == 'uses-permission' or e.tag.startswith('uses-permission-sdk-')}
+    if BILLING_PERMISSION in permissions:
+        raise ValueError('Release contains retired Google Play Billing permission')
     unexpected = permissions - ALLOWED_PERMISSIONS
     if unexpected:
         raise ValueError('Unexpected release permissions: ' + ', '.join(sorted(str(p) for p in unexpected)))
-    if BILLING_PERMISSION not in permissions:
-        raise ValueError('Missing required retained Google Play Billing permission')
     config = config.get('expo', config)
     extra = config.get('extra', {})
     if manifest.get('package') != 'in.medveda.app' or config.get('android', {}).get('package') != 'in.medveda.app':
         raise ValueError('Release manifest/config must use in.medveda.app')
-    if extra.get('medvedaPaymentProvider') != 'disabled':
-        raise ValueError('Production release requires disabled payments; standalone Play/Razorpay sales are forbidden')
+    if extra.get('medvedaPaymentProvider') not in ('razorpay', 'disabled'):
+        raise ValueError('Production release requires Razorpay or disabled payments; Play Billing is retired')
     if extra.get('medvedaDistribution') != 'standard' or extra.get('medvedaBuildTarget') != 'production':
         raise ValueError('Release requires standard production distribution')
-    if any(extra.get(key) is not False for key in ['medvedaIndiaUcbEnrolled', 'medvedaUcbTestAccepted']):
+    if any(extra.get(key) is not None and extra.get(key) is not False for key in ['medvedaIndiaUcbEnrolled', 'medvedaUcbTestAccepted']):
         raise ValueError('Release enrollment/acceptance flags must remain explicitly false')
-    expected_runtime = str(config.get('version')) + '-disabled-notes-choice-v1'
+    expected_runtime = str(config.get('version')) + '-' + extra['medvedaPaymentProvider'] + '-no-iap-v1'
     if config.get('android', {}).get('runtimeVersion') != expected_runtime:
-        raise ValueError('Release requires the disabled-payment Android runtime')
+        raise ValueError('Release requires the no-IAP Android runtime')
     return {
-        'billingIntegration': 'retained-required',
-        'paymentProvider': 'disabled',
+        'billingIntegration': 'removed',
+        'paymentProvider': extra['medvedaPaymentProvider'],
         'permissions': sorted(permissions),
-        'scope': 'Manifest/config checks only; compiled payment guards, standalone-path rejection, native behavior and Play policy approval require separate evidence.',
+        'scope': 'Manifest/config checks only; compiled payment guards, standalone-path rejection, device behavior require separate evidence.',
     }
 
 # Method-table references prove API presence, not execution or a Play warning's call site.

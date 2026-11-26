@@ -1,0 +1,28 @@
+{
+  "view": {
+    "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+    "owner": "postgres",
+    "options": [
+      "security_invoker=true"
+    ],
+    "definition": " SELECT p.id AS product_id,\n    p.title,\n    p.price,\n    p.active AS catalog_active,\n        CASE\n            WHEN NOT p.active THEN 'catalog_inactive'::text\n            WHEN NOT play_notes_product_eligible(p.*) THEN 'not_billable_notes'::text\n            WHEN p.price <= 0::numeric THEN 'unsupported_price'::text\n            WHEN t.verified_at > (now() - '24:00:00'::interval) AND t.active AND s.status = 'ready'::text THEN 'ready'::text\n            WHEN s.status = 'ready'::text THEN 'stale'::text\n            ELSE COALESCE(s.status, 'pending'::text)\n        END AS billing_status,\n    t.play_sku,\n    t.purchase_option_id,\n    t.price_inr AS synced_price,\n    t.currency_code,\n    s.last_synced_at,\n    s.last_error,\n    s.attempts\n   FROM products p\n     LEFT JOIN play_price_sync s ON s.price_inr = p.price\n     LEFT JOIN play_price_tiers t ON t.play_sku = s.candidate_sku AND t.active AND t.verified_at IS NOT NULL\n  WHERE am_i_admin();"
+  },
+  "functions": [
+    {
+      "acl": "{=X/postgres,postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "args": "",
+      "name": "am_i_admin",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.am_i_admin()\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  select exists (select 1 from public.admins where id = auth.uid())\n     and (not public.admin_mfa_required() or coalesce(auth.jwt() ->> 'aal', '') = 'aal2')\n$function$\n"
+    },
+    {
+      "acl": "{postgres=X/postgres,service_role=X/postgres,authenticated=X/postgres}",
+      "args": "p_order_id text",
+      "name": "get_my_play_fulfillment",
+      "owner": "postgres",
+      "definition": "CREATE OR REPLACE FUNCTION public.get_my_play_fulfillment(p_order_id text)\n RETURNS jsonb\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\ndeclare o public.orders%rowtype;\nbegin\n  select * into o from public.orders where id=p_order_id and user_id=auth.uid() and provider='play';\n  if not found then return jsonb_build_object('success',false,'pending',true); end if;\n  if o.status='refunded' then\n    return jsonb_build_object('success',false,'pending',false,'message','This payment was refunded.'); end if;\n  if exists(select 1 from public.purchases where order_id=o.id and status='duplicate') then\n    return jsonb_build_object('success',false,'pending',false,'message','This product was already owned; contact support for a refund.'); end if;\n  if public.play_entitlement_committed(o.id,o.purchase_token) then\n    return jsonb_build_object('success',true,'internalOrderId',o.id,'amount',o.amount); end if;\n  return jsonb_build_object('success',false,'pending',true);\nend $function$\n"
+    }
+  ],
+  "products_acl": "{postgres=arwdDxtm/postgres,anon=m/postgres,authenticated=arwdm/postgres,service_role=arwdDxtm/postgres}",
+  "revision_exists": false
+}

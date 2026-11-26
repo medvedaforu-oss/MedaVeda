@@ -1,7 +1,0 @@
-# MOB-12 — BLOCKED
-
-Installed package metadata: aes-js 3.1.2 (CTR/CBC/CFB/OFB/ECB only), crypto-js 4.2.0 (no GCM/AEAD), react-native-get-random-values (randomness only). expo-crypto, native quick-crypto and noble AEAD are not installed. Browser/Node WebCrypto is not a verified native SDK57 primitive. No dependency or envelope changes made; no forced migration/logout introduced.
-
-Unblocks: owner approves a new native dependency, then implementation + rebuilt Android/iOS qualification. Preferred owner command from mobile-app with dotenv disabled: `EXPO_NO_DOTENV=1 npx expo install expo-crypto`. Review the resolved SDK57 package and lockfile before proceeding. Compare: expo-crypto follows Expo's native AES-GCM API and SDK resolution; react-native-quick-crypto adds broader OpenSSL/native surface and additional compatibility work; hand-rolling authentication around aes-js is not an AEAD implementation and is rejected. No install command was run.
-
-Implement v3 per fix-3/mobile-designs.md: immutable per-generation keys; random 96-bit nonce; storage-key/domain/version/algorithm/generation AAD; verify tag before parsing; null on invalid envelope; never erase locked storage. Verify legacy JSON then require an authenticated server refresh before migration. Test tamper/tag/AAD/generation, concurrent operations, ambiguous publication and native restarts. Existing v2 remains a residual risk.

@@ -20,19 +20,19 @@ const path = require("path");
 
 module.exports = ({ config }) => {
   const configuredProvider = process.env.MEDVEDA_PAYMENT_PROVIDER || "razorpay";
-  if (!["razorpay", "disabled"].includes(configuredProvider)) {
-    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be razorpay or disabled. Play Billing is retired.");
+  if (!["razorpay", "disabled", "play"].includes(configuredProvider)) {
+    throw new Error("MEDVEDA_PAYMENT_PROVIDER must be razorpay, disabled or isolated testing play.");
   }
+  const playTesting = process.env.MEDVEDA_DISTRIBUTION === "google-play-testing";
+  require("./scripts/play-build-config.cjs").assertPlayBuild(process.env);
   const paymentProvider = configuredProvider;
   require("./scripts/check-staging-build.cjs").checkStagingBuild(process.env);
   const razorpayTest = process.env.MEDVEDA_DISTRIBUTION === "non-play-internal-test";
   const razorpayLiveTesting = process.env.MEDVEDA_DISTRIBUTION === "non-play-live-testing";
-  const playValidation = process.env.MEDVEDA_DISTRIBUTION === "play-alpha-validation";
   const next = { ...config };
   next.extra = { ...next.extra, medvedaPaymentProvider: paymentProvider,
-    medvedaIndiaUcbEnrolled: process.env.MEDVEDA_INDIA_UCB_ENROLLED === "true",
-    medvedaUcbTestAccepted: process.env.MEDVEDA_UCB_TEST_ACCEPTED === "true",
-    medvedaDistribution: razorpayLiveTesting ? "non-play-live-testing" : razorpayTest ? "non-play-internal-test" : playValidation ? "play-alpha-validation" : "standard",
+    medvedaDistribution: playTesting ? "google-play-testing" : razorpayLiveTesting ? "non-play-live-testing" : razorpayTest ? "non-play-internal-test" : "standard",
+    ...(playTesting ? { medvedaBuildProfile: "play-billing-testing" } : {}),
     ...(razorpayLiveTesting ? { medvedaBuildProfile: "razorpay-live-testing" } : {}),
     ...(razorpayTest ? { medvedaNonplayTestEnvironment: process.env.MEDVEDA_NONPLAY_TEST_ENVIRONMENT,
       medvedaBuildProfile: "razorpay-internal-test" } : {}),
@@ -46,15 +46,16 @@ module.exports = ({ config }) => {
     next.scheme = "medveda-razorpay-test";
   }
   next.extra.medvedaRecoveryScheme = next.scheme;
-  // Keep this native build separate from earlier Play Billing and Razorpay runtimes.
+  // Keep the standalone testing IAP runtime separate from existing Razorpay binaries.
   // EAS Update does not supply EAS_BUILD_PROFILE, so the profile check above
   // cannot protect an update published to the wrong channel by itself.
   next.android = {
     ...next.android,
-    ...(process.env.MEDVEDA_BUILD_TARGET === "staging" && !playValidation ? { package: "in.medveda.staging" } : {}),
+    ...(process.env.MEDVEDA_BUILD_TARGET === "staging" ? { package: "in.medveda.staging" } : {}),
     ...(razorpayTest ? { package: "in.medveda.razorpaytest" } : {}),
-    runtimeVersion: razorpayLiveTesting ? `${next.version}-razorpay-live-testing` : razorpayTest ? `${next.version}-razorpay-internal-test` : playValidation ? `${next.version}-play-alpha-validation` : `${next.version}-${paymentProvider}-notes-choice-v1`,
+    runtimeVersion: playTesting ? `${next.version}-standalone-play-testing-v1` : razorpayLiveTesting ? `${next.version}-razorpay-live-testing-no-iap-v1` : razorpayTest ? `${next.version}-razorpay-internal-test-no-iap-v1` : `${next.version}-${paymentProvider}-no-iap-v1`,
   };
+  if (playTesting) next.updates = { ...next.updates, enabled: false };
   if (razorpayLiveTesting) {
     next.updates = { ...next.updates, requestHeaders: {
       ...next.updates?.requestHeaders, "expo-channel-name": "razorpay-live-testing",
@@ -88,7 +89,7 @@ module.exports = ({ config }) => {
     enableShrinkResourcesInReleaseBuilds: true,
     extraProguardRules: fs.readFileSync(path.join(__dirname, "release-rules.pro"), "utf8"),
   };
-  next.plugins = [...(next.plugins || []), ["expo-build-properties", { android }], "./plugins/withAndroidRelease.js", "./plugins/withOptionalSentry.cjs"];
+  next.plugins = [...(next.plugins || []), ...(playTesting ? ["expo-iap"] : []), ["expo-build-properties", { android }], "./plugins/withAndroidRelease.js", "./plugins/withOptionalSentry.cjs"];
 
   const cert = path.join(__dirname, "code-signing", "certificate.pem");
   if (fs.existsSync(cert)) {

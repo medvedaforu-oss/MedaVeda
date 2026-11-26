@@ -83,11 +83,11 @@ export default function Courses() {
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
+      setActionError(null);
       setDeleting(true);
       await removeCourse(deleteTarget.id);
       setDeleteTarget(null);
     } catch (err: any) {
-      setDeleteTarget(null);
       setActionError(err?.message ?? "Could not delete this course.");
     } finally {
       setDeleting(false);
@@ -96,10 +96,13 @@ export default function Courses() {
 
   async function runToggle(course: Course) {
     try {
+      setActionError(null);
       setSaving(true);
       await toggleCourseActive(course.id, !course.active);
+      return true;
     } catch (err: any) {
       setActionError(err?.message ?? "Could not update this course.");
+      return false;
     } finally {
       setSaving(false);
     }
@@ -107,14 +110,12 @@ export default function Courses() {
 
   async function confirmToggle() {
     if (!pendingToggle) return;
-    await runToggle(pendingToggle);
-    setPendingToggle(null);
+    if (await runToggle(pendingToggle)) setPendingToggle(null);
   }
 
   async function deactivateBlocked() {
     if (!blocked) return;
-    await runToggle(blocked.course);
-    setBlocked(null);
+    if (await runToggle(blocked.course)) setBlocked(null);
   }
 
   return (
@@ -160,7 +161,7 @@ export default function Courses() {
           onEdit={openEdit}
           onDelete={requestDelete}
           onToggleActive={(course) =>
-            course.active ? setPendingToggle(course) : runToggle(course)
+            course.active ? (setActionError(null), setPendingToggle(course)) : runToggle(course)
           }
         />
       )}
@@ -174,6 +175,7 @@ export default function Courses() {
 
       <ConfirmDialog
         open={!!deleteTarget}
+        error={actionError}
         title="Delete Course?"
         message={`"${deleteTarget?.name}" has no years and will be permanently deleted. This action cannot be undone.`}
         loading={deleting}
@@ -183,6 +185,7 @@ export default function Courses() {
 
       <ConfirmDialog
         open={!!blocked}
+        error={actionError}
         title="Can't delete this course"
         message={`"${blocked?.course.name}" still has ${blocked?.years} year${
           blocked?.years === 1 ? "" : "s"
@@ -196,6 +199,7 @@ export default function Courses() {
 
       <ConfirmDialog
         open={!!pendingToggle}
+        error={actionError}
         title="Deactivate Course?"
         message={`"${pendingToggle?.name}" and all its years will be hidden from students. Existing purchases are kept.`}
         confirmLabel="Deactivate"

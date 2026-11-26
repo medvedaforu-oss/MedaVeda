@@ -1,8 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { readOwnedList, updateOwnedList } from "./ownerStorage";
 import { logDebug } from "./logger";
 
-// Global Search System - recent search terms. Same local-only, per-device
-// model as utils/recentActivity.ts (no backend table, nothing to sync) -
+// Global Search System - recent search terms, local to the signed-in owner.
+// Same model as utils/recentActivity.ts (no backend table, nothing to sync) -
 // there's no student-facing reason this needs to survive a reinstall or
 // show up on a second device.
 
@@ -16,10 +16,7 @@ export interface RecentSearchEntry {
 
 export async function getRecentSearches(): Promise<RecentSearchEntry[]> {
   try {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return await readOwnedList<RecentSearchEntry>(STORAGE_KEY);
   } catch (error) {
     logDebug("getRecentSearches failed:", error);
     return [];
@@ -34,17 +31,18 @@ export async function recordSearch(query: string): Promise<void> {
   if (trimmed.length < 2) return;
 
   try {
-    const existing = await getRecentSearches();
-    const withoutDuplicate = existing.filter(
-      (entry) => entry.query.toLowerCase() !== trimmed.toLowerCase()
-    );
+    await updateOwnedList<RecentSearchEntry>(STORAGE_KEY, (existing) => {
+      const withoutDuplicate = existing.filter(
+        (entry) => entry.query.toLowerCase() !== trimmed.toLowerCase()
+      );
 
-    const updated: RecentSearchEntry[] = [
-      { query: trimmed, searchedAt: Date.now() },
-      ...withoutDuplicate,
-    ].slice(0, MAX_ENTRIES);
+      const updated: RecentSearchEntry[] = [
+        { query: trimmed, searchedAt: Date.now() },
+        ...withoutDuplicate,
+      ].slice(0, MAX_ENTRIES);
 
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
   } catch (error) {
     logDebug("recordSearch failed:", error);
   }
@@ -52,9 +50,7 @@ export async function recordSearch(query: string): Promise<void> {
 
 export async function removeRecentSearch(query: string): Promise<void> {
   try {
-    const existing = await getRecentSearches();
-    const updated = existing.filter((entry) => entry.query !== query);
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    await updateOwnedList<RecentSearchEntry>(STORAGE_KEY, existing => existing.filter(entry => entry.query !== query));
   } catch (error) {
     logDebug("removeRecentSearch failed:", error);
   }
@@ -62,7 +58,7 @@ export async function removeRecentSearch(query: string): Promise<void> {
 
 export async function clearRecentSearches(): Promise<void> {
   try {
-    await AsyncStorage.removeItem(STORAGE_KEY);
+    await updateOwnedList(STORAGE_KEY, () => []);
   } catch (error) {
     logDebug("clearRecentSearches failed:", error);
   }

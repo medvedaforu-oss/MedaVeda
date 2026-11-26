@@ -6,7 +6,7 @@ const staging = config.build['staging-validation'];
 function check(label, condition) { console.log(`${condition ? 'PASS' : 'FAIL'} ${label}`); if (!condition) process.exitCode = 1; }
 check('internal profile does not inherit production', internal.extends !== 'production');
 check('internal profile uses preview EAS environment', internal.environment === 'preview');
-check('internal profile identifies same-project target', internal.env?.MEDVEDA_BUILD_TARGET === 'same-project');
+check('internal profile identifies production Razorpay target', internal.env?.MEDVEDA_BUILD_TARGET === 'production');
 check('internal profile pins existing project',
   internal.env?.EXPO_PUBLIC_SUPABASE_URL === production.env.EXPO_PUBLIC_SUPABASE_URL &&
   internal.env?.EXPO_PUBLIC_SUPABASE_ANON_KEY === production.env.EXPO_PUBLIC_SUPABASE_ANON_KEY);
@@ -65,7 +65,7 @@ try {
   check('staging APK has distinct app identity and disabled runtime',
     app.name === 'MedVeda Staging' && app.scheme === 'medveda-staging' &&
     app.android.package === 'in.medveda.staging' &&
-    app.android.runtimeVersion.endsWith('-disabled-notes-choice-v1') &&
+    app.android.runtimeVersion.endsWith('-disabled-no-iap-v1') &&
     app.extra.medvedaPaymentProvider === 'disabled');
 } finally {
   for (const [name, value] of saved) {

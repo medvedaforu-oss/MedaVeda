@@ -1,0 +1,24 @@
+{
+  "starting_file_states": 3158,
+  "unchanged_starting_file_states": 3157,
+  "allowed_migration_edit": [
+    {
+      "path": "supabase/migrations/20261118172019_question_papers.sql",
+      "before": {
+        "sha256": "6811f8573487c4d0e4f55716a7cbb1051f2ac2d0f8189165178a585b54ce9359",
+        "mode": 420
+      },
+      "after": {
+        "sha256": "b1f68f73136b296abc74d61129836808143c1a218ee0cef2603e08e6ca07771f",
+        "mode": 420
+      }
+    }
+  ],
+  "unrelated_file_changes": [],
+  "git_index_identical": true,
+  "new_files_outside_audit": [
+    "docs/superpowers/plans/2026-11-21-question-paper-executor-remediation.md"
+  ],
+  "baseline_candidate_17_command_exit_pairs_identical": true,
+  "sql_40_suite_exit_result_pairs_identical": true
+}

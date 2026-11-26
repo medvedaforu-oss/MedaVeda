@@ -56,8 +56,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: COLORS.card,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    minHeight: 68,
+    marginBottom: SPACING.sm,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: `${COLORS.info}26`,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
 
 
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    minWidth: 0,
   },
 
   title: {

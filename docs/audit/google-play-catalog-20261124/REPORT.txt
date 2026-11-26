@@ -1,0 +1,241 @@
+SUPERSEDED FOLLOW-UP: see minimum-price-report.md and the replacement controlled-retry.txt. The investigation below is historical; its INR 1 retry proposal is withdrawn. Existing request JSON is historical evidence only, not an executable plan.
+
+MEDVEDA GOOGLE PLAY CATALOG INVESTIGATION
+2026-11-24 UTC. Release HOLD. Catalog 403 is NOT resolved.
+
+1. GOOGLE CATALOG READ ACCESS
+
+Accepted owner evidence: hosted identity HTTP 200 and matches_expected=true;
+pricing function HTTP 200; Google pricing HTTP 200; four named Play permissions
+granted to medveda-play-billing@medveda-play-billing.iam.gserviceaccount.com.
+This supports successful runtime authentication/pricing at that time, not catalog
+write permission. Both local and deployed helpers request the documented OAuth
+scope https://www.googleapis.com/auth/androidpublisher and require in.medveda.app.
+
+Fresh application catalog list and exact GETs for the two reserved SKUs were NOT
+executed here. The existing Google credential lives in the hosted runtime; no
+usable runtime credential or signed-in MFA Admin session is available in this
+workspace. Supabase management access does not supply that session or the Google
+token. No secret extraction, auth impersonation, replacement, or new deployment
+was attempted. The deployed read-only matrix v4 can perform tokeninfo and list
+checks through the owner's existing MFA session. It cannot GET arbitrary SKUs.
+See controlled-retry.txt for the verified client invocation and exact GET URLs.
+Until these run, live SKU existence/state and effective catalog read access are
+unknown. A reserved database SKU is not evidence that Google has that product.
+
+Live database evidence: INR 1 job failed, attempts 3; INR 2 job failed, attempts 2;
+both exact reserved IDs and buy retained, leases null, no successful sync time.
+No tier exists for either price or either reserved SKU. Two eligible products use
+INR 1; no eligible product currently uses INR 2. Four Play cron jobs remain false.
+Queued catalog HTTP requests, running catalog cron SQL and observed active claim/
+requeue SQL counts were zero. This is a point-in-time check, not proof that an
+external actor cannot invoke the worker. Existing unrelated retention/wallet cron
+jobs remain active and unchanged; no blanket all-project cron inactivity claim.
+
+2. ORIGINAL HTTP 403
+
+Recovered the original sanitized function_logs event at
+2026-10-27T19:26:37.434000Z. operation=catalog.patch, HTTP 403,
+googleStatus=PERMISSION_DENIED, message="The caller does not have permission".
+details=[], legacyErrors=[], detailEntryCount=0, badRequests=[]. Application
+request UUID e4189394-b044-47a9-a1c5-139ade5650ab is not a Google support request ID.
+The INR 2 event at 18:42:57.162000Z also reports PATCH/403/PERMISSION_DENIED with
+details=[], application request UUID 7ef24be0-59aa-4a4e-a62b-6d94db8cbb5c.
+
+Permission denial is established. The response does not name a missing grant,
+wrong app/account, propagation issue, merchant restriction, disabled API or
+regional/price validation error. No exact underlying cause can be established
+from this error. It predates the owner's newly confirmed permissions. There has
+been no catalog write since those confirmations, so continued write failure or
+successful resolution cannot be claimed. The independent price blocker below
+must not be presented as the cause of this historical permission denial.
+
+3. IMPLEMENTATION REVIEW
+
+No confirmed local catalog defect causing 403. Current sync-play-catalog v7 and
+playCatalog.ts match local source byte-for-byte. Google helper differs only by a
+local optional ExternalTransaction.testPurchase type member, irrelevant to catalog
+requests. No implementation changes or redeployment are warranted by this review.
+
+The request matches the current official API contract:
+- PATCH uses lowercase /applications/{package}/onetimeproducts/{productId}.
+  GET/list use camel-case /applications/{package}/oneTimeProducts[/{productId}].
+- Product is the top-level JSON body, with exact package/SKU, en-US listing and
+  purchaseOptions. updateMask=listings,purchaseOptions; allowMissing=true;
+  regionsVersion.version is a required query parameter. On creation Google
+  ignores updateMask. Internal input-only body omits output-only state/version.
+- buy is a valid purchase option identifier. buyOption.legacyCompatible=true,
+  multiQuantityEnabled=false; no rent option; only IN/AVAILABLE. INR 1.00 is
+  serialized exactly as currencyCode=INR, units="1", nanos=0. This serialization
+  is valid Money syntax, not evidence that the price is commercially permitted.
+- Version allowlist explicitly requires 2022/02. Google's public table still
+  lists this historical version; RegionsVersion documents old-version support.
+  The actual configured production value was not read. Do not change it blindly.
+- Activation uses POST oneTimeProducts/{sku}/purchaseOptions:batchUpdateStates
+  with requests[].activatePurchaseOptionRequest and exact package/SKU/buy.
+  ACTIVE is the purchase-option state; there is no separate product state field.
+- Independent GETs follow creation and activation. verifiedBuyOption rejects a
+  wrong identity, ambiguous/multiple option, rent/multi-quantity, inactive option,
+  duplicate IN row, unavailable IN config, wrong currency or inexact price. Only
+  then does the existing worker call finish_play_price_sync to write a tier.
+
+Sources reviewed:
+https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/patch
+https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/get
+https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/list
+https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts
+https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts.purchaseOptions/batchUpdateStates
+https://developers.google.com/android-publisher/api-ref/rest/v3/RegionsVersion
+
+4. LOCAL FIXES AND FOCUSED CHECKS
+
+No source fix. Existing user modifications/deletions preserved. Only new local
+investigation evidence and the unexecuted retry procedure were added.
+
+Executed offline against the current existing catalog implementation:
+  node supabase/tests/play-catalog-creation-selftest.cjs
+  PASS 126 real-worker/mock-Google/mock-DB creation/activation/readback scenarios.
+  node supabase/tests/play-catalog-worker-selftest.cjs
+  PASS 20 permission/retry cases plus auth, sanitization and lease persistence.
+  deno test --cached-only --no-remote --allow-env
+    supabase/tests/play_catalog_api_test.ts
+    supabase/tests/play_catalog_unit_test.ts
+    supabase/tests/play_catalog_patch_diagnostic_test.ts
+    supabase/tests/play_diagnostic_sanitization_review_test.ts
+  PASS 12 tests, 0 failed. No network permission granted to these Deno tests.
+
+These prove existing local behavior, not Google's acceptance of INR 1.00 or a
+live write. No full application tests, native build or full-project audit ran.
+
+5. ADDITIONAL GOOGLE CONSOLE ACTION
+
+No additional permission grant is proven necessary. The owner already confirmed
+the four permissions. If a fresh catalog read fails, inspect effective grant
+scope for this exact app and the correct developer account, user expiry/status,
+and the last permission-save UTC time. App-level permissions apply only to named
+apps; equivalent global permissions apply across apps. Manage store presence is
+the documented in-app-product management permission; the two Billing permissions
+do not by themselves substitute for it. No blanket account Admin/all-apps grant
+or Cloud Owner role is justified. Google no longer requires linking the Play
+developer account to a Cloud project merely to use the Publisher API.
+
+No official fixed permission-propagation SLA was established in the reviewed
+docs. Fresh token/scope/read evidence and elapsed time since the actual save are
+needed; waiting an assumed number of hours is not evidence of authorization.
+
+Read-only owner checks still required: existing merchant/payments profile usable,
+required tax/account verification complete, One-time products/Buy configuration
+available for this app, and app/test-track India distribution. Do not enroll in
+programs or alter merchant, distribution or product settings automatically. A
+403 with no details does not prove any of these are broken. Product availability
+cannot override the app's regional distribution. The ordinary billing manifest
+and tester/build checks remain in the prior release evidence; no new build run.
+
+Official setup/permissions/monetization references:
+https://developers.google.com/android-publisher/getting_started
+https://support.google.com/googleplay/android-developer/answer/9844686?hl=en
+https://support.google.com/googleplay/android-developer/answer/10019561?hl=en
+https://support.google.com/googleplay/android-developer/answer/16430488?hl=en
+https://support.google.com/googleplay/android-developer/answer/1153481?hl=en
+
+6. INR 1.00 SUPPORT AND ACTUAL MINIMUM
+
+Google's public supported-locations page and its own read-only data endpoint
+returned HTTP 200 for version inventory and both 2026/01 and 2022/02 price tables.
+Latest published version is 2026/01, dated 2026-09-28. Both India rows say:
+  canMakeGooglePlayPurchases=true
+  currencyCode=INR
+  minPriceMicros="4000000" = INR 4.00
+  maxPriceMicros="84000000000" = INR 84,000.00
+
+INR 1.00 and INR 2.00 are BELOW the published permitted range. No applicable
+app/account exception has been established. INR 1.00 provisioning is therefore
+not supported by the published India range, and the prepared INR 1.00 retry must
+remain HOLD unless Google confirms an applicable exception or changes the range.
+Do not automatically change either job, product price or SKU to INR 4.00. Internal
+minimum 100 paise is a local input guard, not Google's minimum. It does not prove
+Google permits INR 1 or explain the prior HTTP 403.
+
+Sanitized raw India rows, versions and response hashes are retained in
+google-public-india-price-range.json. Public table access uses no application
+service account and does not prove app-level catalog authorization.
+https://play.google.com/supported-locations?hl=en
+https://support.google.com/googleplay/android-developer/answer/10532353?hl=en
+
+7. EXACT CONTROLLED RETRY
+
+See controlled-retry.txt, readonly-preflight.sql and requested-product.json.
+One existing Admin retry RPC for p_price=1, then ONE authenticated direct worker
+POST only, with global queue isolation and no retry after failure/timeout. At
+most one product PATCH and one conditional activation POST. Genuine worker GET
+readback must precede its authoritative verified tier insert. Full database and
+Google mutation inventory is in that procedure. No direct finish/tier insert.
+INR 2 unchanged; four Play crons off. The INR 4.00 minimum currently prevents
+execution even if separate mutation approval were otherwise given.
+
+8. REMAINING ROLLOUT BLOCKERS
+
+The previously verified candidate is retained. Fresh verification: all 297 frozen
+manifest files match; archive SHA-256 remains
+c4bb909fa9fcb72f1563d48b96d057835bab97d9208cee435098ec7c2c247b87.
+No archive/manifest/source/test changes were made to that candidate.
+
+- Production backup plus isolated restore: owner-approved confidential export
+  destination and compatible isolated environment, at least 5 GiB persistent
+  encrypted workspace; database/Auth, Storage bytes/checksums, deployment/config
+  preservation and successful restore with outbound services/schedulers disabled.
+  Prior code snapshots/synthetic fixtures are not a production recovery point.
+- Two migrations still unapplied, in order:
+  20261124063324_play_terminal_recovery.sql
+  20261124064112_admin_catalog_readiness_and_revisions.sql
+  Fresh hosted migration inventory still has 86 applied entries, neither above.
+- Three named function deployments after their migration prerequisite:
+  verify-standalone-play-purchase (JWT=true)
+  verify-play-purchase (JWT=true)
+  play-payment-worker (JWT=false plus existing private server secret)
+  Bundle their approved shared dependencies and verify deployed hashes/settings.
+  No extra sync-play-catalog deployment is indicated by this review.
+- Admin: coordinate revision schema/permissions and matching frozen Admin deploy
+  in the existing Vercel project; preserve old deployment and require tab reloads.
+  Do not reopen old unconditional editing after revision enforcement.
+- Catalog: fresh authenticated reads; resolve effective write authority; decide
+  the below-minimum pricing issue with owner/Google; separately approved catalog
+  write and genuine readback followed by worker-created authoritative tier.
+- Play payment recovery: verified worker/configuration/secret alignment and
+  monitoring, then SEPARATE approval to activate consume/reconcile/void schedules.
+  Catalog schedule activation is a separate decision; keep all four off now.
+- Testers: approved QA Auth UUIDs and default-off server testing flag/allowlist
+  configuration, Play license tester plus track membership/opt-in, India account/
+  regional eligibility and existing new-orders policy. Do not toggle global sales
+  or touch Razorpay to bypass a gate. Prior missing testing configuration remains
+  an external prerequisite, not a secret changed/read in this investigation.
+- New corrected AAB: separately approve the build from the corrected Play profile
+  and current source; verify existing signing certificate and unused versionCode,
+  exact embedded package/backend/profile, billing/native integration and manifest.
+  Existing versionCode 15 evidence is not confirmation of current upload freedom
+  or proof that an older AAB contains subsequent fixes. No EAS build submitted.
+- License purchase testing: only after deployment/catalog/recovery/tester/build/
+  track gates and separate authorization. Complete success, cancel, pending,
+  duplicate, consumed/restart/network/restore/account-switch and rejected-receipt
+  checks using the intended Google license-test instrument. Orders/entitlements
+  are real DB mutations even for license tests. No purchase occurred here.
+
+Deployment/recovery commands remain in the retained targeted-rollout owner
+runbook; this investigation does not supersede or rewrite its frozen candidate.
+The owner's new identity/pricing confirmations supersede its old unverified
+identity wording only; the other gates are retained.
+
+9. EXACT NEXT OWNER ACTION
+
+Run the existing read-only matrix through the signed-in MFA Admin client using
+the command in controlled-retry.txt; return only its sanitized output. In Play
+Console read the India permitted price range and existing exact reserved SKUs
+without saving changes. If Google offers no INR 1.00 exception, make a separate
+pricing decision for a permitted tier (published minimum INR 4.00); no change is
+made automatically and no INR 1.00 write approval is requested now. Supply the
+approved encrypted backup destination/isolated restore environment before any
+later production-mutation approval. Do not repeat the completed identity test.
+
+No production writes, Google product creation/modification, migration, deployment,
+cron/payment activation, purchase, new EAS build, credential replacement, account
+creation, Razorpay/Question Papers change, commit or push occurred.

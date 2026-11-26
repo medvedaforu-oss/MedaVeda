@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -18,6 +18,8 @@ import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/typography";
 import { SPACING } from "../../theme/spacing";
 import { logError } from "../../utils/logger";
+import { getAuthEpoch, subscribeAuthUser } from "../../services/authState";
+import { captureStorageOwner, isStorageOwnerCurrent } from "../../utils/ownerStorage";
 
 // Roadmap change 9 - Notification Center: a single screen for every
 // broadcast notification (New Notes, App Updates, Offers, Payment
@@ -33,28 +35,40 @@ export default function NotificationsScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const sequence = useRef(0);
+  const [ownerEpoch, setOwnerEpoch] = useState(getAuthEpoch());
+  useEffect(() => subscribeAuthUser(() => {
+    sequence.current++;
+    setNotifications([]);
+    setLoading(true);
+    setError(null);
+    setOwnerEpoch(getAuthEpoch());
+  }), []);
   const load = useCallback(() => {
+    if (ownerEpoch !== getAuthEpoch()) return;
+    const owner = captureStorageOwner();
     const run = ++sequence.current;
+    const current = () => run === sequence.current && isStorageOwnerCurrent(owner);
+    if (!owner.id) { setNotifications([]); setLoading(false); return; }
     setLoading(true);
     setError(null);
 
     fetchNotificationsWithReadState({ strict: true })
       .then(async ({ notifications: items }) => {
-        if (run !== sequence.current) return;
+        if (!current()) return;
         setNotifications(items);
         if (items.some((item) => !item.read)) {
           await markAllNotificationsRead(items.map((item) => item.id));
-          if (run !== sequence.current) return;
+          if (!current()) return;
           setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
         }
       })
       .catch((err) => {
-        if (run !== sequence.current) return;
+        if (!current()) return;
         logError("Failed to load notifications:", err);
         setError("Could not load notifications. Please try again.");
       })
-      .finally(() => { if (run === sequence.current) setLoading(false); });
-  }, []);
+      .finally(() => { if (current()) setLoading(false); });
+  }, [ownerEpoch]);
 
   useFocusEffect(
     useCallback(() => {
@@ -64,12 +78,14 @@ export default function NotificationsScreen() {
   );
 
   async function handleArchive(id: string) {
+    if (ownerEpoch !== getAuthEpoch()) return;
+    const owner = captureStorageOwner();
     const run = sequence.current;
     try {
       await archiveNotification(id);
-      if (run === sequence.current) setNotifications((prev) => prev.filter((item) => item.id !== id));
+      if (run === sequence.current && isStorageOwnerCurrent(owner)) setNotifications((prev) => prev.filter((item) => item.id !== id));
     } catch {
-      if (run === sequence.current) setError("Could not archive this notification. Please try again.");
+      if (run === sequence.current && isStorageOwnerCurrent(owner)) setError("Could not archive this notification. Please try again.");
     }
   }
 
@@ -90,7 +106,7 @@ export default function NotificationsScreen() {
         </TouchableOpacity>
       </View>
 
-      {loading ? (
+      {loading || ownerEpoch !== getAuthEpoch() ? (
         <ActivityIndicator size="large" color={COLORS.accent} style={styles.loader} />
       ) : error ? (
         <ErrorState message={error} onRetry={load} />

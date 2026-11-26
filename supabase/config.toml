@@ -46,21 +46,12 @@ verify_jwt = true
 [functions.verify-play-purchase]
 verify_jwt = true
 
-# Authenticated by PLAY_CATALOG_CRON_SECRET, never by a browser JWT.
-[functions.sync-play-catalog]
-verify_jwt = false
-
-# Uses verified Supabase Auth, admin membership and mandatory aal2 MFA in the handler.
-[functions.diagnose-play-service-account]
-verify_jwt = false
-
-# JWT gateway check plus handler verification, admin membership, and aal2.
-[functions.diagnose-play-pricing]
+# Standalone tester verifier also validates the session and server allowlist.
+[functions.verify-standalone-play-purchase]
 verify_jwt = true
 
-# Browser/proxy diagnostic: handler verifies Auth, admin membership and mandatory
-# aal2 itself; handler-level errors and OPTIONS retain CORS headers.
-[functions.diagnose-play-matrix]
+# Authenticated by PLAY_CATALOG_CRON_SECRET, never by a browser JWT.
+[functions.sync-play-catalog]
 verify_jwt = false
 
 [functions.attach-external-token]
@@ -130,3 +121,7 @@ verify_jwt = false
 [auth]
 minimum_password_length = 8
 password_requirements = "lower_upper_letters_digits_symbols"
+
+# Compensation only; a distinct constant-time worker secret authenticates requests.
+[functions.razorpay-compensation-worker]
+verify_jwt = false

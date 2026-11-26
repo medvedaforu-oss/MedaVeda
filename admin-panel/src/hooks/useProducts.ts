@@ -49,8 +49,8 @@ export default function useProducts(filters: ContentFilters = {}) {
     await loadProducts(true);
   }
 
-  async function editProduct(id: string, data: ProductInput) {
-    await updateProduct(id, data);
+  async function editProduct(id: string, data: ProductInput, revision: number) {
+    await updateProduct(id, data, revision);
     await loadProducts(true);
   }
 

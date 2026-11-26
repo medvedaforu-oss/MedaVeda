@@ -1,0 +1,13 @@
+--- original/20261118172019_question_papers.sql
++++ candidate/20261118172019_question_papers.sql
+@@ -1,5 +1,4 @@
+ -- Additive Question Paper resources only. No existing policies/functions are replaced.
+-begin;
+ -- Server-only validation receipts. No client write/read grant or RLS policy.
+ create table public.question_paper_validated_objects (
+  object_path text primary key,
+@@ -126,4 +125,3 @@
+ -- Retain validated paths permanently: deleting and reusing a path would invalidate its receipt.
+ create policy question_papers_storage_delete_guard on storage.objects as restrictive for delete to public
+  using(bucket_id<>'question-papers');
+-commit;

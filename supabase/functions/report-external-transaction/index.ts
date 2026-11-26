@@ -1,12 +1,14 @@
 import { jsonResponse } from "../_shared/cors.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { reportExternalRefundEvent, reportExternalOrder } from "../_shared/externalReporting.ts";
-import { consumeProductPurchase, getProductPurchase, getVoidedPurchasesPage } from "../_shared/googlePlay.ts";
+import { consumeProductPurchase, getProductPurchase, getProductPurchaseV2, sha256Hex, getVoidedPurchasesPage } from "../_shared/googlePlay.ts";
 import { alertUcb } from "../_shared/ucbAlert.ts";
 import { settleCapturedPayment, settleRefund, settleDispute } from "../_shared/settle.ts";
 import { reportNotesChoiceAuthorization } from "../_shared/notesChoiceAuthorization.ts";
 import { refundCapturedPayment } from "../_shared/razorpay.ts";
 import { runBounded, WORK_BATCH_SIZE, WORK_CONCURRENCY } from "../_shared/paymentQueue.ts";
+
+import { validatePlayPurchaseV1, validatePlayPurchaseV2 } from "../_shared/playPurchaseValidation.ts";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -36,7 +38,8 @@ Deno.serve(async (req: Request) => {
   if (enqueueError) return jsonResponse({ error: "Payment queue unavailable." }, 503);
   const { data: claims, error: claimJobsError } = orderId
     ? { data: [{ target_id: orderId, lease_id: null }], error: null }
-    : await supabaseAdmin.rpc("claim_payment_jobs", { p_kind: phase, p_limit: WORK_BATCH_SIZE });
+    : await supabaseAdmin.rpc("claim_payment_jobs", { p_kind: phase,
+      p_limit: phase === "consume" ? WORK_CONCURRENCY : WORK_BATCH_SIZE });
   if (claimJobsError) return jsonResponse({ error: "Payment job claim unavailable." }, 503);
   const jobs = (claims ?? []) as { target_id: string; lease_id: string | null }[];
   const processJob = async (job: { target_id: string; lease_id: string | null }) => {
@@ -51,14 +54,26 @@ Deno.serve(async (req: Request) => {
         if (await reportExternalRefundEvent(id) !== "reported") throw new Error("External refund report not completed");
       } else if (phase === "consume") {
         const { data: item, error } = await supabaseAdmin.from("orders")
-          .select("id,play_sku,purchase_token").eq("id", id).maybeSingle();
-        if (error || !item?.play_sku || !item.purchase_token) throw new Error("Missing settled Play token/SKU");
-        const purchase = await getProductPurchase(item.play_sku, item.purchase_token);
-        if (purchase.purchaseState !== 0 || purchase.refundableQuantity === 0)
-          throw new Error("Play purchase no longer purchased");
-        if (purchase.consumptionState !== 1) await consumeProductPurchase(item.play_sku, item.purchase_token);
+          .select("id,user_id,product_id,provider,status,play_sku,play_purchase_option_id,purchase_token,external_transaction_token,external_choice_bound_order_id")
+          .eq("id", id).maybeSingle();
+        if (error || !item || item.id !== id || item.provider !== "play" || item.status !== "paid" ||
+            !item.user_id || !item.product_id || !item.play_sku || !item.purchase_token ||
+            item.external_transaction_token || item.external_choice_bound_order_id)
+          throw new Error("Missing settled Play order identity");
+        const expected = { sku: item.play_sku, accountHash: await sha256Hex(item.user_id),
+          orderHash: await sha256Hex(item.id), now: Date.now() };
+        const checked = item.play_purchase_option_id
+          ? validatePlayPurchaseV2(await getProductPurchaseV2(item.purchase_token), { ...expected, optionId: item.play_purchase_option_id })
+          : validatePlayPurchaseV1(await getProductPurchase(item.play_sku, item.purchase_token), { ...expected, token: item.purchase_token });
+        if (checked.status !== "valid") throw new Error("Play consumption receipt mismatch");
+        const { data: committed, error: proofError } = await supabaseAdmin.rpc("play_entitlement_committed", {
+          p_order_id: item.id, p_token: item.purchase_token,
+        });
+        if (proofError || committed !== true) throw new Error("Play entitlement commitment not confirmed");
+        if (!checked.consumed) await consumeProductPurchase(item.play_sku, item.purchase_token);
         const { error: updateError } = await supabaseAdmin.from("orders")
-          .update({ play_consumption_status: "consumed" }).eq("id", id).eq("purchase_token", item.purchase_token);
+          .update({ play_consumption_status: "consumed" }).eq("id", id).eq("provider", "play")
+          .eq("status", "paid").eq("purchase_token", item.purchase_token);
         if (updateError) throw new Error("Could not record Play consumption");
       } else if (phase === "reconcile") {
         const { data: item, error } = await supabaseAdmin.from("orders")

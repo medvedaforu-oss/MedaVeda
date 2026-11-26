@@ -42,8 +42,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
+    minHeight: 64,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    marginBottom: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderLeftWidth: 4,
@@ -52,6 +54,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    flex: 1,
+    marginRight: SPACING.sm,
     fontSize: FONT.subHeading,
     fontWeight: "bold",
     color: COLORS.text,

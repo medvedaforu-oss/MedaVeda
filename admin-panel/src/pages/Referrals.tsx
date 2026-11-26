@@ -72,7 +72,7 @@ function formatDateTime(value: string) {
 
 export default function Referrals() {
   const [statusFilter, setStatusFilter] = useState<ReferralStatus | "">("");
-  const { referrals, settings, audit, loading, error, reload, saveSettings, reject } = useReferrals(
+  const { referrals, settings, audit, auditLoading, auditError, reloadAudit, loading, error, reload, saveSettings, reject } = useReferrals(
     statusFilter || undefined
   );
 
@@ -332,7 +332,9 @@ export default function Referrals() {
         )}
 
         <h3 className="mb-2 mt-8 text-sm font-semibold text-gray-700">Recent changes (last 10)</h3>
-        {audit.length === 0 ? (
+        {auditLoading ? <p role="status" className="text-xs text-gray-500">Loading history...</p> : auditError ? (
+          <div role="alert" className="text-xs text-red-600"><p>{auditError}</p><button type="button" onClick={() => void reloadAudit()}>Retry history</button></div>
+        ) : audit.length === 0 ? (
           <p className="text-xs text-gray-400">No changes recorded yet.</p>
         ) : (
           <ul className="divide-y rounded-lg border text-xs text-gray-700">

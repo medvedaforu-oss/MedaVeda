@@ -83,8 +83,8 @@ export default function CourseFormModal({ open, initialData, onClose, onSubmit }
         ...form,
         name: form.name.trim(),
         code: form.code.trim().toUpperCase(),
-        description: form.description?.trim() || undefined,
-        icon: form.icon?.trim() || undefined,
+        description: form.description?.trim() || "",
+        icon: form.icon?.trim() || "",
       };
       await onSubmit(!initialData && id ? { ...payload, id } : payload);
       if (run === lifetime.current) onClose();

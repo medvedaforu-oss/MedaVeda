@@ -1,0 +1,37 @@
+{
+  "modifiedExistingProtectedFiles": [
+    "/home/ganeshp8545/AyurPulse/mobile-app/src/config/paymentProvider.ts",
+    "/home/ganeshp8545/AyurPulse/mobile-app/src/navigation/AppNavigator.tsx",
+    "/home/ganeshp8545/AyurPulse/mobile-app/src/screens/purchases/MyPurchasesScreen.tsx"
+  ],
+  "allOtherExistingProtectedFilesUnchanged": true,
+  "backupUnchanged": true,
+  "backupFiles": 339,
+  "modifiedFiles": [
+    "app.config.js",
+    "eas.json",
+    "package.json",
+    "package-lock.json",
+    "src/config/paymentProvider.ts",
+    "src/navigation/AppNavigator.tsx",
+    "src/screens/purchases/MyPurchasesScreen.tsx",
+    "scripts/navigation-lazy-selftest.cjs"
+  ],
+  "newOrRestoredFiles": [
+    ".easignore",
+    "src/services/playBillingCore.ts",
+    "src/services/ports.ts",
+    "src/services/playBillingService.ts",
+    "src/services/playOfferSelection.ts",
+    "src/screens/payment/PlayOrderSummaryScreen.tsx",
+    "scripts/play-build-config.cjs",
+    "scripts/prepare-play-native.cjs",
+    "scripts/play-billing-tests/backend.cjs",
+    "scripts/play-billing-tests/build-inputs.cjs",
+    "scripts/play-billing-tests/lifecycle.test.cjs",
+    "scripts/play-billing-tests/load.cjs",
+    "scripts/play-billing-tests/routing.cjs",
+    "scripts/play-billing-tests/summary.cjs",
+    "scripts/play-billing-tests/verification.cjs"
+  ]
+}

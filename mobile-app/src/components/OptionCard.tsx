@@ -82,9 +82,12 @@ export default function OptionCard({
 
 const styles = StyleSheet.create({
   card: {
-    padding: 18,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    minHeight: 48,
+    justifyContent: "center",
     borderRadius: RADIUS.md,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
     borderWidth: 1,
     ...SHADOW.card,
   },

@@ -1,0 +1,139 @@
+[
+  {
+    "name": "admin-typescript",
+    "command": [
+      "./node_modules/.bin/tsc",
+      "-b",
+      "--pretty",
+      "false"
+    ],
+    "cwd": "admin-panel",
+    "exit": 0
+  },
+  {
+    "name": "admin-tests",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "cwd": "admin-panel",
+    "exit": 0,
+    "includes_new_billing_classification_scripts": true
+  },
+  {
+    "name": "product-readiness-race-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/product-readiness-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "product-concurrency-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/product-concurrency-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "request-race-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/request-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "auth-race-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/auth-race-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "batch2-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/batch2-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "product-readiness-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/product-readiness-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "product-classification-selftest",
+    "command": [
+      "node",
+      "admin-panel/scripts/product-classification-selftest.cjs"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "admin-build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "cwd": "admin-panel",
+    "exit": 0
+  },
+  {
+    "name": "admin-lint",
+    "command": [
+      "./tooling/node_modules/.bin/eslint",
+      "admin-panel/src"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "edge-typecheck",
+    "command": [
+      "deno",
+      "check",
+      "--config",
+      "supabase/deno.json",
+      "supabase/functions/verify-standalone-play-purchase/index.ts",
+      "supabase/functions/verify-play-purchase/index.ts",
+      "supabase/functions/play-payment-worker/index.ts"
+    ],
+    "cwd": ".",
+    "exit": 0
+  },
+  {
+    "name": "play-consumption-guards-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "standalone-play-entitlement-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "play-payment-worker-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "play-consumption-selftest.cjs",
+    "exit": 0
+  },
+  {
+    "name": "play-verification-selftest.cjs",
+    "exit": 0
+  }
+]

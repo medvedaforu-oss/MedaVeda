@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { COLORS } from "../theme/colors";
 import { FONT } from "../theme/fonts";
+import { SPACING } from "../theme/spacing";
 import { SHADOW } from "../theme/shadows";
 
 type TabKey = "Home" | "MyPurchases" | "Store" | "Downloads" | "Profile";
@@ -46,7 +47,7 @@ function TabButton({
   return (
     <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.8}
       accessibilityRole="tab" accessibilityLabel={tab.label} accessibilityState={{ selected: isActive }}>
-      <Animated.View style={{ transform: [{ scale }], alignItems: "center" }}>
+      <Animated.View style={{ transform: [{ scale }], alignItems: "center", maxWidth: "100%" }}>
         <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
           <Text style={styles.icon}>{tab.icon}</Text>
         </View>
@@ -82,7 +83,7 @@ function HexTabButton({
   return (
     <TouchableOpacity style={styles.tab} onPress={handlePress} activeOpacity={0.85}
       accessibilityRole="tab" accessibilityLabel="Notes store" accessibilityState={{ selected: isActive }}>
-      <Animated.View style={{ transform: [{ scale }], alignItems: "center" }}>
+      <Animated.View style={{ transform: [{ scale }], alignItems: "center", maxWidth: "100%" }}>
         <View style={styles.hexHalo} />
         <View style={styles.hexWrap}>
           <View
@@ -151,7 +152,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
     paddingTop: 8,
-    paddingBottom: 22,
+    // App.tsx owns the bottom safe area; keep only the visual inset here.
+    paddingBottom: SPACING.sm,
     ...SHADOW.raised,
   },
   tab: {
@@ -174,6 +176,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   label: {
+    maxWidth: "100%",
+    textAlign: "center",
     fontSize: FONT.tiny,
     color: COLORS.subtitle,
     marginTop: 2,

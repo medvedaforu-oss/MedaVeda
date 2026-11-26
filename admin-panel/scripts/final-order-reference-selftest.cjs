@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict');const {load}=require('../../mobile-app/scripts/ui-harness.cjs');
+const {findOrderReference}=load('admin-panel/src/utils/orderReference.ts',{});
+const rows=Array.from({length:1001},(_,i)=>({id:'internal-'+i,paymentId:'pay_'+i,razorpayOrderId:'order_'+i,status:'created'}));
+assert.equal(findOrderReference(rows,'internal-1000','internal').id,'internal-1000');
+assert.equal(findOrderReference(rows,'order_1000','provider').id,'internal-1000');
+assert.equal(findOrderReference(rows,'pay_1000','provider').id,'internal-1000');
+assert.equal(findOrderReference(rows,'order_1000','internal'),undefined,'provider references must not be interpreted as internal IDs');
+for(const ref of ['', ' ', 'missing','bad/reference','x'.repeat(129)])assert.equal(findOrderReference(rows,ref,'internal'),undefined);
+assert.equal(findOrderReference(rows.slice(0,10),'internal-1000','internal'),undefined,'must never expose unrelated rows');
+console.log('PASS internal/provider distinction, later pages, missing/invalid references, authorized result boundary');

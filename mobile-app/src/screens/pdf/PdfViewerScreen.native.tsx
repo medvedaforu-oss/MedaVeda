@@ -154,7 +154,7 @@ export function PdfViewerSession({ pdfUrl, noteId }: { pdfUrl?: string; noteId?:
     return <View style={styles.container}><ErrorState
       message={isLocalFile
         ? "This PDF may be damaged. Remove it from Downloads and download it again while online."
-        : "Download PDF file."}
+        : "Could not open this note. Connect to the internet and tap Retry. Paid Notes are online-only."}
       onRetry={() => void retry()} /></View>;
   }
   if (refreshing || !source || !foreground) {

@@ -45,7 +45,7 @@ function setup(){
   const params={pending:true,internalOrderId:orderId,verifyUrl:endpoint,paymentId:'pay_synthetic'};
   const mocks={react:h.react,'react/jsx-runtime':jsx,'react-native':{View:'View',Text:'Text',TouchableOpacity:'Button',StyleSheet:{create:x=>x},AppState:{addEventListener:(_,fn)=>{app=fn;return{remove(){}};}}},
    '@react-navigation/native':{useRoute:()=>({params}),useNavigation:()=>({dispatch:x=>routes.push(x)}),CommonActions:{reset:x=>x},useFocusEffect:fn=>focus=fn},
-   '../../services/authState':{getCurrentUser:()=>({id:user})},'../../services/playBillingService':{},'../../services/paymentService':{recoverPayment:()=>{reads++;return new Promise(r=>finish=r);}}};
+   '../../services/authState':{getCurrentUser:()=>({id:user})},'../../services/paymentService':{recoverPayment:()=>{reads++;return new Promise(r=>finish=r);}}};
   for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS'],['shadows','SHADOW']])mocks['../../theme/'+file]={[key]:{}};
   const Screen=load('mobile-app/src/screens/payment/PaymentFailedScreen.tsx',mocks,{setInterval:fn=>{interval=fn;return 1},clearInterval(){}}).default;
   h.render(Screen);const blur=focus();interval();app('active');assert.equal(reads,1);

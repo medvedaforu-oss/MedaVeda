@@ -74,7 +74,6 @@ export default function NoteCard({
         <View style={styles.titleRow}>
           <Text
             style={[styles.title, locked && styles.titleLocked]}
-            numberOfLines={1}
           >
             {title}
           </Text>
@@ -86,10 +85,10 @@ export default function NoteCard({
         </View>
 
         {!!description?.trim() && (
-          <Text style={styles.description} numberOfLines={2}>{description.trim()}</Text>
+          <Text style={styles.description}>{description.trim()}</Text>
         )}
 
-        <Text style={styles.subtitle} numberOfLines={1}>
+        <Text style={styles.subtitle}>
           {locked
             ? "Premium content"
             : downloaded
@@ -145,17 +144,20 @@ export default function NoteCard({
 }
 
 const styles = StyleSheet.create({
-  openButton: { flex: 1, flexDirection: "row", alignItems: "center", minHeight: 48 },
+  openButton: { flex: 1, flexBasis: 180, minWidth: 0, flexDirection: "row", alignItems: "center", minHeight: 48 },
 
   card: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACING.sm,
     alignItems: "center",
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.lg,
-    padding: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.border,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
     ...SHADOW.card,
   },
 
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     width: 40,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
 
   icon: {
@@ -181,12 +183,14 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    minWidth: 0,
   },
 
   titleRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    flexWrap: "wrap",
+    gap: SPACING.xs,
   },
 
   title: {
@@ -226,7 +230,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    marginLeft: SPACING.sm,
+    marginLeft: "auto",
+    minHeight: 48,
+    maxWidth: "100%",
+    flexWrap: "wrap",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: RADIUS.md,

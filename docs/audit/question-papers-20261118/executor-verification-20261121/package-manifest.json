@@ -1,0 +1,4 @@
+{
+  "supabase/config.toml": "eea9d61da6b0ddb52a66185d6e7fddf1c9ea68240dfd5a272627f9f6cc8de385",
+  "supabase/migrations/20261118172019_question_papers.sql": "6811f8573487c4d0e4f55716a7cbb1051f2ac2d0f8189165178a585b54ce9359"
+}

@@ -23,6 +23,9 @@ export default function useReferrals(status?: ReferralStatus) {
   const [settingsError, setSettingsError] = useState<string | null>(null);
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [settings, setSettings] = useState<ReferralSettings | null>(null);
+  const beginAudit = useRequestGuard("audit");
+  const [auditLoading, setAuditLoading] = useState(true);
+  const [auditError, setAuditError] = useState<string | null>(null);
   const [audit, setAudit] = useState<ReferralSettingsAuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,13 +55,9 @@ export default function useReferrals(status?: ReferralStatus) {
   const loadSettings = useCallback(async () => {
     const current = beginSettings();
     try {
-      const [row, log] = await Promise.all([
-        getReferralSettings(),
-        getReferralSettingsAudit(10).catch(() => [] as ReferralSettingsAuditEntry[]),
-      ]);
+      const row = await getReferralSettings();
       if (!current()) return;
       setSettings(row);
-      setAudit(log);
       setSettingsError(null);
     } catch {
       if (current()) setSettingsError("Could not load referral settings. Please try again.");
@@ -66,12 +65,29 @@ export default function useReferrals(status?: ReferralStatus) {
   }, [beginSettings]);
   useEffect(() => { void loadSettings(); }, [loadSettings]);
 
+  const loadAudit = useCallback(async () => {
+    const current = beginAudit();
+    setAuditLoading(true); setAuditError(null);
+    try {
+      const log = await getReferralSettingsAudit(10);
+      if (current()) setAudit(log);
+    } catch (failure) {
+      if (!current()) return;
+      const status = (failure as { status?: number })?.status;
+      const code = (failure as { code?: string })?.code;
+      setAuditError(status === 401 || status === 403 || code === "42501"
+        ? "History access denied. Sign in with an authorized Admin account and complete any required MFA."
+        : "Could not load referral history. Please retry.");
+    } finally { if (current()) setAuditLoading(false); }
+  }, [beginAudit]);
+  useEffect(() => { void loadAudit(); }, [loadAudit]);
+
   async function saveSettings(data: ReferralSettingsInput) {
     // Invalidate an earlier bootstrap read before the write starts.
     const current = beginSettings();
     await saveReferralSettings(data);
     if (!current()) return;
-    await loadSettings();
+    await Promise.all([loadSettings(), loadAudit()]);
   }
 
   async function reject(id: string, reason?: string) {
@@ -80,6 +96,6 @@ export default function useReferrals(status?: ReferralStatus) {
     return result;
   }
 
-  return { referrals, settings, audit, loading, error: error ?? settingsError,
-    reload: () => Promise.all([load(), loadSettings()]), saveSettings, reject };
+  return { referrals, settings, audit, auditLoading, auditError, reloadAudit: loadAudit, loading, error: error ?? settingsError,
+    reload: () => Promise.all([load(), loadSettings(), loadAudit()]), saveSettings, reject };
 }

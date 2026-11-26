@@ -27,7 +27,7 @@ jobs:
           VITE_SUPABASE_URL: https://example.supabase.co
           VITE_SUPABASE_ANON_KEY: ci-placeholder
       - run: npm test
-      - run: node scripts/p1-financial-ui-selftest.cjs
+      - run: node scripts/p1-financial-ui-selftest.cjs && node scripts/product-readiness-selftest.cjs && node scripts/product-concurrency-selftest.cjs
       - run: npm audit --audit-level=high
 
   mobile-app:
@@ -49,7 +49,7 @@ jobs:
       - run: node scripts/same-project-build-selftest.cjs
       - run: node scripts/staging-build-selftest.cjs
       - run: node scripts/firebase-config-selftest.cjs && node scripts/push-lifecycle-selftest.cjs && node scripts/notification-routing-selftest.cjs && node scripts/notification-account-hook-selftest.cjs
-      - run: node scripts/play-catalog-contract-selftest.cjs
+      - run: node scripts/play-billing-tests/routing.cjs && node scripts/play-billing-tests/verification.cjs && node scripts/play-billing-tests/lifecycle.test.cjs
       - run: python3 scripts/android-bundle-validator-selftest.py
       - run: node supabase/tests/p1-push-delivery-selftest.cjs && node supabase/tests/p0-notification-selftest.cjs
         working-directory: .
@@ -77,8 +77,9 @@ jobs:
         working-directory: .
       - run: node mobile-app/scripts/payment-summary-selftest.cjs
         working-directory: .
-      - run: node mobile-app/scripts/notes-billing-choice-selftest.cjs && node supabase/tests/notes-choice-order-selftest.cjs
+      - run: node mobile-app/scripts/retired-billing-ui-selftest.cjs && node supabase/tests/notes-choice-order-selftest.cjs
         working-directory: .
+      - run: node scripts/home-context-selftest.cjs && node scripts/personal-storage-selftest.cjs && node scripts/search-owner-selftest.cjs && node scripts/notification-owner-screen-selftest.cjs
       - run: node scripts/navigation-lazy-selftest.cjs
       - run: node scripts/offline-license-storage-selftest.cjs
       - run: node scripts/offline-download-selftest.cjs

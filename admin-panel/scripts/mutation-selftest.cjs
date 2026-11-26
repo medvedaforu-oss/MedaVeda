@@ -35,7 +35,7 @@ function load(file) {
     ['year', [['updateYear','fixture',{}],['deleteYear','fixture']]],
     ['subject', [['updateSubject','fixture',{}],['deleteSubject','fixture']]],
     ['chapter', [['updateChapter','fixture',{}],['deleteChapter','fixture']]],
-    ['product', [['updateProduct','fixture',{}],['deleteProduct','fixture']]],
+    ['product', [['updateProduct','fixture',{},1],['deleteProduct','fixture']]],
     ['user', [['setUserBlocked','fixture',true]]],
   ]) {
     const api=load(path.resolve(__dirname,`../src/services/${service}Service.ts`));

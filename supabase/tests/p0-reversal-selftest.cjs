@@ -35,6 +35,7 @@ async function scenario(kind, result, entry = 'helper', providerStatus) {
     '../_shared/razorpay.ts':{verifyWebhookSignature:async()=>true},
     '../_shared/notesChoiceAuthorization.ts':{},
     '../_shared/externalReporting.ts':{}, '../_shared/googlePlay.ts':{},
+    '../_shared/playPurchaseValidation.ts':load('supabase/functions/_shared/playPurchaseValidation.ts',{}),
     '../_shared/ucbAlert.ts':{alertUcb:async()=>{}},
     '../_shared/paymentQueue.ts':{WORK_BATCH_SIZE:40,WORK_CONCURRENCY:4,runBounded:async(xs,n,fn)=>{for(const x of xs)await fn(x)}},
   };

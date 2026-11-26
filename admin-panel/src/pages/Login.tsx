@@ -173,14 +173,14 @@ export default function Login() {
   if (step !== "password") {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-        <form onSubmit={handleCode} className="bg-white rounded-xl shadow p-8 w-full max-w-sm">
+        <form onSubmit={handleCode} className="bg-white rounded-xl border border-gray-200 p-6 w-full max-w-sm">
           <h1 className="text-2xl font-bold mb-1">🌿 MedVeda Admin</h1>
-          <p className="text-gray-500 mb-6">
+          <p className="text-sm leading-6 text-gray-500 mb-5">
             {step === "challenge"
               ? "Enter the 6-digit code from your authenticator app."
               : "Set up two-step verification: scan the QR code with an authenticator app, then enter the code it shows."}
           </p>
-          {error && <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-4">{error}</div>}
+          {error && <div role="alert" className="bg-red-50 text-red-700 text-sm rounded-lg p-3 mb-4">{error}</div>}
           {step === "enroll" && (
             <div className="mb-4 text-center">
               <img src={qr} alt="Authenticator QR code" className="mx-auto w-44 h-44" />
@@ -198,21 +198,21 @@ export default function Login() {
             placeholder="123456"
             value={code}
             onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full min-h-11 border border-gray-300 rounded-lg px-3 py-2 text-sm mb-4 tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-green-600"
           />
           <button
             type="submit"
             disabled={loading || code.length !== 6}
-            className="w-full bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white font-semibold rounded-lg py-2.5 transition"
+            className="w-full min-h-11 bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white text-sm font-semibold rounded-lg py-2.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
           >
             {loading ? "Verifying..." : step === "enroll" ? "Verify and finish setup" : "Verify"}
           </button>
           {step === "enroll" && canSkipEnroll && (
-            <button type="button" onClick={done} className="w-full mt-3 text-sm text-gray-500 underline">
+            <button type="button" onClick={done} className="w-full min-h-11 mt-2 text-sm text-gray-600 underline focus-visible:outline-2 focus-visible:outline-green-700">
               Skip for now (only until MFA is switched on)
             </button>
           )}
-          <button type="button" onClick={handleSignOut} className="w-full mt-3 text-sm text-gray-500 underline">
+          <button type="button" onClick={handleSignOut} className="w-full min-h-11 mt-2 text-sm text-gray-600 underline focus-visible:outline-2 focus-visible:outline-green-700">
             Sign out
           </button>
         </form>
@@ -224,45 +224,45 @@ export default function Login() {
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow p-8 w-full max-w-sm"
+        className="bg-white rounded-xl border border-gray-200 p-6 w-full max-w-sm"
       >
         <h1 className="text-2xl font-bold mb-1">🌿 MedVeda Admin</h1>
-        <p className="text-gray-500 mb-6">Sign in to manage content</p>
+        <p className="text-sm leading-6 text-gray-500 mb-5">Sign in to manage content</p>
 
         {error && (
-          <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-4">
+          <div role="alert" className="bg-red-50 text-red-700 text-sm rounded-lg p-3 mb-4">
             {error}
           </div>
         )}
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="admin-email">
           Email
         </label>
-        <input aria-label="Email"
+        <input id="admin-email" aria-label="Email"
           type="email"
           required
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-green-600"
+          className="w-full min-h-11 border border-gray-300 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-green-600"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="admin-password" className="block text-sm font-medium text-gray-700 mb-1">
           Password
         </label>
-        <input aria-label="Password"
+        <input id="admin-password" aria-label="Password"
           type="password"
           required
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-6 focus:outline-none focus:ring-2 focus:ring-green-600"
+          className="w-full min-h-11 border border-gray-300 rounded-lg px-3 py-2 text-sm mb-6 focus:outline-none focus:ring-2 focus:ring-green-600"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white font-semibold rounded-lg py-2.5 transition"
+          className="w-full min-h-11 bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white text-sm font-semibold rounded-lg py-2.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>

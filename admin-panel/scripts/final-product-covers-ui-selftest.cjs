@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict');const {load,harness,jsx,nodes}=require('../../mobile-app/scripts/ui-harness.cjs');
+const h=harness();let writes=0;
+let products=[{id:'p',scope:'chapter',chapterId:'c',title:'Notes',price:49,revision:3,active:true,courseId:'course',productType:'notes'}];
+const lookups={Courses:[{id:'course',name:'Course'}],Years:[{id:'y',title:'Year'}],Subjects:[{id:'s',title:'Subject',yearId:'y'}],Chapters:[{id:'c',title:'Chapter',yearId:'y',subjectId:'s'}]};
+const mocks={react:h.react,'react/jsx-runtime':jsx,'../utils/productCovers':load('admin-panel/src/utils/productCovers.ts',{}),'../hooks/useRequestGuard':load('admin-panel/src/hooks/useRequestGuard.ts',{react:h.react}),'../services/playBillingSyncService':{getBillingStatuses:async()=>({})},'../hooks/useProducts':{__esModule:true,default:()=>({products,loading:false,hasLoaded:true,error:null,reload:async()=>{},createProduct:()=>{writes++},editProduct:()=>{writes++},removeProduct:()=>{writes++}})}};
+for(const name of ['LookupStatus','CoursePicker','ProductHeader','ProductFilter','ProductTable','ProductFormModal','ConfirmDialog','SearchBar'])mocks['../components/'+name]={__esModule:true,default:name};
+for(const name of Object.keys(lookups))mocks['../hooks/use'+name]={__esModule:true,default:()=>({[name.toLowerCase()]:lookups[name],loading:false,error:null})};
+const Page=load('admin-panel/src/pages/Products.tsx',mocks,{setInterval:()=>1,clearInterval(){}}).default;
+const render=()=>nodes(h.render(Page));let tree=render();let table=tree.find(n=>n.type==='ProductTable').props;
+assert.equal(table.products[0].chapterTitle,'Chapter');assert.equal(table.products[0].subjectTitle,'Subject');table.onEdit(table.products[0]);tree=render();let form=tree.find(n=>n.type==='ProductFormModal').props;assert.equal(form.initialData.chapterTitle,'Chapter');form.onClose();assert.equal(render().find(n=>n.type==='ProductFormModal').props.open,false);
+products=products.map(p=>({...p}));table=render().find(n=>n.type==='ProductTable').props;assert.equal(table.products[0].chapterTitle,'Chapter');assert.equal(table.products[0].revision,3);assert.equal(table.products[0].price,49);assert.equal(writes,0);assert.equal(products[0].chapterTitle,undefined);h.unmount();
+console.log('PASS Products initial render/reload hydrates covers; edit/cancel preserves persisted relationship/price/revision without writes');

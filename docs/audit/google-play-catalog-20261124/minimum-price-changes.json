@@ -1,0 +1,19 @@
+{
+  "modified_existing_files": [
+    "admin-panel/src/components/ProductTable.tsx",
+    "admin-panel/src/services/playBillingSyncService.ts",
+    "admin-panel/src/types/playBilling.ts",
+    "supabase/functions/sync-play-catalog/index.ts",
+    "supabase/tests/play-catalog-creation-selftest.cjs",
+    "supabase/tests/play-catalog-worker-selftest.cjs",
+    "supabase/tests/run-all.sh",
+    "admin-panel/scripts/product-readiness-selftest.cjs"
+  ],
+  "new_source_files": [
+    "supabase/migrations/20261124142010_play_india_price_validation.sql",
+    "supabase/tests/play_india_price_validation_checks.sql"
+  ],
+  "mobile_source_unchanged": true,
+  "razorpay_source_unchanged": true,
+  "question_papers_source_unchanged": true
+}

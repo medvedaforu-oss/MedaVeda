@@ -1,0 +1,98 @@
+{
+  "checked_date_utc": "2026-11-24",
+  "source_page": "https://play.google.com/supported-locations?hl=en",
+  "help_reference": "https://support.google.com/googleplay/android-developer/answer/10532353?hl=en",
+  "method": "Read-only public Google UI GET requests; no application service account used; never evidence of app catalog authorization",
+  "versions": {
+    "externalVersionId": [
+      "2026/01",
+      "2025/03",
+      "2025/02",
+      "2025/01",
+      "2022/02",
+      "2022/01"
+    ],
+    "versions": [
+      {
+        "externalVersionId": "2026/01",
+        "externalVersionDate": {
+          "year": 2026,
+          "month": 9,
+          "day": 28
+        }
+      },
+      {
+        "externalVersionId": "2025/03",
+        "externalVersionDate": {
+          "year": 2025,
+          "month": 12,
+          "day": 15
+        }
+      },
+      {
+        "externalVersionId": "2025/02",
+        "externalVersionDate": {
+          "year": 2025,
+          "month": 11,
+          "day": 6
+        }
+      },
+      {
+        "externalVersionId": "2025/01",
+        "externalVersionDate": {
+          "year": 2025,
+          "month": 1,
+          "day": 13
+        }
+      },
+      {
+        "externalVersionId": "2022/02",
+        "externalVersionDate": {
+          "year": 2022,
+          "month": 12,
+          "day": 28
+        }
+      },
+      {
+        "externalVersionId": "2022/01",
+        "externalVersionDate": {
+          "year": 2022,
+          "month": 5,
+          "day": 5
+        }
+      }
+    ]
+  },
+  "india_by_version": {
+    "2026/01": {
+      "http_status": 200,
+      "row": {
+        "googleEntity": "GOOGLE_ENTITY_GOOGLE_ASIA_PACIFIC_PTE_LTD",
+        "countryCode": "IN",
+        "canDownloadFreeApps": true,
+        "canMakeGooglePlayPurchases": true,
+        "priceRange": {
+          "currencyCode": "INR",
+          "minPriceMicros": "4000000",
+          "maxPriceMicros": "84000000000"
+        }
+      },
+      "response_sha256": "38047415f0e1bf46e265bf0b0c3a0a5ef2afc78fb63324f6f542ba11361dfc43"
+    },
+    "2022/02": {
+      "http_status": 200,
+      "row": {
+        "googleEntity": "GOOGLE_ENTITY_GOOGLE_ASIA_PACIFIC_PTE_LTD",
+        "countryCode": "IN",
+        "canDownloadFreeApps": true,
+        "canMakeGooglePlayPurchases": true,
+        "priceRange": {
+          "currencyCode": "INR",
+          "minPriceMicros": "4000000",
+          "maxPriceMicros": "84000000000"
+        }
+      },
+      "response_sha256": "3015cb9491f37a4d7255a7aa6947854857544ab63d994ae7e0ffbff68da8660d"
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "date_utc": "2026-11-24",
+  "status": "HOLD",
+  "catalog_403_resolved": false,
+  "project": "xbvenkfmesugrbjuufyw",
+  "package": "in.medveda.app",
+  "owner_confirmations": {
+    "identity_http": 200,
+    "service_account_matches_expected": true,
+    "pricing_function_http": 200,
+    "google_pricing_http": 200,
+    "play_permissions": [
+      "View app information",
+      "Manage store presence",
+      "View financial data, orders, and cancellation survey responses",
+      "Manage orders and subscriptions"
+    ],
+    "source": "Owner report; not a new runtime catalog test"
+  },
+  "runtime_read_access": {
+    "oauth_exchange": "Owner pricing success supports token exchange at that time; helper requests androidpublisher scope",
+    "catalog_list": "NOT EXECUTED: runtime Google credential and authenticated Admin session unavailable to this workspace",
+    "one_rupee_get": "NOT EXECUTED",
+    "two_rupee_get": "NOT EXECUTED",
+    "existing_readonly_diagnostic": {
+      "slug": "diagnose-play-matrix",
+      "version": 4,
+      "auth": "Authenticated Admin with aal2",
+      "operations": [
+        "GET tokeninfo",
+        "GET inappproducts?maxResults=1",
+        "GET oneTimeProducts?pageSize=1",
+        "POST pricing:convertRegionPrices (non-mutating)"
+      ],
+      "limitations": "Does not GET either exact reserved SKU; no Settings UI control found in current hosted asset"
+    }
+  },
+  "original_failure": {
+    "timestamp_utc": "2026-10-27T19:26:37.434000Z",
+    "operation": "catalog.patch",
+    "http_status": 403,
+    "status": "PERMISSION_DENIED",
+    "message": "The caller does not have permission",
+    "details": [],
+    "bad_requests": [],
+    "request_id": "e4189394-b044-47a9-a1c5-139ade5650ab",
+    "request_id_source": "application",
+    "cause": "Permission denial established; specific missing grant, account condition or propagation cause not established"
+  },
+  "implementation": {
+    "confirmed_defect_causing_403": null,
+    "local_fixes": [],
+    "deployed_version": 7,
+    "entrypoint_matches": true,
+    "catalog_helper_matches": true,
+    "google_helper_difference": "Local ExternalTransaction type has optional testPurchase property; no catalog runtime behavior difference",
+    "patch_endpoint": "PATCH /applications/in.medveda.app/onetimeproducts/{sku}",
+    "get_endpoint": "GET /applications/in.medveda.app/oneTimeProducts/{sku}",
+    "update_mask": "listings,purchaseOptions",
+    "allow_missing": true,
+    "regions_version": "Explicit reviewed 2022/02 required; production value not read",
+    "currency": "INR",
+    "region": "IN",
+    "one_rupee_money": {
+      "currencyCode": "INR",
+      "units": "1",
+      "nanos": 0
+    },
+    "purchase_option": "buy",
+    "activation": "POST oneTimeProducts/{sku}/purchaseOptions:batchUpdateStates; state output-only",
+    "readback": "Separate GET after creation and activation; finish_play_price_sync only after verifiedBuyOption"
+  },
+  "pricing": {
+    "public_table_versions": [
+      "2026/01",
+      "2022/02"
+    ],
+    "india_currency": "INR",
+    "india_min_price_micros": "4000000",
+    "india_min_price_inr": "4.00",
+    "india_max_price_micros": "84000000000",
+    "one_rupee_within_published_range": false,
+    "two_rupee_within_published_range": false,
+    "app_specific_exception": "Not established",
+    "action": "Do not run one-rupee retry absent Google-confirmed applicable exception or changed official range. Do not change either tier automatically.",
+    "source": "https://play.google.com/supported-locations?hl=en"
+  },
+  "focused_checks": {
+    "node_creation_scenarios": 126,
+    "node_worker_permission_retry_cases": 20,
+    "deno_tests": 12,
+    "deno_failed": 0,
+    "network": "All application regression tests mocked/offline; not Google acceptance tests"
+  },
+  "release": {
+    "candidate_files": 297,
+    "candidate_hash_mismatches": 0,
+    "archive_sha256": "c4bb909fa9fcb72f1563d48b96d057835bab97d9208cee435098ec7c2c247b87",
+    "unchanged": true
+  },
+  "production_changes": false,
+  "catalog_writes": false,
+  "retry_executed": false
+}
+

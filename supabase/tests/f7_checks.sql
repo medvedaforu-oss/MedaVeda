@@ -58,7 +58,7 @@ select pg_temp.chk('A2 no policy in public / storage refers to is_admin() or to 
   (select count(*) from pg_policies where schemaname in ('public', 'storage')
      and coalesce(qual, '') || coalesce(with_check, '') ~ '(is_admin\(\)|admins\.email)') = 0);
 select pg_temp.dml('authenticated', :FAKE::uuid, :'AE', $$update public.products set price = 1 where id = 'f7p'$$) as r \gset
-select pg_temp.chk('A3 a signed-in user whose JWT e-mail EQUALS the admin''s but whose id is not in admins gets NO admin rights (products)', :'r' = '0', :'r');
+select pg_temp.chk('A3 a signed-in user whose JWT e-mail EQUALS the admin''s but whose id is not in admins gets NO admin rights (products)', :'r' like 'ERR: permission denied for table products%', :'r');
 select pg_temp.dml('authenticated', :FAKE::uuid, :'AE', $$update public.videos set title = 'x' where id = 'f7v'$$) as r \gset
 select pg_temp.chk('A4 ... nor on videos', :'r' = '0', :'r');
 select pg_temp.dml('authenticated', :FAKE::uuid, :'AE', $$update public.profiles set name = 'pwned' where id = 'bb000000-0000-0000-0000-000000000002'$$) as r \gset
@@ -73,7 +73,8 @@ select pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.app_setti
 select pg_temp.chk('B1 admin CAN update app_settings (the twin created first)', :'r' = '1', :'r');
 select pg_temp.dml('authenticated', :STU::uuid, 'f7_student@example.com', $$update public.app_settings set app_name = 'no'$$) as r \gset
 select pg_temp.chk('B2 a student cannot', :'r' = '0', :'r');
-select pg_temp.chk('B3 admin can write products',    pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.products set price = 101 where id = 'f7p'$$) = '1');
+select pg_temp.chk('B3 admin can edit products with an opened revision', pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$select * from public.products_update('f7p',(select revision from public.products where id='f7p'),'{"price":101}')$$) = '1');
+select pg_temp.chk('B3a even an admin cannot bypass the product revision boundary', pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.products set price = 1 where id='f7p'$$) like 'ERR: permission denied for table products%');
 select pg_temp.chk('B4 admin can write chapters',    pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.chapters set title = 'c2' where id = 'f7c'$$) = '1');
 select pg_temp.chk('B5 admin can write subjects',    pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.subjects set title = 's2' where id = 'f7s'$$) = '1');
 select pg_temp.chk('B6 admin can write years',       pg_temp.dml('authenticated', :ADM::uuid, :'AE', $$update public.years set title = 'y2' where id = 'f7y'$$) = '1');
@@ -93,7 +94,7 @@ select pg_temp.chk('C3 anon still reads active notifications and courses',
   pg_temp.q('anon', null, '', $$select (count(*) >= 1)::text from public.notifications$$) = 'true'
   and pg_temp.q('anon', null, '', $$select (count(*) >= 1)::text from public.courses$$) = 'true');
 select pg_temp.chk('C4 a student still reads own app_settings row (any signed-in user)', pg_temp.q('authenticated', :STU::uuid, 'f7_student@example.com', $$select count(*)::text from public.app_settings$$) = '1');
-select pg_temp.chk('C5 a student still cannot write products', pg_temp.dml('authenticated', :STU::uuid, 'f7_student@example.com', $$update public.products set price = 1$$) = '0');
+select pg_temp.chk('C5 a student still cannot write products', pg_temp.dml('authenticated', :STU::uuid, 'f7_student@example.com', $$update public.products set price = 1$$) like 'ERR: permission denied for table products%');
 
 \o
 select case when ok then 'PASS' else 'FAIL' end as result, name, case when ok then '' else left(detail, 300) end as detail from f7_results order by name;

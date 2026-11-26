@@ -51,7 +51,7 @@ export default function PdfViewerScreen() {
   };
   if (failed || typeof source !== "string" || !/^https:\/\//i.test(source)) {
     return <View style={styles.container}><ErrorState
-      message="Download PDF file."
+      message="Could not open this note. Connect to the internet and tap Retry. Paid Notes are online-only."
       onRetry={() => void retry()} busy={busy} /></View>;
   }
   return <View style={styles.container}>

@@ -2,6 +2,9 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const { load } = require('./ui-harness.cjs');
+const auth = {getCurrentUser:()=>({id:'fixture'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}};
+const ownerStorage = load('mobile-app/src/utils/ownerStorage.ts', {'@react-native-async-storage/async-storage':{},'../services/authState':auth});
 const discoveryRequests = []; let delayDiscovery = false;
 const slots = [], effects = []; let cursor = 0, builds = 0;
 const changed = (a, b) => !a || a.length !== b.length || a.some((v, i) => !Object.is(v, b[i]));
@@ -30,6 +33,7 @@ const mocks = {
   },
   '../services/quizService': {},
   '../utils/recentSearches': { getRecentSearches: async () => [] },
+  '../services/authState': auth, '../utils/ownerStorage': ownerStorage,
   '../types/search': { DEFAULT_FILTERS: { types: [], pricing: 'all', downloadedOnly: false, sort: 'relevance' } },
   '../utils/logger': { logError() {} },
 };

@@ -1,0 +1,2984 @@
+The files belonging to this database system will be owned by user "ganeshp8545".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default database encoding has accordingly been set to "SQL_ASCII".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+creating directory /tmp/qp-regressions-tl_k9dwh/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    /usr/lib/postgresql/17/bin/pg_ctl -D /tmp/qp-regressions-tl_k9dwh/data -l logfile start
+
+waiting for server to start.... done
+server started
+DO
+ALTER ROLE
+ALTER ROLE
+CREATE SCHEMA
+CREATE EXTENSION
+CREATE EXTENSION
+CREATE SCHEMA
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+GRANT
+GRANT
+CREATE SCHEMA
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+GRANT
+GRANT
+GRANT
+INSERT 0 2
+CREATE SCHEMA
+CREATE TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+GRANT
+ALTER DEFAULT PRIVILEGES
+ALTER DEFAULT PRIVILEGES
+ALTER DEFAULT PRIVILEGES
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260701000000_baseline_live_schema.sql:38: NOTICE:  extension "pgcrypto" already exists, skipping
+CREATE EXTENSION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260701000000_baseline_live_schema.sql:39: NOTICE:  extension "uuid-ossp" already exists, skipping
+CREATE EXTENSION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_function 
+-------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+ bl_constraint 
+---------------
+ 
+(1 row)
+
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_policy 
+-----------
+ 
+(1 row)
+
+ bl_trigger 
+------------
+ 
+(1 row)
+
+ bl_trigger 
+------------
+ 
+(1 row)
+
+DO
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "razorpay_order_id" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "razorpay_payment_id" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "scope" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "chapter_id" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "subject_id" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "year_id" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "year_ids" of relation "orders" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:22: NOTICE:  column "updated_at" of relation "orders" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:37: NOTICE:  relation "payment_sessions" already exists, skipping
+CREATE TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260718_payment_backend.sql:59: NOTICE:  relation "payments" already exists, skipping
+CREATE TABLE
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:7: NOTICE:  column "product_id" of relation "purchases" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:7: NOTICE:  column "product_title" of relation "purchases" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:7: NOTICE:  column "razorpay_order_id" of relation "purchases" already exists, skipping
+ALTER TABLE
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:36: NOTICE:  column "razorpay_order_id" of relation "payments" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:36: NOTICE:  column "user_id" of relation "payments" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:36: NOTICE:  column "product_id" of relation "payments" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:36: NOTICE:  column "verified_at" of relation "payments" already exists, skipping
+ALTER TABLE
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:59: NOTICE:  relation "purchases_order_id_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:62: NOTICE:  relation "payments_razorpay_payment_id_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:65: NOTICE:  relation "orders_razorpay_order_id_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801150000_razorpay_webhook_atomic_grant.sql:72: NOTICE:  relation "razorpay_webhook_events" already exists, skipping
+CREATE TABLE
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+ALTER TABLE
+UPDATE 0
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260801_auth_verified_identities.sql:29: NOTICE:  trigger "profiles_touch_updated_at" for relation "public.profiles" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+BEGIN
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:69: NOTICE:  PRE-FLIGHT row counts — years:0, subjects:0, chapters:0, notes:0, videos:0, quiz_tests:0, products:0, orders:0, purchases:0, profiles:0
+DO
+CREATE TABLE
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:98: NOTICE:  column "email_verified" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:98: NOTICE:  column "mobile_verified" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:98: NOTICE:  column "updated_at" of relation "profiles" already exists, skipping
+ALTER TABLE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:112: NOTICE:  trigger "courses_touch_updated_at" for relation "public.courses" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+INSERT 0 5
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+ALTER TABLE
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:278: NOTICE:  multi-course backfill sanity check passed: all course_id columns fully populated
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:367: NOTICE:  trigger "subjects_before_write" for relation "public.subjects" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:394: NOTICE:  trigger "subjects_after_write" for relation "public.subjects" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:428: NOTICE:  trigger "chapters_before_write" for relation "public.chapters" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:450: NOTICE:  trigger "chapters_after_write" for relation "public.chapters" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:484: NOTICE:  trigger "notes_before_write" for relation "public.notes" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:518: NOTICE:  trigger "videos_before_write" for relation "public.videos" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:552: NOTICE:  trigger "quiz_tests_before_write" for relation "public.quiz_tests" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:629: NOTICE:  trigger "products_before_write" for relation "public.products" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:651: NOTICE:  trigger "years_before_write" for relation "public.years" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:675: NOTICE:  trigger "years_after_write" for relation "public.years" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:716: NOTICE:  trigger "orders_before_write" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:907: NOTICE:  trigger "profiles_before_write" for relation "public.profiles" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:917: NOTICE:  policy "courses_public_read_active" for relation "public.courses" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:921: NOTICE:  policy "courses_admin_write" for relation "public.courses" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1069: NOTICE:  policy "public read thumbnails" for relation "storage.objects" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE TABLE
+INSERT 0 1
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1187: NOTICE:  trigger "referral_settings_touch_updated_at" for relation "public.referral_settings" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1194: NOTICE:  policy "referral_settings_read_authenticated" for relation "public.referral_settings" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1198: NOTICE:  policy "referral_settings_admin_write" for relation "public.referral_settings" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1224: NOTICE:  policy "referrals_read_own" for relation "public.referrals" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1229: NOTICE:  policy "referrals_admin_write" for relation "public.referrals" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1277: NOTICE:  trigger "profiles_before_insert_referral_code" for relation "public.profiles" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+DO
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260919120000_multi_course_and_referrals.sql:1410: NOTICE:  multi-course + referrals migration completed successfully
+DO
+COMMIT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE TABLE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920130000_app_config.sql:29: NOTICE:  trigger "app_config_touch_updated_at" for relation "public.app_config" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+GRANT
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920130000_app_config.sql:39: NOTICE:  policy "app_config_public_read" for relation "public.app_config" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920130000_app_config.sql:43: NOTICE:  policy "app_config_admin_insert" for relation "public.app_config" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920130000_app_config.sql:47: NOTICE:  policy "app_config_admin_update" for relation "public.app_config" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920130000_app_config.sql:51: NOTICE:  policy "app_config_admin_delete" for relation "public.app_config" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+INSERT 0 2
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260920140000_default_new_profile_course.sql:35: NOTICE:  trigger "profiles_temp_default_course" for relation "public.profiles" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260921120000_analytics_retention.sql:91: NOTICE:  analytics retention: pg_cron is not available - purge functions created but NOT scheduled.
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260921130000_account_deletion_support.sql:187: NOTICE:  function public.delete_my_account() does not exist, skipping
+DROP FUNCTION
+BEGIN
+SELECT 6
+SELECT 2
+SELECT 6
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:136: NOTICE:  PRE-FLIGHT row counts — years:0, subjects:0, chapters:0, notes:0, videos:0, quiz_tests:0, products:0, orders:0, purchases:0, profiles:0
+DO
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:151: NOTICE:  relation "courses" already exists, skipping
+CREATE TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:153: NOTICE:  relation "courses_code_unique_ci" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:165: NOTICE:  column "email_verified" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:165: NOTICE:  column "mobile_verified" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:165: NOTICE:  column "updated_at" of relation "profiles" already exists, skipping
+ALTER TABLE
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+INSERT 0 0
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:196: NOTICE:  column "course_id" of relation "years" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:199: NOTICE:  column "course_id" of relation "subjects" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:202: NOTICE:  column "course_id" of relation "chapters" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:207: NOTICE:  column "course_id" of relation "notes" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:207: NOTICE:  column "year_id" of relation "notes" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:210: NOTICE:  column "course_id" of relation "videos" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:213: NOTICE:  column "course_id" of relation "quiz_tests" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:216: NOTICE:  column "course_id" of relation "products" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:219: NOTICE:  column "course_id" of relation "orders" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:222: NOTICE:  column "course_id" of relation "purchases" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:227: NOTICE:  column "course_id" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:227: NOTICE:  column "year_id" of relation "profiles" already exists, skipping
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:227: NOTICE:  column "referral_code" of relation "profiles" already exists, skipping
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:229: NOTICE:  relation "profiles_referral_code_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:236: NOTICE:  column "course_id" of relation "quiz_scores" already exists, skipping
+ALTER TABLE
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+UPDATE 0
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:345: NOTICE:  multi-course backfill sanity check passed: all course_id columns fully populated
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:368: NOTICE:  relation "idx_years_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:369: NOTICE:  relation "idx_years_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:371: NOTICE:  relation "idx_subjects_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:372: NOTICE:  relation "idx_subjects_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:373: NOTICE:  relation "idx_subjects_year_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:375: NOTICE:  relation "idx_chapters_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:376: NOTICE:  relation "idx_chapters_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:377: NOTICE:  relation "idx_chapters_year_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:379: NOTICE:  relation "idx_notes_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:380: NOTICE:  relation "idx_notes_year_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:381: NOTICE:  relation "idx_notes_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:383: NOTICE:  relation "idx_videos_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:384: NOTICE:  relation "idx_videos_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:385: NOTICE:  relation "idx_videos_year_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:387: NOTICE:  relation "idx_quiz_tests_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:388: NOTICE:  relation "idx_quiz_tests_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:389: NOTICE:  relation "idx_quiz_tests_year_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:391: NOTICE:  relation "idx_products_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:392: NOTICE:  relation "idx_products_course_active" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:394: NOTICE:  relation "idx_orders_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:395: NOTICE:  relation "idx_purchases_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:397: NOTICE:  relation "idx_profiles_course_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:398: NOTICE:  relation "idx_profiles_year_id" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:400: NOTICE:  relation "idx_quiz_scores_course_id" already exists, skipping
+CREATE INDEX
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1121: NOTICE:  policy "public read active years" for relation "public.years" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1122: NOTICE:  policy "public read active subjects" for relation "public.subjects" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1123: NOTICE:  policy "public read active chapters" for relation "public.chapters" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1124: NOTICE:  policy "read notes" for relation "public.notes" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1125: NOTICE:  policy "Authenticated users can read notes" for relation "public.notes" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1126: NOTICE:  policy "public read active videos" for relation "public.videos" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1127: NOTICE:  policy "public read active quiz_tests" for relation "public.quiz_tests" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1128: NOTICE:  policy "public read active products" for relation "public.products" does not exist, skipping
+DROP POLICY
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1253: NOTICE:  relation "referral_settings" already exists, skipping
+CREATE TABLE
+INSERT 0 0
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1284: NOTICE:  relation "referrals" already exists, skipping
+CREATE TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1286: NOTICE:  relation "idx_referrals_referrer" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1287: NOTICE:  relation "idx_referrals_status" already exists, skipping
+CREATE INDEX
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+DO
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1480: NOTICE:  multi-course + referrals migration completed successfully
+DO
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1610: NOTICE:  relation "app_config" already exists, skipping
+CREATE TABLE
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+GRANT
+GRANT
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+INSERT 0 0
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1719: NOTICE:  relation "analytics_events_created_at_idx" already exists, skipping
+CREATE INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1741: NOTICE:  relation "payment_sessions_created_at_idx" already exists, skipping
+CREATE INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:1790: NOTICE:  analytics retention: pg_cron is not available - purge functions created but NOT scheduled.
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:2230: NOTICE:  trigger "orders_00_guard_client_writes" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+DROP POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:2255: NOTICE:  policy "profiles_update_own" for relation "public.profiles" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260922100000_phase1a_sync_and_order_security.sql:2342: NOTICE:  Phase 1A migration self-checks passed.
+DO
+COMMIT
+CREATE FUNCTION
+BEGIN
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:50: NOTICE:  CRITICAL1: locked to service_role only: {erase_user_data(uuid),"grant_razorpay_payment(text,text,text,bigint)"}
+DO
+REVOKE
+GRANT
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:84: NOTICE:  CRITICAL1: dropped policy purchases_admin_write on purchases
+DO
+ALTER TABLE
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:123: NOTICE:  trigger "purchases_00_block_client_writes" for relation "public.purchases" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:128: NOTICE:  trigger "payments_00_block_client_writes" for relation "public.payments" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+ALTER DEFAULT PRIVILEGES
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:146: NOTICE:  relation "payments_razorpay_payment_id_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:148: NOTICE:  relation "purchases_order_id_unique" already exists, skipping
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924100000_critical1_lock_settlement_functions.sql:150: NOTICE:  relation "orders_razorpay_order_id_unique" already exists, skipping
+CREATE INDEX
+DO
+COMMIT
+BEGIN
+SELECT 3
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:48: NOTICE:  CRITICAL2: dropped orders policy Users can create own orders
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:48: NOTICE:  CRITICAL2: dropped orders policy admin update orders
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:48: NOTICE:  CRITICAL2: dropped orders policy orders_admin_write
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:48: NOTICE:  CRITICAL2: dropped orders policy Admins can update all orders
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:48: NOTICE:  CRITICAL2: dropped orders policy Users can cancel own pending orders
+DO
+ALTER TABLE
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+REVOKE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924110000_critical2_orders_server_only.sql:89: NOTICE:  trigger "orders_01_immutable_columns" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+DO
+COMMIT
+BEGIN
+UPDATE 1
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql:52: NOTICE:  CRITICAL3: dropped storage policy admin delete notes/thumbnails (DELETE)
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql:52: NOTICE:  CRITICAL3: dropped storage policy admin update notes/thumbnails (UPDATE)
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql:52: NOTICE:  CRITICAL3: dropped storage policy admin upload notes/thumbnails (INSERT)
+DO
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql:134: NOTICE:  policy "profiles_update_own_or_admin" for relation "public.profiles" does not exist, skipping
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260924120000_critical3_storage_profiles_rls.sql:135: NOTICE:  policy "user update own profile" for relation "public.profiles" does not exist, skipping
+DROP POLICY
+DROP POLICY
+CREATE POLICY
+DO
+COMMIT
+BEGIN
+DO
+SELECT 1
+CREATE FUNCTION
+UPDATE 0
+UPDATE 0
+DO
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+ALTER TABLE
+UPDATE 0
+UPDATE 0
+CREATE INDEX
+CREATE INDEX
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+REVOKE
+GRANT
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925100000_phase2_referral_config_and_product_type.sql:25: NOTICE:  constraint "products_product_type_check" of relation "products" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925100000_phase2_referral_config_and_product_type.sql:45: NOTICE:  constraint "referral_settings_phase2_ranges" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+DO
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:103: NOTICE:  trigger "wallet_ledger_01_append_only" for relation "public.wallet_ledger" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:115: NOTICE:  trigger "wallet_ledger_02_no_truncate" for relation "public.wallet_ledger" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:120: NOTICE:  trigger "wallet_ledger_00_block_client_writes" for relation "public.wallet_ledger" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:130: NOTICE:  policy "wallet_ledger_select_own" for relation "public.wallet_ledger" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:133: NOTICE:  policy "wallet_ledger_select_admin" for relation "public.wallet_ledger" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+REVOKE
+GRANT
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925110000_phase2_wallet_ledger.sql:331: NOTICE:  PHASE2: pg_cron not scheduled (extension "pg_cron" is not available). Enable it in Dashboard > Database > Extensions, or ignore.
+DO
+DO
+COMMIT
+BEGIN
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925120000_phase2_orders_pricing_and_settlement.sql:32: NOTICE:  constraint "orders_phase2_amounts" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925120000_phase2_orders_pricing_and_settlement.sql:262: NOTICE:  policy "order_review_flags_admin_select" for relation "public.order_review_flags" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+REVOKE
+GRANT
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260925120000_phase2_orders_pricing_and_settlement.sql:269: NOTICE:  trigger "order_review_flags_00_block_client_writes" for relation "public.order_review_flags" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+DO
+COMMIT
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+UPDATE 0
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926100000_batch1_refund_dispute_revoke_access.sql:34: NOTICE:  constraint "purchases_status_check" of relation "purchases" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+COMMENT
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+GRANT
+CREATE INDEX
+CREATE FUNCTION
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:18: NOTICE:  policy "analytics_insert_own_or_anon" for relation "public.analytics_events" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:23: NOTICE:  constraint "analytics_events_name_len" of relation "analytics_events" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:26: NOTICE:  constraint "analytics_events_params_size" of relation "analytics_events" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+ try_validate 
+--------------
+ 
+(1 row)
+
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:105: NOTICE:  trigger "on_auth_user_email_changed" for relation "auth.users" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:114: NOTICE:  constraint "quiz_scores_sane" of relation "quiz_scores" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:134: NOTICE:  trigger "quiz_scores_own_email" for relation "public.quiz_scores" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:141: NOTICE:  constraint "orders_amount_positive" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+ try_validate 
+--------------
+ 
+(1 row)
+
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:155: NOTICE:  constraint "referrals_first_order_id_fkey" of relation "referrals" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+DROP INDEX
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260926130000_batch1_hygiene.sql:194: NOTICE:  trigger "wallet_ledger_03_no_overdraw" for relation "public.wallet_ledger" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260927100000_f7_drop_legacy_admin_policies.sql:18: NOTICE:  policy "app_settings_admin_update" for relation "public.app_settings" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DO
+DROP FUNCTION
+REVOKE
+REVOKE
+GRANT
+ALTER DEFAULT PRIVILEGES
+ALTER DEFAULT PRIVILEGES
+DO
+CREATE FUNCTION
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260927120000_batch3_referral_hardening.sql:168: NOTICE:  constraint "profiles_referral_code_upper" of relation "profiles" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ try_validate 
+--------------
+ 
+(1 row)
+
+DROP POLICY
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+ALTER TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+INSERT 0 0
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+GRANT
+REVOKE
+GRANT
+REVOKE
+GRANT
+REVOKE
+GRANT
+BEGIN
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:29: NOTICE:  constraint "referral_settings_other_ranges" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:37: NOTICE:  constraint "referral_settings_friend_discount_percent_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:42: NOTICE:  constraint "referral_settings_friend_discount_max_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:47: NOTICE:  constraint "referral_settings_referrer_credit_amount_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:52: NOTICE:  constraint "referral_settings_credit_hold_days_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:57: NOTICE:  constraint "referral_settings_wallet_max_percent_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:62: NOTICE:  constraint "referral_settings_apply_window_days_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:67: NOTICE:  constraint "referral_settings_max_referrals_per_user_range" of relation "referral_settings" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:89: NOTICE:  policy "referral_settings_audit_admin_read" for relation "public.referral_settings_audit" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+REVOKE
+GRANT
+GRANT
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260928100000_referral_settings_limits_and_audit.sql:131: NOTICE:  trigger "referral_settings_audit_trg" for relation "public.referral_settings" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+DO
+COMMIT
+BEGIN
+DO
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+GRANT
+COMMIT
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+DROP POLICY
+CREATE POLICY
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+ALTER FUNCTION
+DO
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+GRANT
+GRANT
+GRANT
+GRANT
+DO
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DROP POLICY
+DO
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260930100000_medium_db_hardening.sql:108: NOTICE:  trigger "quiz_scores_rate_limit" for relation "public.quiz_scores" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260930100000_medium_db_hardening.sql:126: NOTICE:  trigger "analytics_events_rate_limit" for relation "public.analytics_events" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260930100000_medium_db_hardening.sql:131: NOTICE:  constraint "push_tokens_token_format" of relation "push_tokens" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260930100000_medium_db_hardening.sql:145: NOTICE:  trigger "push_tokens_cap" for relation "public.push_tokens" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+REVOKE
+REVOKE
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20260930100000_medium_db_hardening.sql:210: NOTICE:  trigger "on_auth_user_phone_confirmed" for relation "auth.users" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+DO
+DROP POLICY
+CREATE POLICY
+CREATE TABLE
+INSERT 0 1
+ALTER TABLE
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+ALTER TABLE
+INSERT 0 1
+INSERT 0 1
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:62: NOTICE:  trigger "orders_02_tax_snapshot" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:66: NOTICE:  constraint "orders_ucb_provider_check" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:69: NOTICE:  constraint "orders_ucb_choice_check" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:72: NOTICE:  constraint "orders_ucb_report_check" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:75: NOTICE:  constraint "orders_ucb_consumption_check" of relation "orders" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261012100000_google_play_ucb.sql:88: NOTICE:  constraint "payments_ucb_provider_check" of relation "payments" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+UPDATE 0
+COMMIT
+BEGIN
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+INSERT 0 1
+CREATE VIEW
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261014100000_payment_audit_capture_inbox.sql:57: NOTICE:  column "provider_refund_id" of relation "payment_compensations" already exists, skipping
+ALTER TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261014100000_payment_audit_capture_inbox.sql:88: NOTICE:  trigger "orders_01_discount_reserve" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+DO
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+DO
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+DO
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE VIEW
+REVOKE
+GRANT
+COMMIT
+BEGIN
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261015100000_play_payment_jobs.sql:5: NOTICE:  column "play_last_attempt_at" of relation "orders" already exists, skipping
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE TABLE
+INSERT 0 1
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE VIEW
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+REVOKE
+GRANT
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE VIEW
+REVOKE
+GRANT
+CREATE POLICY
+CREATE POLICY
+GRANT
+ queue_play_price_sync 
+-----------------------
+(0 rows)
+
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE FUNCTION
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261018100000_verified_quiz_attempts.sql:15: NOTICE:  trigger "bump_quiz_question_revision" for relation "public.quiz_tests" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+REVOKE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261018100000_verified_quiz_attempts.sql:42: NOTICE:  policy "verified_quiz_attempts_read" for relation "public.verified_quiz_attempts" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261018110000_trusted_note_uploads.sql:28: NOTICE:  policy "notes_server_insert_only" for relation "storage.objects" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261018110000_trusted_note_uploads.sql:31: NOTICE:  policy "notes_server_update_only" for relation "storage.objects" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261018110000_trusted_note_uploads.sql:34: NOTICE:  policy "notes_server_delete_only" for relation "storage.objects" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+UPDATE 1
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+INSERT 0 1
+DO
+CREATE POLICY
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE INDEX
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+REVOKE
+REVOKE
+GRANT
+GRANT
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+DROP POLICY
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261020100000_notes_service_reads.sql:8: NOTICE:  policy "notes_service_reads_only" for relation "storage.objects" does not exist, skipping
+DROP POLICY
+CREATE POLICY
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+UPDATE 1
+COMMIT
+CREATE INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+REVOKE
+GRANT
+GRANT
+COMMIT
+BEGIN
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+REVOKE
+REVOKE
+REVOKE
+GRANT
+GRANT
+GRANT
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+ALTER TABLE
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+DROP INDEX
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+SET
+DO
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261110120000_mv005_razorpay_order_transitions.sql:32: NOTICE:  trigger "orders_03_razorpay_transition" for relation "public.orders" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261110130000_mv006_purchase_ownership_guard.sql:60: NOTICE:  trigger "purchases_zz_success_ownership" for relation "public.purchases" does not exist, skipping
+DROP TRIGGER
+CREATE TRIGGER
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+SET
+SET
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+REVOKE
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE TABLE
+INSERT 0 1
+ALTER TABLE
+REVOKE
+GRANT
+COMMENT
+COMMIT
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+COMMIT
+BEGIN
+CREATE FUNCTION
+REVOKE
+GRANT
+psql:/home/ganeshp8545/AyurPulse/supabase/migrations/20261114050400_fix4_identity_retention_schedule.sql:21: NOTICE:  pg_cron absent: owner must install/approve scheduler separately; retention job not scheduled
+DO
+COMMIT
+BEGIN
+DO
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE VIEW
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE TRIGGER
+INSERT 0 0
+CREATE FUNCTION
+REVOKE
+DO
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+DROP FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+REVOKE
+REVOKE
+GRANT
+COMMIT
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+BEFORE QUESTION PAPERS
+BEGIN
+CREATE TABLE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+DO
+ format 
+--------
+(0 rows)
+
+    ?column?     
+-----------------
+ 0 FAIL, 19 PASS
+(1 row)
+
+ROLLBACK
+BEGIN
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS erase removes personal data, keeps anonymous payment records, leaves others alone
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS idempotent retry
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS FK SET NULL keeps orders/payments
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS admin accounts refused
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS late webhook for deleted user records capture and compensation, grants nothing, is idempotent
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS normal grant unaffected
+DO
+SET
+              set_config              
+--------------------------------------
+ eeeeeeee-0000-4000-8000-000000000005
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:111: NOTICE:  PASS authenticated cannot call erase_user_data
+DO
+RESET
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:117: NOTICE:  PASS anon cannot call erase_user_data
+DO
+RESET
+                           case                            
+-----------------------------------------------------------
+ FAIL delete_my_account wrapper missing or exposed to anon
+(1 row)
+
+ROLLBACK
+BEGIN
+CREATE TABLE
+ALTER TABLE
+REVOKE
+GRANT
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE TABLE
+CREATE INDEX
+ALTER TABLE
+REVOKE
+GRANT
+GRANT
+GRANT
+CREATE FUNCTION
+REVOKE
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+REVOKE
+GRANT
+CREATE POLICY
+CREATE POLICY
+INSERT 0 1
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+CREATE POLICY
+COMMIT
+ORIGINAL QUESTION PAPER MIGRATION (EXACT BASELINE HASH)
+BEGIN
+CREATE TABLE
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+DO
+                             format                              
+-----------------------------------------------------------------
+ FAIL: no table outside the four public ones is readable by anon
+(1 row)
+
+    ?column?     
+-----------------
+ 1 FAIL, 18 PASS
+(1 row)
+
+ROLLBACK
+BEGIN
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS erase removes personal data, keeps anonymous payment records, leaves others alone
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS idempotent retry
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS FK SET NULL keeps orders/payments
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS admin accounts refused
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS late webhook for deleted user records capture and compensation, grants nothing, is idempotent
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS normal grant unaffected
+DO
+SET
+              set_config              
+--------------------------------------
+ eeeeeeee-0000-4000-8000-000000000005
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:111: NOTICE:  PASS authenticated cannot call erase_user_data
+DO
+RESET
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:117: NOTICE:  PASS anon cannot call erase_user_data
+DO
+RESET
+                           case                            
+-----------------------------------------------------------
+ FAIL delete_my_account wrapper missing or exposed to anon
+(1 row)
+
+ROLLBACK
+    conrelid     |             conname             |                        pg_get_constraintdef                         
+-----------------+---------------------------------+---------------------------------------------------------------------
+ chapters        | chapters_subject_id_fkey        | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+ products        | products_subject_id_fkey        | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL
+ purchases       | purchases_subject_id_fkey       | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL
+ question_papers | question_papers_subject_id_fkey | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE RESTRICT
+ quiz_scores     | quiz_scores_subject_id_fkey     | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL
+ quiz_tests      | quiz_tests_subject_id_fkey      | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+ videos          | videos_subject_id_fkey          | FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+(7 rows)
+
+waiting for server to shut down.... done
+server stopped

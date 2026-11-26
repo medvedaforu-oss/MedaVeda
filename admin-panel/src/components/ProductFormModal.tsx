@@ -505,8 +505,8 @@ export default function ProductFormModal({
         </select>
         {errors.productType && <p className="mt-1 text-xs text-red-600">{errors.productType}</p>}
         <p className="mt-1 text-xs text-gray-500">
-          Google Play can bill only explicitly classified paid notes with a paid PDF in the selected scope.
-          Review legacy products before changing their classification. Videos remain free.
+          Only Notes and Notes bundle are eligible for Google Play Billing and referral balance use.
+          Paid Notes also require verified catalog readiness. Review legacy classifications; videos remain free.
         </p>
       </div>
 

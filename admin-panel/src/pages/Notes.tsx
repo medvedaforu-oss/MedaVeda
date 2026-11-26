@@ -96,9 +96,9 @@ export default function Notes() {
 
   if (loading && !hasLoaded) {
     return (
-      <h2 className="text-xl">
+      <p role="status" className="rounded-lg border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600">
         Loading...
-      </h2>
+      </p>
     );
   }
 
@@ -117,8 +117,8 @@ export default function Notes() {
         </p>
       )}
 
-      <div className="flex flex-wrap gap-4 mb-6">
-        <div className="w-48">
+      <div className="mb-4 flex flex-wrap items-end gap-3">
+        <div className="w-full sm:w-48 [&_select]:min-h-11">
           <CoursePicker
             courses={courses}
             value={courseFilter}
@@ -131,12 +131,14 @@ export default function Notes() {
           />
         </div>
 
-        <SearchBar value={search} onChange={setSearch} />
+        <div className="w-full min-w-0 sm:w-auto [&_input]:min-h-11 [&_input]:text-sm [&_input]:focus-visible:ring-1 [&_input]:focus-visible:ring-green-600">
+          <SearchBar value={search} onChange={setSearch} />
+        </div>
 
         <select aria-label="Filter by chapter"
           value={chapterId}
           onChange={(e) => setChapterId(e.target.value)}
-          className="border rounded-lg px-3 py-2"
+          className="w-full min-h-11 rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 sm:w-auto sm:min-w-44"
         >
           <option value="">All Chapters</option>
           {chaptersForFilter.map((chapter) => (
@@ -147,16 +149,16 @@ export default function Notes() {
         </select>
       </div>
 
-      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
-      {deleteError && <p className="text-red-500 mb-4" role="alert">{deleteError}</p>}
+      {error && <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"><p>{error}</p><button type="button" className="mt-1 min-h-11 rounded px-2 font-medium underline focus-visible:outline-2 focus-visible:outline-red-700" onClick={() => { void reload(); }}>Retry</button></div>}
+      {deleteError && <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{deleteError}</p>}
 
       {filteredNotes.length === 0 ? (
-        <div className="bg-white rounded-xl p-10 text-center shadow">
-          <h2 className="text-xl font-semibold">
+        <div className="rounded-lg border border-gray-200 bg-white px-4 py-8 text-center">
+          <h2 className="text-base font-semibold text-gray-800">
             No Notes Found
           </h2>
 
-          <p className="text-gray-500 mt-2">
+          <p className="mt-2 text-sm text-gray-500">
             Try changing your filters.
           </p>
         </div>
@@ -165,7 +167,7 @@ export default function Notes() {
           notes={filteredNotes}
           chapters={chapters}
           onEdit={openEdit}
-          onDelete={setDeleteTarget}
+          onDelete={(target) => { setDeleteError(null); setDeleteTarget(target); }}
         />
       )}
 
@@ -183,6 +185,7 @@ export default function Notes() {
 
       <ConfirmDialog
         open={!!deleteTarget}
+        error={deleteError}
         title="Delete Note?"
         message={`"${deleteTarget?.title}" will be permanently deleted. This action cannot be undone.`}
         loading={deleting}

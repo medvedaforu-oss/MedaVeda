@@ -26,8 +26,8 @@ try {
   assert.throws(() => inspect({ env: { MEDVEDA_PAYMENT_PROVIDER: 'disabled' } }));
   assert.throws(() => inspect({ env: { RAZORPAY_KEY_SECRET: 'synthetic forbidden credential' } }));
   const profile = require('../eas.json').build;
-  assert.equal(profile.production.env.MEDVEDA_PAYMENT_PROVIDER, 'disabled');
-  assert.equal(profile['internal-testing'].env.MEDVEDA_PAYMENT_PROVIDER, 'disabled');
+  assert.equal(profile.production.env.MEDVEDA_PAYMENT_PROVIDER, 'razorpay');
+  assert.equal(profile['internal-testing'].env.MEDVEDA_PAYMENT_PROVIDER, 'razorpay');
   const bridge = fs.readFileSync(path.join(root, 'modules/medveda-offline-vault/android/src/main/java/expo/modules/medvedaoffline/MedvedaOfflineVaultModule.kt'), 'utf8');
   assert.match(bridge, /"contentEnabled" to false/); assert.match(bridge, /"nativeAccepted" to false/);
   assert.doesNotMatch(bridge, /Function\("(?:receive|view|import|enable|provision)/);

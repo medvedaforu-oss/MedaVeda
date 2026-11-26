@@ -1,6 +1,7 @@
 import PurchaseOwnershipStatus from "../../components/PurchaseOwnershipStatus";
 import usePurchaseResource from "../../hooks/usePurchaseResource";
-import React, { useCallback, useEffect, useState } from "react";
+import useDashboardResource, { dashboardContextKey } from "../../hooks/useDashboardResource";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -74,165 +75,80 @@ export default function HomeScreen() {
     if (needsCourseYearSelection(courseYear)) navigation.replace("SelectCourseYear");
   }, [courseYear, navigation]);
 
-  const [years, setYears] = useState<Year[]>([]);
-  const [yearsLoading, setYearsLoading] = useState(true);
-  const [yearsError, setYearsError] = useState<string | null>(null);
+  const yearsResource = useDashboardResource(useCallback(() => fetchYears(courseId), [courseId]), [] as Year[], ready);
+  const { value: years, loading: yearsLoading } = yearsResource;
+  const yearsError = yearsResource.error
+    ? (yearsResource.error as { code?: string }).code === "failed-precondition"
+      ? "Setup needed: please contact MedVeda support, then reload."
+      : "Could not load years. Pull down to try again."
+    : null;
+  const { refresh: loadYears } = yearsResource;
 
-  // "Buy Notes" section: one Full-Year Notes Product per Academic Year
-  // (the same "year" scope Product created in the admin panel's Products
-  // page), shown right on the Home screen like Academic Years is. This is
-  // the quick "buy the whole year" shortcut - the full Year -> Subject ->
-  // Chapter drill-down for granular buying lives on the Store screen.
-  const [yearProducts, setYearProducts] = useState<
-    { year: Year; product: Product | null }[]
-  >([]);
-  const [yearProductsLoading, setYearProductsLoading] = useState(true);
+  const { value: yearProducts, loading: yearProductsLoading, refresh: loadYearProducts } = useDashboardResource(useCallback(async () => {
+    const yrs = await fetchYears(courseId);
+    const sorted = [...yrs].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return Promise.all(sorted.map(async year => {
+      const products = await fetchProductsByYear(year.id);
+      return { year, product: products[0] ?? null };
+    }));
+  }, [courseId]), [] as { year: Year; product: Product | null }[], ready);
 
   const { isOwned, refresh: refreshPurchases2, loading: purchasesOwnershipLoading, error: purchasesOwnershipError } = usePurchases();
   const { buy, purchasing } = usePurchase();
-
   const { value: purchases, loading: purchasesLoading, error: purchasesError, refresh: loadPurchases } = usePurchaseResource(fetchMyPurchases);
 
-  const [notifications, setNotifications] = useState<AppNotification[]>([]);
-  const [notificationsLoading, setNotificationsLoading] = useState(true);
-  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-
-  const [latestChapters, setLatestChapters] = useState<Chapter[]>([]);
-  const [latestLoading, setLatestLoading] = useState(true);
-
-  const [recommended, setRecommended] = useState<Chapter[]>([]);
-  const [recommendedLoading, setRecommendedLoading] = useState(true);
-
-  const [continueChapter, setContinueChapter] = useState<RecentChapterEntry | null>(null);
-  const [recentChapters, setRecentChapters] = useState<RecentChapterEntry[]>([]);
-  const [recentLoading, setRecentLoading] = useState(true);
+  const { value: notifications, loading: notificationsLoading, refresh: loadNotifications } = useDashboardResource(fetchNotifications, [] as AppNotification[]);
+  const { value: unreadNotificationCount, refresh: loadUnreadNotificationCount } = useDashboardResource(getUnreadNotificationCount, 0);
+  const { value: latestChapters, loading: latestLoading, refresh: loadLatest } = useDashboardResource(
+    useCallback(() => fetchLatestChapters(6, courseId), [courseId]), [] as Chapter[], ready);
+  const { value: recommended, loading: recommendedLoading, refresh: loadRecommended } = useDashboardResource(
+    useCallback(() => fetchRecommendedChapters(new Set(), yearId ?? years[0]?.id, 6, courseId), [years, courseId, yearId]),
+    [] as Chapter[], ready && !yearsLoading);
+  const { value: recent, loading: recentLoading, refresh: loadRecentActivity } = useDashboardResource(useCallback(async () => {
+    const [last, list] = await Promise.all([getLastViewedChapter(courseId), getRecentChapters(courseId)]);
+    return { last, list: list.slice(1, 6) };
+  }, [courseId]), { last: null as RecentChapterEntry | null, list: [] as RecentChapterEntry[] }, ready);
+  const { last: continueChapter, list: recentChapters } = recent;
 
   const email = getCurrentUser()?.email ?? "";
   const displayName = getCurrentUserDisplayName() || (email ? email.split("@")[0] : "Student");
 
-  const loadYears = useCallback(() => {
-    setYearsLoading(true);
-    setYearsError(null);
-    return fetchYears(courseId)
-      .then(setYears)
-      .catch((err) => {
-        logError("Failed to load years:", err);
-        setYearsError(
-          err?.code === "failed-precondition"
-            ? "Setup needed: please contact MedVeda support, then reload."
-            : "Could not load years. Pull down to try again."
-        );
-      })
-      .finally(() => setYearsLoading(false));
-  }, [courseId]);
-
-  const loadYearProducts = useCallback(() => {
-    setYearProductsLoading(true);
-    return fetchYears(courseId)
-      .then(async (yrs) => {
-        const sorted = [...yrs].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-        const results = await Promise.all(
-          sorted.map(async (year) => {
-            const products = await fetchProductsByYear(year.id);
-            return { year, product: products[0] ?? null };
-          })
-        );
-        setYearProducts(results);
-      })
-      .catch((err) => logError("Failed to load year notes products:", err))
-      .finally(() => setYearProductsLoading(false));
-  }, [courseId]);
-
-  const loadNotifications = useCallback(() => {
-    setNotificationsLoading(true);
-    return fetchNotifications()
-      .then(setNotifications)
-      .finally(() => setNotificationsLoading(false));
-  }, []);
-
-  const loadUnreadNotificationCount = useCallback(() => {
-    return getUnreadNotificationCount()
-      .then(setUnreadNotificationCount)
-      .catch((err) => logError("Failed to load unread notification count:", err));
-  }, []);
-
-  const loadLatest = useCallback(() => {
-    setLatestLoading(true);
-    return fetchLatestChapters(6, courseId)
-      .then(setLatestChapters)
-      .catch((err) => logError("Failed to load latest updates:", err))
-      .finally(() => setLatestLoading(false));
-  }, [courseId]);
-
-  const loadRecommended = useCallback(() => {
-    setRecommendedLoading(true);
-    return fetchRecommendedChapters(new Set(), yearId ?? years[0]?.id, 6, courseId)
-      .then(setRecommended)
-      .catch((err) => logError("Failed to load recommendations:", err))
-      .finally(() => setRecommendedLoading(false));
-  }, [years, courseId, yearId]);
-
-  const loadRecentActivity = useCallback(() => {
-    setRecentLoading(true);
-    return Promise.all([getLastViewedChapter(courseId), getRecentChapters(courseId)])
-      .then(([last, list]) => {
-        setContinueChapter(last);
-        setRecentChapters(list.slice(1, 6)); // skip the "continue learning" one
-      })
-      .finally(() => setRecentLoading(false));
-  }, [courseId]);
-
   useEffect(() => {
-    loadPurchases();
-    loadNotifications();
-    loadUnreadNotificationCount();
     logAppOpen();
-
     // A referral code typed at sign-up is applied now that there's a session.
     applyPendingReferralCode().then((result) => {
       if (result?.status === "success") {
         Alert.alert("Referral applied", "Your friend's referral code has been applied.");
       }
     });
-  }, [loadPurchases, loadNotifications, loadUnreadNotificationCount]);
+  }, []);
 
-  // Course-scoped sections load once the student's course is known and
-  // reload if it changes.
+  useFocusEffect(useCallback(() => {
+    void loadRecentActivity();
+    void refreshPurchases2();
+    void loadUnreadNotificationCount();
+  }, [loadRecentActivity, refreshPurchases2, loadUnreadNotificationCount]));
+
+  const refreshRun = useRef({ generation: 0, mounted: true });
+  const context = dashboardContextKey();
   useEffect(() => {
-    if (!ready) return;
-    loadYears();
-    loadYearProducts();
-    loadLatest();
-  }, [ready, loadYears, loadYearProducts, loadLatest]);
-
-  // Recommendations depend on years being loaded first (used as a
-  // preference signal), so kick off once years arrive.
-  useEffect(() => {
-    if (ready && !yearsLoading) loadRecommended();
-  }, [ready, yearsLoading, loadRecommended]);
-
-  // Recently viewed / continue learning is local-device data, so refresh
-  // it every time the screen regains focus (e.g. after finishing a chapter).
-  useFocusEffect(
-    useCallback(() => {
-      loadRecentActivity();
-      refreshPurchases2();
-      loadUnreadNotificationCount();
-    }, [loadRecentActivity, refreshPurchases2, loadUnreadNotificationCount])
-  );
-
+    const run = refreshRun.current;
+    run.mounted = true;
+    run.generation++;
+    setRefreshing(false);
+    return () => { run.mounted = false; run.generation++; };
+  }, [context]);
   const onRefresh = useCallback(() => {
+    const run = refreshRun.current;
+    const generation = ++run.generation;
+    const key = dashboardContextKey();
     setRefreshing(true);
-    Promise.all([
-      loadYears(),
-      loadYearProducts(),
-      loadPurchases(),
-      loadNotifications(),
-      loadUnreadNotificationCount(),
-      loadLatest(),
-      loadRecommended(),
-      loadRecentActivity(),
-    ]).finally(() => setRefreshing(false));
+    void Promise.all([
+      loadYears(), loadYearProducts(), loadPurchases(), loadNotifications(),
+      loadUnreadNotificationCount(), loadLatest(), loadRecommended(), loadRecentActivity(),
+    ]).catch(err => logError("Failed to refresh Home:", err)).finally(() => {
+      if (run.mounted && run.generation === generation && key === dashboardContextKey()) setRefreshing(false);
+    });
   }, [loadYears, loadYearProducts, loadPurchases, loadNotifications, loadUnreadNotificationCount, loadLatest, loadRecommended, loadRecentActivity]);
 
   const goToChapter = useCallback((c: { id: string; title: string; subjectId: string; subjectTitle: string; yearId: string; yearTitle: string }) => {
@@ -381,6 +297,12 @@ export default function HomeScreen() {
 
         <SectionHeader title="Quick Access" />
         <FeatureCard
+          title="Question Papers"
+          icon="📄"
+          color={COLORS.accent}
+          onPress={() => navigation.navigate("QuestionPaperYears")}
+        />
+        <FeatureCard
           title="PDF Notes"
           icon="📚"
           color={COLORS.success}
@@ -523,12 +445,12 @@ const styles = StyleSheet.create({
 
   body: {
     flex: 1,
-    paddingHorizontal: SPACING.lg,
+    paddingHorizontal: SPACING.screen,
     paddingTop: SPACING.md,
   },
 
   yearsList: {
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.sm,
   },
 
   storeBanner: {

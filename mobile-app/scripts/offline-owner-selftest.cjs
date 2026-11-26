@@ -35,8 +35,10 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,5));
   store.set('medveda:offline-owner', 'first');
   const accessMocks = {
     '@react-native-async-storage/async-storage': mocks['@react-native-async-storage/async-storage'],
-    './authState': { getCurrentUser: () => user },
-    './secureNotesService': { NoteAccessError: class extends Error {}, getSecureNoteUrl: async () => { checks++; user = { id: 'third' }; } },
+    './authState': { getCurrentUser: () => user, getAuthEpoch: () => 0 },
+    '../config/supabase': { supabase: { from: () => ({ select() { return this; }, eq() { return this; },
+      maybeSingle: async () => ({ data: { is_free_preview: true }, error: null }) }) } },
+    './secureNotesService': { NoteAccessError: class extends Error {}, NoteOfflineError: class extends Error {}, getSecureNoteUrl: async () => { checks++; user = { id: 'third' }; } },
     './offlineNoteVerification': { hasRecentNoteVerification: async () => true, recordNoteVerification: async () => { records++; }, clearNoteVerification: async () => {} },
     '../utils/downloadManager': { getDownload:()=>({isFreePreview:true}),cancelDownload: async () => {} },
   };

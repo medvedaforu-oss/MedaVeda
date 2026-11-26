@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const {harness,load,jsx,nodes}=require('../../mobile-app/scripts/ui-harness.cjs');
+const h=harness();const mocks={'react':h.react,'react/jsx-runtime':jsx};
+for(const name of ['Modal','Input','Button','CoursePicker'])mocks['./'+name]={__esModule:true,default:name};
+const Form=load('admin-panel/src/components/ProductFormModal.tsx',mocks).default;
+const legacy={id:'p',revision:1,title:'Legacy',productType:'other',scope:'chapter',price:49,active:true,courseId:'bams'};
+const props={open:true,courses:[],years:[],subjects:[],chapters:[],initialData:legacy,onClose(){},async onSubmit(){}};
+const render=()=>h.render(()=>Form(props));
+const select=tree=>nodes(tree).find(n=>n.type==='select'&&n.props['aria-label']==='Product classification');
+render();let tree=render();assert.equal(select(tree).props.value,'other','legacy product silently reclassified');
+const text=JSON.stringify(tree);assert.match(text,/Only Notes and Notes bundle are eligible for Google Play Billing/);assert.match(text,/verified catalog readiness/);
+const bundle=()=>nodes(render()).find(n=>n.type==='button'&&JSON.stringify(n.props.children).includes('Multi-Year Bundle'));
+bundle().props.onClick();assert.equal(select(render()).props.value,'other','scope change retagged legacy product');
+select(render()).props.onChange({target:{value:'notes'}});render();bundle().props.onClick();assert.equal(select(render()).props.value,'notes_bundle');
+h.unmount();console.log('PASS Notes guidance and classification: legacy preserved; explicit Notes follows bundle scope');

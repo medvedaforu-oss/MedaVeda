@@ -68,13 +68,34 @@ Deno.serve(async (req: Request) => {
       console.error("verify-play-purchase settlement failed", settleError?.code);
       return jsonResponse({ error: "Purchase confirmation pending. Please retry." }, 503);
     }
-    if (!settlement.duplicate) {
-      const { data: committed, error: proofError } = await supabaseAdmin.rpc("play_entitlement_committed", {
+    // Bind the settled order to the authenticated buyer and verified receipt snapshot.
+    const { data: committedOrder, error: identityError } = await supabaseAdmin.from("orders")
+      .select("id,user_id,product_id,provider,status,purchase_token,play_sku,play_purchase_option_id,amount,external_transaction_token,external_choice_bound_order_id")
+      .eq("id", orderId).maybeSingle();
+    if (identityError || !committedOrder || committedOrder.id !== orderId ||
+        committedOrder.user_id !== user.id || committedOrder.product_id !== productId ||
+        committedOrder.provider !== "play" || committedOrder.status !== "paid" ||
+        committedOrder.purchase_token !== token || committedOrder.play_sku !== order.play_sku ||
+        committedOrder.play_purchase_option_id !== order.play_purchase_option_id ||
+        Number(committedOrder.amount) !== Number(order.amount) ||
+        committedOrder.external_transaction_token || committedOrder.external_choice_bound_order_id)
+      return jsonResponse({ success: false, pending: true, message: "Notes access confirmation pending. Please retry." }, 503);
+    if (settlement.duplicate === true) {
+      // A duplicate grants no access and must NOT be consumed. Its payment and
+      // duplicate disposition must be durably recorded before releasing checkout.
+      const { data: recorded, error: duplicateError } = await supabaseAdmin.rpc("play_duplicate_recorded", {
         p_order_id: orderId, p_token: token,
       });
-      if (proofError || committed !== true)
-        return jsonResponse({ success: false, pending: true, message: "Notes access confirmation pending. Please retry." }, 503);
+      if (duplicateError || recorded !== true)
+        return jsonResponse({ success: false, pending: true, message: "Payment review confirmation pending. Please retry." }, 503);
+      return jsonResponse({ success: false, pending: false, terminal: true, outcome: "duplicate",
+        internalOrderId: orderId, message: "This product was already owned. No additional access was granted; contact MedVeda support for a refund." });
     }
+    const { data: committed, error: proofError } = await supabaseAdmin.rpc("play_entitlement_committed", {
+      p_order_id: orderId, p_token: token,
+    });
+    if (proofError || committed !== true)
+      return jsonResponse({ success: false, pending: true, message: "Notes access confirmation pending. Please retry." }, 503);
     if (consumed) {
       await supabaseAdmin.from("orders").update({ play_consumption_status: "consumed" }).eq("id", orderId).eq("purchase_token", token);
     } else {
@@ -89,7 +110,6 @@ Deno.serve(async (req: Request) => {
       }
     }
     const { data: product } = await supabaseAdmin.from("products").select("title").eq("id", productId).maybeSingle();
-    if (settlement.duplicate) return jsonResponse({ error: "This product was already owned; contact support for a refund." }, 409);
     return jsonResponse({ success: true, internalOrderId: orderId, amount: Number(settlement.amount),
       productTitle: product?.title ?? "Your content" });
   } catch (error) {

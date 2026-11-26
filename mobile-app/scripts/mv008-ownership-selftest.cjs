@@ -181,7 +181,7 @@ async function test(name, fn) { await fn(); passed++; console.log('PASS ' + name
         'react-native': { View: 'View', Text: 'Text', FlatList: 'List', ActivityIndicator: 'Spinner', StyleSheet: { create: x => x } },
         '@react-navigation/native': { useFocusEffect: fn => s.react.useEffect(fn, [fn]) },
         '../../hooks/usePurchaseResource': { __esModule: true, default: s.resource }, '../../services/authState': s.auth,
-        '../../services/purchasesService': service, '../../services/playBillingService': {}, '../../config/paymentProvider': { paymentProvider: 'disabled' },
+        '../../services/purchasesService': service, '../../config/paymentProvider': { paymentProvider: 'disabled' },
         '../../services/paymentService': { recoverMyPendingPayments: () => new Promise(resolve => { recovered = resolve; }) },
       };
       for (const name of ['EmptyState', 'ErrorState', 'BottomNav']) mocks['../../components/' + name] = { __esModule: true, default: name };

@@ -65,8 +65,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
+    minHeight: 80,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    marginBottom: SPACING.sm,
     ...SHADOW.card,
   },
 
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
 
   textBlock: {
     flex: 1,
+    minWidth: 0,
   },
 
   title: {

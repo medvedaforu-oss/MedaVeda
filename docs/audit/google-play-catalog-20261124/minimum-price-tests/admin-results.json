@@ -1,0 +1,19 @@
+[
+  {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "cwd": "admin-panel",
+    "exit": 0
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "cwd": "admin-panel",
+    "exit": 0
+  }
+]
