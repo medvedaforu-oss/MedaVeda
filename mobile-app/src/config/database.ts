@@ -104,6 +104,15 @@ export function initDatabase(): void {
       synced INTEGER DEFAULT 0
     );
 
+    -- Only unfinished attempts live here; finalization atomically moves answers into the existing outbox.
+    CREATE TABLE IF NOT EXISTS quiz_sessions_local (
+      owner_id TEXT NOT NULL,
+      quiz_id TEXT NOT NULL,
+      attempt_id TEXT NOT NULL UNIQUE,
+      snapshot TEXT NOT NULL,
+      PRIMARY KEY (owner_id, quiz_id)
+    );
+
     CREATE TABLE IF NOT EXISTS bookmarks_local (
       id TEXT PRIMARY KEY,
       content_type TEXT NOT NULL,
@@ -158,6 +167,7 @@ export function resetDatabase(): void {
     DELETE FROM downloads;
     DELETE FROM sync_queue;
     DELETE FROM quiz_attempts_local;
+    DELETE FROM quiz_sessions_local;
     DELETE FROM bookmarks_local;
     DELETE FROM reading_progress_local;
   `);

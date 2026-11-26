@@ -91,7 +91,7 @@ for (const f of files) {
   }
   if (!attribute(html, "meta", "property", "og:image:alt") || !attribute(html, "meta", "name", "twitter:image:alt")) err(f, "missing social image description");
   const noindex = /name="robots" content="noindex/.test(html);
-  if (noindex !== ["404.html", "account-verified.html", "reset-password.html", "question-paper.html"].includes(f)) err(f, "unexpected indexing directive");
+  if (noindex !== ["404.html", "account-verified.html", "reset-password.html", "question-paper.html", "note.html", "quiz.html"].includes(f)) err(f, "unexpected indexing directive");
   if (!noindex) indexable.add(canonical);
   const main = html.match(/<main id="main">([\s\S]*?)<\/main>/)?.[1] ?? "";
   if (!noindex) {

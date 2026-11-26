@@ -20,6 +20,7 @@ async function check(platform) {
     './src/hooks/useForceUpdate': { __esModule: true, default: () => ({ required }) },
     './src/config/database': { initDatabase() {} },
     './src/utils/downloadManager': { removeLegacyOfflineQuizzes: () => new Promise(resolve => { clean = resolve; }), recoverInterruptedDownloads() {} },
+    './src/services/quizAttemptRecovery':{watchQuizAttemptRecovery:()=>()=>{}},
     './src/services/syncEngine': { startSyncEngine() {}, stopSyncEngine() { stopped = true; } },
     './src/services/pushNotifications': { registerForPushNotifications: async () => {} },
     './src/services/authState': { getCurrentUser: () => null }, './src/utils/logger': { logError() {} },
@@ -45,6 +46,8 @@ async function check(platform) {
     [null, null, 'Login'], [{ user: { id: 'fixture' } }, null, 'Home'],
     [null, 'medveda://reset-password#type=recovery', 'ResetPassword'],
     [null, 'https://www.medveda.in/question-paper/invalid?type=recovery', 'Login'],
+    [null, 'https://www.medveda.in/note/invalid?type=recovery', 'Login'],
+    [null, 'https://www.medveda.in/quiz/invalid?type=recovery', 'Login'],
   ]) {
     const h = harness(); const routes = []; const navigation = { replace: route => routes.push(route) };
     const Splash = load('mobile-app/src/screens/auth/SplashScreen.tsx', {

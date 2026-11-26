@@ -11,6 +11,7 @@ import MaintenanceScreen from "./src/screens/maintenance/MaintenanceScreen";
 import useMaintenanceMode from "./src/hooks/useMaintenanceMode";
 import useForceUpdate from "./src/hooks/useForceUpdate";
 
+import { watchQuizAttemptRecovery } from "./src/services/quizAttemptRecovery";
 import { initDatabase } from "./src/config/database";
 import { recoverInterruptedDownloads, removeLegacyOfflineQuizzes } from "./src/utils/downloadManager";
 
@@ -30,6 +31,7 @@ export default function App() {
   const maintenance = useMaintenanceMode();
   const [ready, setReady] = useState(Platform.OS === "web");
   const [startupError, setStartupError] = useState(false);
+  useEffect(() => { if (ready) return watchQuizAttemptRecovery(); }, [ready]);
 
   const initializeApp = useCallback(async () => {
     setStartupError(false);

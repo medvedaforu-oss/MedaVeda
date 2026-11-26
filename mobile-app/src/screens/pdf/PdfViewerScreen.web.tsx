@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ContentShareButton from "../../features/sharing/ContentShareButton";
 import ErrorState from "../../components/ErrorState";
 import { supabase } from "../../config/supabase";
 import { getCurrentUser } from "../../services/authState";
@@ -9,7 +10,7 @@ import { getSecureNoteUrl } from "../../services/secureNotesService";
 export default function PdfViewerScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const { pdfUrl, noteId } = route.params ?? {};
+  const { pdfUrl, noteId, title } = route.params ?? {};
   const owner = useRef(getCurrentUser()?.id);
   const generation = useRef(0);
   const [source, setSource] = useState(pdfUrl);
@@ -55,6 +56,7 @@ export default function PdfViewerScreen() {
       onRetry={() => void retry()} busy={busy} /></View>;
   }
   return <View style={styles.container}>
+    {!!noteId && <ContentShareButton type="note" id={noteId} title={title} />}
     <TouchableOpacity accessibilityRole="button" accessibilityLabel="Reload PDF with a fresh link"
       disabled={busy} onPress={() => void retry()} style={styles.reload}>
       <Text>{busy ? "Refreshing PDF…" : "Reload PDF with a fresh link"}</Text>

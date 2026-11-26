@@ -6,8 +6,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  AppState,
+  Alert,
 } from "react-native";
 
+import ErrorState from "../../components/ErrorState";
+import { quizClock, formatQuizTime, type QuizDraft } from "../../services/quizSession";
+import { openQuizDraft, saveQuizDraft, assertQuizOwner, forgetWebQuizDraft } from "../../services/quizSessionStore";
 import EmptyState from "../../components/EmptyState";
 
 import { COLORS } from "../../theme/colors";
@@ -15,7 +20,7 @@ import { FONT } from "../../theme/fonts";
 import { SPACING } from "../../theme/spacing";
 import { RADIUS } from "../../theme/radius";
 
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation, usePreventRemove } from "@react-navigation/native";
 
 import OptionCard from "../../components/OptionCard";
 import ProgressBar from "../../components/ProgressBar";
@@ -27,8 +32,6 @@ import { getLocalQuizAttempts, recordQuizAttempt } from "../../services/quizAtte
 import { OFFLINE_DB_SUPPORTED } from "../../config/database";
 import { loadOfflineQuiz } from "../../utils/downloadManager";
 import SuccessBurst from "../../components/motion/SuccessBurst";
-
-const QUESTION_TIME_SECONDS = 30;
 
 // Plays a single Test's questions (20 MCQs). Access has already been
 // MedVeda 2.0: Quiz Tests are always free - plays whatever Test it's
@@ -98,37 +101,57 @@ export default function QuizScreen() {
     );
   }
 
-  return <QuizSession test={test} subjectId={subjectId} subjectTitle={subjectTitle} navigation={navigation} />;
+  return <QuizAttemptLoader key={test.id} test={test} subjectId={subjectId} subjectTitle={subjectTitle} navigation={navigation} />;
 }
 
-function QuizSession({ test, subjectId, subjectTitle, navigation }: {
+function QuizAttemptLoader({ test, subjectId, subjectTitle, navigation }: {
   test: QuizTest; subjectId: string; subjectTitle: string; navigation: any;
 }) {
+  const [draft, setDraft] = useState<QuizDraft | null>(null);
+  const [error, setError] = useState('');
+  const [revision, setRevision] = useState(0);
+  useEffect(() => {
+    try { setError(''); setDraft(openQuizDraft(test, subjectId, subjectTitle)); }
+    catch (error) { setError(error instanceof Error ? error.message : 'Could not save this Quiz. Please retry.'); }
+  }, [test, subjectId, subjectTitle, revision]);
+  if (error) return <View style={styles.container}><ErrorState message={error} onRetry={() => setRevision(v => v + 1)} /></View>;
+  if (!draft) return <View style={styles.center}><ActivityIndicator color={COLORS.accent} /></View>;
+  return <QuizSession key={draft.attemptId} initialDraft={draft} navigation={navigation}
+    onRestart={() => { setDraft(null); setRevision(v => v + 1); }} />;
+}
+
+export function QuizSession({ initialDraft, navigation, onRestart }: {
+  initialDraft: QuizDraft; navigation: any; onRestart: () => void;
+}) {
+  const { test, subjectId, subjectTitle } = initialDraft;
   const questions = test.questions;
-
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-
-  // One entry per question - null means "not answered yet". Kept as an
-  // array (rather than a single "selectedAnswer" value) so Previous/Next
-  // can move freely between questions while still remembering what was
-  // picked on each one.
-  const [answers, setAnswers] = useState<(number | null)[]>(
-    Array(questions.length).fill(null)
-  );
-
-  // The furthest question index the user has reached "live" (i.e. with
-  // the countdown actually running on it). Going back with Previous does
-  // not move this - it's what lets the timer stay paused while reviewing
-  // an earlier question instead of restarting it.
-  const [maxReached, setMaxReached] = useState(0);
-
+  const draftRef = useRef(initialDraft);
+  const clock = useRef<ReturnType<typeof quizClock> | null>(null);
+  if (!clock.current) clock.current = quizClock(initialDraft);
+  const [currentQuestion, setCurrentQuestion] = useState(initialDraft.currentQuestion);
+  const [answers, setAnswers] = useState<(number | null)[]>(initialDraft.answers);
   const [finished, setFinished] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(QUESTION_TIME_SECONDS);
+  const [timeLeft, setTimeLeft] = useState(clock.current.remaining());
   const submittedRef = useRef(false);
   const latestAnswers = useRef(answers);
+  const retryAfter = useRef(0);
+  const [saveError, setSaveError] = useState('');
+  const [submissionFailed, setSubmissionFailed] = useState(false);
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [verificationStatus, setVerificationStatus] = useState("unverified");
   const [serverScore, setServerScore] = useState<number | null>(null);
+
+  usePreventRemove(!finished && getCurrentUser()?.id === initialDraft.ownerId, ({ data }) => {
+    Alert.alert('Leave this Quiz?', 'Your answers are saved. The 15-minute timer continues while you are away.', [
+      { text: 'Stay', style: 'cancel' }, { text: 'Leave Quiz', onPress: () => navigation.dispatch(data.action) },
+    ]);
+  });
+
+  const persist = useCallback((changes: Partial<QuizDraft> = {}) => {
+    const next = { ...draftRef.current, ...changes, observedAt: clock.current!.now() };
+    saveQuizDraft(next);
+    draftRef.current = next;
+  }, []);
 
   useEffect(() => {
     if (!finished || !attemptId) return;
@@ -144,95 +167,72 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
     return () => clearInterval(timer);
   }, [finished, attemptId, test?.id]);
 
-  const saveScore = useCallback(() => {
-    try {
-      const user = getCurrentUser();
-
-      // Answers remain available offline. The backend computes the score
-      // from those answers when sync succeeds.
-      setVerificationStatus(OFFLINE_DB_SUPPORTED && user?.id &&
-        Number.isSafeInteger(test.questionRevision) && (test.questionRevision ?? 0) > 0
-        ? "unverified" : "legacy");
-      const id = recordQuizAttempt({
-        quizId: test.id,
-        quizTitle: test.title,
-        subjectId,
-        subjectTitle,
-        userId: user?.id,
-        userEmail: user?.email,
-        score: 0, // Unverified placeholder; only the server knows the key.
-        totalQuestions: questions.length,
-        answers: [...latestAnswers.current],
-        questionRevision: test.questionRevision,
-      });
-      setAttemptId(id);
-    } catch (error) {
-      logError("QuizScreen: saving quiz attempt failed", error);
-      setVerificationStatus("legacy");
-    }
-  }, [test, subjectId, subjectTitle, questions.length]);
-
   const handleSubmit = useCallback(() => {
     if (submittedRef.current) return;
     submittedRef.current = true;
-    saveScore();
-    setFinished(true);
-  }, [saveScore]);
+    try {
+      assertQuizOwner(draftRef.current);
+      const user = getCurrentUser();
+      const id = recordQuizAttempt({
+        attemptId: draftRef.current.attemptId,
+        quizId: test.id, quizTitle: test.title, subjectId, subjectTitle,
+        userId: user?.id, userEmail: user?.email, score: 0, totalQuestions: questions.length,
+        answers: [...latestAnswers.current], questionRevision: test.questionRevision,
+      });
+      forgetWebQuizDraft(draftRef.current);
+      setVerificationStatus(OFFLINE_DB_SUPPORTED && user?.id && Number.isSafeInteger(test.questionRevision) &&
+        (test.questionRevision ?? 0) > 0 ? 'unverified' : 'legacy');
+      setAttemptId(id); setSaveError(''); setFinished(true);
+    } catch (error) {
+      // Keep the same ID and answers for retry. Do not report completion until the local transaction commits.
+      submittedRef.current = false;
+      retryAfter.current = Date.now() + 5000;
+      setSubmissionFailed(true);
+      setSaveError('Could not save your submission. Your answers are retained. Tap Retry submission.');
+      logError('QuizScreen: saving quiz attempt failed', error);
+    }
+  }, [test, subjectId, subjectTitle, questions.length]);
 
   const goToQuestion = useCallback((index: number) => {
-    setCurrentQuestion(index);
-    setMaxReached((prev) => Math.max(prev, index));
-    if (answers[index] === null) {
-      setTimeLeft(QUESTION_TIME_SECONDS);
-    }
-  }, [answers]);
-
-  const handleNext = useCallback(() => {
-    if (currentQuestion + 1 < questions.length) {
-      goToQuestion(currentQuestion + 1);
-    } else {
-      handleSubmit();
-    }
-  }, [currentQuestion, questions.length, goToQuestion, handleSubmit]);
-
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
-  };
-
+    if (submittedRef.current || finished) return;
+    if (clock.current!.remaining() === 0) { handleSubmit(); return; }
+    try { persist({ currentQuestion: index }); setCurrentQuestion(index); setSaveError(''); setSubmissionFailed(false); }
+    catch { setSaveError('Could not save progress. Please retry before leaving this Quiz.'); }
+  }, [finished, persist, handleSubmit]);
+  const handleNext = () => currentQuestion + 1 < questions.length ? goToQuestion(currentQuestion + 1) : handleSubmit();
+  const handlePrevious = () => { if (currentQuestion > 0) goToQuestion(currentQuestion - 1); };
   const handleAnswer = (index: number) => {
     if (submittedRef.current || finished || index < 0 || index >= questions[currentQuestion].options.length) return;
-    const updated = [...latestAnswers.current];
-    updated[currentQuestion] = index;
-    latestAnswers.current = updated;
-    setAnswers(updated);
+    if (clock.current!.remaining() === 0) { setTimeLeft(0); handleSubmit(); return; }
+    const updated = [...latestAnswers.current]; updated[currentQuestion] = index;
+    try { persist({ answers: updated }); latestAnswers.current = updated; setAnswers(updated); setSaveError(''); setSubmissionFailed(false); }
+    catch { setSaveError('Could not save this answer. Please retry.'); }
   };
-
-  const selectedAnswer =
-    answers[currentQuestion] === undefined ? null : answers[currentQuestion];
-
-  // The timer only ever runs "live" on the furthest unanswered question -
-  // reviewing an earlier one with Previous is untimed.
-  const isTimerActive =
-    currentQuestion === maxReached && selectedAnswer === null;
+  const selectedAnswer = answers[currentQuestion] ?? null;
 
   useEffect(() => {
-    if (finished || !isTimerActive) {
-      return;
-    }
-
-    if (timeLeft === 0) {
-      handleNext();
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [timeLeft, finished, isTimerActive, handleNext]);
+    if (finished) return;
+    let lastSaved = clock.current!.now();
+    const refresh = () => {
+      if (submittedRef.current) return;
+      const remaining = clock.current!.remaining();
+      setTimeLeft(remaining);
+      if (remaining === 0) { if (Date.now() >= retryAfter.current) handleSubmit(); return; }
+      if (clock.current!.now() - lastSaved >= 5000) {
+        try { persist(); lastSaved = clock.current!.now(); }
+        catch { setSaveError('Could not save progress. Please retry before leaving this Quiz.'); }
+      }
+    };
+    refresh();
+    const timer = setInterval(refresh, 250);
+    const subscription = AppState.addEventListener('change', () => {
+      if (!submittedRef.current) {
+        try { persist(); } catch { setSaveError('Could not save progress. Please retry before leaving this Quiz.'); }
+        refresh();
+      }
+    });
+    return () => { clearInterval(timer); subscription.remove(); };
+  }, [finished, handleSubmit, persist]);
 
   const question = questions[currentQuestion];
   const displayScore = verificationStatus === "verified" ? serverScore : null;
@@ -283,18 +283,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.button}
-            onPress={() => {
-              submittedRef.current = false;
-              latestAnswers.current = Array(questions.length).fill(null);
-              setAnswers(latestAnswers.current);
-              setAttemptId(null);
-              setServerScore(null);
-              setVerificationStatus("unverified");
-              setCurrentQuestion(0);
-              setMaxReached(0);
-              setFinished(false);
-              setTimeLeft(QUESTION_TIME_SECONDS);
-            }}
+            onPress={onRestart}
           >
             <Text style={styles.buttonText}>Restart Test</Text>
           </TouchableOpacity>
@@ -312,12 +301,23 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.quizContent}>
+    <View style={styles.container}>
+      <View style={styles.timerCard}>
+        <Text style={styles.timerLabel}>Test time left</Text>
+        <Text accessibilityLabel={`Test time left ${formatQuizTime(timeLeft)}`} style={styles.timer}>{formatQuizTime(timeLeft)}</Text>
+      </View>
+      {!!saveError && <View><Text accessibilityRole="alert" style={{ color: COLORS.error }}>{saveError}</Text>
+        <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={submissionFailed ? handleSubmit : () => {
+          try { persist(); setSaveError(''); } catch { setSaveError('Could not save progress. Please retry.'); }
+        }}>
+          <Text style={styles.previousButtonText}>{submissionFailed ? 'Retry submission' : 'Retry save'}</Text>
+        </TouchableOpacity></View>}
+      <ScrollView contentContainerStyle={styles.quizContent}>
       <Text style={styles.title}>{subjectTitle}</Text>
       <Text style={styles.subtitle}>{test.title}</Text>
 
       <Text style={styles.progressTitle}>Quiz Progress</Text>
-      <Text style={styles.subtitle}>You can change answers and use Previous before submitting.</Text>
+      <Text style={styles.subtitle}>Complete test: 15 minutes. You can change answers and submit before time runs out.</Text>
 
       <ProgressBar
         progress={((currentQuestion + 1) / questions.length) * 100}
@@ -326,13 +326,6 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
       <Text style={styles.counter}>
         {currentQuestion + 1} / {questions.length}
       </Text>
-
-      <View style={styles.timerCard}>
-        <Text style={styles.timerLabel}>Time Left</Text>
-        <Text style={styles.timer}>
-          {isTimerActive ? `⏱ ${timeLeft}s` : "—"}
-        </Text>
-      </View>
 
       <View style={styles.questionCard}>
         <Text style={styles.questionNumber}>
@@ -345,7 +338,7 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
         <OptionCard
           key={index}
           title={option}
-          disabled={finished}
+          disabled={finished || timeLeft === 0}
           onPress={() => handleAnswer(index)}
           isSelected={selectedAnswer === index}
         />
@@ -375,7 +368,8 @@ function QuizSession({ test, subjectId, subjectTitle, navigation }: {
           </Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 
 import { useFocusEffect, useRoute, useNavigation } from "@react-navigation/native";
 
+import ContentShareButton from "../../features/sharing/ContentShareButton";
 import TestCard from "../../components/TestCard";
 import EmptyState from "../../components/EmptyState";
 
@@ -97,6 +98,7 @@ function TestListScreen() {
           renderItem={({ item }) => (
             <TestCard
               title={item.title}
+              shareAction={<ContentShareButton type="quiz" id={item.id} title={item.title} />}
               questionCount={item.questions?.length ?? 0}
               locked={false}
               free={true}

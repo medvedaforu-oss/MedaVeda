@@ -14,7 +14,7 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
   '../../navigation/withRouteValidation':{withRouteValidation:s=>s},'../../hooks/useLoadResource':{__esModule:true,default:()=>({value:[note],loading:false,error:false,retry(){}})},
   '../../components/PurchaseOwnershipStatus':{__esModule:true,default:'PurchaseOwnershipStatus'},
   '../../hooks/usePurchases':{__esModule:true,default:()=>({isChapterOwned:()=>unlocked,refresh(){},loading:false,error:null})},
-  '../../hooks/useDownloads':{__esModule:true,default:()=>({isDownloaded:()=>false,getItem:()=>null})},'../../services/notesService':{},'../../services/authState':{getCurrentUser:()=>({id:'buyer'})},
+  '../../hooks/useDownloads':{__esModule:true,default:()=>({isDownloaded:()=>false,getItem:()=>null})},'../../services/notesService':{},'../../features/sharing/ContentShareButton':{__esModule:true,default:'ShareButton'},'../../services/authState':{getCurrentUser:()=>({id:'buyer'})},
   '../../services/secureNotesService':secure,'../../utils/logger':{logError(){}}};
   for(const name of ['LoadError','NoteCard','EmptyState','SearchBar','UnlockOptionsPanel'])mocks['../../components/'+name]={__esModule:true,default:name};
   for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING']])mocks['../../theme/'+file]={[key]:{}};

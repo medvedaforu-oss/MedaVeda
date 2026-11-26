@@ -85,7 +85,7 @@ console.log('PASS restored loading/error/offline states, retry/buttons and exact
  rn.Platform.OS='android';rn.Share={share:async content=>{assert.equal(content.message,'Study Paper on MedVeda.\n\nOpen in MedVeda:\nhttps://www.medveda.in/question-paper/11111111-1111-4111-8111-111111111111');assert(!JSON.stringify(content).includes('signed-url'));shares++;}};rn.Alert={alert(){throw Error('Unexpected share failure');}};
  const Toolbar=load('mobile-app/src/features/question-papers/PaperReaderToolbar.tsx',{
   'react/jsx-runtime':jsx,'react-native':rn,'../../theme/colors':{COLORS:{}},
-  './PaperLayout':{...ui},'./questionPaperLinks':require('../src/features/question-papers/questionPaperLinks.js'),
+  '../sharing/shareLink':load('mobile-app/src/features/sharing/shareLink.ts',{'react-native':rn,'expo-clipboard':{}}),'./PaperLayout':{...ui},'./questionPaperLinks':require('../src/features/question-papers/questionPaperLinks.js'),
  }).default;
  const pdf={paperId:'11111111-1111-4111-8111-111111111111',value:'signed-url',loading:false,busy:false,download:()=>downloads++,retry:()=>retried++,isCurrent:()=>valid};
  const buttons=tree=>nodes(tree).filter(n=>n.type===ui.PaperButton);

@@ -3,7 +3,7 @@ import { Alert, AppState } from 'react-native';
 import type { NavigationContainerRefWithCurrent, ParamListBase } from '@react-navigation/native';
 import { getCurrentUser } from '../../services/authState';
 import { getCourseYear, subscribeCourseYear } from '../../services/courseState';
-import { getPaperDestination } from './service';
+import { resolveContentDestination } from '../sharing/contentDestination';
 import { paperLinkQueue } from './paperLinkRuntime';
 
 // Startup/login/onboarding own their transitions. Continue only after their normal route has settled.
@@ -24,21 +24,22 @@ export default function useQuestionPaperRouting(
     const context = () => {
       const currentRoute = navigation.getCurrentRoute()?.name;
       const course = getCourseYear();
+      const quizInStack = navigation.getRootState?.()?.routes.some(entry => entry.name === 'Quiz');
       return {
         owner: getCurrentUser()?.id ?? null, courseId: course.courseId,
         ready: ready && navigation.isReady() && AppState.currentState === 'active' &&
-          !!currentRoute && !AUTH_ROUTES.has(currentRoute) && course.status === 'ready',
+          !!currentRoute && !AUTH_ROUTES.has(currentRoute) && currentRoute !== 'Quiz' && !quizInStack && course.status === 'ready',
       };
     };
     void paperLinkQueue.process({
       context,
-      resolve: getPaperDestination,
+      resolve: resolveContentDestination,
       open: destination => {
-        // navigate updates the current native-stack route rather than pushing a duplicate.
-        // A new resource scope refreshes an already-visible paper's expiring URL.
-        navigation.navigate('QuestionPaperPdf', { ...destination, linkRevision: ++readerRequest.current });
+        // Reuse an existing resource route, including Notes below its reader.
+        // A new resource scope revalidates access and refreshes expiring URLs.
+        navigation.navigate(destination.screen, { ...destination.params, courseId: destination.courseId, linkRevision: ++readerRequest.current }, { pop: true });
       },
-      error: (message, retry) => Alert.alert('Question Paper', message,
+      error: (message, retry) => Alert.alert('MedVeda', message,
         retry ? [{ text: 'Close', style: 'cancel' }, { text: 'Retry', onPress: retry }] : [{ text: 'OK' }]),
     });
   }, [navigation, ready, route, revision]);

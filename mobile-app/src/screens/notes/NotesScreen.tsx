@@ -3,7 +3,7 @@ import usePurchases from "../../hooks/usePurchases";
 import { withRouteValidation } from "../../navigation/withRouteValidation";
 import LoadError from "../../components/LoadError";
 import useLoadResource from "../../hooks/useLoadResource";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {
 
 import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/native";
 
+import ContentShareButton from "../../features/sharing/ContentShareButton";
 import NoteCard from "../../components/NoteCard";
 import EmptyState from "../../components/EmptyState";
 import SearchBar from "../../components/SearchBar";
@@ -39,6 +40,8 @@ function NotesScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
+  const { noteId: sharedNoteId, linkRevision } = route.params;
+  const sharedOpened = useRef<string | null>(null);
   const { chapterId, chapterTitle, subjectId, subjectTitle, yearId, yearTitle } =
     route.params;
 
@@ -101,8 +104,8 @@ function NotesScreen() {
 
 
   const filteredData = useMemo(() => notes.filter((item) =>
-    `${item.title} ${item.description ?? ""}`.toLowerCase().includes(search.toLowerCase())
-  ), [notes, search]);
+    sharedNoteId ? item.id === sharedNoteId : `${item.title} ${item.description ?? ""}`.toLowerCase().includes(search.toLowerCase())
+  ), [notes, search, sharedNoteId]);
 
   const handleNotePress = useCallback(async (item: Note) => {
     const isFree = freeNoteIds.has(item.id);
@@ -120,7 +123,7 @@ function NotesScreen() {
     // bytes are already on-device.
     const downloaded = getItem(item.id);
     if (item.isFreePreview === true && downloaded?.status === "completed" && downloaded.localUri) {
-      navigation.navigate("PdfViewer", { pdfUrl: downloaded.localUri });
+      navigation.navigate("PdfViewer", { pdfUrl: downloaded.localUri, noteId: item.id, title: item.title });
       return;
     }
 
@@ -135,7 +138,7 @@ function NotesScreen() {
     try {
       const signedUrl = await getSecureNoteUrl(item.id);
       if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
-      navigation.navigate("PdfViewer", { pdfUrl: signedUrl, noteId: item.id });
+      navigation.navigate("PdfViewer", { pdfUrl: signedUrl, noteId: item.id, title: item.title });
     } catch (err) {
       if (!focused.current || run !== openGeneration.current || getCurrentUser()?.id !== owner) return;
       logError("Failed to resolve note URL:", err);
@@ -152,6 +155,16 @@ function NotesScreen() {
       }
     }
   }, [freeNoteIds, unlocked, getItem, navigation]);
+
+  useEffect(() => {
+    const key = `${sharedNoteId}:${linkRevision ?? ''}`;
+    if (!sharedNoteId || loading || error || purchasesLoading || purchasesError || sharedOpened.current === key) return;
+    const note = notes.find(item => item.id === sharedNoteId);
+    if (!note) return;
+    sharedOpened.current = key;
+    // Unpurchased paid notes stay on this exact card with the existing UnlockOptionsPanel.
+    if (unlocked || freeNoteIds.has(note.id)) void handleNotePress(note);
+  }, [sharedNoteId, linkRevision, loading, error, purchasesLoading, purchasesError, notes, unlocked, freeNoteIds, handleNotePress]);
 
   const handleDownloadPress = useCallback(async (item: Note) => {
     setResolvingNoteId(item.id);
@@ -187,6 +200,7 @@ function NotesScreen() {
     return (
       <NoteCard
         title={item.title}
+        shareAction={<ContentShareButton type="note" id={item.id} title={item.title} />}
         description={item.isFreePreview === true ? item.description : `${item.description ?? ""} • Online-only`}
         locked={!unlocked && !isFree}
         free={isFree && !unlocked}
@@ -224,7 +238,7 @@ function NotesScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingTop: SPACING.sm, paddingBottom: SPACING.xl }}
           renderItem={renderNote}
-          ListEmptyComponent={<EmptyState title="🔍 No Notes Found" />}
+          ListEmptyComponent={<EmptyState title={sharedNoteId ? "This note is unavailable or access is denied." : "🔍 No Notes Found"} />}
           ListFooterComponent={
             !unlocked ? (
               <UnlockOptionsPanel

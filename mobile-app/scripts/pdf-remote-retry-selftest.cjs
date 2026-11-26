@@ -10,7 +10,7 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
   '@react-navigation/native':{useRoute:()=>({params:{}}),useNavigation:()=>nav},
   '../../components/ErrorState':{__esModule:true,default:'Error'},'../../utils/downloadManager':{},'../../services/offlineNoteAccess':{},
   '../../config/supabase':{supabase:{auth:{onAuthStateChange:fn=>{auth=fn;return {data:{subscription:{unsubscribe(){}}}};}}}},
-  '../../services/authState':{getCurrentUser:()=>({id:user})},
+  '../../features/sharing/ContentShareButton':{__esModule:true,default:'ShareButton'},'../../services/authState':{getCurrentUser:()=>({id:user})},
   '../../services/secureNotesService':{getSecureNoteUrl:id=>{assert.equal(id,'note');requests++;return new Promise((yes,no)=>{resolve=yes;reject=no;});}},
   '../../theme/fonts':{FONT:{}},'../../utils/logger':{logError:(...args)=>logs.push(args)},
  },{setTimeout:fn=>{deadline=fn;return 1;},clearTimeout(){}}).PdfViewerSession;

@@ -8,6 +8,7 @@ import { enqueueForSync, drainQueue } from "./syncEngine";
 import { logDebug } from "../utils/logger";
 
 export interface QuizAttemptInput {
+  attemptId?: string;
   quizId: string;
   quizTitle: string;
   subjectId: string;
@@ -21,7 +22,7 @@ export interface QuizAttemptInput {
 }
 
 export function recordQuizAttempt(input: QuizAttemptInput): string {
-  const attemptId = `qa_${input.quizId}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const attemptId = input.attemptId ?? `qa_${input.quizId}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   if (!OFFLINE_DB_SUPPORTED) return attemptId;
   const db = getDb();
   const takenAt = Date.now();
@@ -29,8 +30,8 @@ export function recordQuizAttempt(input: QuizAttemptInput): string {
   const canVerify = !!input.userId && Number.isSafeInteger(input.questionRevision) &&
     (input.questionRevision ?? 0) > 0;
   db.withTransactionSync(() => {
-    db.runSync(
-      `INSERT INTO quiz_attempts_local
+    const inserted = db.runSync(
+      `INSERT OR IGNORE INTO quiz_attempts_local
         (attempt_id, quiz_id, chapter_id, score, total_questions, answers_json, taken_at, synced, verification_status)
        VALUES (?,?,?,?,?,?,?,0,?);`,
       [
@@ -45,7 +46,7 @@ export function recordQuizAttempt(input: QuizAttemptInput): string {
       ]
     );
 
-    if (canVerify) {
+    if (inserted.changes > 0 && canVerify) {
       enqueueForSync("quiz_attempt", "upsert", {
         attempt_id: attemptId,
         user_id: input.userId,
@@ -55,6 +56,8 @@ export function recordQuizAttempt(input: QuizAttemptInput): string {
       });
     }
 
+    // Same transaction as answers + outbox: recovery can never create a second record.
+    if (input.attemptId) db.runSync(`DELETE FROM quiz_sessions_local WHERE attempt_id = ?;`, [attemptId]);
   });
   if (canVerify) void drainQueue();
   return attemptId;

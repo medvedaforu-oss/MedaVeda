@@ -1,5 +1,6 @@
-import { ActivityIndicator, Alert, Platform, Share, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 import { COLORS } from '../../theme/colors';
+import { shareLink } from '../sharing/shareLink';
 import { paperShareMessage, paperShareUrl } from './questionPaperLinks';
 import { PaperButton, paperStyles } from './PaperLayout';
 import type usePaperPdf from './usePaperPdf';
@@ -12,12 +13,7 @@ export default function PaperReaderToolbar({ title, pdf }: {
     (typeof navigator !== 'undefined' && typeof navigator.share === 'function');
   const share = async () => {
     if (!pdf.value || !pdf.isCurrent()) return;
-    try {
-      const message = paperShareMessage(pdf.paperId, title);
-      await Share.share(Platform.OS === 'ios' ? { title, message, url: paperShareUrl(pdf.paperId) } : { title, message });
-    } catch (error) {
-      if (!(error instanceof Error && error.name === 'AbortError')) Alert.alert('Sharing unavailable');
-    }
+    await shareLink(title, paperShareMessage(pdf.paperId, title), paperShareUrl(pdf.paperId));
   };
   return <View style={paperStyles.toolbar}>
     <View style={paperStyles.actions}>

@@ -3,6 +3,7 @@ import { AppState, StyleSheet, View, Text, ActivityIndicator } from "react-nativ
 import * as FileSystem from "expo-file-system/legacy";
 import Pdf from "react-native-pdf";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ContentShareButton from "../../features/sharing/ContentShareButton";
 import ErrorState from "../../components/ErrorState";
 import { getAllDownloads } from "../../utils/downloadManager";
 import { mayOpenOfflineNote } from "../../services/offlineNoteAccess";
@@ -14,13 +15,13 @@ import { logError } from "../../utils/logger";
 
 export default function PdfViewerScreen() {
   const route = useRoute<any>();
-  const { pdfUrl, noteId } = route.params ?? {};
+  const { pdfUrl, noteId, title } = route.params ?? {};
   // A different document gets a new native view and lifecycle. Late callbacks
   // from the old document cannot change the new document's error/page state.
-  return <PdfViewerSession key={`${noteId ?? ""}:${pdfUrl}`} pdfUrl={pdfUrl} noteId={noteId} />;
+  return <PdfViewerSession key={`${noteId ?? ""}:${pdfUrl}`} pdfUrl={pdfUrl} noteId={noteId} title={title} />;
 }
 
-export function PdfViewerSession({ pdfUrl, noteId }: { pdfUrl?: string; noteId?: string }) {
+export function PdfViewerSession({ pdfUrl, noteId, title }: { pdfUrl?: string; noteId?: string; title?: string }) {
   const navigation = useNavigation<any>();
   const isLocalFile = typeof pdfUrl === "string" && pdfUrl.startsWith("file://");
   const [access, setAccess] = useState<{ uri: string; allowed: boolean; message?: string } | null>(null);
@@ -164,6 +165,7 @@ export function PdfViewerSession({ pdfUrl, noteId }: { pdfUrl?: string; noteId?:
   const run = generation.current;
   const current = () => alive.current && run === generation.current;
   return <View style={styles.container}>
+    {!!noteId && <View style={{ alignItems: "flex-end", padding: 6 }}><ContentShareButton type="note" id={noteId} title={title} /></View>}
     <Pdf key={revision} source={{ uri: source, cache: false }} style={styles.pdf}
       trustAllCerts={false} enablePaging={false} horizontal={false} fitPolicy={0} spacing={8}
       onLoadComplete={(pages) => { if (current()) setNumberOfPages(pages); }}

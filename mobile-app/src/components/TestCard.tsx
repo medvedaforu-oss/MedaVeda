@@ -15,6 +15,7 @@ import { SHADOW } from "../theme/shadows";
 
 type Props = {
   title: string;
+  shareAction?: React.ReactNode;
   questionCount: number;
   onPress: () => void;
   // Compatibility only: MCQs are always free, regardless of legacy props.
@@ -30,6 +31,7 @@ type Props = {
 
 export default function TestCard({
   title,
+  shareAction,
   questionCount,
   onPress,
   downloaded = false,
@@ -59,11 +61,12 @@ export default function TestCard({
 
         <Text style={styles.subtitle}>
           {downloaded
-            ? `${questionCount} Questions - Available Offline`
-            : `${questionCount} Questions - Tap to Start Test`}
+            ? `${questionCount} Questions • 15 minutes • Available Offline`
+            : `${questionCount} Questions • 15 minutes • Tap to Start Test`}
         </Text>
       </View>
 
+      {shareAction}
       {showDownloadAction && (
         <TouchableOpacity
           style={styles.downloadButton}

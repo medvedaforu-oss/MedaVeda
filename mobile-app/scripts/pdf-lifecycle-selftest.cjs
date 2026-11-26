@@ -10,7 +10,7 @@ const {harness,load,jsx,nodes,tick}=require('./ui-harness.cjs');
   '../../components/ErrorState':{__esModule:true,default:'Error'},'../../utils/downloadManager':{getAllDownloads:()=>[{contentType:'note',isFreePreview:true,id:'note',localUri:'file:///notes/fixture.pdf'}]},
   '../../services/offlineNoteAccess':{mayOpenOfflineNote:()=>new Promise(r=>{resolveAccess=r;})},
   '../../config/supabase':{supabase:{auth:{onAuthStateChange:fn=>{auth=fn;return {data:{subscription:{unsubscribe:()=>cleaned++}}};}}}},
-  '../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/secureNotesService':{},
+  '../../features/sharing/ContentShareButton':{__esModule:true,default:'ShareButton'},'../../services/authState':{getCurrentUser:()=>({id:'buyer'})},'../../services/secureNotesService':{},
   '../../theme/fonts':{FONT:{}},'../../utils/logger':{logError(){}},
  },{setInterval:fn=>{interval=fn;return 1;},clearInterval:()=>cleaned++}).PdfViewerSession;
  const render=()=>nodes(h.render(()=>Screen({pdfUrl:'file:///notes/fixture.pdf'})));

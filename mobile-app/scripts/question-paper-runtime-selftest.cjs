@@ -23,7 +23,7 @@ const deferred=load('mobile-app/src/features/question-papers/deferredPaperLink.t
   react:h.react,'react-native':{AppState,Alert:{alert:(...args)=>alerts.push(args)}},
   '../../services/authState':{getCurrentUser:()=>owner?{id:owner}:null},
   '../../services/courseState':{getCourseYear:()=>course,subscribeCourseYear:()=>()=>{}},
-  './service':{getPaperDestination:async id=>{requests.push(id);return {paperId:id,title:'Shared paper'}}},
+  '../sharing/contentDestination':{resolveContentDestination:async id=>{requests.push(id);return {screen:'QuestionPaperPdf',params:{paperId:id,title:'Shared paper'}}}},
   './paperLinkRuntime':{paperLinkQueue:queue},
  }).default;
  const render=()=>h.render(()=>routing(navigation,true,route));render();await tick();assert.equal(requests.length,0);

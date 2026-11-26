@@ -16,6 +16,7 @@ import { SHADOW } from "../theme/shadows";
 
 type Props = {
   title: string;
+  shareAction?: React.ReactNode;
   description?: string;
   onPress: () => void;
   locked?: boolean;
@@ -36,6 +37,7 @@ type Props = {
 
 export default function NoteCard({
   title,
+  shareAction,
   description,
   onPress,
   locked = false,
@@ -100,6 +102,7 @@ export default function NoteCard({
       </View>
 
     </TouchableOpacity>
+      {shareAction}
       {showDownloadAction && (
         <TouchableOpacity
           style={[

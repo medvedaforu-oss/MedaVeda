@@ -52,6 +52,8 @@ export type RootStackParamList = {
   Store: undefined;
 
   Notes: {
+    noteId?: string;
+    linkRevision?: number;
     chapterId: string;
     chapterTitle: string;
     subjectId: string;
@@ -76,8 +78,8 @@ export type RootStackParamList = {
     yearTitle: string;
   };
 
-  // Plays a single Test's questions. Access is already free/unrestricted,
-  // so this screen just plays whatever Test it's given.
+  // Shared links stop at information; only explicit Start opens a timed attempt.
+  QuizInfo: { quizId: string; title?: string; linkRevision?: number };
   Quiz: {
     subjectId: string;
     subjectTitle: string;
@@ -106,6 +108,7 @@ export type RootStackParamList = {
   PdfViewer: {
     pdfUrl: string;
     noteId?: string;
+    title?: string;
   };
 
   Search: undefined;

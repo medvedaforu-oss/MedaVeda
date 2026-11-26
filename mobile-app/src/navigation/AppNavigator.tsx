@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 import useNotificationRouting from "../hooks/useNotificationRouting";
 import useQuestionPaperRouting from "../features/question-papers/useQuestionPaperRouting";
-import { parsePaperLink } from "../features/question-papers/questionPaperLinks";
+import { parseContentLink } from "../features/question-papers/questionPaperLinks";
 
 import { getCurrentUser, subscribeAuthUser } from "../services/authState";
 import { logError } from "../utils/logger";
@@ -55,6 +55,7 @@ const deferredScreens = {
   NotesScreen: () => require("../screens/notes/NotesScreen").default,
   VideosScreen: () => require("../screens/videos/VideosScreen").default,
   TestListScreen: () => require("../screens/quiz/TestListScreen").default,
+  QuizInfoScreen: () => require("../screens/quiz/QuizInfoScreen").default,
   QuizScreen: () => require("../screens/quiz/QuizScreen").default,
   ProfileScreen: () => require("../screens/profile/ProfileScreen").default,
   EditProfileScreen: () => require("../screens/profile/EditProfileScreen").default,
@@ -110,14 +111,14 @@ const navigationTheme = {
 // Use the recovery scheme declared by this installed native build.
 const linking = {
   prefixes: [...(recoveryLinkPrefix ? [recoveryLinkPrefix] : []), "https://www.medveda.in"],
-  // Question Paper links are captured above startup gates and routed only after auth/course readiness.
+  // Content links are captured above startup gates and routed only after auth/course readiness.
   // Keeping them out of automatic state restoration avoids creating protected screens during Splash/Login.
   getInitialURL: async () => {
     const url = await getInitialDeepLinkUrl();
-    return parsePaperLink(url) ? null : url;
+    return parseContentLink(url) ? null : url;
   },
   subscribe: (listener: (url: string) => void) => subscribeDeepLinks(url => {
-    if (!parsePaperLink(url)) listener(url);
+    if (!parseContentLink(url)) listener(url);
   }),
   config: {
     screens: {
@@ -200,6 +201,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Notes" getComponent={deferredScreens.NotesScreen} options={studyOptions("Notes")} />
         <Stack.Screen name="Videos" getComponent={deferredScreens.VideosScreen} options={studyOptions("Free lectures")} />
         <Stack.Screen name="QuizTests" getComponent={deferredScreens.TestListScreen} options={studyOptions("Free MCQ tests")} />
+        <Stack.Screen name="QuizInfo" getComponent={deferredScreens.QuizInfoScreen} options={studyOptions("Quiz information")} />
         <Stack.Screen name="Quiz" getComponent={deferredScreens.QuizScreen} options={studyOptions("MCQ test")} />
         <Stack.Screen name="Profile" getComponent={deferredScreens.ProfileScreen} />
         <Stack.Screen name="EditProfile" getComponent={deferredScreens.EditProfileScreen} />

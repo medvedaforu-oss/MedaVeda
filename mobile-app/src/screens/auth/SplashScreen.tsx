@@ -4,7 +4,7 @@ import { COLORS } from "../../theme/colors";
 import { SPACING } from "../../theme/spacing";
 import { supabase } from "../../config/supabase";
 import { resolvePostLoginRoute } from "../../services/courseState";
-import { parsePaperLink } from "../../features/question-papers/questionPaperLinks";
+import { parseContentLink } from "../../features/question-papers/questionPaperLinks";
 import BrandLogo from "../../components/BrandLogo";
 import ErrorState from "../../components/ErrorState";
 
@@ -46,7 +46,7 @@ export default function SplashScreen({ navigation }: any) {
       // before the reset screen ever had a chance to show. Checking the
       // launch URL here and routing to ResetPassword first fixes that -
       // the token itself is parsed by ResetPasswordScreen, not here.
-      if (initialUrl && !parsePaperLink(initialUrl) && initialUrl.includes("type=recovery")) {
+      if (initialUrl && !parseContentLink(initialUrl) && initialUrl.includes("type=recovery")) {
         navigation.replace("ResetPassword");
         return;
       }

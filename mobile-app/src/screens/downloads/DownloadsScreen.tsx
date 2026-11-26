@@ -74,7 +74,7 @@ export default function DownloadsScreen() {
   function openItem(item: DownloadItem) {
     if (item.status !== "completed" || !item.localUri) return;
     if (item.contentType === "note") {
-      navigation.navigate("PdfViewer", { pdfUrl: item.localUri });
+      navigation.navigate("PdfViewer", { pdfUrl: item.localUri, noteId: item.id, title: item.title });
     } else {
       navigation.navigate("Quiz", {
         offlineFileUri: item.localUri,

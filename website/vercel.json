@@ -82,6 +82,32 @@
           "value": "no-referrer"
         }
       ]
+    },
+    {
+      "source": "/note/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
+    },
+    {
+      "source": "/quiz/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -100,6 +126,14 @@
     {
       "source": "/question-paper/:paperId",
       "destination": "/question-paper.html"
+    },
+    {
+      "source": "/note/:noteId",
+      "destination": "/note.html"
+    },
+    {
+      "source": "/quiz/:quizId",
+      "destination": "/quiz.html"
     }
   ]
 }

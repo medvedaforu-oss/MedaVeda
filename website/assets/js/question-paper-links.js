@@ -42,5 +42,51 @@
     if (clickedAt > now + 300000 || clickedAt > installedAt + 300000 || now - clickedAt > WEEK || installedAt - clickedAt > WEEK) return null;
     return { id: match[1].toLowerCase() };
   }
-  return { validPaperId, paperShareUrl, paperShareMessage, parsePaperLink, paperPlayUrl, parsePaperReferrer };
+  const TYPES = ['question-paper', 'note', 'quiz'];
+  function validContentType(type) { return TYPES.includes(type); }
+  function contentShareUrl(type, id) {
+    if (!validContentType(type) || !validPaperId(id)) throw new Error('Invalid content link.');
+    return ORIGIN + '/' + type + '/' + id.toLowerCase();
+  }
+  function contentShareMessage(type, id, title) {
+    if (type === 'question-paper') return paperShareMessage(id, title);
+    const label = typeof title === 'string' ? title.replace(/[\r\n\u0000-\u001f]/g, ' ').trim().slice(0, 180) : '';
+    return (type === 'quiz' ? 'Practice this Quiz on MedVeda.' : 'Study this Note on MedVeda.') +
+      (label ? '\n\n' + label : '') + (type === 'quiz' ? '\n\nTest duration: 15 minutes.' : '') +
+      '\n\n' + contentShareUrl(type, id);
+  }
+  function parseContentLink(url) {
+    if (typeof url !== 'string') return null;
+    for (const type of TYPES) {
+      for (const prefix of [ORIGIN + '/' + type + '/', 'medveda://' + type + '/']) {
+        if (!url.startsWith(prefix)) continue;
+        const id = url.slice(prefix.length);
+        return validPaperId(id) ? { type, id: id.toLowerCase() } : { type, invalid: true };
+      }
+    }
+    return null;
+  }
+  function contentPlayUrl(type, id, now = Date.now()) {
+    contentShareUrl(type, id);
+    if (type === 'question-paper') return paperPlayUrl(id, now);
+    if (!Number.isSafeInteger(now) || now <= 0) throw new Error('Invalid referral time.');
+    const referral = new URLSearchParams({ mv_content: 'v1:' + type + ':' + id.toLowerCase() + ':' + Math.floor(now / 1000) });
+    return PLAY + '&referrer=' + encodeURIComponent(referral.toString());
+  }
+  function parseContentReferrer(raw, now, installedAt) {
+    if (typeof raw !== 'string' || raw.length > 4096) return null;
+    const params = new URLSearchParams(raw);
+    if (!params.has('mv_content')) {
+      const paper = parsePaperReferrer(raw, now, installedAt);
+      return paper ? { type: 'question-paper', id: paper.id } : null;
+    }
+    if (params.has('mv_qp') || params.getAll('mv_content').length !== 1) return null;
+    const match = /^v1:(note|quiz):([0-9a-f-]{36}):([0-9]{10})$/i.exec(params.get('mv_content') || '');
+    if (!match || !validContentType(match[1]) || !validPaperId(match[2])) return null;
+    // Keep the same install age, click age and clock-skew limits as existing paper links.
+    const paper = parsePaperReferrer(new URLSearchParams({mv_qp: 'v1:' + match[2] + ':' + match[3]}).toString(), now, installedAt);
+    return paper ? { type: match[1], id: paper.id } : null;
+  }
+  return { validPaperId, paperShareUrl, paperShareMessage, parsePaperLink, paperPlayUrl, parsePaperReferrer,
+    contentShareUrl, contentShareMessage, parseContentLink, contentPlayUrl, parseContentReferrer };
 });

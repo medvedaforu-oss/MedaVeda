@@ -2,11 +2,12 @@ import { Linking, Platform } from 'react-native';
 import * as Application from 'expo-application';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCurrentUser, subscribeAuthUser } from '../../services/authState';
-import { parsePaperLink } from './questionPaperLinks';
+import { parseContentLink } from './questionPaperLinks';
 import { PaperLinkQueue } from './paperLinkQueue';
 import { readDeferredPaperLink } from './deferredPaperLink';
 
-export const paperLinkQueue = new PaperLinkQueue();
+import type { ContentDestination } from '../sharing/contentDestination';
+export const paperLinkQueue = new PaperLinkQueue<ContentDestination>();
 const REFERRER_MARKER = 'medveda.question-paper.install-referrer.v1';
 /** Mount above app initialization, update and maintenance gates so warm URLs are never lost. */
 export function capturePaperLinks(): () => void {
@@ -21,7 +22,7 @@ export function capturePaperLinks(): () => void {
   });
   const receive = (url: string | null) => {
     if (!live) return;
-    const intent = parsePaperLink(url);
+    const intent = parseContentLink(url);
     if (!intent) return;
     directRevision++;
     paperLinkQueue.receive(intent, getCurrentUser()?.id ?? null);
@@ -47,7 +48,7 @@ export function capturePaperLinks(): () => void {
         getMarker: () => AsyncStorage.getItem(REFERRER_MARKER),
         setMarker: value => AsyncStorage.setItem(REFERRER_MARKER, value),
         isCurrent: () => live && directRevision === 0 && accountRevision === initialAccountRevision && Date.now() <= deadline,
-        receive: id => paperLinkQueue.receive({ id }, getCurrentUser()?.id ?? null),
+        receive: (id, type) => paperLinkQueue.receive({ id, type }, getCurrentUser()?.id ?? null),
       });
     });
   }
