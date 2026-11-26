@@ -80,7 +80,7 @@ function header(path) {
   const links = NAV.map(([h, t]) => `<a href="${h}"${(h === path || (h === "/question-papers" && path.startsWith(h + "/"))) ? ' aria-current="page"' : ""}>${t}</a>`).join("");
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap header-in">
-<a class="brand" href="/" aria-label="MedVeda home"><img src="/assets/img/logo-64.png" width="40" height="40" alt="">MedVeda</a>
+<a class="brand" href="/" aria-label="MedVeda home"><img src="/assets/img/logo-64.png" width="36" height="36" alt="">MedVeda</a>
 <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <nav class="nav" id="site-nav" aria-label="Main">${links}<a class="btn accent" href="${PLAY}" aria-label="Download app: MedVeda on Google Play">Download app</a></nav>
 </div></header>`;
@@ -88,8 +88,8 @@ function header(path) {
 function footer() {
   const cols = Object.entries(FOOT).map(([h, ls]) => `<div><h2>${h}</h2><ul>${ls.map(([u, t]) => `<li><a href="${u}"${u.startsWith("http") ? ' rel="noopener" target="_blank"' : ""}>${t}</a></li>`).join("")}</ul></div>`).join("");
   return `<footer class="site-footer"><div class="wrap"><div class="foot-grid">
-<div class="foot-brand"><a class="brand" href="/"><img src="/assets/img/logo-64.png" width="40" height="40" alt="" loading="lazy">MedVeda</a>
-<p>Notes, video lectures and MCQ tests for AYUSH degree students, in one app.</p>${playBadge()}<p style="margin-top:14px"><a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
+<div class="foot-brand"><a class="brand" href="/"><img src="/assets/img/logo-64.png" width="36" height="36" alt="" loading="lazy">MedVeda</a>
+<p>Notes, video lectures and MCQ tests for AYUSH degree students, in one app.</p>${playBadge()}<p class="foot-email"><a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
 ${cols}</div>
 <div class="foot-bottom"><span>© ${YEAR} ${V.COMPANY_LEGAL_NAME}. All rights reserved.</span><span>MedVeda is an educational app, not medical advice. <a href="/disclaimer">Read the disclaimer</a>.</span></div></div></footer>`;
 }
@@ -175,9 +175,6 @@ ${robots}
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 ${ld}
 </head>`;
@@ -216,4 +213,4 @@ ${tail.join("\n")}
 }
 
 
-export { render, pageJsonLd, faqJsonLd, SITE, PLAY, esc };
+export { render, pageJsonLd, faqJsonLd, SITE, PLAY, esc, icon };

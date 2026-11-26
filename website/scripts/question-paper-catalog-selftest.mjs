@@ -4,6 +4,7 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { createHandler } from '../api/question-papers.mjs';
 import { BASE, PAGE_SIZE, SITEMAP_SIZE, validateCatalog, fetchCatalog, paths, slug, createCatalog, renderNode, sitemapEntries, sitemapXml, sitemapIndex } from '../_src/question-paper-catalog.mjs';
+import { displayLabel, displaySubject, displayPaperNumber, displayCourse, academicContext } from '../_src/question-paper-display.mjs';
 const require = createRequire(import.meta.url);
 const codec = require('../assets/js/question-paper-links.js');
 const SITE = 'https://www.medveda.in';
@@ -51,7 +52,7 @@ for (const [path,node] of catalog.groups) {
   let previous = 0;
   for (const [,level] of main.matchAll(/<h([1-6])\b/g)) { assert(Number(level) <= previous+1); previous=Number(level); }
   if (node.level === 6) {
-    assert(html.includes('This Question Paper is available on the MedVeda App.'));
+    assert(html.includes('Sign in to MedVeda to access this question paper.'));
     assert(html.includes(`href="${SITE}/question-paper/${node.sample.id}"`));
     assert(html.includes('https://play.google.com/store/apps/details?id=in.medveda.app'));
   }
@@ -60,7 +61,8 @@ assert(paths(rows[0])[6] !== paths(rows[5])[6], 'identical titles must retain un
 assert.notEqual(attr(renderNode(catalog.papers.get(rows[0].id),catalog),'og:title'),attr(renderNode(catalog.papers.get(rows[5].id),catalog),'og:title'));
 assert.notEqual(attr(renderNode(catalog.groups.get(paths(rows[0])[3]),catalog),'og:title'),attr(renderNode(catalog.groups.get(paths(rows[6])[3]),catalog),'og:title'));
 const examPage = (await request(paths(rows[0])[3])).html;
-assert(examPage.indexOf('>2025</a>') < examPage.indexOf('>2023</a>'));
+assert(examPage.includes('>2025</h3>') && examPage.includes('>2023</h3>'));
+assert(examPage.indexOf('>2025</h3>') < examPage.indexOf('>2023</h3>'));
 const marathi = (await request(paths(rows[3])[6])).html;
 assert(marathi.includes('शरीर रचना प्रश्नपत्रिका'));
 assert(slug('शरीर रचना').includes('शरीर'));
@@ -120,6 +122,43 @@ const sessionPath = paths(many[0])[5];
 const rewrittenSecond = await request(sessionPath+'?'+new URLSearchParams({route:sessionPath,path:decodeURIComponent(sessionPath.slice(BASE.length+1)),page:'2'}),'GET',growthHandler,{route:sessionPath});
 assert.equal(rewrittenSecond.status,200,'Vercel rewrite must preserve canonical pagination without a redirect loop');
 assert.equal((second.html.match(/class="card qp-card"/g)||[]).length,PAGE_SIZE);
+
+// Display formatting must not feed back into catalog identities or SEO labels.
+for (const [raw, expected] of [
+  ['Samhita adhyayan-1','Samhita Adhyayan – I'],
+  ['Kriya Sharir (Paper-1)','Kriya Sharir – Paper I'],
+  ['Kriya Sharir (Paper-2)','Kriya Sharir – Paper II'],
+  ['Padarth Vigyan (Paper-1)','Padarth Vigyan – Paper I'],
+  ['Kriya Sharir – Paper I','Kriya Sharir – Paper I'],
+  ['Clinical Science (Part-4)','Clinical Science – Part IV'],
+  ['Paper number 1','Paper I'],
+  ['ICD-10','ICD-10'], ['COVID-19','COVID-19'], ['Anatomy 2023','Anatomy 2023'],
+  ['Diabetes Type-1','Diabetes Type-1'], ['Biochemistry B-1','Biochemistry B-1'],
+  ['saṃhitā adhyayan','saṃhitā Adhyayan'],
+  ['संहिता अध्ययन','संहिता अध्ययन'], ['शरीर रचना Paper-2','शरीर रचना – Paper II'],
+]) {
+  assert.equal(displaySubject(raw),expected);
+  assert.equal(displaySubject(expected),expected,'display formatting is idempotent');
+}
+assert.equal(displayPaperNumber('Paper number 1'),'Paper I');
+assert.equal(displayPaperNumber('2'),'Paper II');
+assert.equal(displayPaperNumber('A'),'Paper A');
+assert.equal(displayLabel(' BAMS   1st Year '),'BAMS 1st Year');
+assert.deepEqual(displayCourse('BAMS Marathi Medium'),{name:'BAMS',medium:'Marathi'});
+assert.deepEqual(displayCourse('BAMS (Hindi Medium)'),{name:'BAMS',medium:'Hindi'});
+assert.deepEqual(displayCourse('BAMS'),{name:'BAMS',medium:''});
+const displayFixture = fixture(99,{course_name:'BAMS Marathi Medium',year_title:'BAMS 1st Year',subject_title:'Samhita adhyayan-1'});
+assert.equal(academicContext(displayFixture),'BAMS 1st Year · Marathi Medium');
+const displayCatalog = createCatalog([displayFixture]);
+const expectedHeadings = ['Question Papers','BAMS Question Papers','BAMS 1st Year Question Papers','Samhita Adhyayan – I','Samhita Adhyayan – I','Summer 2023 Question Papers','Samhita Adhyayan – I'];
+for (const node of displayCatalog.groups.values()) {
+  const html = renderNode(node,displayCatalog);
+  assert.equal(html.match(/<h1>(.*?)<\/h1>/s)[1],expectedHeadings[node.level]);
+  assert(html.includes(`rel="canonical" href="${SITE+paths(displayFixture)[node.level]}"`));
+  assert(!/<a\b[^>]*class="card qp-card"[^>]*>(?:(?!<\/a>)[\s\S])*<(?:a|button)\b/.test(html),'whole-card links have no nested controls');
+}
+assert.equal(displayFixture.subject_title,'Samhita adhyayan-1');
+assert(paths(displayFixture)[3].includes('samhita-adhyayan-1~'));
 const entries = sitemapEntries(growth);
 assert.equal(entries.length,many.length+6);
 assert.equal(new Set(entries.map(e=>e.path)).size,entries.length);
