@@ -6,6 +6,10 @@ const storage = {
   getItem: async key => values.get(key) ?? null,
   setItem: async (key, value) => { values.set(key, value); },
 };
+const auth = {getCurrentUser:()=>({id:'fixture'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}};
+const ownerStorage = load('mobile-app/src/utils/ownerStorage.ts', {
+  '@react-native-async-storage/async-storage': {__esModule:true,default:storage}, '../services/authState':auth,
+});
 const preferences = load('mobile-app/src/utils/notificationPreferences.ts', {
   '@react-native-async-storage/async-storage': { __esModule: true, default: storage },
 });
@@ -33,7 +37,7 @@ function mountPreferences() {
   // Exercise the real notification-center button's destination.
   let destination;
   const center = load('mobile-app/src/screens/notifications/NotificationsScreen.tsx', {
-    react: { useState: value => [value, () => {}], useCallback: fn => fn, useRef: value => ({ current: value }) },
+    react: { useState: value => [value, () => {}], useCallback: fn => fn, useRef: value => ({ current: value }), useEffect() {} },
     'react/jsx-runtime': jsx, 'react-native': native, ...theme,
     '@react-navigation/native': {
       useFocusEffect() {}, useNavigation: () => ({ navigate: name => { destination = name; } }),
@@ -42,6 +46,7 @@ function mountPreferences() {
     '../../components/EmptyState': { default: 'Empty' },
     '../../components/ErrorState': { default: 'Error' },
     '../../services/notificationsService': {}, '../../utils/logger': {},
+    '../../services/authState':auth, '../../utils/ownerStorage':ownerStorage,
   }).default;
   nodes(center()).find(node => node.type === 'Button').props.onPress();
   assert.equal(destination, 'NotificationPreferences');
@@ -66,6 +71,7 @@ function mountPreferences() {
   const notifications = load('mobile-app/src/services/notificationsService.ts', {
     '@react-native-async-storage/async-storage': { __esModule: true, default: storage },
     '../utils/notificationPreferences': preferences,
+    '../utils/ownerStorage':ownerStorage,
     './authState': { getCurrentUser: () => ({ id: 'fixture' }) },
     '../utils/logger': { logDebug() {} },
     '../config/supabase': { supabase: { from: () => ({ select: () => ({ eq: () => ({

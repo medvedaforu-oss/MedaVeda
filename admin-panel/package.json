@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:staging": "tsc -b && vite build --mode staging",
-    "test": "node --experimental-strip-types scripts/pdf-validation-selftest.mjs && node --experimental-strip-types scripts/upload-error-selftest.mjs && node scripts/mutation-selftest.cjs && node scripts/pagination-selftest.cjs && node scripts/play-service-account-diagnostic-selftest.cjs && node scripts/play-pricing-diagnostic-selftest.cjs && node --experimental-strip-types scripts/wallet-expiry-selftest.mjs && node scripts/wallet-settings-save-selftest.cjs && node scripts/wallet-rejection-selftest.cjs",
+    "test": "node --experimental-strip-types scripts/pdf-validation-selftest.mjs && node --experimental-strip-types scripts/upload-error-selftest.mjs && node scripts/mutation-selftest.cjs && node scripts/pagination-selftest.cjs && node scripts/retired-billing-ui-selftest.cjs && node --experimental-strip-types scripts/wallet-expiry-selftest.mjs && node scripts/wallet-settings-save-selftest.cjs && node scripts/wallet-rejection-selftest.cjs && node scripts/product-readiness-selftest.cjs && node scripts/product-readiness-race-selftest.cjs && node scripts/product-concurrency-selftest.cjs && node scripts/product-classification-selftest.cjs",
     "preview": "vite preview"
   },
   "dependencies": {

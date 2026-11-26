@@ -1,8 +1,6 @@
 import usePurchaseResource from "../../hooks/usePurchaseResource";
 import { getCurrentUser } from "../../services/authState";
 import React, { useCallback } from "react";
-import { restorePlayPurchases } from "../../services/playBillingService";
-import { playRestorationEnabled } from "../../config/paymentProvider";
 import {
   View,
   Text,
@@ -19,6 +17,7 @@ import BottomNav from "../../components/BottomNav";
 
 import { fetchMyPurchases } from "../../services/purchasesService";
 import { ProductScope } from "../../services/productsService";
+import { paymentProvider } from "../../config/paymentProvider";
 import { recoverMyPendingPayments } from "../../services/paymentService";
 
 import { COLORS } from "../../theme/colors";
@@ -70,12 +69,12 @@ export default function MyPurchasesScreen() {
       let active = true;
       const owner = getCurrentUser()?.id;
       load();
-      if (playRestorationEnabled) void restorePlayPurchases().then(result => {
-        if (active && getCurrentUser()?.id === owner && result.confirmed) load();
-      }).catch(() => {});
       // History renders immediately; bounded recovery refreshes it if a recent
       // provider-captured attempt was lost when the app process ended.
-      void recoverMyPendingPayments().then((recovered) => {
+      const recovery = paymentProvider === "play"
+        ? import("../../services/playBillingService").then(service => service.restorePlayPurchases()).then(summary => summary.confirmed > 0)
+        : recoverMyPendingPayments();
+      void recovery.then((recovered) => {
         if (active && getCurrentUser()?.id === owner && recovered) load();
       }).catch(() => {});
       return () => { active = false; };

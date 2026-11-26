@@ -9,5 +9,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "supabase/functions/**"]
+  "exclude": ["node_modules", "supabase/functions/**", "docs/play-billing-20261123/backend/**"]
 }

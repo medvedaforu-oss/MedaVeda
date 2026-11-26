@@ -90,7 +90,7 @@ export default function DownloadsScreen() {
       <View style={styles.container}>
         {!isOnline && (
           <View style={styles.offlineBanner}>
-            <Text style={styles.offlineBannerText}>📡 You're offline — downloaded items still work</Text>
+            <Text style={styles.offlineBannerText}>📡 You're offline. Downloaded quizzes are available; free Notes previews need a valid offline check. Paid Notes require internet.</Text>
           </View>
         )}
 
@@ -155,7 +155,7 @@ export default function DownloadsScreen() {
               <EmptyState
                 title={
                   OFFLINE_DB_SUPPORTED
-                    ? "📥 No downloads yet. Download Notes or Quizzes to access them offline."
+                    ? "📥 No downloads yet. Download free Notes previews or quizzes for offline study. Paid Notes require internet."
                     : "📥 Offline downloads are available in the mobile app."
                 }
               />

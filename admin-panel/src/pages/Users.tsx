@@ -51,9 +51,9 @@ export default function Users() {
 
   if (loading && !hasLoaded) {
     return (
-      <h2 className="text-xl">
+      <p role="status" className="rounded-lg border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600">
         Loading...
-      </h2>
+      </p>
     );
   }
 
@@ -61,15 +61,15 @@ export default function Users() {
     <div>
       <LookupStatus label="courses" loading={coursesLoading} error={coursesError} onRetry={reloadCourses} />
       {loading && <p role="status" className="mb-4 text-sm text-gray-500">Refreshing...</p>}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Users</h1>
-        <p className="text-gray-500 mt-1">
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold text-gray-800">Users</h1>
+        <p className="mt-1 text-sm text-gray-500">
           Students registered on the MedVeda app.
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-4 mb-6">
-        <div className="w-48">
+      <div className="mb-4 flex flex-wrap items-end gap-3">
+        <div className="w-full sm:w-48 [&_select]:min-h-11">
           <CoursePicker
             courses={courses}
             value={courseFilter}
@@ -81,15 +81,17 @@ export default function Users() {
           />
         </div>
 
-        <SearchBar value={search} onChange={setSearch} />
+        <div className="w-full min-w-0 sm:w-auto [&_input]:min-h-11 [&_input]:text-sm [&_input]:focus-visible:ring-1 [&_input]:focus-visible:ring-green-600">
+          <SearchBar value={search} onChange={setSearch} placeholder="Search users..." />
+        </div>
       </div>
 
-      {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
+      {error && <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"><p>{error}</p><button type="button" className="mt-1 min-h-11 rounded px-2 font-medium underline focus-visible:outline-2 focus-visible:outline-red-700" onClick={() => { void reload(); }}>Retry</button></div>}
 
       {filteredUsers.length === 0 ? (
-        <div className="bg-white rounded-xl p-10 text-center shadow">
-          <h2 className="text-xl font-semibold">No Users Found</h2>
-          <p className="text-gray-500 mt-2">Try a different search.</p>
+        <div className="rounded-lg border border-gray-200 bg-white px-4 py-8 text-center">
+          <h2 className="text-base font-semibold text-gray-800">No Users Found</h2>
+          <p className="mt-2 text-sm text-gray-500">Try a different search.</p>
         </div>
       ) : (
         <UsersTable users={filteredUsers} onToggleBlock={(user) => { setActionError(null); setPendingUser(user); }} />

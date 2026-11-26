@@ -18,6 +18,7 @@ async function run({phase='events',target='capture:pay_fixture',report='reported
   '../_shared/cors.ts':{jsonResponse:(body,status=200)=>Response.json(body,{status})},
   '../_shared/supabaseAdmin.ts':{supabaseAdmin:db},
   '../_shared/externalReporting.ts':{reportExternalOrder:async()=>report,reportExternalRefundEvent:async()=>refund},
+  '../_shared/playPurchaseValidation.ts':load('supabase/functions/_shared/playPurchaseValidation.ts',{}),
   '../_shared/googlePlay.ts':{},'../_shared/ucbAlert.ts':{alertUcb:async()=>{}},
   '../_shared/settle.ts':{settleCapturedPayment:async()=>{settles++;return settlement},settleRefund:async()=>({ok:true}),settleDispute:async()=>({ok:true})},
   '../_shared/notesChoiceAuthorization.ts':{reportNotesChoiceAuthorization:async()=>{authorizations++;if(authorizationError)throw Error('retry');}},

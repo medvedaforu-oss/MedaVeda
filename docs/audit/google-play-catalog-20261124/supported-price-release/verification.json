@@ -1,0 +1,18 @@
+{
+  "status": "HOLD",
+  "files_verified": 304,
+  "archive_sha256": "49ab36b3ad2c6fc370251dee249d137886efe2a6177a18f3400813506b4ba4cc",
+  "previous_archive_unchanged": true,
+  "source_and_archive_hashes_match": true,
+  "functions": [
+    "verify-standalone-play-purchase",
+    "verify-play-purchase",
+    "play-payment-worker",
+    "sync-play-catalog"
+  ],
+  "pending_migrations": [
+    "20261124063324_play_terminal_recovery.sql",
+    "20261124064112_admin_catalog_readiness_and_revisions.sql",
+    "20261124142010_play_india_price_validation.sql"
+  ]
+}

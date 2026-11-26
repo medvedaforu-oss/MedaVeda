@@ -1,0 +1,87 @@
+[
+  {
+    "command": "python3 scripts/question-papers-scope-check.py",
+    "exit": 0,
+    "output": "Checked 3088 original file states; five integration files may receive insertions only.\nPASS preservation and strictly additive integration\n"
+  },
+  {
+    "command": "node admin-panel/scripts/question-papers-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Admin question paper validation, scoped pagination, signing, upload, replacement, duplicates and failure preservation\n"
+  },
+  {
+    "command": "node admin-panel/scripts/question-papers-ui-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Admin Question Paper page preview and edit integration\n"
+  },
+  {
+    "command": "node admin-panel/scripts/question-papers-form-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Admin replacement validation waits before saving and selected PDF preview\n"
+  },
+  {
+    "command": "node mobile-app/scripts/question-papers-selftest.cjs",
+    "exit": 0,
+    "output": "PASS student free published-only reads, grouping, authorized signing, download disposition and ID validation\n"
+  },
+  {
+    "command": "node mobile-app/scripts/question-papers-ui-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Home exact preservation/first shortcut, stale request/account invalidation, exam session \u2192 full PDF navigation\n"
+  },
+  {
+    "command": "node mobile-app/scripts/question-papers-download-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Question Paper platform download success, expiry, cancellation, account changes and cleanup\n"
+  },
+  {
+    "command": "node mobile-app/scripts/question-papers-lifecycle-selftest.cjs",
+    "exit": 0,
+    "output": "PASS Question Paper background/foreground, expired URL retry, account switch and web/native error wiring\n"
+  },
+  {
+    "command": "node mobile-app/scripts/question-papers-web-preview-selftest.cjs",
+    "exit": 0,
+    "output": "PASS controlled web preview: HTTP failure, interrupted request, stale response and Blob cleanup\n"
+  },
+  {
+    "command": "node mobile-app/scripts/navigation-lazy-selftest.cjs",
+    "exit": 0,
+    "output": "{\"provider\":\"disabled\",\"registeredRoutes\":39,\"eagerScreenModules\":7,\"lazyRoutes\":32}\n{\"provider\":\"razorpay\",\"registeredRoutes\":41,\"eagerScreenModules\":7,\"lazyRoutes\":34}\n{\"provider\":\"play\",\"registeredRoutes\":41,\"eagerScreenModules\":7,\"lazyRoutes\":34}\nPASS route registration, provider gates, eager Sentry and existing error/retry fallback contract\n"
+  },
+  {
+    "command": "node mobile-app/scripts/audit-navigation-selftest.cjs",
+    "exit": 0,
+    "output": "PASS AUD-003 auth route removal, account remount, recovery route retained\nPASS AUD-003 installed StackRouter discards previous private history and Back cannot recover it\n"
+  },
+  {
+    "command": "node mobile-app/scripts/pdf-lifecycle-selftest.cjs",
+    "exit": 0,
+    "output": "PASS PDF background/auth races, expiry/revocation, deleted/corrupt file messages and listener cleanup\n"
+  },
+  {
+    "command": "node mobile-app/scripts/pdf-remote-retry-selftest.cjs",
+    "exit": 0,
+    "output": "PASS expired link \u2192 fresh authorized URL, retry single flight, stale render callbacks, render timeout, denial, background/resume and account switch; no signed URL logs\n"
+  },
+  {
+    "command": "node supabase/tests/question-paper-access-selftest.cjs",
+    "exit": 0,
+    "output": "PASS isolated server signing cap, visibility authorization and PDF byte validation\n"
+  },
+  {
+    "command": "npm test --prefix admin-panel",
+    "exit": 0,
+    "output": "\n> ayurpulse-admin-panel@1.0.0 test\n> node --experimental-strip-types scripts/pdf-validation-selftest.mjs && node --experimental-strip-types scripts/upload-error-selftest.mjs && node scripts/mutation-selftest.cjs && node scripts/pagination-selftest.cjs && node scripts/retired-billing-ui-selftest.cjs && node --experimental-strip-types scripts/wallet-expiry-selftest.mjs && node scripts/wallet-settings-save-selftest.cjs && node scripts/wallet-rejection-selftest.cjs\n\nPDF validation checks passed.\nVideo URL validation checks passed.\nQuiz option validation checks passed.\nUpload error message checks passed.\nPASS updateCourse: zero-row rejection / one-row success\nPASS setCourseActive: zero-row rejection / one-row success\nPASS deleteCourse: zero-row rejection / one-row success\nPASS updateYear: zero-row rejection / one-row success\nPASS deleteYear: zero-row rejection / one-row success\nPASS updateSubject: zero-row rejection / one-row success\nPASS deleteSubject: zero-row rejection / one-row success\nPASS updateChapter: zero-row rejection / one-row success\nPASS deleteChapter: zero-row rejection / one-row success\nPASS updateProduct: zero-row rejection / one-row success\nPASS deleteProduct: zero-row rejection / one-row success\nPASS setUserBlocked: zero-row rejection / one-row success\nPASS admin pagination: 1001 rows and later-page errors\nPASS legacy Notes remain manageable with price/status/type; product actions do not include Billing sync\nPASS expiry invalid ranges and null/0 no-expiry validation\nPASS referral settings zero-row error and null/0 canonical payloads\nPASS WR07 released/cancelled flags survive service; unknown result fails visibly\n"
+  },
+  {
+    "command": "node mobile-app/node_modules/typescript/bin/tsc -p mobile-app/tsconfig.json --noEmit --pretty false",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "command": "node admin-panel/node_modules/typescript/bin/tsc -p admin-panel/tsconfig.app.json --noEmit --pretty false",
+    "exit": 0,
+    "output": ""
+  }
+]

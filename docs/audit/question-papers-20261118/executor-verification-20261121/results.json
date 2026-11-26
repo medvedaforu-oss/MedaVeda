@@ -1,0 +1,153 @@
+{
+  "executor": {
+    "version": "2.75.0",
+    "binary_sha256": "ede7713ac26a4e8bd8ebdfad93676d9652b254d4d6bc163a003a6493f4b3302b",
+    "postgres": "postgres (PostgreSQL) 17.12 (Debian 17.12-1.pgdg13+1)"
+  },
+  "artifact": {
+    "sha256": "6811f8573487c4d0e4f55716a7cbb1051f2ac2d0f8189165178a585b54ce9359",
+    "files": [
+      "supabase/config.toml",
+      "supabase/migrations/20261118172019_question_papers.sql"
+    ]
+  },
+  "success": {
+    "exit": 0,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nLocal database is up to date.\nA new version of Supabase CLI is available: v3.2.0 (currently installed v2.75.0)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 1,
+      "historical": 0
+    }
+  },
+  "preservation": {
+    "existing_fixture_catalog_and_data_identical": true,
+    "fingerprint_sha256": "350c925ddd950cf36cd2225a3a5abb3356b06836dadd9a70791f7154e3aa85a4"
+  },
+  "ledger": {
+    "version": "20261118172019",
+    "name": "question_papers",
+    "statement_count": 30,
+    "first_statement": "-- Additive Question Paper resources only. No existing policies/functions are replaced.\nbegin",
+    "last_statement": "commit"
+  },
+  "repeat": {
+    "exit": 0,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nLocal database is up to date.\nA new version of Supabase CLI is available: v3.2.0 (currently installed v2.75.0)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 1,
+      "historical": 0
+    }
+  },
+  "sql_failure": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nERROR: duplicate key value violates unique constraint \"buckets_pkey\" (SQLSTATE 23505)\nKey (id)=(question-papers) already exists.                                           \nAt statement: 23                                                                     \n-- A name collision fails the transaction; existing resources are never overwritten. \ninsert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)       \n values('question-papers','question-papers',false,52428800,array['application/pdf']) \nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": false,
+      "receipts": false,
+      "bucket": 1,
+      "ledger": 0,
+      "historical": 0
+    }
+  },
+  "ledger_failure": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nERROR: injected ledger failure (SQLSTATE P0001)                                                \nAt statement: 30                                                                               \nINSERT INTO supabase_migrations.schema_migrations(version, name, statements) VALUES($1, $2, $3)\nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 0,
+      "historical": 0
+    }
+  },
+  "retry_after_ledger_failure": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nERROR: relation \"question_paper_validated_objects\" already exists (SQLSTATE 42P07)\nAt statement: 1                                                                   \n-- Server-only validation receipts. No client write/read grant or RLS policy.     \ncreate table public.question_paper_validated_objects (                            \n object_path text primary key,                                                    \n byte_size bigint not null check(byte_size between 5 and 52428800)                \n)                                                                                 \nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 0,
+      "historical": 0
+    }
+  },
+  "connection_loss_before_commit": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nFATAL: terminating connection due to administrator command (SQLSTATE 57P01)           \nAt statement: 21                                                                      \ncreate policy question_papers_admin on public.question_papers for all to authenticated\n using ((select public.am_i_admin())) with check ((select public.am_i_admin()))       \nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": false,
+      "receipts": false,
+      "bucket": 0,
+      "ledger": 0,
+      "historical": 0
+    }
+  },
+  "connection_loss_after_sql_commit": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nFATAL: terminating connection due to administrator command (SQLSTATE 57P01)                    \nAt statement: 30                                                                               \nINSERT INTO supabase_migrations.schema_migrations(version, name, statements) VALUES($1, $2, $3)\nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 0,
+      "historical": 0
+    }
+  },
+  "committed_but_acknowledgement_lost": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nApplying migration 20261118172019_question_papers.sql...\nunexpected EOF  \nAt statement: 29\ncommit          \nTry rerunning the command with --debug to troubleshoot the error.\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 1,
+      "historical": 0
+    },
+    "proxy_events": [
+      "withheld COMMIT acknowledgement",
+      "server ReadyForQuery received; connection dropped"
+    ],
+    "proxy_error": null
+  },
+  "repeat_after_ack_loss": {
+    "exit": 0,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nLocal database is up to date.\nA new version of Supabase CLI is available: v3.2.0 (currently installed v2.75.0)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n",
+    "state": {
+      "papers": true,
+      "receipts": true,
+      "bucket": 1,
+      "ledger": 1,
+      "historical": 0
+    }
+  },
+  "existing_history": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nRemote migration versions not found in local migrations directory.\n\nMake sure your local git repo is up-to-date. If the error persists, try repairing the migration history table:\nsupabase migration repair --status reverted 20260701000000 20260718 20260721 20260801 20260801150000 20260919120000 20260919130000 20260920120000 20260920130000 20260920140000 20260921120000 20260921130000 20260922100000 20260923100000 20260924100000 20260924110000 20260924120000 20260924130000 20260924140000 20260924150000 20260925100000 20260925110000 20260925120000 20260925130000 20260925140000 20260926100000 20260926110000 20260926120000 20260926130000 20260927100000 20260927110000 20260927120000 20260927130000 20260928100000 20260928110000 20260929100000 20260930100000 20260930110000 20261001100000 20261012100000 20261012110000 20261012120000 20261013090000 20261013100000 20261013110000 20261014100000 20261014110000 20261015100000 20261015120000 20261016090000 20261016100000 20261018100000 20261018110000 20261018120000 20261018130000 20261019150000 20261019151000 20261020100000 20261020101000 20261020102000 20261020103000 20261020104000 20261020105000 20261020110000 20261104100000 20261104110000 20261108100000 20261109100000 20261109120000 20261110100000 20261110120000 20261110130000 20261111100000 20261111110000 20261111120000 20261111175746 20261112104610 20261112150427 20261114040000 20261114040100 20261114050000 20261114050200 20261114050300 20261114050400 20261114090000\n\nAnd update local migrations to match remote database:\nsupabase db pull\n\n",
+    "state": {
+      "papers": false,
+      "receipts": false,
+      "bucket": 0,
+      "ledger": 0,
+      "historical": 85
+    }
+  },
+  "existing_history_include_all": {
+    "exit": 1,
+    "output": "Using workdir /tmp/medveda-qp-executor-xkmmz2a_/work\nConnecting to local database...\nRemote migration versions not found in local migrations directory.\n\nMake sure your local git repo is up-to-date. If the error persists, try repairing the migration history table:\nsupabase migration repair --status reverted 20260701000000 20260718 20260721 20260801 20260801150000 20260919120000 20260919130000 20260920120000 20260920130000 20260920140000 20260921120000 20260921130000 20260922100000 20260923100000 20260924100000 20260924110000 20260924120000 20260924130000 20260924140000 20260924150000 20260925100000 20260925110000 20260925120000 20260925130000 20260925140000 20260926100000 20260926110000 20260926120000 20260926130000 20260927100000 20260927110000 20260927120000 20260927130000 20260928100000 20260928110000 20260929100000 20260930100000 20260930110000 20261001100000 20261012100000 20261012110000 20261012120000 20261013090000 20261013100000 20261013110000 20261014100000 20261014110000 20261015100000 20261015120000 20261016090000 20261016100000 20261018100000 20261018110000 20261018120000 20261018130000 20261019150000 20261019151000 20261020100000 20261020101000 20261020102000 20261020103000 20261020104000 20261020105000 20261020110000 20261104100000 20261104110000 20261108100000 20261109100000 20261109120000 20261110100000 20261110120000 20261110130000 20261111100000 20261111110000 20261111120000 20261111175746 20261112104610 20261112150427 20261114040000 20261114040100 20261114050000 20261114050200 20261114050300 20261114050400 20261114090000\n\nAnd update local migrations to match remote database:\nsupabase db pull\n\n",
+    "state": {
+      "papers": false,
+      "receipts": false,
+      "bucket": 0,
+      "ledger": 0,
+      "historical": 85
+    }
+  },
+  "all_assertions_passed": true,
+  "local_cluster_stopped": true
+}

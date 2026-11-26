@@ -22,6 +22,14 @@ async function rpc<T>(name: string, args: Record<string, unknown>): Promise<T> {
 }
 
 async function sync(job: Job): Promise<void> {
+  // The database owns the applicable India price rule. Check before OAuth or
+  // any catalog request, including against jobs claimed by an older schema.
+  let validation: string | null;
+  try { validation = await rpc<string | null>("play_price_validation", { p_price: job.price_inr }); }
+  catch { throw new PlayCatalogConfigurationError("Google Play price validation unavailable; administrator review required"); }
+  if (validation !== null)
+    throw new PlayCatalogConfigurationError(typeof validation === "string" ? validation :
+      "Google Play price validation response invalid");
   if (!await rpc<boolean>("play_price_has_eligible_product", { p_price: job.price_inr }))
     throw new Error("No eligible paid-notes product uses this price");
   const cents = priceCents(job.price_inr);

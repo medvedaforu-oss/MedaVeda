@@ -6,6 +6,7 @@ const menus = [
   { name: "Academic Years", path: "/years" },
   { name: "Subjects", path: "/subjects" },
   { name: "Chapters", path: "/chapters" },
+  { name: "Question Papers", path: "/question-papers" },
   { name: "Products", path: "/products" },
   { name: "Notes", path: "/notes" },
   { name: "Videos", path: "/videos" },

@@ -1,0 +1,20 @@
+{
+  "edited_or_added_source_test_config": [
+    "admin-panel/package.json",
+    "admin-panel/src/pages/Products.tsx",
+    "admin-panel/src/services/playBillingSyncService.ts",
+    "admin-panel/src/types/playBilling.ts",
+    "admin-panel/src/components/ProductTable.tsx",
+    "admin-panel/src/components/ProductFormModal.tsx",
+    "admin-panel/scripts/product-readiness-selftest.cjs",
+    "admin-panel/scripts/product-readiness-race-selftest.cjs",
+    "admin-panel/scripts/product-classification-selftest.cjs",
+    "admin-panel/scripts/batch2-selftest.cjs",
+    "supabase/config.toml",
+    "supabase/migrations/20261124064112_admin_catalog_readiness_and_revisions.sql",
+    "supabase/tests/admin_catalog_remediation_checks.sql"
+  ],
+  "artifacts_directory": "docs/audit/targeted-rollout-20261124",
+  "unchanged_pending_migration": "supabase/migrations/20261124063324_play_terminal_recovery.sql",
+  "preservation": "All other pre-existing user modifications/deletions retained; no git reset/checkout/clean/commit/push used."
+}

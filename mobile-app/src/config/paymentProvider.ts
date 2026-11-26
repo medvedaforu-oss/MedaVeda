@@ -11,6 +11,7 @@ const configuredProvider = extra?.medvedaPaymentProvider;
 export const isStandaloneRazorpayLiveBuild = Platform.OS === "android" &&
   Application.applicationId === "in.medveda.app" &&
   configuredProvider === "razorpay" &&
+  extra?.medvedaDistribution !== "google-play-testing" &&
   extra?.medvedaBuildTarget === "production" &&
   process.env.EXPO_PUBLIC_SUPABASE_URL === "https://xbvenkfmesugrbjuufyw.supabase.co";
 export const isNonplayTestBuild = Platform.OS === "android" &&
@@ -21,10 +22,16 @@ export const isNonplayTestBuild = Platform.OS === "android" &&
   extra?.medvedaNonplayTestEnvironment === "production-isolated-razorpay-test-v1" &&
   process.env.EXPO_PUBLIC_SUPABASE_URL === "https://xbvenkfmesugrbjuufyw.supabase.co";
 
-// Keep retired Play branches/types for historical code compatibility, but never
-// initialize native Play Billing or offer it as a payment method.
-export const playRestorationEnabled = false;
-export const paymentProvider: PaymentProvider =
+// Build metadata selects UI only. The server independently authorizes every order.
+export const isPlayTestingBuild = Platform.OS === "android" &&
+  Application.applicationId === "in.medveda.app" &&
+  configuredProvider === "play" &&
+  extra?.medvedaDistribution === "google-play-testing" &&
+  extra?.medvedaBuildTarget === "play-testing" &&
+  extra?.medvedaBuildProfile === "play-billing-testing" &&
+  process.env.EXPO_PUBLIC_SUPABASE_URL === "https://xbvenkfmesugrbjuufyw.supabase.co";
+export const playRestorationEnabled = isPlayTestingBuild;
+export const paymentProvider: PaymentProvider = isPlayTestingBuild ? "play" :
   configuredProvider === "razorpay" && (isNonplayTestBuild || isStandaloneRazorpayLiveBuild)
     ? "razorpay" : "disabled";
 export const userChoiceBillingEnabled = false;

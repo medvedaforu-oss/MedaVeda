@@ -23,7 +23,7 @@ import { getCourseYear } from "../../services/courseState";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 function ChapterDetailsScreen() {
   const navigation = useNavigation<any>();
@@ -125,8 +125,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
 
   title: {

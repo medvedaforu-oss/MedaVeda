@@ -34,7 +34,7 @@ assert.equal(profile.autoIncrement, undefined);
 assert.equal(submit[name], undefined);
 assert.equal(config.android.package, app.android.package);
 assert.equal(config.android.googleServicesFile, configFor({ EAS_BUILD_PROFILE: 'production' }).android.googleServicesFile);
-assert.equal(config.android.runtimeVersion, `${app.version}-${name}`);
+assert.equal(config.android.runtimeVersion, `${app.version}-${name}-no-iap-v1`);
 assert.equal(config.updates.requestHeaders['expo-channel-name'], name);
 const enabled = providerFor();
 assert.equal(enabled.paymentProvider, 'razorpay');

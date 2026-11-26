@@ -44,9 +44,19 @@ function setup() {
       getUserFromAuthHeader: async () => state.user ? { id: state.user } : null,
       supabaseAdmin: {
         rpc: async (name, args) => {
+          if (name === 'play_duplicate_recorded') return {data:state.duplicate && state.committed !== false,error:null};
           if (name === 'play_entitlement_committed') return {data:state.committed !== false,error:null};
           assert.equal(name, 'settle_play_purchase'); state.settled++;
           assert.equal(args.p_user_id, 'buyer'); assert.equal(args.p_play_sku, 'sku');
+          // Mirror the deployed RPC's committed order writes, including duplicate
+          // settlements. An RPC error rolls back; entitlement proof stays separate.
+          assert.equal(args.p_order_id, orderId); assert.equal(args.p_product_id, 'notes');
+          assert.equal(args.p_purchase_token, 'synthetic-purchase-token');
+          if (!state.settlementError && !state.omitSettlementEffects && state.order.status !== 'paid') {
+            Object.assign(state.order, { status: 'paid', purchase_token: args.p_purchase_token,
+              play_consumption_status: 'pending', payment_completed_at: args.p_paid_at,
+              ...state.settlementOverride });
+          }
           return { data: { ok: true, amount: 49, duplicate: state.duplicate }, error: state.settlementError ? { code: 'fixture' } : null };
         },
         from: table => ({ changes: null, filters: [], select() { return this; },
@@ -107,7 +117,8 @@ function setup() {
   t=setup(); result=await t.invoke({ purchaseToken:'short' }); assert.equal(result.status,400); assert.equal(t.state.settled,0);
   console.log('PASS invalid ownership/token/SKU/option/refund/cancellation/pending/API/network cases cannot settle');
   t=setup(); t.state.settlementError=true; result=await t.invoke(); assert.equal(result.status,503); assert.equal(t.state.consumed,0);
-  t=setup(); t.state.duplicate=true; result=await t.invoke(); assert.equal(result.status,409);
+  assert.equal(t.state.order.status,'created');assert.equal(t.state.order.purchase_token,null);
+  t=setup(); t.state.duplicate=true; result=await t.invoke(); assert.equal(result.status,200); assert.equal(result.body.outcome,'duplicate'); assert.equal(result.body.terminal,true); assert.equal(t.state.consumed,0);
   t=setup(); t.state.order.status='paid'; t.state.order.purchase_token='synthetic-purchase-token';
   t.state.purchase.productLineItem[0].productOfferDetails.consumptionState='CONSUMPTION_STATE_CONSUMED';
   result=await t.invoke(); assert.equal(result.body.success,true); assert.equal(t.state.consumed,0);

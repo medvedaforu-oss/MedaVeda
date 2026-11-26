@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const { load } = require('./ui-harness.cjs');
 const timers = new Map(); let timerId = 0;
 let user = 'a', preferenceReads = 0;
 const reads = [], storage = new Map();
@@ -10,10 +11,14 @@ const rows = [{ id: 'offer', title: 'Sale', type: 'offer' }, { id: 'read', title
 const mocks = {
   '@react-native-async-storage/async-storage': { getItem: async key => storage.get(key) ?? null },
   '../config/supabase': { supabase: { from: () => ({ select: () => ({ eq: () => ({ order: () => new Promise((resolve, reject) => reads.push({ user, resolve, reject })) }) }) }) } },
-  './authState': { getCurrentUser: () => ({ id: user }) },
+  './authState': { getCurrentUser: () => ({ id: user }), getAuthEpoch: () => 0 },
   '../utils/notificationPreferences': { getNotificationPreferences: async () => { preferenceReads++; return prefs; } },
   '../utils/logger': { logDebug() {} },
 };
+mocks['../utils/ownerStorage'] = load('mobile-app/src/utils/ownerStorage.ts', {
+  '@react-native-async-storage/async-storage': { __esModule:true, default:mocks['@react-native-async-storage/async-storage'] },
+  '../services/authState': mocks['./authState'],
+});
 const mod = { exports: {} };
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/services/notificationsService.ts', 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
@@ -23,8 +28,8 @@ vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/servi
   require: name => { assert.ok(name in mocks, name); return mocks[name]; } });
 const service = mod.exports;
 (async () => {
-  storage.set('medveda:notifications:readIds', JSON.stringify(['read']));
-  storage.set('medveda:notifications:archivedIds', JSON.stringify(['archived']));
+  storage.set('medveda:notifications:readIds:owner:a', JSON.stringify(['read']));
+  storage.set('medveda:notifications:archivedIds:owner:a', JSON.stringify(['archived']));
   const list = service.fetchNotifications(), badgeA = service.getUnreadNotificationCount(), badgeB = service.getUnreadNotificationCount();
   assert.equal(reads.length, 1, 'Home list and unread badges share one outstanding server read');
   reads[0].resolve({ data: rows });

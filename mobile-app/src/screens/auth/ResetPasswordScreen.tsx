@@ -138,9 +138,9 @@ export default function ResetPasswordScreen() {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Text style={styles.logo}>🔑</Text>
 
-      <Text style={styles.title}>Reset Password</Text>
+
+      <Text accessibilityRole="header" style={styles.title}>Reset Password</Text>
 
       <Text style={styles.subtitle}>
         {state.phase === "mfa" ? "Verify your enrolled authenticator to continue." :
@@ -151,7 +151,7 @@ export default function ResetPasswordScreen() {
       {!!message && <Text style={styles.error} accessibilityRole="alert">{message}</Text>}
       {saving && state.phase === "idle" && <ActivityIndicator color={COLORS.accent} />}
       {state.phase === "idle" && !saving && (
-        <TouchableOpacity style={styles.button} onPress={start}>
+        <TouchableOpacity accessibilityRole="button" style={styles.button} onPress={start}>
           <Text style={styles.buttonText}>Try again</Text>
         </TouchableOpacity>
       )}
@@ -165,7 +165,7 @@ export default function ResetPasswordScreen() {
         <TextInput style={styles.input} placeholder="Six-digit authenticator code" placeholderTextColor={COLORS.subtitle}
           accessibilityLabel="Authenticator code" value={code} onChangeText={setCode} keyboardType="number-pad"
           textContentType="oneTimeCode" autoComplete="one-time-code" maxLength={6} editable={!saving} secureTextEntry />
-        <TouchableOpacity style={[styles.button, saving && styles.disabled]} disabled={saving}
+        <TouchableOpacity accessibilityRole="button" accessibilityState={{ disabled: saving, busy: saving }} style={[styles.button, saving && styles.disabled]} disabled={saving}
           onPress={() => run(() => active.current!.recovery.verify(factorId, code.trim()))}>
           {saving ? <ActivityIndicator color={COLORS.textOnPrimary} /> : <Text style={styles.buttonText}>Verify code</Text>}
         </TouchableOpacity>
@@ -180,7 +180,7 @@ export default function ResetPasswordScreen() {
         </TouchableOpacity>
       )}
       {state.phase === "cleanup" && (
-        <TouchableOpacity style={[styles.button, saving && styles.disabled]} disabled={saving}
+        <TouchableOpacity accessibilityRole="button" accessibilityState={{ disabled: saving, busy: saving }} style={[styles.button, saving && styles.disabled]} disabled={saving}
           onPress={() => run(() => active.current!.recovery.retryCleanup())}>
           <Text style={styles.buttonText}>{saving ? "Signing out…" : "Retry sign-out"}</Text>
         </TouchableOpacity>
@@ -192,6 +192,7 @@ export default function ResetPasswordScreen() {
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
+              accessibilityLabel="New password"
               placeholder="New Password"
               placeholderTextColor={COLORS.subtitle}
               value={value}
@@ -212,6 +213,7 @@ export default function ResetPasswordScreen() {
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
+              accessibilityLabel="Confirm new password"
               placeholder="Confirm New Password"
               placeholderTextColor={COLORS.subtitle}
               value={value}
@@ -227,6 +229,9 @@ export default function ResetPasswordScreen() {
         )}
 
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Update password"
+          accessibilityState={{ disabled: saving, busy: saving }}
           style={[styles.button, saving && styles.disabled]}
           disabled={saving}
           onPress={handleSubmit(submit)}
@@ -239,8 +244,8 @@ export default function ResetPasswordScreen() {
         </TouchableOpacity>
 
       </>}
-      <TouchableOpacity disabled={saving} onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.link}>Back to Login</Text>
+      <TouchableOpacity accessibilityRole="button" style={styles.linkButton} disabled={saving} onPress={() => navigation.navigate("Login")}>
+        <Text style={[styles.link, { marginTop: 0 }]}>Back to Login</Text>
       </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -256,17 +261,15 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     justifyContent: "center",
-    padding: 25,
-  },
-
-  logo: {
-    textAlign: "center",
-    fontSize: 60,
+    width: "100%",
+    maxWidth: 480,
+    alignSelf: "center",
+    padding: SPACING.lg,
   },
 
   title: {
     color: COLORS.text,
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: SPACING.sm,
@@ -279,6 +282,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    minHeight: 48,
+    fontSize: 16,
     color: COLORS.text,
     backgroundColor: COLORS.card,
     borderColor: COLORS.border,
@@ -295,7 +300,9 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: COLORS.accent,
-    padding: 16,
+    minHeight: 48,
+    justifyContent: "center",
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
     marginTop: SPACING.lg,
   },
@@ -308,7 +315,13 @@ const styles = StyleSheet.create({
     color: COLORS.textOnPrimary,
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 17,
+    fontSize: 16,
+  },
+
+  linkButton: {
+    minHeight: 48,
+    justifyContent: "center",
+    marginTop: SPACING.sm,
   },
 
   link: {

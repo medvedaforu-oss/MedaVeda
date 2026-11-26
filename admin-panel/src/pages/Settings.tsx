@@ -6,8 +6,6 @@ import useSettings from "../hooks/useSettings";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
-import PlayServiceAccountDiagnostic from "../components/PlayServiceAccountDiagnostic";
-import PlayPricingDiagnostic from "../components/PlayPricingDiagnostic";
 
 import { validateUpdateGate } from "../utils/appVersion";
 
@@ -155,8 +153,6 @@ export default function Settings() {
         </div>
       </fieldset>
 
-      <PlayServiceAccountDiagnostic />
-      <PlayPricingDiagnostic />
     </div>
   );
 }

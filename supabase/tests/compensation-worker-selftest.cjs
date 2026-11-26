@@ -18,6 +18,7 @@ vm.runInNewContext(code,{exports:{},require:id=>{
  if(id.endsWith('supabaseAdmin.ts'))return {supabaseAdmin};
  if(id.endsWith('externalReporting.ts'))return {reportExternalOrder:async()=>{},reportExternalRefundEvent:async()=>{}};
  if(id.endsWith('googlePlay.ts'))return {};
+ if(id.endsWith('playPurchaseValidation.ts'))return require('../../mobile-app/scripts/ui-harness.cjs').load('supabase/functions/_shared/playPurchaseValidation.ts',{});
  if(id.endsWith('ucbAlert.ts'))return {alertUcb:async()=>{}};
  if(id.endsWith('notesChoiceAuthorization.ts'))return {reportNotesChoiceAuthorization:async()=>{}};
  if(id.endsWith('settle.ts'))return {settleRefund:async()=>{googleRefundQueued++;return {ok:true}}};

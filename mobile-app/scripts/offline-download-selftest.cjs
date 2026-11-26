@@ -74,6 +74,7 @@ function fixture() {
   const access = load(path.join(__dirname, '../src/services/offlineNoteAccess.ts'), {
     '@react-native-async-storage/async-storage': mocks['@react-native-async-storage/async-storage'],
     './authState': mocks['../services/authState'], './secureNotesService': secure,
+    '../config/supabase': {supabase:{from:()=>({select(){return this},eq(){return this},maybeSingle:async()=>({data:{is_free_preview:true},error:null,status:200})})}},
     './offlineNoteVerification': verification, '../utils/downloadManager': manager,
   });
   return { manager, access, calls, files, storage, secureStorage, NoteAccessError,
@@ -140,7 +141,8 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
     const uri = f.manager.getDownload('note-1').localUri;
     f.setError(new f.NoteAccessError(status));
     assert.equal(await f.access.mayOpenOfflineNote('note-1'), false);
-    assert.equal(f.files.has(uri), false); assert.equal(f.storage.has(verifiedKey), false);
+    assert.equal(f.files.has(uri), true, 'Denied access retains downloaded bytes for recovery'); assert.equal(f.storage.has(verifiedKey), false);
+    assert.equal(f.manager.getDownload('note-1').localUri, uri, 'Authorization denial does not delete the download row');
     f.setError(new Error('network')); assert.equal(await f.access.mayOpenOfflineNote('note-1'), false);
     f.close();
   }
@@ -175,7 +177,7 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   assert.equal(f.secureStorage.size, 0); assert.equal(f.files.size, 0);
   f.close();
   console.log('PASS secure bulk cleanup failure/retry and legacy PDF preservation');
-  console.log('PASS seven-day grace/network/5xx/429, day eight, 401/403 deletion, persistent rollback expiry, future/corrupt timestamps, legacy recovery, cleanup');
+  console.log('PASS seven-day grace/network/5xx/429, day eight, 401/403 authorization revocation with file retention, persistent rollback expiry, future/corrupt timestamps, legacy recovery, cleanup');
   f = fixture();
   assert.equal(await f.access.mayOpenOfflineNote('n'), false, 'unknown persisted file must fail closed');
   await f.manager.enqueueDownload({...request,id:'n'});
@@ -183,7 +185,8 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
   f.setError(new Error('network')); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(403)); assert.equal(await f.access.mayOpenOfflineNote('n'), false);
   f.setError(new Error('network')); assert.equal(await f.access.mayOpenOfflineNote('n'), false);
-  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('n'), false, 'revoked file cannot reopen without redownload');
+  f.setError(undefined); assert.equal(await f.access.mayOpenOfflineNote('n'), true, 'fresh authoritative preview authorization restores access to retained file');
+  assert.equal(f.storage.has('medveda:note-denied:buyer:n'), false, 'successful online verification clears denial');
   await f.manager.enqueueDownload({...request,id:'n'}); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(500)); assert.equal(await f.access.mayOpenOfflineNote('n'), true);
   f.setError(new f.NoteAccessError(401)); assert.equal(await f.access.mayOpenOfflineNote('n'), false);

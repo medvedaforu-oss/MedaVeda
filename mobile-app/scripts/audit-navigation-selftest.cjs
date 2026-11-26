@@ -1,12 +1,20 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {harness,load,jsx,nodes}=require('./ui-harness.cjs');
 const h=harness();const useState=h.react.useState;h.react.useState=v=>useState(typeof v==='function'?v():v);let user={id:'first'},changed;
-const mocks={react:h.react,'react/jsx-runtime':jsx,'../services/authState':{getCurrentUser:()=>user,subscribeAuthUser:f=>{changed=f;return()=>{}}},'../utils/logger':{logError(){}},'../services/studyReminderService':{setupNotificationChannel:async()=>{},restoreStudyReminderOnLaunch:async()=>{}},'@react-navigation/native':{DefaultTheme:{colors:{}},useNavigationContainerRef:()=>({}),NavigationContainer:'Container'},'@react-navigation/native-stack':{createNativeStackNavigator:()=>({Navigator:'Navigator',Group:'Group',Screen:'Screen'})},'../config/paymentProvider':{paymentProvider:'razorpay'},'../theme/colors':{COLORS:{}}};
+const mocks={react:h.react,'react/jsx-runtime':jsx,'../services/authState':{getCurrentUser:()=>user,subscribeAuthUser:f=>{changed=f;return()=>{}}},'../utils/logger':{logError(){}},'../services/studyReminderService':{setupNotificationChannel:async()=>{},restoreStudyReminderOnLaunch:async()=>{}},'@react-navigation/native':{DefaultTheme:{colors:{}},useNavigationContainerRef:()=>({}),NavigationContainer:'Container'},'@react-navigation/native-stack':{createNativeStackNavigator:()=>({Navigator:'Navigator',Group:'Group',Screen:'Screen'})},'../config/paymentProvider':{paymentProvider:'razorpay'},'../theme/colors':{COLORS:{}},'../theme/fonts':{FONT:{subHeading:18}}};
 const source=fs.readFileSync('mobile-app/src/navigation/AppNavigator.tsx','utf8');
 for(const [,name]of source.matchAll(/(?:from\s+|import\s+)["']([^"']+)["']/g))if(!(name in mocks))mocks[name]={__esModule:true,default:()=>null};
 const Navigator=load((process.env.AUDIT_BASELINE||'')+'mobile-app/src/navigation/AppNavigator.tsx',mocks).default;
 const render=()=>nodes(h.render(Navigator));
 const before=render();assert.ok(before.some(n=>n.props?.name==='Profile'));
+for(const name of ['QuestionPaperYears','QuestionPaperSubjects','QuestionPaperSessions']) {
+ const options=before.find(n=>n.props?.name===name).props.options;
+ assert.equal(options.headerShown,true);assert.equal(options.headerTitleAlign,'left');
+ assert.equal(options.headerTitleStyle.fontSize,18);assert.equal(options.headerLeft,undefined,'Keep the native Back button');
+}
+const readerOptions=before.find(n=>n.props?.name==='QuestionPaperPdf').props.options;
+assert.equal(readerOptions({route:{params:{title:'Anatomy · June 2025'}}}).title,'Anatomy · June 2025');
+assert.equal(readerOptions({route:{}}).title,'Question paper');
 user=null;changed?.();const signedOut=render();assert.ok(!signedOut.some(n=>n.props?.name==='Profile'),'signout must remove private routes, including expired and blocked sessions');assert.ok(signedOut.some(n=>n.props?.name==='ResetPassword'));
 user={id:'second'};changed?.();const second=render();assert.ok(second.some(n=>n.props?.name==='Profile'));assert.notEqual(before.find(n=>n.type==='Group'&&nodes(n).some(s=>s.props?.name==='Profile'))?.props.navigationKey,second.find(n=>n.type==='Group'&&nodes(n).some(s=>s.props?.name==='Profile'))?.props.navigationKey,'different owner must discard previous route instances');
 console.log('PASS AUD-003 auth route removal, account remount, recovery route retained');

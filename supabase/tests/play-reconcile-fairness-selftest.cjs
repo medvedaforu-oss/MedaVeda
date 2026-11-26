@@ -26,6 +26,7 @@ vm.runInNewContext(code,{exports:{},require:id=>{
  if(id.endsWith('cors.ts'))return {jsonResponse:(body,status=200)=>({body,status})};
  if(id.endsWith('supabaseAdmin.ts'))return {supabaseAdmin};
  if(id.endsWith('externalReporting.ts'))return {reportExternalOrder:async()=>{},reportExternalRefundEvent:async()=>{}};
+ if(id.endsWith('playPurchaseValidation.ts'))return require('../../mobile-app/scripts/ui-harness.cjs').load('supabase/functions/_shared/playPurchaseValidation.ts',{});
  if(id.endsWith('googlePlay.ts'))return {getProductPurchase:async(_sku,token)=>{checked.add(token);
   if(token!=='token-10')throw Error('mock Google failure');return {purchaseState:1,refundableQuantity:0};},
   getVoidedPurchasesPage:async()=>({}),consumeProductPurchase:async()=>{}};

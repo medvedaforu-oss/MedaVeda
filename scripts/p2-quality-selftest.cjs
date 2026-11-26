@@ -56,14 +56,16 @@ test('Product form rejects invalid MRP and duplicate in-flight saves; retains ex
  }
 });
 
-test('Analytics sums paise exactly and selects only needed fields',async()=>{
- const filters=load('admin-panel/src/utils/filters.ts',{});let projection='';
- const db={from:table=>({select(fields){if(table==='orders')projection=fields;return this},order(){return this},range(){return this},then(resolve){resolve(table==='orders'?{data:[{status:'paid',amount:.1,product_id:'p'},{status:'paid',amount:.2,product_id:'p'}]}:{count:1})}})};
- const api=load('admin-panel/src/services/analyticsService.ts',{'../config/supabase':{supabase:db},'../utils/filters':filters});
- const data=await api.getAnalytics();assert.equal(data.totalRevenue,.3);assert.equal(data.topProducts[0].revenue,.3);assert.ok(!projection.includes('*'));
+test('Analytics reads server numeric snapshot and passes only the course filter',async()=>{
+ let args;
+ const db={rpc:async(name,input)=>{assert.equal(name,'get_admin_analytics');args=input;return {data:{totalOrders:2,totalRevenue:.3,topProducts:[{productId:'p',revenue:.3}]},error:null}}};
+ const api=load('admin-panel/src/services/analyticsService.ts',{'../config/supabase':{supabase:db}});
+ const data=await api.getAnalytics();assert.equal(data.totalRevenue,.3);assert.equal(data.topProducts[0].revenue,.3);assert.equal(args.p_course_id,null);
 });
 test('Notification Center can distinguish network failure from genuinely empty data',async()=>{
- const api=load('mobile-app/src/services/notificationsService.ts',{'@react-native-async-storage/async-storage':{getItem:async()=>null},'../config/supabase':{supabase:{from:()=>({select(){return this},eq(){return this},order:async()=>({error:Error('offline')})})}},'./authState':{getCurrentUser:()=>({id:'a'})},'../utils/notificationPreferences':{getNotificationPreferences:async()=>({})},'../utils/logger':{logDebug(){}}});
+ const auth={getCurrentUser:()=>({id:'a'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}};
+ const owned=load('mobile-app/src/utils/ownerStorage.ts',{'@react-native-async-storage/async-storage':{getItem:async()=>null},'../services/authState':auth});
+ const api=load('mobile-app/src/services/notificationsService.ts',{'../utils/ownerStorage':owned,'@react-native-async-storage/async-storage':{getItem:async()=>null},'../config/supabase':{supabase:{from:()=>({select(){return this},eq(){return this},order:async()=>({error:Error('offline')})})}},'./authState':{getCurrentUser:()=>({id:'a'})},'../utils/notificationPreferences':{getNotificationPreferences:async()=>({})},'../utils/logger':{logDebug(){}}});
  await assert.rejects(api.fetchNotificationsWithReadState({strict:true}),/offline/);
  assert.equal((await api.fetchNotifications()).length,0,'Home remains non-blocking');
 });
@@ -99,6 +101,8 @@ test('Course filter retains an accessible name even when the visible label is hi
 
 test('Notification screen ignores blurred loads and handles archive failure without hiding a row',async()=>{
  const h=harness(),m=mobileMocks(h);let focus;const reads=[];
+ const auth={getCurrentUser:()=>({id:'a'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}};
+ m['../../services/authState']=auth;m['../../utils/ownerStorage']=load('mobile-app/src/utils/ownerStorage.ts',{'@react-native-async-storage/async-storage':{},'../services/authState':auth});
  Object.assign(m,{'@react-navigation/native':{useNavigation:()=>({}),useFocusEffect:fn=>focus=fn},'../../theme/typography':{FONT:{}},'../../components/NotificationRow':{default:'Row',__esModule:true},'../../components/EmptyState':{default:'Empty',__esModule:true},'../../components/ErrorState':{default:'Error',__esModule:true},'../../utils/logger':{logError(){}},'../../services/notificationsService':{fetchNotificationsWithReadState:()=>new Promise(resolve=>reads.push(resolve)),markAllNotificationsRead:async()=>{},archiveNotification:async()=>{throw Error('disk full')}}});m['react-native'].FlatList='List';m['react-native'].ActivityIndicator='Spinner';
  const Screen=load('mobile-app/src/screens/notifications/NotificationsScreen.tsx',m).default;
  h.render(Screen);const cleanup=focus();cleanup();reads[0]({notifications:[{id:'stale',read:true}]});await tick();let tree=h.render(Screen);assert.equal(nodes(tree).filter(n=>n.type==='List').length,0);

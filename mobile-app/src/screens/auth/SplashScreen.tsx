@@ -72,7 +72,7 @@ export default function SplashScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <BrandLogo size={200} variant="lockup" accessibilityLabel="MedVeda logo" />
+      <BrandLogo size={176} variant="lockup" accessibilityLabel="MedVeda logo" />
 
       <Text style={styles.subtitle}>
         Learn Ayurveda{"\n"}Anytime, Anywhere
@@ -82,7 +82,7 @@ export default function SplashScreen({ navigation }: any) {
         onRetry={() => setAttempt(value => value + 1)} /> : <ActivityIndicator
         size="large"
         color={COLORS.accent}
-        style={{ marginTop: 40 }}
+        style={{ marginTop: SPACING.xl }}
       />}
     </View>
   );
@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
+    lineHeight: 24,
     color: COLORS.subtitle,
     marginTop: SPACING.sm,
     textAlign: "center",

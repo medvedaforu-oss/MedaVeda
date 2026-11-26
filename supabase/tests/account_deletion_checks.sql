@@ -106,21 +106,21 @@ end $$;
 set local role authenticated;
 select set_config('request.jwt.claim.sub', 'eeeeeeee-0000-4000-8000-000000000005', true);
 do $$ begin
-  begin perform public.erase_user_data('eeeeeeee-0000-4000-8000-000000000005'); raise notice 'FAIL authenticated can call erase_user_data';
+  begin perform public.erase_user_data('eeeeeeee-0000-4000-8000-000000000005'); raise exception 'FAIL authenticated can call erase_user_data';
   exception when insufficient_privilege then raise notice 'PASS authenticated cannot call erase_user_data'; end;
 end $$;
 reset role;
 set local role anon;
 do $$ begin
-  begin perform public.erase_user_data('eeeeeeee-0000-4000-8000-000000000005'); raise notice 'FAIL anon can call erase_user_data';
+  begin perform public.erase_user_data('eeeeeeee-0000-4000-8000-000000000005'); raise exception 'FAIL anon can call erase_user_data';
   exception when insufficient_privilege then raise notice 'PASS anon cannot call erase_user_data'; end;
 end $$;
 reset role;
--- Phase 1A keeps delete_my_account() as a backward-compatible wrapper (signed-in users only)
-select case when to_regprocedure('public.delete_my_account()') is not null
-             and has_function_privilege('authenticated', 'public.delete_my_account()', 'execute')
-             and not has_function_privilege('anon', 'public.delete_my_account()', 'execute')
-            then 'PASS delete_my_account kept as signed-in-only wrapper'
-            else 'FAIL delete_my_account wrapper missing or exposed to anon' end;
-
+-- The server-only deletion flow superseded the old client wrapper (fix3).
+do $$ begin
+  assert to_regprocedure('public.delete_my_account()') is not null, 'compatibility function missing';
+  assert not has_function_privilege('authenticated','public.delete_my_account()','execute'), 'client deletion wrapper exposed';
+  assert not has_function_privilege('anon','public.delete_my_account()','execute'), 'anonymous deletion wrapper exposed';
+  raise notice 'PASS account deletion requires the authenticated Edge Function flow';
+end $$;
 rollback;

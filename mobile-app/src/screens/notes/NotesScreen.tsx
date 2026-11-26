@@ -22,7 +22,7 @@ import UnlockOptionsPanel from "../../components/UnlockOptionsPanel";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 import { fetchNotesByChapter, Note } from "../../services/notesService";
 import { getCurrentUser } from "../../services/authState";
@@ -214,7 +214,7 @@ function NotesScreen() {
       />
 
       {loading ? (
-        <ActivityIndicator size="large" color={COLORS.accent} />
+        <ActivityIndicator size="large" color={COLORS.accent} style={{ marginVertical: SPACING.lg }} />
       ) : error ? (
         <LoadError content="notes" retry={retry} />
       ) : (
@@ -244,8 +244,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
   title: {
     fontSize: FONT.title,
@@ -255,8 +254,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: FONT.body,
     color: COLORS.subtitle,
-    marginTop: 6,
-    marginBottom: SPACING.lg,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.md,
   },
 });
 

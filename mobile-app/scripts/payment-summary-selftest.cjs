@@ -8,7 +8,7 @@ async function scenario(changed){
  '@react-navigation/native':{useRoute:()=>({params:{productId:'notes',productTitle:'Notes'}}),useNavigation:()=>navigation},
  '../../components/CustomButton':{__esModule:true,default:'PayButton'},'../../components/ErrorState':{__esModule:true,default:'Error'},
  '../../services/referralsService':{fetchOrderQuote:async()=>({ok:true,amount:49}),fetchReferralSettings:async()=>({enabled:false}),formatRupees:String,walletProductsText:()=>''},
- '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
+ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../config/supabase':{},
  '../../services/paymentService':{purchaseProduct:()=>{creates++;return new Promise(r=>finish=r);}},'../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};
  const Screen=load('mobile-app/src/screens/payment/OrderSummaryScreen.tsx',mocks).default;
@@ -28,7 +28,7 @@ async function failedRefresh(reject) {
   fetchOrderQuote:()=>++reads===1?Promise.resolve({ok:true,amount:49,walletEligible:true,walletAvailable:10})
    :new Promise((resolve,rejectPromise)=>{complete=()=>reject?rejectPromise(new Error('offline')):resolve({ok:false});}),
   fetchReferralSettings:async()=>({enabled:true}),formatRupees:String,walletProductsText:()=>''},
- '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../services/playBillingService':{},'../../config/supabase':{},'../../services/indiaBillingStates':{INDIA_ADMINISTRATIVE_AREAS:[]},
+ '../../services/authState':{getCurrentUser:()=>({id:'buyer'}),getAuthEpoch:()=>0,subscribeAuthUser:()=>()=>{}},'../../config/supabase':{},
  '../../services/paymentService':{purchaseProduct:async()=>{creates++;return {amountPaise:4900};}},
  '../../config/paymentProvider':{paymentProvider:'razorpay'},'../../utils/logger':{logError(){}}};
  for(const [file,key]of [['colors','COLORS'],['fonts','FONT'],['spacing','SPACING'],['radius','RADIUS']])mocks['../../theme/'+file]={[key]:{}};

@@ -1,0 +1,35 @@
+{
+  "version": "3.2.0",
+  "archive_url": "https://github.com/supabase/cli/releases/download/v3.2.0/supabase_3.2.0_linux_amd64.tar.gz",
+  "archive_sha256": "fb88b175a817563505be02c60872060bcb8d5c869a1aa5656eaeb085d4a2f1e4",
+  "binary_sha256": "0ed73393ce16dc967c1cafe824929bd97c8d11de0a5bc41e174710858860d1fe",
+  "official_checksum_verified": true,
+  "source_files": {
+    "migration-apply.ts": {
+      "url": "https://github.com/supabase/cli/blob/v3.2.0/apps/cli/src/command-internal/migration-apply.ts",
+      "sha256": "1607f492f16a74f9873dc5abb07debd767d4baa4a8337b2d4a453892f0e27311"
+    },
+    "db-connection.pool-client.ts": {
+      "url": "https://github.com/supabase/cli/blob/v3.2.0/apps/cli/src/command-internal/db-connection.pool-client.ts",
+      "sha256": "aec927b143b7a7c14738354348b9f504325280e4760f1afabbd006a1752e08c2"
+    },
+    "db-connection.sql-pg.layer.ts": {
+      "url": "https://github.com/supabase/cli/blob/v3.2.0/apps/cli/src/command-internal/db-connection.sql-pg.layer.ts",
+      "sha256": "f24010228e1a9cd446619df826bcd0752155ccd8e07214e07fe7f7684061a9c7"
+    },
+    "migration-history.ts": {
+      "url": "https://github.com/supabase/cli/blob/v3.2.0/apps/cli/src/command-internal/migration-history.ts",
+      "sha256": "83f8ecca5876d67fd897c5d7d36f0ec1a4061af5535c86ad99b779b966f3aaa8"
+    }
+  },
+  "commands": {
+    "original_fault_matrix": 1,
+    "candidate_fault_matrix": 0,
+    "historical_ordering_rejection_assertions": 0,
+    "original_module_17": 0,
+    "candidate_module_17": 0,
+    "sql_40_comparison": 0,
+    "question_papers_local_regression": 0
+  },
+  "notes": "Original matrix exit 1 is expected red atomicity assertion; SQL comparison exit 0 means equal outcomes, not all suites passing."
+}

@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('../node_modules/typescript');
+const { load } = require('./ui-harness.cjs');
 let reads = 0;
 const data = Array.from({length:100}, (_,i) => ({ id:String(i), title:'Update', type:i % 2 ? 'offer' : 'new_video' }));
 const prefs = { offer:false, new_video:true };
@@ -15,6 +16,10 @@ const mocks = {
   getNotificationPreferences: async () => { reads++; return prefs; }
  }, '../utils/logger': { logDebug: () => {} }
 };
+mocks['../utils/ownerStorage'] = load('mobile-app/src/utils/ownerStorage.ts', {
+ '@react-native-async-storage/async-storage': {},
+ '../services/authState': { getCurrentUser: () => ({ id: 'fixture' }), getAuthEpoch: () => 0 },
+});
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(__dirname + '/../src/services/notificationsService.ts','utf8'), {
  compilerOptions: { module: ts.ModuleKind.CommonJS }
 }).outputText, { exports:mod.exports, setTimeout, clearTimeout, require:name => { assert.ok(name in mocks,name);return mocks[name]; } });

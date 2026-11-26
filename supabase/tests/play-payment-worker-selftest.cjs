@@ -10,7 +10,7 @@ const secret = 's'.repeat(40);
 const id = '00000000-0000-0000-0000-000000000001';
 
 function setup(overrides={}) {
-  const order = {id,provider:'play',status:'paid',play_sku:'notes_49',purchase_token:'token-1234567890',
+  const order = {id,user_id:'buyer',product_id:'notes',provider:'play',status:'paid',play_sku:'notes_49',purchase_token:'token-1234567890',
     play_consumption_status:'failed',play_last_checked_at:null,play_last_attempt_at:null};
   const state = {order, voidTokens:new Set(),jobs:{consume:{status:'pending',attempts:0,lease:null},
     reconcile:{status:'pending',attempts:0,lease:null}}, cursor:{lease:null,next_page_token:null},
@@ -38,8 +38,10 @@ function setup(overrides={}) {
   }
   const db = {from:query,rpc:async(name,args={})=>{
     state.calls.push(name);
+    if(name==='play_entitlement_committed')return {data:true,error:null};
     if(name==='enqueue_play_payment_jobs')return {data:null,error:null};
     if(name==='claim_play_payment_jobs') {
+      assert.equal(args.p_limit,args.p_kind==='consume'?4:20,'consumption must claim one bounded provider-call wave');
       const job=state.jobs[args.p_kind];
       if(job.status==='leased' && !state.expired)return {data:[],error:null};
       if(job.status!=='pending' && !(job.status==='leased' && state.expired))return {data:[],error:null};
@@ -79,14 +81,15 @@ function setup(overrides={}) {
     '../_shared/cors.ts':{jsonResponse:(body,status=200)=>new Response(JSON.stringify(body),{status})},
     '../_shared/supabaseAdmin.ts':{supabaseAdmin:db},
     '../_shared/googlePlay.ts':{
-      GoogleApiError,
-      getProductPurchase:async()=>{if(state.googleFailure)throw new Error('Google unavailable');return {...state.google};},
+      GoogleApiError, sha256Hex:async x=>`hash:${x}`,
+      getProductPurchase:async()=>{if(state.googleFailure)throw new Error('Google unavailable');return {regionCode:'IN',quantity:1,obfuscatedExternalAccountId:'hash:buyer',obfuscatedExternalProfileId:`hash:${id}`,purchaseTimeMillis:String(Date.now()-1000),...state.google};},
       consumeProductPurchase:async()=>{state.consumed++;
         if(state.consumeConflict){state.google.consumptionState=1;throw new GoogleApiError(409);}
         if(state.consumeFailure)throw new Error('consume failed');state.google.consumptionState=1;},
       getVoidedPurchasesPage:async()=>{if(state.googleFailure)throw new Error('Google unavailable');
         return state.voidPage??{voidedPurchases:[],tokenPagination:{}};},
     },
+    '../_shared/playPurchaseValidation.ts':require('../../mobile-app/scripts/ui-harness.cjs').load('supabase/functions/_shared/playPurchaseValidation.ts',{}),
     '../_shared/paymentQueue.ts':{runBounded:async(items,_concurrency,fn)=>{await Promise.all(items.map(fn));}},
     '../_shared/ucbAlert.ts':{alertUcb:async()=>{state.alerts++;}},
   };

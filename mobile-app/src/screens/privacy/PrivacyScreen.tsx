@@ -59,9 +59,9 @@ export default function PrivacyScreen() {
         Payments
       </Text>
       <Text style={styles.body}>
-        New purchases are unavailable in this Android app version. We retain
-        records of earlier Google Play purchases for access verification,
-        refunds and support. Separate permitted distribution builds use Razorpay.
+        Purchase availability depends on the installed distribution and product readiness. Standard Android builds use Razorpay. Google Play Billing is limited to dedicated testing builds; public availability has not been announced.
+        We retain records of earlier Google Play purchases for access verification,
+        refunds and support.
         We verify purchases and, where required by an enrolled payment
         program, report eligible Razorpay transactions and refunds to
         Google Play. We do not store your card numbers, UPI PIN or bank
@@ -88,7 +88,8 @@ export default function PrivacyScreen() {
       <Text style={styles.body}>
         We use encrypted connections, per-user access rules, secure
         device storage for your session and time-limited links for
-        paid notes. This does not encrypt downloaded PDFs.
+        paid Notes, which require internet in this release. Downloaded
+        free-preview PDFs are not encrypted by the app.
       </Text>
       <Text style={styles.heading}>
         Children

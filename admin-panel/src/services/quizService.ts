@@ -20,13 +20,13 @@ export async function getQuizTests(filters: ContentFilters = {}): Promise<QuizTe
 // "quiz_tests" table - so they must be stripped before sending to Supabase.
 export async function addQuizTest(data: QuizTestInput) {
   const { yearTitle, subjectTitle, courseTitle, ...payload } = data;
-  const { error } = await supabase.from(TABLE).insert(toSnakeCase(omitBlankIds(payload))).select("id").single();
+  const { error } = await supabase.from(TABLE).insert(toSnakeCase(omitBlankIds({ ...payload, questions: payload.questions.map(question => ({ ...question, options: question.options.filter(option => option.trim().length > 0) })) }))).select("id").single();
   if (error) throw error;
 }
 
 export async function updateQuizTest(id: string, data: QuizTestInput) {
   const { yearTitle, subjectTitle, courseTitle, ...payload } = data;
-  const { error } = await supabase.from(TABLE).update(toSnakeCase(omitBlankIds(payload))).eq("id", id).select("id").single();
+  const { error } = await supabase.from(TABLE).update(toSnakeCase(omitBlankIds({ ...payload, questions: payload.questions.map(question => ({ ...question, options: question.options.filter(option => option.trim().length > 0) })) }))).eq("id", id).select("id").single();
   if (error) throw error;
 }
 

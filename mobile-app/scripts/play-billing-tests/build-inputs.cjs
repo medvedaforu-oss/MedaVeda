@@ -1,0 +1,28 @@
+const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../..');
+const {preparePlayNative}=require('../prepare-play-native.cjs');
+const profile=require('../../eas.json').build['play-billing-testing'];
+(async()=>{
+ const {Ignore}=require('/usr/local/lib/node_modules/eas-cli/build/vcs/local');
+ const ignore=await Ignore.createForCopyingAsync(root);
+ for(const file of ['src/services/playBillingCore.ts','src/services/playBillingService.ts','assets/icon.png','modules/medveda-offline-vault/package.json','google-services.json','app.config.js','package-lock.json','scripts/prepare-play-native.cjs'])assert.equal(ignore.ignores(file),false,file);
+ for(const file of fs.readdirSync(path.join(root,'src'),{recursive:true}).filter(name=>fs.statSync(path.join(root,'src',name)).isFile()))assert.equal(ignore.ignores(`src/${file}`),false,`production source src/${file} missing from EAS archive`);
+ for(const file of ['node_modules/anything','android/app/build/large','docs/play-billing-20261123/package.json.before','.env','google-play-service-account.json','code-signing-keys/private-key.pem','firebase-test/google-services.json'])assert.equal(ignore.ignores(file),true,file);
+ require('../firebase-config.cjs').validateFirebaseConfig(path.join(root,'google-services.json'),'in.medveda.app');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'medveda-play-inputs-')),manifestPath=path.join(dir,'package.json');
+ fs.symlinkSync(path.join(root,'node_modules'),path.join(dir,'node_modules'),'dir');
+ const manifest=JSON.parse(fs.readFileSync(path.join(root,'package.json')));
+ fs.writeFileSync(manifestPath,JSON.stringify(manifest));
+ const env={...profile.env,EAS_BUILD_PROFILE:'play-billing-testing',EAS_BUILD_PLATFORM:'android',EAS_BUILD:'true'};
+ preparePlayNative(env,manifestPath);assert.deepEqual(JSON.parse(fs.readFileSync(manifestPath)).expo.autolinking.exclude,[]);
+ const {execFileSync}=require('node:child_process');
+ const resolve=project=>JSON.parse(execFileSync(process.execPath,[path.join(root,'node_modules/expo-modules-autolinking/bin/expo-modules-autolinking.js'),'resolve','--platform','android','--project-root',project,'--json'],{encoding:'utf8'}));
+ assert.equal(resolve(root).modules.some(item=>item.packageName==='expo-iap'),false);
+ assert.equal(resolve(dir).modules.some(item=>item.packageName==='expo-iap'),true);
+ assert.ok(manifest.expo.autolinking.exclude.includes('expo-iap'));
+ assert.throws(()=>preparePlayNative({...env,EAS_BUILD:'false'},manifestPath),/cloud builder/);
+ preparePlayNative({MEDVEDA_PAYMENT_PROVIDER:'razorpay'},manifestPath);
+ const lock=JSON.parse(fs.readFileSync(path.join(root,'package-lock.json')));
+ assert.equal(lock.packages['node_modules/expo-iap'].version,'3.4.4');assert.equal(manifest.dependencies['expo-iap'],'3.4.4');
+ console.log('PASS EAS upload exclusions, required source/assets/Firebase, pinned IAP and cloud-only native inclusion');
+})().catch(e=>{console.error(e);process.exitCode=1});

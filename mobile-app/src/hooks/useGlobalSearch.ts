@@ -26,9 +26,12 @@ import {
 } from "../utils/recentSearches";
 import { DEFAULT_FILTERS, ScoredResult, SearchFilters, SearchIndex, SearchSection, SearchResult } from "../types/search";
 import { logError } from "../utils/logger";
+import { getAuthEpoch, subscribeAuthUser } from "../services/authState";
+import { captureStorageOwner, isStorageOwnerCurrent } from "../utils/ownerStorage";
 
 export default function useGlobalSearch() {
   const navigation = useNavigation<any>();
+  const actionOwner = captureStorageOwner();
 
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
@@ -43,9 +46,26 @@ export default function useGlobalSearch() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [recentSearches, setRecentSearches] = useState<RecentSearchEntry[]>([]);
+  const [ownerEpoch, setOwnerEpoch] = useState(getAuthEpoch());
+  const [history, setHistory] = useState<{ epoch: number; entries: RecentSearchEntry[] }>({ epoch: ownerEpoch, entries: [] });
+  const recentSearches = history.epoch === getAuthEpoch() ? history.entries : [];
   const [discovery, setDiscovery] = useState<{ source: SearchResult[]; sections: SearchSection[] } | null>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const changed = () => {
+      setOwnerEpoch(getAuthEpoch());
+      setQuery("");
+      setFilters(DEFAULT_FILTERS);
+      loadRequest.current.sequence++;
+      setIndex(null);
+      setDiscovery(null);
+      setOpeningId(null);
+    };
+    const unsubscribe = subscribeAuthUser(changed);
+    if (ownerEpoch !== getAuthEpoch()) changed();
+    return unsubscribe;
+  }, [ownerEpoch]);
 
   const isOnline = useNetworkStatus();
   const { ownedScopes, isChapterOwned, refresh: refreshPurchases, loading: purchasesLoading, error: purchasesError } = usePurchases();
@@ -78,11 +98,16 @@ export default function useGlobalSearch() {
       if (request === loadRequest.current.sequence) setIndex(cached);
     }).catch(() => {});
     return () => { requests.sequence++; };
-  }, [ready, courseId]);
+  }, [ready, courseId, ownerEpoch]);
 
   useEffect(() => {
-    getRecentSearches().then(setRecentSearches);
-  }, []);
+    let active = true;
+    const owner = captureStorageOwner();
+    void getRecentSearches().then(entries => {
+      if (active && isStorageOwnerCurrent(owner)) setHistory({ epoch: owner.epoch, entries });
+    });
+    return () => { active = false; };
+  }, [ownerEpoch, courseId]);
 
   // Opening Search only reads a warm cache. The first non-empty query (or
   // explicit refresh) pays for the nine-source catalog build.
@@ -146,28 +171,41 @@ export default function useGlobalSearch() {
   }
 
   async function commitSearch() {
+    const owner = actionOwner;
+    if (!isStorageOwnerCurrent(owner)) return;
     const trimmed = query.trim();
     if (!trimmed) return;
     await recordSearch(trimmed);
-    setRecentSearches(await getRecentSearches());
+    if (!isStorageOwnerCurrent(owner)) return;
+    const entries = await getRecentSearches();
+    if (isStorageOwnerCurrent(owner)) setHistory({ epoch: owner.epoch, entries });
   }
 
   async function removeRecentSearch(entryQuery: string) {
+    const owner = actionOwner;
+    if (!isStorageOwnerCurrent(owner)) return;
     await removeRecentSearchEntry(entryQuery);
-    setRecentSearches(await getRecentSearches());
+    if (!isStorageOwnerCurrent(owner)) return;
+    const entries = await getRecentSearches();
+    if (isStorageOwnerCurrent(owner)) setHistory({ epoch: owner.epoch, entries });
   }
 
   async function clearRecentSearches() {
+    const owner = actionOwner;
+    if (!isStorageOwnerCurrent(owner)) return;
     await clearRecentSearchesStorage();
-    setRecentSearches([]);
+    if (isStorageOwnerCurrent(owner)) setHistory({ epoch: owner.epoch, entries: [] });
   }
 
   function selectRecentSearch(entryQuery: string) {
+    if (!isStorageOwnerCurrent(actionOwner)) return;
     setQuery(entryQuery);
   }
 
   async function openResult(result: ScoredResult) {
+    if (!isStorageOwnerCurrent(actionOwner)) return;
     if (query.trim()) await commitSearch();
+    if (!isStorageOwnerCurrent(actionOwner)) return;
 
     switch (result.type) {
       case "year": {
@@ -234,6 +272,7 @@ export default function useGlobalSearch() {
         setOpeningId(result.id);
         try {
           const full = await fetchQuizTestById(q.id);
+          if (!isStorageOwnerCurrent(actionOwner)) return;
           if (!full) {
             Alert.alert("Unavailable", "This test is no longer available.");
             return;
@@ -246,10 +285,11 @@ export default function useGlobalSearch() {
             test: full,
           });
         } catch (err) {
+          if (!isStorageOwnerCurrent(actionOwner)) return;
           logError("Failed to open quiz from search:", err);
           Alert.alert("Error", "Could not open this test. Please try again.");
         } finally {
-          setOpeningId(null);
+          if (isStorageOwnerCurrent(actionOwner)) setOpeningId(null);
         }
         return;
       }

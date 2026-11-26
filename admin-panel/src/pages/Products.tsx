@@ -1,9 +1,12 @@
+import { withProductCovers } from "../utils/productCovers";
 import LookupStatus from "../components/LookupStatus";
-import useRequestGuard from "../hooks/useRequestGuard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useCourses from "../hooks/useCourses";
 import CoursePicker from "../components/CoursePicker";
 
+import useRequestGuard from "../hooks/useRequestGuard";
+import { getBillingStatuses } from "../services/playBillingSyncService";
+import type { BillingStatuses } from "../types/playBilling";
 import useProducts from "../hooks/useProducts";
 import useYears from "../hooks/useYears";
 import useSubjects from "../hooks/useSubjects";
@@ -17,7 +20,6 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import SearchBar from "../components/SearchBar";
 
 import type { Product, ProductInput } from "../types/product";
-import { getBillingStatuses, retryBillingPrice, type BillingStatus } from "../services/playBillingSyncService";
 
 export default function Products() {
   const { courses, loading: coursesLoading, error: coursesError, reload: reloadCourses } = useCourses();
@@ -30,6 +32,39 @@ export default function Products() {
   const { subjects, loading: subjectsLoading, error: subjectsError, reload: reloadSubjects } = useSubjects();
   const { chapters, loading: chaptersLoading, error: chaptersError, reload: reloadChapters } = useChapters();
 
+  const billingVersion = JSON.stringify([courseFilter, loading, error, products.map(product => [product.id, product.revision, product.price, product.active, product.productType])]);
+  const [billingRead, setBillingRead] = useState<{ version: string; statuses: BillingStatuses }>({ version: "", statuses: {} });
+  const billing = !loading && !error && billingRead.version === billingVersion ? billingRead.statuses : {};
+  const [billingError, setBillingError] = useState<string | null>(null);
+  const beginBillingRequest = useRequestGuard(billingVersion);
+  const loadBilling = useCallback(async () => {
+    if (loading || error) return;
+    const current = beginBillingRequest();
+    try {
+      const statuses = await getBillingStatuses();
+      if (!current()) return;
+      const matched = Object.fromEntries(products.flatMap(product => {
+        const status = statuses[product.id];
+        return status && status.productRevision === product.revision ? [[product.id, status]] : [];
+      }));
+      const mismatch = products.some(product => statuses[product.id] &&
+        statuses[product.id].productRevision !== product.revision);
+      setBillingRead({ version: billingVersion, statuses: matched });
+      setBillingError(mismatch ? "Products changed. Refreshing before showing billing readiness." : null);
+      if (mismatch) void reload();
+    } catch {
+      if (!current()) return;
+      // A failed refresh cannot continue presenting a previous Ready readout.
+      setBillingRead({ version: billingVersion, statuses: {} });
+      setBillingError("Could not load Google Play Billing status. Please retry.");
+    }
+  }, [beginBillingRequest, billingVersion, products, reload, loading, error]);
+  useEffect(() => {
+    void loadBilling();
+    const timer = setInterval(() => { void loadBilling(); }, 30_000);
+    return () => clearInterval(timer);
+  }, [loadBilling]);
+
   const [search, setSearch] = useState("");
   const [scope, setScope] = useState("");
 
@@ -41,41 +76,10 @@ export default function Products() {
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
-  const [billing, setBilling] = useState<Record<string, BillingStatus>>({});
-  const [billingError, setBillingError] = useState<string | null>(null);
-
-  const beginBillingRequest = useRequestGuard("billing-status");
-  const loadBilling = useCallback(async () => {
-    const current = beginBillingRequest();
-    if (!current()) return;
-    try {
-      const data = await getBillingStatuses();
-      if (!current()) return;
-      setBilling(data);
-      setBillingError(null);
-    } catch {
-      if (!current()) return;
-      setBillingError("Could not load Google Play Billing status.");
-    }
-  }, [beginBillingRequest]);
-
-  useEffect(() => {
-    void loadBilling();
-    const timer = setInterval(() => { void loadBilling(); }, 15000);
-    return () => clearInterval(timer);
-  }, [loadBilling]);
-
-  async function retryBilling(product: Product) {
-    try {
-      await retryBillingPrice(product.price);
-      await loadBilling();
-    } catch (error) {
-      setBillingError(error instanceof Error ? error.message : "Could not retry billing sync.");
-    }
-  }
-
+  const productsWithCovers = useMemo(() => withProductCovers(products, years, subjects, chapters),
+    [products, years, subjects, chapters]);
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return productsWithCovers.filter((product) => {
       const matchesSearch = product.title
         .toLowerCase()
         .includes(search.toLowerCase());
@@ -84,7 +88,7 @@ export default function Products() {
 
       return matchesSearch && matchesScope;
     });
-  }, [products, search, scope]);
+  }, [productsWithCovers, search, scope]);
 
   function openCreate() {
     setEditing(null);
@@ -98,11 +102,10 @@ export default function Products() {
 
   async function handleSubmit(data: ProductInput) {
     if (editing) {
-      await editProduct(editing.id, data);
+      await editProduct(editing.id, data, editing.revision);
     } else {
       await createProduct(data);
     }
-    await loadBilling();
   }
 
   async function handleDelete() {
@@ -157,14 +160,14 @@ export default function Products() {
       </div>
 
       {error && <div role="alert" className="text-red-500 mb-4"><p>{error}</p><button type="button" onClick={() => { void reload(); }}>Retry</button></div>}
-      {billingError && <p className="text-red-500 mb-4">{billingError}</p>}
 
+      <p className="mb-3 text-sm text-gray-600">Publication controls visibility. Paid Notes require verified Google Play readiness before purchase.</p>
+      {billingError && <div role="alert" className="mb-4 text-amber-700"><p>{billingError}</p><button type="button" onClick={() => { void loadBilling(); }}>Recheck status</button></div>}
       <ProductTable
+        billing={billing}
         products={filteredProducts}
         onEdit={openEdit}
         onDelete={(product) => { setActionError(null); setDeleteTarget(product); }}
-        billing={billing}
-        onRetryBilling={(product) => { void retryBilling(product); }}
       />
 
       <ProductFormModal

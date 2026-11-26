@@ -1,0 +1,223 @@
+{
+  "dateUTC": "2026-11-23",
+  "fixture": {
+    "failingCommand": "cd mobile-app && node scripts/play-billing-tests/verification.cjs",
+    "originalFailure": "standalone-verification-fixtures.cjs:86 success false !== true",
+    "changedTestFiles": [
+      "supabase/tests/play-verification-selftest.cjs",
+      "mobile-app/scripts/play-billing-tests/verification.cjs"
+    ],
+    "correction": "Successful settlement updates mock order to paid, exact p_purchase_token, play_consumption_status pending, payment_completed_at p_paid_at. RPC errors do not mutate. Already-paid replay preserves existing state. Proof mock remains independent.",
+    "negativeSettlementCases": 26,
+    "negativeProofCases": 2
+  },
+  "regressions": {
+    "scriptsPassed": 13,
+    "scriptsFailed": 0,
+    "lifecycleTests": 27,
+    "existingStandaloneEntitlementCases": 48,
+    "unrelatedTestsRun": false
+  },
+  "preservation": {
+    "protectedFilesChecked": 389,
+    "changed": [],
+    "scope": "supabase/functions, supabase/migrations, mobile-app/src and app/build/package/Firebase config"
+  },
+  "liveGate": {
+    "status": "BLOCKED",
+    "deployedEndpoints": {
+      "create-standalone-play-order": 1,
+      "verify-standalone-play-purchase": 1
+    },
+    "codeRequiresExactTrueAndAuthenticatedAllowlist": true,
+    "effectiveProductionEnvironmentVerified": false,
+    "existingAuthenticatedQASessionFound": false,
+    "emptyUnauthenticatedProbes": [
+      {
+        "endpoint": "create-standalone-play-order",
+        "status": 401,
+        "body": "{\"code\":\"UNAUTHORIZED_NO_AUTH_HEADER\",\"message\":\"Missing authorization header\"}"
+      },
+      {
+        "endpoint": "verify-standalone-play-purchase",
+        "status": 401,
+        "body": "{\"code\":\"UNAUTHORIZED_NO_AUTH_HEADER\",\"message\":\"Missing authorization header\"}"
+      }
+    ],
+    "reason": "Authentication 401 cannot prove effective gate state. Existing tools cannot read effective edge environment; no existing QA user session was found. No identities, tokens, secrets or allowlist were created or changed.",
+    "manual": "Use existing authorized Supabase Dashboard access to confirm PLAY_STANDALONE_TEST_ENABLED is unset or false without copying values. With an existing authorized QA session, POST {} to each endpoint using its existing Bearer token kept private; require the explicit standalone-disabled 403 message. A sales_disabled 403 on create or a foreign-user 403 does not establish the global gate is false. Do not enable flags, alter allowlists, or send valid purchase details."
+  },
+  "playConsole": {
+    "status": "BLOCKED",
+    "authorizedConsoleOrPublisherCredentialAvailable": false,
+    "highestUsedVersionCode": null,
+    "versionCode15Accepted": null,
+    "uploadCertificateMatches": null,
+    "productsAndOptionsVerifiedLive": false,
+    "publisherApiAccessVerified": false,
+    "licenseTestersVerified": false,
+    "internalTrackVerified": false,
+    "databaseCatalogReadOnly": {
+      "totalPriceTiers": 0,
+      "activePriceTiers": 0
+    },
+    "manualSteps": [
+      "Open MedVeda (in.medveda.app) in Play Console. Test and release > App bundle explorer: inspect all artifacts, including unused/draft artifacts and every track; record highest used versionCode. Cross-check production, open, closed and internal testing releases. Confirm 15 has never been uploaded and is suitable relative to existing releases; do not upload or increment anything.",
+      "Test and release > Setup > App signing (or App integrity > App signing): compare Upload key certificate SHA-256, not App signing key certificate, with EAS certificateSHA256 recorded below. Preserve all keys and settings.",
+      "Monetize with Play > Products > One-time products: inspect each intended SKU, active standard BUY purchase option ID, India availability and INR price matching the server amount; exclude subscriptions, rental/preorder/discount offers. Database play_price_tiers currently has zero rows, so provisioning/catalog readiness remains blocked; do not trigger sync or modify catalog in this task.",
+      "Google Cloud Console: verify Google Play Android Developer API is enabled for the existing service-account project. Play Console > Users and permissions: inspect the existing backend service-account access to in.medveda.app, including View financial data, orders, and cancellation survey responses and Manage orders and subscriptions as needed. Existing authorized operator may verify read-only product-list API access; do not create API edits, keys, or accounts or exercise consume/refund endpoints.",
+      "Play Console account Settings > License testing: verify the existing purchasing Google account is listed, with an appropriate test response. Do not add testers. Internal track membership alone is not license testing.",
+      "Test and release > Testing > Internal testing: inspect release readiness, existing tester list/Google Group and opt-in link. Confirm the license tester is also eligible for the track and will install through that link. Do not create a release or start rollout."
+    ]
+  },
+  "eas": {
+    "profile": "play-billing-testing",
+    "package": "in.medveda.app",
+    "distribution": "store",
+    "environment": "preview",
+    "buildType": "app-bundle",
+    "routing": {
+      "medvedaPaymentProvider": "play",
+      "medvedaDistribution": "google-play-testing",
+      "medvedaBuildProfile": "play-billing-testing",
+      "medvedaBuildTarget": "play-testing",
+      "medvedaRecoveryScheme": "medveda"
+    },
+    "razorpayFallback": false,
+    "remoteVersionCode": 15,
+    "autoIncrement": false,
+    "signing": {
+      "projectId": "2d642c70-8ec1-4d7b-a388-2f2f99e8a8df",
+      "credentials": [
+        {
+          "applicationId": "in.medveda.app",
+          "fcmV1Present": true,
+          "buildCredentials": [
+            {
+              "name": "Build Credentials rEPhFBfQj8",
+              "isDefault": true,
+              "keystorePresent": true,
+              "certificateSHA256": "8c9598e4ea0722bcd6f2690b1060b001d9fff619f7c18b4b3bb5b092a4cbf300"
+            }
+          ]
+        }
+      ]
+    },
+    "firebaseValidatedForPackage": true,
+    "firebaseLocalFileIncluded": true,
+    "fcmV1CredentialPresent": true,
+    "quota": {
+      "account": {
+        "name": "ganeshp0305",
+        "plan": "Free",
+        "concurrencies": {
+          "total": 5,
+          "android": 5,
+          "ios": 1
+        },
+        "billingPeriod": {
+          "start": "2026-11-01T00:00:00.000Z",
+          "end": "2026-12-01T00:00:00.000Z",
+          "daysElapsed": 23,
+          "daysRemaining": 8,
+          "totalDays": 30
+        }
+      },
+      "builds": {
+        "plan": {
+          "used": 7,
+          "limit": 30,
+          "percentUsed": 23
+        },
+        "overage": {
+          "count": 0,
+          "costCents": 0,
+          "byWorkerSize": []
+        },
+        "byPlatformAndSize": [
+          {
+            "platform": "android",
+            "resourceClass": "medium",
+            "count": 7
+          }
+        ],
+        "ios": {
+          "plan": {
+            "used": 0,
+            "limit": 15,
+            "percentUsed": 0
+          }
+        },
+        "android": {
+          "plan": {
+            "used": 7,
+            "limit": 15,
+            "percentUsed": 46
+          }
+        }
+      },
+      "updates": {
+        "uniqueUpdaters": {
+          "plan": {
+            "used": 0,
+            "limit": 1000,
+            "percentUsed": 0
+          },
+          "overage": {
+            "count": 0,
+            "costCents": 0
+          }
+        },
+        "bandwidth": {
+          "plan": {
+            "usedBytes": 83118,
+            "usedFormatted": "0.08 MiB",
+            "limitBytes": 107374182400,
+            "limitFormatted": "100 GiB",
+            "percentUsed": 0
+          },
+          "overage": {
+            "usedBytes": 0,
+            "usedFormatted": "0.00 MiB",
+            "costCents": 0
+          }
+        },
+        "overageCostCents": 0
+      },
+      "billing": {
+        "addons": [],
+        "estimated": {
+          "overageCents": 0,
+          "totalCents": 0
+        }
+      },
+      "billingUrl": "https://expo.dev/accounts/ganeshp0305/settings/billing"
+    },
+    "archive": {
+      "fileCount": 412,
+      "inputBytes": 6526915,
+      "compressedBytes": 5155547,
+      "compressedMiB": 4.92,
+      "allArchivedFilesMatchCurrentSource": true,
+      "firebaseIncluded": true,
+      "sensitiveFilesExcluded": true
+    },
+    "automaticSubmissionConfiguredForProfile": false,
+    "cloudBuildSubmitted": false,
+    "nativeCompilationRun": false,
+    "futureBuildCommand": "EAS_NO_VCS=1 EAS_PROJECT_ROOT=/home/ganeshp8545/AyurPulse/mobile-app eas build --platform android --profile play-billing-testing --non-interactive --no-wait"
+  },
+  "remainingBlockers": [
+    "Effective production default-off gate unverified",
+    "No production Play price tiers",
+    "Highest used Play versionCode and acceptance of 15 unverified",
+    "Upload certificate match unverified",
+    "Play catalog/BUY options and Publisher API access unverified",
+    "Existing license testers and internal-track readiness unverified"
+  ],
+  "recommendedNextAction": "Complete the read-only gate and Play Console checks above, record version/signing acceptance and catalog status, then obtain separate authorization for one EAS cloud build. Do not submit a build or activate billing while these preflight blockers remain.",
+  "review": {
+    "result": "No actionable findings",
+    "scope": "Two changed test files; read-only independent review"
+  }
+}

@@ -1,0 +1,254 @@
+The files belonging to this database system will be owned by user "ganeshp8545".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default database encoding has accordingly been set to "SQL_ASCII".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+creating directory /tmp/qp-regressions-lqalmpn7/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    /usr/lib/postgresql/17/bin/pg_ctl -D /tmp/qp-regressions-lqalmpn7/data -l logfile start
+
+waiting for server to start.... done
+server started
+NOTICE:  database "ap_ci_13892" does not exist, skipping
+== build: stub + migrations + seed
+PASS  play_catalog_queue_regression_checks
+PASS  play_catalog_failure_access_checks
+PASS  play_duplicate_settlement_checks
+PASS  f7_checks                            0FAIL,25PASS
+PASS  f8_checks                            0FAIL,17PASS
+PASS  batch1_checks                        0FAIL,78PASS
+PASS  batch3_checks                        0FAIL,30PASS
+PASS  batch3b_checks                       0FAIL,31PASS
+PASS  phase2_referral_wallet_checks        0FAIL,125PASS
+PASS  referral_limits_checks               0FAIL,65PASS
+PASS  referral_off_wallet_checks           0FAIL,19PASS
+PASS  high_phone_and_notes_checks          0FAIL,23PASS
+PASS  medium_db_checks                     0FAIL,34PASS
+FAIL  low_grants_checks                    1FAIL,18PASS
+FAIL: no table outside the four public ones is readable by anon
+1 FAIL, 18 PASS
+PASS  admin_mfa_checks                     0FAIL,23PASS
+PASS  ucb_checks                           0FAIL,28PASS
+PASS  verified_content_checks              0FAIL,53PASS
+FAIL  account_deletion_checks (exit 0)
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS late webhook for deleted user records capture and compensation, grants nothing, is idempotent
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:103: NOTICE:  PASS normal grant unaffected
+eeeeeeee-0000-4000-8000-000000000005
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:111: NOTICE:  PASS authenticated cannot call erase_user_data
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/account_deletion_checks.sql:117: NOTICE:  PASS anon cannot call erase_user_data
+FAIL delete_my_account wrapper missing or exposed to anon
+PASS  critical_fixes_checks
+PASS  app_config_checks
+PASS  null_year_fallback_checks
+PASS  course_wide_browsing_checks
+PASS  course_year_profile_checks
+PASS  readiness_validation
+PASS  content_publication_checks
+PASS  quiz_answer_and_admin_mfa_checks
+PASS  payment_queue_checks
+PASS  referral_switch_off_paths
+PASS  play_catalog_sync_checks
+PASS  play_payment_pg_checks
+PASS  play_entitlement_snapshot_checks
+PASS  razorpay_snapshot_retry_checks
+PASS  notes-choice-checkout
+PASS  billing-settlement-recovery
+PASS  nonplay-test-isolation
+PASS  phase-c-contracts
+PASS  phase-c-play-duplicates
+PASS  p0-classified-reversal
+PASS  fk-index-coverage
+PASS  audit-checkout-publication
+== edge-function harnesses
+PASS pre-migration RPC definitions/ACLs match fresh deployed metadata (8 functions)
+PASS repeat migration preserves financial/catalog rows
+PASS AUD-009 early full refund persists; later capture never grants
+PASS AUD-009 early open dispute survives duplicate/restart and capture
+PASS AUD-009 early lost dispute survives duplicate/restart and capture
+PASS AUD-009 unrecognized SQL result retries null
+PASS AUD-009 unrecognized SQL result retries {}
+PASS AUD-009 unrecognized SQL result retries {"status":"unknown_payment"}
+PASS AUD-009 unrecognized SQL result retries {"status":"unexpected"}
+PASS AUD-010 unknown order captures durably once
+PASS AUD-010 amount mismatch captures durably once
+PASS AUD-010 record_provider_event outage is retryable
+PASS AUD-010 record_payment_capture outage is retryable
+PASS AUD-010 payment_compensations outage is retryable
+PASS AUD-012 missed refund fallback revokes paid PDF; repeated fallback cannot restore it
+PASS signature rejects before any durable write
+PASS AUD-010 attach/settle race never compensates a committed grant
+PASS AUD-012 full-refund fallback after chargeback never restores buyer wallet
+PASS AUD-012 classified lost fact retains chargeback precedence after reversal RPC failure
+PASS deployed verifier signed website callback and mobile recovery stay compatible
+PASS batch refund SQL: atomic failure rollback, wallet restored once, referral cancelled, legacy marker revoked, lost dispute no wallet restoration, service-only ACL
+PASS  isolated non-Play test actual-handler/PostgreSQL integration
+PASS  Play catalog unit + API regressions
+PASS  pdf-validation + upload-body + note-pdf-hash (9 cases)
+PASS F01 no underfunded grant across independent settlement sessions
+PASS F01 failure and expiry release wallet reservations
+PASS F02 concurrent replacement orders retain discount; only live reservation grants; stale capture compensated
+PASS real concurrent retry/settlement create_first: no deadlock, single discount grant, correct late capture/retry price
+PASS real concurrent retry/settlement settle_first: no deadlock, single discount grant, correct late capture/retry price
+PASS concurrent real PostgreSQL sessions: one provider-creation claim/order; concurrent capture callbacks grant once
+PASS F10 parallel Play token settlements grant once
+PASS F10 parallel webhook/client Razorpay settlement grants once
+PASS preexisting legacy migration, catalog, payment, and entitlement SQL checks
+PASS skipped reports/refunds cannot finish durable jobs successfully
+PASS capture-only crash recovery retries until authoritative settlement commits
+PASS authorization inbox retries reporting without granting Notes
+PASS compensation persistence errors and lost worker leases cannot return job success
+PASS authenticated Notes choice endpoint denies before writes when disabled/invalid; server price/user win; repeat request returns same provider order
+PASS ambiguous provider creation never repeats CREATE for the same choice
+PASS ambiguous creation recovers one exactly bound receipt with no second CREATE; mismatched provider snapshots cannot open checkout
+PASS verified authorization queues reporting only, rejects provider mismatches, skips website orders and never calls settlement
+PASS production approval gates; stale/terminal/foreign/malformed reservations rejected before provider CREATE; testing prices unchanged
+PASS F05 missing settlement receipt cannot return success
+PASS F05 authoritative capture timestamp persisted separately from receipt
+PASS B01 granted marker without committed purchase stays pending
+PASS B01 uncommitted capture is retryable rather than compensation
+PASS F03 UCB wallet shortfall capture is reported despite refused entitlement
+PASS F03 verified capture for an unknown local order is recorded and compensated
+PASS F10 independent Play and Razorpay sessions
+PASS F10 mocked Google reporting scenarios
+PASS F10 mocked Play consumption failure
+PASS F10 missing completion time prevents Google call
+PASS F10 transient rejection records failed state
+PASS F10 retry then success
+PASS F10 F05 Google transactionTime is provider capture time, 25h before receipt
+PASS F10 permanent Google rejection stays failed
+PASS F10 Google amount mismatch rejected
+PASS F10 test server rejects an unmarked real Google report result
+PASS F10 license-test Google result persists its authoritative test marker
+PASS F10 first partial refund
+PASS F10 second partial refund uses prior reported amount
+PASS F10 busy refund claim throws for durable retry rather than returning skipped success
+PASS F10 already reported refund replay returns confirmed completion
+PASS F10 Google success cannot return reported when persistence fails
+PASS F10 lost persistence result reconciles on retry
+PASS F10 a slower failed attempt cannot downgrade a concurrent reported result
+PASS F10 Google consumption failure recorded for retry after grant
+PASS unsigned recover denied: 401
+PASS wrong owner denied: 404
+PASS recovery limiter fails closed before provider lookup: 429, lookups=0
+PASS F04 eleventh refunded token checked despite ten permanent mock Google failures (11 unique tokens)
+PASS F03 full automatic compensation retries and queues Google refund with stable request id
+PASS F08 rejects missing both
+PASS F08 rejects blank URL
+PASS F08 rejects blank secret
+PASS F08 rejects invalid URL
+PASS F08 rejects short secret
+PASS F08 rejects duplicate URL rows
+PASS F08 rejects duplicate secret rows
+PASS F08 accepts valid configuration
+PASS successful Play consumption
+PASS failed consumption and retry
+PASS duplicate token/job does not consume twice
+PASS concurrent worker claim
+PASS expired lease reclaimed
+PASS retry limit parks failed job
+PASS Google API failure retried without false check timestamp
+PASS refunded purchase reverses entitlement
+PASS voided token deduplicated and reversed
+PASS void observed before settlement reverses later entitlement
+PASS stale lease cannot finish job
+PASS stale lease cannot advance void cursor
+PASS void API failure releases cursor for retry
+PASS direct verification consumption race
+PASS concurrent direct consume 409 confirmed with fresh Google read
+PASS Razorpay paths untouched
+PASS dedicated cron authentication
+PASS Play-only migration dependencies and SQL lease fences
+PASS Play Cron configuration, idempotency, authentication, and secret safety
+PASS worker auth, safe logs, Publisher retry parity and terminal OAuth permission failures across 20 cases
+PASS catalog failure persistence errors and expired leases return 503
+PASS PATCH diagnostic reaches structured log; persisted error and retry behavior remain unchanged
+PASS real catalog creation worker: 126 scenarios; exact INR/India, explicit version, auth, failures, retries, idempotency, rotation and lease fences
+    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.23.1
+PASS checkout distinguishes terminal catalog failures from pending/stale tiers and fails closed on lookup errors
+PASS real verification handler validates v2 receipt then settles and consumes
+PASS paid Play RPC without committed Notes entitlement remains pending and unconsumed
+PASS invalid ownership/token/SKU/option/refund/cancellation/pending/API/network cases cannot settle
+PASS failed settlement never consumes; duplicate conflicts; paid replay and concurrent consumption remain idempotent
+PASS AUD-019 malformed/nonobject JSON returns generic credentials failure before Auth/DB
+PASS AUD-015 AAL1/AAL2, MFA on/off, missing/bad/error policy and nonadmin side-effect denial
+PASS push tickets count acceptance only, partial/malformed/provider rejection, dead-token cleanup, and fail before send on feed persistence failure; no device delivery claim
+PASS missing authentication denied before order/provider/settlement
+PASS expired authentication denied before order/provider/settlement
+PASS forged authentication denied before order/provider/settlement
+PASS raw token authentication denied before order/provider/settlement
+PASS Basic scheme authentication denied before order/provider/settlement
+PASS wrong owner and missing order use verified identity filters and identical non-disclosing responses; body user ID ignored
+PASS invalid UUID and failed recovery limiter never reach provider/settlement
+PASS valid owner and duplicate recovery deliveries reach settlement (SQL idempotency covered by MV003)
+PASS valid signed callback without JWT reaches shared helper; invalid/missing signature rejected before order lookup
+PASS valid raw-body webhook HMAC; modified body/invalid HMAC rejected before inbox/settlement
+PASS MV004 backend isolated fixtures; zero real HTTP requests
+PASS standard entrypoint: authenticated native Razorpay and website checkout accepted
+PASS sales switch, authentication and remote gate failures block provider calls
+PASS ordinary website route cannot bypass programme gates by attaching a legacy UCB body
+PASS isolated test entrypoint does not import the live pricing handler; actual test handlers covered by nonplay-test-integration.ts
+PASS malformed callback bodies return 400 without settlement
+PASS production rejects test-mode key before provider request
+PASS actual HMAC implementation accepts authentic and rejects forged/malformed signatures
+PASS missing callback signature
+PASS forged callback signature
+PASS callback order swapped
+PASS authorized payment cannot unlock
+PASS wrong payment currency cannot unlock
+PASS provider payment/order mismatch cannot unlock
+PASS provider amount mismatch cannot unlock
+PASS stored amount mismatch cannot unlock
+PASS valid captured callback reaches server settlement
+PASS refunded recovery is terminal without provider call or regrant
+PASS recovery owner=undefined status=401
+PASS recovery owner=other status=404
+PASS recovery owner=buyer status=200
+PASS content URL publication handlers: 45 cases with real service-role SQL authorization; Auth/Storage mocked
+PASS unresolved/null/unrecognized refund and dispute results retain inbox and webhook/worker retries (36 paths)
+PASS recognized idempotent reversal outcomes and closed manual hold preserved; unfamiliar states fail closed
+PASS unresolved capture mismatches retain webhook retries; only durable compensation/reversal outcomes acknowledge
+PASS targeted requests cannot persist globally readable content or read tokens; authorized broadcast and admin gate preserved
+PASS rollout disabled keeps legacy checkout
+PASS enabled rejects missing version
+PASS enabled rejects old version
+PASS enabled rejects absent choice
+PASS enabled accepts supported choice
+PASS malformed config fails closed
+PASS disabled rollout still requires valid config
+PASS missing rollout fails closed
+PASS F07 production rejects test key with ALLOW_TEST_MODE=true
+PASS F07 unset marker rejects test key with ALLOW_TEST_MODE=true
+PASS F07 staging accepts intentional test key
+PASS F07 production accepts live key
+PASS F07 staging rejects mismatched/unknown key mode
+PASS F07 staging rejects mismatched/unknown key mode
+PASS F07 production rejects mismatched/unknown key mode
+PASS F03 ambiguous Razorpay refund response recovered by stable marker without second POST
+PASS receipt reconciliation uses GET only, exact receipt match, and rejects duplicates/truncated/malformed provider results
+PASS F06 1,500 mocked Google jobs drained in 41 minutes; 1575 calls, 1.5s modeled latency, 5% first-attempt failure
+PASS  webhook-harness (25 checks)
+SOME SUITES FAILED
+waiting for server to shut down.... done
+server stopped

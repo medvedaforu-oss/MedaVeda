@@ -275,7 +275,7 @@ function SocialButton({
   onPress: () => void;
 }) {
   return (
-    <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Open ${icon === "youtube-play" ? "YouTube" : icon === "telegram" ? "Telegram" : "Instagram"}`} style={styles.socialButton} activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity accessibilityRole="button" accessibilityLabel={`Open ${icon === "youtube-play" ? "YouTube" : icon === "telegram" ? "Telegram" : icon === "whatsapp" ? "WhatsApp" : "Instagram"}`} style={styles.socialButton} activeOpacity={0.8} onPress={onPress}>
       <FontAwesome name={icon} size={18} color={color} />
     </TouchableOpacity>
   );

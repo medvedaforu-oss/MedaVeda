@@ -31,9 +31,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: SPACING.md,
+    marginBottom: 12,
   },
   titleRow: {
+    flex: 1,
+    minWidth: 0,
+    marginRight: SPACING.sm,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -45,6 +48,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   title: {
+    flexShrink: 1,
     fontSize: FONT.subHeading,
     fontWeight: "700",
     color: COLORS.text,

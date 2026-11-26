@@ -48,8 +48,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     borderColor: COLORS.border,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
+    minHeight: 64,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    marginBottom: SPACING.sm,
     ...SHADOW.card,
   },
 
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: `${COLORS.accent}26`,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: SPACING.md,
+    marginRight: SPACING.sm,
   },
 
   iconBadgeLocked: {
@@ -73,6 +75,8 @@ const styles = StyleSheet.create({
 
   title: {
     flex: 1,
+    minWidth: 0,
+    marginRight: SPACING.sm,
     fontSize: FONT.body,
     fontWeight: "600",
     color: COLORS.text,

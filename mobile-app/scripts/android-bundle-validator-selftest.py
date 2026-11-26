@@ -14,14 +14,14 @@ ANDROID = '{http://schemas.android.com/apk/res/android}'
 BILLING = 'com.android.vending.BILLING'
 CONFIG = {
     'version': '1.2.2',
-    'android': {'package': 'in.medveda.app', 'runtimeVersion': '1.2.2-disabled-notes-choice-v1'},
-    'extra': {'medvedaPaymentProvider': 'disabled', 'medvedaDistribution': 'standard',
+    'android': {'package': 'in.medveda.app', 'runtimeVersion': '1.2.2-razorpay-no-iap-v1'},
+    'extra': {'medvedaPaymentProvider': 'razorpay', 'medvedaDistribution': 'standard',
               'medvedaBuildTarget': 'production', 'medvedaIndiaUcbEnrolled': False,
               'medvedaUcbTestAccepted': False},
 }
 
 class ValidatorTests(unittest.TestCase):
-    def inspect(self, permissions=(BILLING, 'android.permission.INTERNET'), config=None,
+    def inspect(self, permissions=('android.permission.INTERNET',), config=None,
                 with_config=True, permission_tag='uses-permission', package='in.medveda.app'):
         with tempfile.TemporaryDirectory(prefix='medveda-validator-') as directory:
             root = Path(directory)
@@ -50,29 +50,29 @@ class ValidatorTests(unittest.TestCase):
         self.assertIn(reason, result.stderr)
         self.assertIsNone(report, 'rejected inputs must not produce an acceptance report')
 
-    def test_required_billing_and_disabled_config_pass(self):
+    def test_absent_billing_and_razorpay_config_pass(self):
         result, report = self.inspect()
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(report['releaseValidation']['billingIntegration'], 'retained-required')
-        self.assertEqual(report['releaseValidation']['paymentProvider'], 'disabled')
-        self.assertIn(BILLING, report['manifest']['permissions'])
-        self.assertIn('Play policy approval require separate evidence', report['releaseValidation']['scope'])
+        self.assertEqual(report['releaseValidation']['billingIntegration'], 'removed')
+        self.assertEqual(report['releaseValidation']['paymentProvider'], 'razorpay')
+        self.assertNotIn(BILLING, report['manifest']['permissions'])
+        self.assertIn('device behavior require separate evidence', report['releaseValidation']['scope'])
 
-    def test_missing_required_billing_fails(self):
-        self.rejected('Missing required retained Google Play Billing permission', permissions=('android.permission.INTERNET',))
+    def test_billing_permission_fails(self):
+        self.rejected('retired Google Play Billing permission', permissions=(BILLING, 'android.permission.INTERNET'))
 
     def test_unexpected_permissions_fail(self):
         for permission in ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO',
                            'android.permission.SYSTEM_ALERT_WINDOW', 'android.permission.READ_EXTERNAL_STORAGE',
                            'android.permission.READ_MEDIA_IMAGES', 'com.example.NEW_PERMISSION']:
             with self.subTest(permission=permission):
-                self.rejected('Unexpected release permissions', permissions=(BILLING, permission))
+                self.rejected('Unexpected release permissions', permissions=(permission,))
 
     def test_sdk_qualified_unexpected_permission_fails(self):
-        self.rejected('Unexpected release permissions', permissions=(BILLING, 'android.permission.CAMERA'), permission_tag='uses-permission-sdk-23')
+        self.rejected('Unexpected release permissions', permissions=('android.permission.CAMERA',), permission_tag='uses-permission-sdk-23')
 
     def test_reviewed_library_permissions_pass(self):
-        permissions = (BILLING, *('android.permission.'+p for p in [
+        permissions = (*('android.permission.'+p for p in [
             'INTERNET', 'POST_NOTIFICATIONS', 'VIBRATE', 'RECEIVE_BOOT_COMPLETED',
             'WAKE_LOCK', 'ACCESS_NETWORK_STATE', 'ACCESS_WIFI_STATE', 'DETECT_SCREEN_CAPTURE']),
             'in.medveda.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION',
@@ -84,12 +84,12 @@ class ValidatorTests(unittest.TestCase):
         result, _ = self.inspect(permissions=permissions)
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_enabled_or_unspecified_provider_fails(self):
-        for provider in ['play', 'razorpay', '', None]:
+    def test_play_or_unspecified_provider_fails(self):
+        for provider in ['play', '', None]:
             with self.subTest(provider=provider):
                 config = copy.deepcopy(CONFIG)
                 config['extra']['medvedaPaymentProvider'] = provider
-                self.rejected('requires disabled payments', config=config)
+                self.rejected('requires Razorpay or disabled payments', config=config)
 
     def test_missing_config_fails(self):
         self.rejected('--manifest requires --release-config', with_config=False)
@@ -108,7 +108,7 @@ class ValidatorTests(unittest.TestCase):
     def test_wrong_runtime_fails(self):
         config = copy.deepcopy(CONFIG)
         config['android']['runtimeVersion'] = '1.2.2-play-notes-choice-v1'
-        self.rejected('disabled-payment Android runtime', config=config)
+        self.rejected('no-IAP Android runtime', config=config)
 
     def test_wrong_package_fails(self):
         config = copy.deepcopy(CONFIG)

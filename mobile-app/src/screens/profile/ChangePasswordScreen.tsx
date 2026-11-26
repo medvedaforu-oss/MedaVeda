@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import {
-  View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +18,6 @@ import { logError } from "../../utils/logger";
 
 import { COLORS } from "../../theme/colors";
 import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 import { SPACING } from "../../theme/spacing";
 import { PASSWORD_POLICY_MESSAGE, PASSWORD_POLICY_PATTERN } from "../../validation/passwordPolicy";
 
@@ -111,12 +111,17 @@ export default function ChangePasswordScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Change Password</Text>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
+      <Text accessibilityRole="header" style={styles.title}>Change Password</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Current Password"
+        accessibilityLabel="Current Password"
         placeholderTextColor={COLORS.subtitle}
         value={currentPassword}
         onChangeText={setCurrentPassword}
@@ -124,12 +129,13 @@ export default function ChangePasswordScreen() {
         editable={!saving}
       />
       {!!currentPasswordError && (
-        <Text style={styles.error}>{currentPasswordError}</Text>
+        <Text accessibilityRole="alert" style={styles.error}>{currentPasswordError}</Text>
       )}
 
       <TextInput
         style={styles.input}
         placeholder="New Password"
+        accessibilityLabel="New Password"
         placeholderTextColor={COLORS.subtitle}
         value={newPassword}
         onChangeText={setNewPassword}
@@ -137,12 +143,13 @@ export default function ChangePasswordScreen() {
         editable={!saving}
       />
       {!!newPasswordError && (
-        <Text style={styles.error}>{newPasswordError}</Text>
+        <Text accessibilityRole="alert" style={styles.error}>{newPasswordError}</Text>
       )}
 
       <TextInput
         style={styles.input}
         placeholder="Confirm New Password"
+        accessibilityLabel="Confirm New Password"
         placeholderTextColor={COLORS.subtitle}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
@@ -150,10 +157,13 @@ export default function ChangePasswordScreen() {
         editable={!saving}
       />
       {!!confirmPasswordError && (
-        <Text style={styles.error}>{confirmPasswordError}</Text>
+        <Text accessibilityRole="alert" style={styles.error}>{confirmPasswordError}</Text>
       )}
 
       <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Update password"
+        accessibilityState={{ disabled: saving, busy: saving }}
         style={[styles.button, saving && styles.buttonDisabled]}
         onPress={handleChangePassword}
         disabled={saving}
@@ -164,7 +174,8 @@ export default function ChangePasswordScreen() {
           <Text style={styles.buttonText}>Update Password</Text>
         )}
       </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -172,12 +183,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+
+  content: {
+    flexGrow: 1,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center",
     padding: SPACING.lg,
     justifyContent: "center",
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     color: COLORS.text,
     marginBottom: SPACING.xl,
@@ -188,8 +206,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     color: COLORS.text,
     borderRadius: RADIUS.md,
-    padding: 16,
-    fontSize: 18,
+    minHeight: 48,
+    padding: SPACING.md,
+    fontSize: 16,
     marginBottom: 8,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -203,10 +222,11 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: COLORS.accent,
-    padding: 16,
+    minHeight: 48,
+    padding: SPACING.md,
     borderRadius: RADIUS.md,
     marginTop: 12,
-    ...SHADOW.glow,
+    justifyContent: "center",
   },
 
   buttonDisabled: {
@@ -215,7 +235,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: COLORS.textOnPrimary,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },

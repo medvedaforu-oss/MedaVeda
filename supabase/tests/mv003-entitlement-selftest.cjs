@@ -105,6 +105,14 @@ const pass=s=>console.log('PASS '+s);
  fresh();assert.equal((await cb()).status,200);pass('valid signed callback without JWT succeeds');
  fresh();const calls=providerCalls;assert.equal((await cb({signature:'0'.repeat(64)})).status,400);assert.equal(providerCalls,calls);assert.ok(!committed());pass('invalid signature rejected before provider/settlement');
  for(const mutate of [()=>fixture.payment.status='authorized',()=>fixture.payment.currency='USD',()=>fixture.payment.order_id='order_other',()=>fixture.order.amount++]){fresh();mutate();assert.equal((await cb()).status,400);assert.ok(!committed())}pass('captured status, provider order, currency and amount checks retained');
+ // Historical runners stop before the current helper's refund RPC prerequisite.
+ // Install its exact production migration definition in this disposable fixture;
+ // keep the original terminal-response and entitlement assertions unchanged.
+ const refundMigration=fs.readFileSync('supabase/migrations/20261112104610_audit_batch1_refund_revocation.sql','utf8');
+ const refundSupport=refundMigration.match(/create or replace function public\.reverse_refunded_capture\(p_payment_id text\)[\s\S]*?grant execute on function public\.reverse_refunded_capture\(text\) to service_role;/);
+ assert.ok(refundSupport,'current refund RPC fixture definition required');
+ sql('alter table public.provider_events add column if not exists blocks_entitlement boolean');
+ sql(refundSupport[0]);
  fresh();assert.equal((await call()).ok,true);sql(`select public.handle_payment_refund(${lit(fixture.pid)},true)`);fixture.payment.status='refunded';fixture.payment.refund_status='full';fixture.payment.amount_refunded=fixture.payment.amount;assert.equal((await cb()).status,400);assert.ok(!committed());pass('full refund/reversal cannot regrant or return success');
  assert.equal(sql("select has_function_privilege('anon','public.razorpay_entitlement_committed(text,text)','execute') or has_function_privilege('authenticated','public.razorpay_entitlement_committed(text,text)','execute')"),'f');
  assert.equal(sql("select has_function_privilege('service_role','public.razorpay_entitlement_committed(text,text)','execute')"),'t');

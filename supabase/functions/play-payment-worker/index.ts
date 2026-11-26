@@ -2,12 +2,14 @@ import { jsonResponse } from "../_shared/cors.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import {
   consumeProductPurchase,
-  getProductPurchase,
+  getProductPurchase, getProductPurchaseV2, sha256Hex,
   getVoidedPurchasesPage,
   GoogleApiError,
 } from "../_shared/googlePlay.ts";
 import { runBounded } from "../_shared/paymentQueue.ts";
 import { alertUcb } from "../_shared/ucbAlert.ts";
+
+import { validatePlayPurchaseV1, validatePlayPurchaseV2 } from "../_shared/playPurchaseValidation.ts";
 
 const BATCH_SIZE = 20;
 const CONCURRENCY = 4;
@@ -15,6 +17,11 @@ type Phase = "consume" | "reconcile" | "voids";
 type Job = { order_id: string; lease_id: string };
 type PlayOrder = {
   id: string;
+  user_id: string;
+  product_id: string;
+  play_purchase_option_id: string | null;
+  external_transaction_token: string | null;
+  external_choice_bound_order_id: string | null;
   provider: string;
   status: string;
   play_sku: string | null;
@@ -36,12 +43,13 @@ function authorized(req: Request): boolean {
 async function orderFor(job: Job): Promise<PlayOrder | null> {
   const { data, error } = await supabaseAdmin.from("orders")
     .select(
-      "id,provider,status,play_sku,purchase_token,play_consumption_status",
+      "id,user_id,product_id,provider,status,play_sku,play_purchase_option_id,purchase_token,play_consumption_status,external_transaction_token,external_choice_bound_order_id",
     )
     .eq("id", job.order_id).maybeSingle();
   if (error) throw new Error("Play order lookup failed");
-  if (!data || data.provider !== "play" || data.status !== "paid") return null;
-  if (!data.play_sku || !data.purchase_token) {
+  if (!data || data.id !== job.order_id || data.provider !== "play" || data.status !== "paid") return null;
+  if (!data.user_id || !data.product_id || !data.play_sku || !data.purchase_token ||
+      data.external_transaction_token || data.external_choice_bound_order_id) {
     throw new Error("Paid Play order missing SKU or token");
   }
   return data as PlayOrder;
@@ -103,7 +111,20 @@ async function processJob(
         } else if (
           phase === "consume" && order.play_consumption_status !== "consumed"
         ) {
-          if (purchase.consumptionState !== 1) {
+          const checkedReceipt = async () => {
+            const expected = { sku, accountHash: await sha256Hex(order.user_id),
+              orderHash: await sha256Hex(order.id), now: Date.now() };
+            return order.play_purchase_option_id
+              ? validatePlayPurchaseV2(await getProductPurchaseV2(token), { ...expected, optionId: order.play_purchase_option_id })
+              : validatePlayPurchaseV1(await getProductPurchase(sku, token), { ...expected, token });
+          };
+          const checked = await checkedReceipt();
+          if (checked.status !== "valid") throw new Error("Play consumption receipt mismatch");
+          const { data: committed, error: proofError } = await supabaseAdmin.rpc("play_entitlement_committed", {
+            p_order_id: order.id, p_token: token,
+          });
+          if (proofError || committed !== true) throw new Error("Play entitlement commitment not confirmed");
+          if (!checked.consumed) {
             try {
               await consumeProductPurchase(sku, token);
             } catch (error) {
@@ -111,8 +132,8 @@ async function processJob(
               if (!(error instanceof GoogleApiError) || error.status !== 409) {
                 throw error;
               }
-              const fresh = await getProductPurchase(sku, token);
-              if (fresh.purchaseState !== 0 || fresh.consumptionState !== 1) {
+              const fresh = await checkedReceipt();
+              if (fresh.status !== "valid" || !fresh.consumed) {
                 throw error;
               }
             }
@@ -266,7 +287,10 @@ Deno.serve(async (req: Request) => {
       "claim_play_payment_jobs",
       {
         p_kind: phase,
-        p_limit: BATCH_SIZE,
+        // Consumption validates the full receipt, proves the grant and may
+        // re-read after a 409. Claim one provider-call wave so these stronger
+        // checks cannot extend a batch beyond the scheduler request window.
+        p_limit: phase === "consume" ? CONCURRENCY : BATCH_SIZE,
       },
     );
     if (claimError) throw new Error("Play job claim failed");

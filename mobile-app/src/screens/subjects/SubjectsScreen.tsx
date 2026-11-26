@@ -18,7 +18,7 @@ import SearchBar from "../../components/SearchBar";
 import { fetchSubjectsByYear, Subject } from "../../services/subjectsService";
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 function SubjectsScreen() {
   const route = useRoute<any>();
@@ -68,7 +68,7 @@ function SubjectsScreen() {
           <FlatList refreshing={loading} onRefresh={retry}
             data={filteredData}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
+            contentContainerStyle={{ paddingTop: SPACING.sm, paddingBottom: SPACING.xl }}
             renderItem={({ item }) => (
               <SubjectCard
                 title={item.title}
@@ -115,13 +115,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
   title: {
     fontSize: FONT.title,
     fontWeight: "bold",
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     color: COLORS.text,
   },
   modeLabel: {
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   empty: {
-    marginTop: 50,
+    marginTop: SPACING.xl,
     textAlign: "center",
     color: COLORS.subtitle,
     fontSize: 16,

@@ -32,7 +32,6 @@ import {
 
 import { COLORS } from "../../theme/colors";
 import { RADIUS } from "../../theme/radius";
-import { SHADOW } from "../../theme/shadows";
 import { SPACING } from "../../theme/spacing";
 import { getCurrentUser } from "../../services/authState";
 import { resolvePostLoginRoute } from "../../services/courseState";
@@ -222,9 +221,9 @@ export default function LoginScreen() {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
     >
-      <BrandLogo size={96} style={styles.logo} accessibilityLabel="MedVeda logo" />
+      <BrandLogo size={80} style={styles.logo} accessibilityLabel="MedVeda logo" />
 
-      <Text style={styles.title}>MedVeda</Text>
+      <Text accessibilityRole="header" style={styles.title}>MedVeda</Text>
 
       <Text style={styles.subtitle}>
         Learn Ayurveda Anytime, Anywhere
@@ -280,6 +279,7 @@ export default function LoginScreen() {
 
         <TouchableOpacity accessibilityRole="button"
             accessibilityLabel={hidePassword ? "Show password" : "Hide password"}
+            style={styles.passwordToggle}
             onPress={() => setHidePassword(!hidePassword)}
           disabled={loading}
         >
@@ -314,6 +314,7 @@ export default function LoginScreen() {
       {/* Forgot Password */}
 
       <TouchableOpacity accessibilityRole="button"
+        style={styles.forgotLink}
         onPress={() => navigation.navigate("ForgotPassword")}
         disabled={loading}
       >
@@ -325,6 +326,8 @@ export default function LoginScreen() {
       {/* Login Button */}
 
       <TouchableOpacity accessibilityRole="button"
+        accessibilityLabel={loading ? "Logging in" : undefined}
+        accessibilityState={{ disabled: isButtonDisabled, busy: loading }}
         style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
         onPress={handleSubmit(onLogin)}
         disabled={isButtonDisabled}
@@ -341,6 +344,7 @@ export default function LoginScreen() {
       {/* Register */}
 
       <TouchableOpacity accessibilityRole="button"
+        style={styles.secondaryAction}
         onPress={() => navigation.navigate("Register")}
         disabled={loading}
       >
@@ -361,9 +365,9 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     width: "100%",
-    maxWidth: 560,
+    maxWidth: 480,
     alignSelf: "center",
-    padding: 25,
+    padding: SPACING.lg,
     justifyContent: "center",
   },
 
@@ -372,7 +376,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 34,
+    fontSize: 28,
     fontWeight: "bold",
     color: COLORS.text,
     textAlign: "center",
@@ -383,10 +387,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.subtitle,
     marginTop: SPACING.sm,
-    marginBottom: 40,
+    marginBottom: SPACING.xl,
   },
 
   input: {
+    minHeight: 48,
+    fontSize: 16,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: RADIUS.md,
@@ -407,9 +413,18 @@ const styles = StyleSheet.create({
   },
 
   passwordInput: {
+    minHeight: 48,
+    fontSize: 16,
     flex: 1,
     paddingVertical: SPACING.md,
     color: COLORS.text,
+  },
+
+  passwordToggle: {
+    width: 48,
+    minHeight: 48,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   error: {
@@ -434,18 +449,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
+  forgotLink: {
+    minHeight: 48,
+    justifyContent: "center",
+    marginVertical: SPACING.sm,
+  },
+
   forgot: {
     color: COLORS.accentLight,
     textAlign: "right",
-    marginTop: SPACING.md,
-    marginBottom: 25,
   },
 
   button: {
     backgroundColor: COLORS.accent,
-    padding: 16,
+    minHeight: 48,
+    padding: SPACING.md,
+    justifyContent: "center",
     borderRadius: RADIUS.md,
-    ...SHADOW.glow,
   },
 
   buttonDisabled: {
@@ -456,11 +476,16 @@ const styles = StyleSheet.create({
     color: COLORS.textOnPrimary,
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 16,
+  },
+
+  secondaryAction: {
+    minHeight: 48,
+    justifyContent: "center",
+    marginTop: SPACING.sm,
   },
 
   register: {
-    marginTop: 25,
     textAlign: "center",
     color: COLORS.subtitle,
     fontSize: 16,

@@ -70,7 +70,7 @@ function find(node, type) {
 }
 
 function pageMocks(file, h) {
-  const mocks = { react: h.react };
+  const mocks = { react: h.react, '../utils/productCovers':load('utils/productCovers.ts',{}) };
   const source = fs.readFileSync(path.join(__dirname, '../src', file), 'utf8');
   for (const match of source.matchAll(/import (\w+) from "([^"]+)"/g)) {
     if (match[2].includes('/components/')) mocks[match[2]] = def(match[1]);
@@ -161,16 +161,28 @@ function pageMocks(file, h) {
     for (const [name, field] of [['Courses', 'courses'], ['Years', 'years'], ['Subjects', 'subjects'], ['Chapters', 'chapters']]) {
       mocks[`../hooks/use${name}`] = def(() => ({ [field]: [], loading: false, error: null }));
     }
-    mocks['../hooks/useProducts'] = def(() => ({ products: [], loading: false, hasLoaded: true, error: null }));
+    let products = [{ id: 'p', title: 'Fixture', revision: 1, price: 49, active: true, productType: 'notes' }];
+    mocks['../hooks/useProducts'] = def(() => ({ products, loading: false, hasLoaded: true, error: null }));
     mocks['../services/playBillingSyncService'] = { getBillingStatuses: () => new Promise((resolve, reject) => reads.push({ resolve, reject })) };
     const Page = load('pages/Products.tsx', mocks, { setInterval: fn => { poll = fn; return 1; }, clearInterval() {} }).default;
     const render = () => h.render(() => Page());
     render(); poll(); reads[0].reject(Error('stale poll')); await tick();
     assert.doesNotMatch(JSON.stringify(render()), /Could not load Google Play Billing status/);
-    reads[1].resolve({ p: { marker: 'latest' } }); await tick();
+    reads[1].resolve({ p: { marker: 'latest', productRevision: 1 } }); await tick();
     assert.equal(find(render(), 'ProductTable').props.billing.p.marker, 'latest');
-    poll(); h.unmount(); const updates = h.updates; reads[2].resolve({}); await tick(); assert.equal(h.updates, updates);
-    console.log('PASS Products billing: overlapping polls, stale error and unmount');
+    poll();
+    products = [{ ...products[0], revision: 2, price: 137.25 }];
+    assert.deepEqual(Object.keys(find(render(), 'ProductTable').props.billing), [], 'new price must not show old readiness');
+    reads[2].resolve({ p: { marker: 'old price', productRevision: 1 } }); await tick();
+    assert.deepEqual(Object.keys(find(render(), 'ProductTable').props.billing), [], 'previous product snapshot poll won');
+    reads[3].resolve({ p: { marker: 'new price', productRevision: 2 } }); await tick();
+    assert.equal(find(render(), 'ProductTable').props.billing.p.marker, 'new price');
+    poll(); reads[4].reject(Error('current status unavailable')); await tick();
+    const failed = render();
+    assert.match(JSON.stringify(failed), /Could not load Google Play Billing status/);
+    assert.deepEqual(Object.keys(find(failed, 'ProductTable').props.billing), [], 'failed refresh retained a Ready readout');
+    poll(); h.unmount(); const updates = h.updates; reads[5].resolve({}); await tick(); assert.equal(h.updates, updates);
+    console.log('PASS Products billing: overlapping polls, product revision/price change, failed refresh and unmount');
   }
 
   {

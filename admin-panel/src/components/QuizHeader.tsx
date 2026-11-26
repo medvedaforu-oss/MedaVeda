@@ -1,26 +1,29 @@
+import Button from "./Button";
+
 type Props = {
   onAdd: () => void;
 };
 
 export default function QuizHeader({ onAdd }: Props) {
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-xl font-semibold text-gray-800">
           Quiz Tests
         </h1>
 
-        <p className="text-gray-500">
+        <p className="mt-1 text-sm text-gray-500">
           Manage all MedVeda MCQ Quiz Tests
         </p>
       </div>
 
-      <button
+      <Button
+        type="button"
         onClick={onAdd}
-        className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-lg"
+        className="min-h-11 shrink-0 self-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700"
       >
         + Add Test
-      </button>
+      </Button>
     </div>
   );
 }

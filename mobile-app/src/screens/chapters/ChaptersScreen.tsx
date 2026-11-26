@@ -21,7 +21,7 @@ import usePurchases from "../../hooks/usePurchases";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 function ChaptersScreen() {
   const route = useRoute<any>();
@@ -119,7 +119,7 @@ function ChaptersScreen() {
           <FlatList refreshing={loading} onRefresh={retry} initialNumToRender={6} windowSize={7} maxToRenderPerBatch={6}
             data={filteredData}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{ paddingTop: SPACING.md, paddingBottom: SPACING.xl }}
+            contentContainerStyle={{ paddingTop: SPACING.sm, paddingBottom: SPACING.xl }}
             showsVerticalScrollIndicator={false}
             renderItem={renderChapter}
             ListEmptyComponent={
@@ -136,8 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
   title: {
     fontSize: FONT.title,
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   empty: {
-    marginTop: 50,
+    marginTop: SPACING.xl,
     textAlign: "center",
     color: COLORS.subtitle,
     fontSize: 16,

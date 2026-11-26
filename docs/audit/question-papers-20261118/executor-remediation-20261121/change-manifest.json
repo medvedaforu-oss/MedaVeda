@@ -1,0 +1,125 @@
+{
+  "files": [
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/baseline-file-states.json",
+      "sha256": "d7ae53a8d6fe985af47be6144b673a28dfa930aa1c32fd1605e89c63e9b92344",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/candidate-atomicity.log",
+      "sha256": "e099cc22fe8657cc74dff2436c63e94a074083380feb2286830e844bfada8fcb",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/candidate-module-results.json",
+      "sha256": "9fc4ddb67bcb5f824286f0188cc1ae0d95cda156d691bab3c03bc7b10e68010a",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/candidate-results.json",
+      "sha256": "026fd85a9be8f1dd1d7e2247f576ab2b815440a1af97dbd2697a40df43f75b8f",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/cli-2.75-history-rejection.log",
+      "sha256": "a4788d978d57b0ef6fac2d595838b479c8a9668086dae77a59e6f19e289cc2f5",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/executor-manifest.json",
+      "sha256": "3ce181b3c5c0ccd6f31d9fcb4b76050cdbb3f6ddaf76bd6febf5238410fe5c33",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/git-status-before.txt",
+      "sha256": "fc39a10929cec0873e280639e983103dacb756e5d6cc8733597b4f976398b6c0",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/history-2.75-results.json",
+      "sha256": "5fe89df558f1a4e7a8cb48e5e06219aedc22e7f05572f3f3d081e99e4e7be90c",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/index-before.sha256",
+      "sha256": "442d065c9fad840f67bb274ec50b553a26b555caae2e58d487e7d60f52f9f794",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/migration.diff",
+      "sha256": "4511321eab1026c372d47b1f4841ae27d4211fd5ec9310aec783dd42f3fcd673",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/module-sql.log",
+      "sha256": "68c671c4a287f3898d57a497d56dbd23afb12538c3b9e2b113aa7258ccc9adc2",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/official-release-checksums.txt",
+      "sha256": "32de93e1cbdbbfd22aaf92f7a9a680d807e4da6c76bd48261eb4bde929d36c78",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/original-atomicity-red.log",
+      "sha256": "c1d89e71ab93293534ced8ce5b27234c9704bcbb3c4420ad9658307cd195d7cf",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/original-module-results.json",
+      "sha256": "9fc4ddb67bcb5f824286f0188cc1ae0d95cda156d691bab3c03bc7b10e68010a",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/original-results.json",
+      "sha256": "f8cb701347bef0800a14402af34db19f9c2f1b6aa08c60e5d48a2a263dd7bbe2",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/original.sql",
+      "sha256": "6811f8573487c4d0e4f55716a7cbb1051f2ac2d0f8189165178a585b54ce9359",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/preservation.json",
+      "sha256": "31fbc8d84de4e3ea75d1ce75a297831c59b0fb7ff2a153eea6803026535d1ab4",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/regressions.py",
+      "sha256": "b6fad85c8e36d3fec2f1cb731abddcaf527e902434f54d285322cbb2c7facac8",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/rehearse.py",
+      "sha256": "fa8f696931fe070bb08c22fac9eea314e2431e4746c99cfaa1695122ce3b65eb",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/report.md",
+      "sha256": "642fd2c374904ad17ae666a2cd273d8a3a165d7b10309c462096c6db9efaf1ff",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/sql-comparison.log",
+      "sha256": "6c0f5c61faa983fe943d4d3512046b92a8dff74ad7e4ad9870f918e2735f3ebd",
+      "status": "added"
+    },
+    {
+      "path": "docs/audit/question-papers-20261118/executor-remediation-20261121/sql-results.json",
+      "sha256": "0e3c1d3a20393f617ce04b86a56c803c53f4421680d19996157b04a255659d45",
+      "status": "added"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-21-question-paper-executor-remediation.md",
+      "sha256": "ac88c2b6b7e8f7fe9f78d78e3947d28c6c7de8ef424578cb3ce2fa68151edb1e",
+      "status": "added"
+    },
+    {
+      "path": "supabase/migrations/20261118172019_question_papers.sql",
+      "sha256": "b1f68f73136b296abc74d61129836808143c1a218ee0cef2603e08e6ca07771f",
+      "status": "modified"
+    }
+  ],
+  "manifest_itself": "docs/audit/question-papers-20261118/executor-remediation-20261121/change-manifest.json (added; self-hash excluded)"
+}

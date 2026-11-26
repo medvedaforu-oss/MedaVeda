@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {load,jsx,nodes}=require('../../mobile-app/scripts/ui-harness.cjs');
+let edited,deleted;
+const product={id:'legacy-notes',title:'Legacy Notes',scope:'subject',productType:'other',price:2,active:true};
+const Table=load('admin-panel/src/components/ProductTable.tsx',{'react/jsx-runtime':jsx}).default;
+const tree=Table({products:[product],onEdit:p=>edited=p,onDelete:p=>deleted=p,billing:{}});
+assert.doesNotMatch(JSON.stringify(tree),/Retry sync/);
+assert.match(JSON.stringify(tree),/Google Play readiness/);assert.match(JSON.stringify(tree),/Not checked/);assert.match(JSON.stringify(tree),/Legacy Notes/);assert.match(JSON.stringify(tree),/Untagged/);
+const buttons=nodes(tree).filter(n=>n.type==='button');assert.equal(buttons.length,2);
+buttons[0].props.onClick();buttons[1].props.onClick();assert.equal(edited,product);assert.equal(deleted,product);
+console.log('PASS legacy Notes remain manageable with price/status/type; product actions do not include Billing sync');

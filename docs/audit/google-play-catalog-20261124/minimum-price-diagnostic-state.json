@@ -1,0 +1,16 @@
+{
+  "slug": "diagnose-play-matrix",
+  "status": "ACTIVE",
+  "version": 4,
+  "verify_jwt": true,
+  "authenticated": "verified Admin plus aal2",
+  "operations": [
+    "tokeninfo",
+    "legacy_products list",
+    "one_time_products list pageSize=1",
+    "convert_region_prices INR1 (non-mutating)"
+  ],
+  "arbitrary_sku_get": false,
+  "live_runtime_reads_executed": false,
+  "limitation": "No owner MFA Admin session or usable runtime credential in workspace; credentials not extracted"
+}

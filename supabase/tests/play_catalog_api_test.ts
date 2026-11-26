@@ -64,7 +64,7 @@ Deno.test("Google catalog create, activate and read-back use the supported APIs"
     assert.ok(seen.every((call) => !call.includes("convertRegionPrices")));
     // Prices originate in Admin/database configuration. Serialize exact Money
     // for whole rupees, paise and the upper supported numeric(10,2) boundary.
-    for (const cents of [100, 101, 200, 4900, 13725, 9999999999]) {
+    for (const cents of [100, 101, 200, 500, 4900, 13725, 9999999999]) {
       let patches = 0;
       globalThis.fetch = async (input, init) => {
         assert.equal(init?.method, "PATCH");

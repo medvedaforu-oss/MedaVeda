@@ -47,10 +47,11 @@ export default function AboutScreen() {
         one secure platform.{"\n\n"}
         The application offers carefully organized study materials
         including subject-wise notes, video lectures, quizzes,
-        downloadable resources, and progress tracking to support
+        downloadable free Notes previews and quizzes, and progress tracking to support
         effective self-learning. Designed with a clean, intuitive, and
         user-friendly interface, MedVeda enables students to access
-        educational content anytime and anywhere.{"\n\n"}
+        educational content on their phone. Paid Notes and videos require internet;
+        supported free previews and quizzes can be saved for offline study.{"\n\n"}
         Our goal is to continuously improve the learning experience by
         introducing new educational features, performance enhancements,
         and updated academic content that aligns with students'

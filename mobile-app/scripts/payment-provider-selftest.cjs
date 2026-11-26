@@ -26,7 +26,7 @@ assert.equal(app.scheme, "medveda");
 assert.equal(app.slug, "ayurpulse");
 for (const profile of ["production", "internal-testing", "preview"]) {
   assert.equal(configFor(profile).extra.medvedaPaymentProvider, "razorpay");
-  assert.equal(configFor(profile).android.runtimeVersion, `${app.version}-razorpay-notes-choice-v1`);
+  assert.equal(configFor(profile).android.runtimeVersion, `${app.version}-razorpay-no-iap-v1`);
   assert.equal(configFor(profile, "disabled").extra.medvedaPaymentProvider, "disabled");
   assert.notEqual(configFor(profile, "disabled").android.runtimeVersion,
     configFor(profile).android.runtimeVersion, "disabled binaries retain a separate OTA runtime");

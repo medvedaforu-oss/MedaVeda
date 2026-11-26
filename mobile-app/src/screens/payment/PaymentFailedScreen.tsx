@@ -10,7 +10,6 @@ import { RADIUS } from "../../theme/radius";
 import { SHADOW } from "../../theme/shadows";
 import { getCurrentUser } from "../../services/authState";
 import { recoverPayment } from "../../services/paymentService";
-import { recheckPlayOrder } from "../../services/playBillingService";
 
 // Reached via normal in-app navigation - either from
 // PaymentCheckoutScreen (Razorpay reported a failure, or verify-payment
@@ -63,7 +62,7 @@ export default function PaymentFailedScreen() {
 
   const checkStatus = useCallback(async () => {
     if (authPaused.current || !focused.current || checking.current || resolvedRef.current || !pending || !internalOrderId ||
-        (provider !== "play" && !verifyUrl)) return;
+        (provider === "play" || !verifyUrl)) return;
     // Give up quietly after MAX_POLL_MINUTES - the student can still see
     // it unlock on its own via My Purchases, or reach out to support with
     // the Payment ID shown below.
@@ -72,15 +71,14 @@ export default function PaymentFailedScreen() {
     checking.current = true;
     const run = focusGeneration.current;
     try {
-      if (provider !== "play" && getCurrentUser()?.id !== recoveryOwner.current) {
+      if (getCurrentUser()?.id !== recoveryOwner.current) {
         authPaused.current = true;
         setAuthMessage("Sign in to the account used for this payment, then check My Purchases. Do not pay again.");
         return;
       }
-      const result = provider === "play" ? await recheckPlayOrder(internalOrderId)
-        : await recoverPayment(verifyUrl, internalOrderId, recoveryOwner.current);
+      const result = await recoverPayment(verifyUrl, internalOrderId, recoveryOwner.current);
       if (!focused.current || resolvedRef.current || run !== focusGeneration.current) return;
-      if (provider !== "play" && (("authRequired" in result && result.authRequired) || getCurrentUser()?.id !== recoveryOwner.current)) {
+      if (("authRequired" in result && result.authRequired) || getCurrentUser()?.id !== recoveryOwner.current) {
         authPaused.current = true;
         setAuthMessage(result.message || "Sign in to the account used for this payment, then check My Purchases. Do not pay again.");
         return;
@@ -114,23 +112,49 @@ export default function PaymentFailedScreen() {
   useFocusEffect(
     useCallback(() => {
       focused.current = true;
-      if (!pending) return () => { focused.current = false; };
+      if (!pending || provider === "play") return () => { focused.current = false; };
       void checkStatus();
       const interval = setInterval(checkStatus, POLL_INTERVAL_MS);
       return () => { focused.current = false; focusGeneration.current++; clearInterval(interval); };
-    }, [pending, checkStatus])
+    }, [pending, provider, checkStatus])
   );
 
   // Also re-check immediately whenever the app comes back to the
   // foreground (e.g. student switched away and back), rather than waiting
   // for the next interval tick.
   useEffect(() => {
-    if (!pending) return;
+    if (!pending || provider === "play") return;
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "active") checkStatus();
     });
     return () => sub.remove();
-  }, [pending, checkStatus]);
+  }, [pending, provider, checkStatus]);
+
+  // Earlier Play orders remain visible in server history. Never initialize
+  // native Billing or retry a historical Play payment through Razorpay.
+  if (provider === "play") {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Earlier Google Play payment</Text>
+        <Text style={styles.subtitle}>
+          Google Play Billing is retired in this app. Check My Purchases or contact support about this earlier payment. Do not pay again.
+        </Text>
+        <View style={styles.reasonCard}>
+          <Text style={styles.reasonText}>
+            {title || "Earlier purchase"}
+            {internalOrderId ? ` Order ID: ${internalOrderId}` : ""}
+            {paymentId ? ` Payment ID: ${paymentId}` : ""}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.primaryButton} onPress={() => goTo("MyPurchases")}>
+          <Text style={styles.primaryButtonText}>Check My Purchases</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.secondaryButton} onPress={() => goTo("Contact")}>
+          <Text style={styles.secondaryButtonText}>Contact Support</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   if (stillConfirming) {
     return (

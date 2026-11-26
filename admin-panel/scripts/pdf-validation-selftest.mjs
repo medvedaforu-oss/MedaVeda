@@ -17,11 +17,12 @@ await assert.rejects(
   /Choose a PDF/
 );
 console.log("PDF validation checks passed.");
-assert.equal(isSupportedYouTubeUrl("https://www.youtube.com/watch?v=abc123"), true);
-assert.equal(isSupportedYouTubeUrl("https://youtu.be/abc123"), true);
+assert.equal(isSupportedYouTubeUrl("https://www.youtube.com/watch?v=abc123"), false);
+assert.equal(isSupportedYouTubeUrl("https://youtu.be/abc123"), false);
 assert.equal(isSupportedYouTubeUrl("https://youtube.com.evil.example/watch?v=abc123"), false);
 assert.equal(isSupportedYouTubeUrl("http://youtube.com/watch?v=abc123"), false);
 assert.equal(isSupportedYouTubeUrl("javascript:alert(1)"), false);
+assert.equal(isSupportedYouTubeUrl("https://youtu.be/abcdefghijk"), true);
 console.log("Video URL validation checks passed.");
 const question = { question: "Question?", options: ["Yes", "No", "", ""], answer: "Yes" };
 assert.equal(validateQuizQuestion(question), null);

@@ -1,9 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { readOwnedList, updateOwnedList } from "./ownerStorage";
 import { logDebug } from "./logger";
 
 // Lightweight local (on-device) activity log used purely to power the
 // "Continue Learning" and "Recently Viewed" dashboard sections. This is
-// intentionally NOT stored in Firestore - it's per-device, no backend
+// intentionally local to the authenticated owner, no backend
 // changes needed, and costs nothing to read/write.
 //
 // NOTE: requires `@react-native-async-storage/async-storage`.
@@ -30,17 +30,18 @@ export async function recordChapterView(
   entry: Omit<RecentChapterEntry, "viewedAt">
 ): Promise<void> {
   try {
-    const existing = await getRecentChapters();
-    const withoutDuplicate = existing.filter(
-      (item) => item.chapterId !== entry.chapterId
-    );
+    await updateOwnedList<RecentChapterEntry>(STORAGE_KEY, (existing) => {
+      const withoutDuplicate = existing.filter(
+        (item) => item.chapterId !== entry.chapterId
+      );
 
-    const updated: RecentChapterEntry[] = [
-      { ...entry, viewedAt: Date.now() },
-      ...withoutDuplicate,
-    ].slice(0, MAX_ENTRIES);
+      const updated: RecentChapterEntry[] = [
+        { ...entry, viewedAt: Date.now() },
+        ...withoutDuplicate,
+      ].slice(0, MAX_ENTRIES);
 
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
   } catch (error) {
     // Non-critical - never let activity tracking break navigation.
     logDebug("recordChapterView failed:", error);
@@ -50,10 +51,7 @@ export async function recordChapterView(
 // courseId (when given) hides entries recorded under a different course.
 export async function getRecentChapters(courseId?: string): Promise<RecentChapterEntry[]> {
   try {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
+    const parsed = await readOwnedList<RecentChapterEntry>(STORAGE_KEY);
     return courseId
       ? parsed.filter((e: RecentChapterEntry) => !e.courseId || e.courseId === courseId)
       : parsed;
@@ -71,7 +69,7 @@ export async function getLastViewedChapter(courseId?: string): Promise<RecentCha
 
 export async function clearRecentChapters(): Promise<void> {
   try {
-    await AsyncStorage.removeItem(STORAGE_KEY);
+    await updateOwnedList(STORAGE_KEY, () => []);
   } catch (error) {
     logDebug("clearRecentChapters failed:", error);
   }

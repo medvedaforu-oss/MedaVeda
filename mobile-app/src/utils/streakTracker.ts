@@ -1,67 +1,60 @@
-// DESIGN SYSTEM / dashboard feature - Study Streak.
-//
-// Tracks consecutive days the student has opened the app, the way
-// Duolingo/Spotify Wrapped-style streaks work. Purely device-local (same
-// pattern as utils/recentActivity.ts) - no Supabase table needed, so
-// there's zero backend work to ship this.
-//
-// Logic: call recordActivityToday() once per app session (HomeScreen
-// mount is the natural place). If today is already recorded, no-op. If
-// yesterday was the last active day, streak continues (+1). Any bigger
-// gap resets to 1.
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuthEpoch, getCurrentUser } from "../services/authState";
 
 const STORAGE_KEY = "medveda:streak";
-
 export interface StreakData {
   currentStreak: number;
   longestStreak: number;
-  lastActiveDate: string | null; // "YYYY-MM-DD"
+  lastActiveDate: string | null;
 }
-
-function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+export const EMPTY_STREAK: StreakData = { currentStreak: 0, longestStreak: 0, lastActiveDate: null };
+function ownerSnapshot() { return { id: getCurrentUser()?.id, epoch: getAuthEpoch() }; }
+function current(owner: ReturnType<typeof ownerSnapshot>) {
+  return !!owner.id && owner.id === getCurrentUser()?.id && owner.epoch === getAuthEpoch();
 }
-
-function yesterdayKey(): string {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  return d.toISOString().slice(0, 10);
+function key(owner: ReturnType<typeof ownerSnapshot>) { return `${STORAGE_KEY}:owner:${encodeURIComponent(owner.id!)}`; }
+function dayKey(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
 }
-
-async function readStreak(): Promise<StreakData> {
-  try {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
-    if (!raw) return { currentStreak: 0, longestStreak: 0, lastActiveDate: null };
-    return JSON.parse(raw) as StreakData;
-  } catch {
-    return { currentStreak: 0, longestStreak: 0, lastActiveDate: null };
-  }
+function parse(raw: string | null): StreakData | null {
+  if (!raw) return null;
+  const value = JSON.parse(raw);
+  if (!value || !Number.isSafeInteger(value.currentStreak) || value.currentStreak < 0 ||
+      !Number.isSafeInteger(value.longestStreak) || value.longestStreak < value.currentStreak ||
+      (value.lastActiveDate !== null && (typeof value.lastActiveDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value.lastActiveDate)))) return null;
+  return { currentStreak: value.currentStreak, longestStreak: value.longestStreak, lastActiveDate: value.lastActiveDate };
 }
-
-async function writeStreak(data: StreakData): Promise<void> {
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+async function read(owner: ReturnType<typeof ownerSnapshot>): Promise<StreakData> {
+  if (!current(owner)) return { ...EMPTY_STREAK };
+  const raw = await AsyncStorage.getItem(key(owner));
+  if (!current(owner)) return { ...EMPTY_STREAK };
+  if (raw) return parse(raw) ?? { ...EMPTY_STREAK };
+  // Only an explicit owner binding can establish legacy ownership. Unowned
+  // global data remains quarantined rather than being assigned to a new user.
+  const legacy = await AsyncStorage.getItem(STORAGE_KEY);
+  if (!current(owner) || !legacy) return { ...EMPTY_STREAK };
+  const value = JSON.parse(legacy);
+  return value?.ownerId === owner.id ? parse(legacy) ?? { ...EMPTY_STREAK } : { ...EMPTY_STREAK };
 }
-
-/** Call once per session. Returns the up-to-date streak after recording today's activity. */
-export async function recordActivityToday(): Promise<StreakData> {
-  const existing = await readStreak();
-  const today = todayKey();
-
-  if (existing.lastActiveDate === today) {
-    return existing; // already recorded today - no-op
-  }
-
-  const continuedStreak = existing.lastActiveDate === yesterdayKey();
-  const currentStreak = continuedStreak ? existing.currentStreak + 1 : 1;
-  const longestStreak = Math.max(existing.longestStreak, currentStreak);
-
-  const updated: StreakData = { currentStreak, longestStreak, lastActiveDate: today };
-  await writeStreak(updated);
-  return updated;
+const writes = new Map<string, Promise<StreakData>>();
+/** Serialize activity for each captured owner; publish only after persistence. */
+export function recordActivityToday(): Promise<StreakData> {
+  const owner = ownerSnapshot();
+  if (!current(owner)) return Promise.resolve({ ...EMPTY_STREAK });
+  const storageKey = key(owner);
+  const pending = (writes.get(storageKey) ?? Promise.resolve()).catch(() => {}).then(async () => {
+    const existing = await read(owner);
+    if (!current(owner)) return { ...EMPTY_STREAK };
+    const today = new Date(), yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate()-1);
+    if (existing.lastActiveDate === dayKey(today)) return existing;
+    const count = existing.lastActiveDate === dayKey(yesterday) ? existing.currentStreak+1 : 1;
+    const updated = { currentStreak: count, longestStreak: Math.max(count,existing.longestStreak), lastActiveDate: dayKey(today) };
+    await AsyncStorage.setItem(storageKey,JSON.stringify(updated));
+    return current(owner) ? updated : { ...EMPTY_STREAK };
+  });
+  writes.set(storageKey,pending);
+  void pending.finally(() => { if (writes.get(storageKey) === pending) writes.delete(storageKey); }).catch(() => {});
+  return pending;
 }
-
-export async function getStreak(): Promise<StreakData> {
-  return readStreak();
-}
+export function getStreak(): Promise<StreakData> { return read(ownerSnapshot()); }

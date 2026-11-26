@@ -187,7 +187,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
+    paddingHorizontal: SPACING.screen,
+    paddingVertical: 16,
     paddingTop: 60,
   },
   title: {

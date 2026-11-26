@@ -1,0 +1,188 @@
+BEGIN
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 4
+UPDATE 1
+CREATE FUNCTION
+SELECT 1
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:48: NOTICE:  PASS student cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:53: NOTICE:  PASS MFA deficient Admin cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:59: NOTICE:  PASS Admin deletes empty subject
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:61: NOTICE:  PASS Admin deletes subject with published paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:63: NOTICE:  PASS Admin deletes subject with draft paper
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:65: NOTICE:  PASS all unrelated records, PDF objects and receipts unchanged
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:66: NOTICE:  PASS only targeted subjects removed
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+ROLLBACK
+PASS subject deletion compatibility
+
+PASS existing table definitions/grants, RLS policies, functions and buckets unchanged
+Traceback (most recent call last):
+  File "/home/ganeshp8545/AyurPulse/supabase/tests/question-papers-local.py", line 40, in <module>
+    print(run([bin/'psql','-X','-v','ON_ERROR_STOP=1','-v','qp_module=true','-f',root/'supabase/tests/question_papers_subject_delete_checks.sql']))
+          ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ganeshp8545/AyurPulse/supabase/tests/question-papers-local.py", line 16, in run
+    raise RuntimeError(p.stdout[-8000:]+log[-4000:])
+RuntimeError: BEGIN
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 4
+UPDATE 1
+INSERT 0 3
+INSERT 0 3
+INSERT 0 3
+CREATE FUNCTION
+SELECT 1
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000002","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:48: NOTICE:  PASS student cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal1"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:53: NOTICE:  PASS MFA deficient Admin cannot delete subjects
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+RESET
+                                     set_config                                     
+------------------------------------------------------------------------------------
+ {"sub":"ccc00000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}
+(1 row)
+
+SET
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:59: NOTICE:  PASS Admin deletes empty subject
+ qp_delete_assert 
+------------------
+ 
+(1 row)
+
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:61: NOTICE:  PASS Admin deletes subject with published paper
+psql:/home/ganeshp8545/AyurPulse/supabase/tests/question_papers_subject_delete_checks.sql:61: ERROR:  update or delete on table "subjects" violates foreign key constraint "question_papers_subject_id_fkey" on table "question_papers"
+DETAIL:  Key is still referenced from table "question_papers".
+6] STATEMENT:  create table public.wallet_credit_policy (
+	 credit_id uuid primary key references public.wallet_ledger(id),
+	 legacy boolean not null,
+	 duration interval check(duration is null or duration>=interval '0'),
+	 first_available_at timestamptz,
+	 effective_expires_at timestamptz
+	);
+2026-11-19 14:11:02.288 UTC [12766] LOG:  rls_auto_enable: enabled RLS on public.wallet_credit_consumption
+2026-11-19 14:11:02.288 UTC [12766] CONTEXT:  PL/pgSQL function public.rls_auto_enable() line 14 at RAISE
+2026-11-19 14:11:02.288 UTC [12766] STATEMENT:  create table public.wallet_credit_consumption (
+	 entry_id uuid not null references public.wallet_ledger(id),
+	 credit_id uuid not null references public.wallet_ledger(id),
+	 amount numeric(10,2) not null check(amount>0),
+	 primary key(entry_id,credit_id),
+	 check(entry_id<>credit_id)
+	);
+2026-11-19 14:11:02.347 UTC [12768] LOG:  rls_auto_enable: skip pg_temp.qp_delete_snapshot (either system schema or not in enforced list: pg_temp.)
+2026-11-19 14:11:02.347 UTC [12768] CONTEXT:  PL/pgSQL function public.rls_auto_enable() line 20 at RAISE
+2026-11-19 14:11:02.347 UTC [12768] STATEMENT:  create temp table qp_delete_snapshot as select pg_temp.qp_other_rows() others,
+	 (select jsonb_agg(to_jsonb(s) order by id) from public.subjects s where id not in ('qp_delete_empty','qp_delete_published','qp_delete_draft')) subjects;
+2026-11-19 14:11:02.459 UTC [12772] LOG:  rls_auto_enable: enabled RLS on public.question_paper_validated_objects
+2026-11-19 14:11:02.459 UTC [12772] CONTEXT:  PL/pgSQL function public.rls_auto_enable() line 14 at RAISE
+2026-11-19 14:11:02.459 UTC [12772] STATEMENT:  create table public.question_paper_validated_objects (
+	 object_path text primary key,
+	 byte_size bigint not null check(byte_size between 5 and 52428800)
+	);
+2026-11-19 14:11:02.464 UTC [12772] LOG:  rls_auto_enable: enabled RLS on public.question_papers
+2026-11-19 14:11:02.464 UTC [12772] CONTEXT:  PL/pgSQL function public.rls_auto_enable() line 14 at RAISE
+2026-11-19 14:11:02.464 UTC [12772] STATEMENT:  create table public.question_papers (
+	 id uuid primary key default gen_random_uuid(),
+	 revision integer not null default 1 check(revision>0),
+	 subject_id text not null references public.subjects(id) on delete restrict,
+	 exam_year integer not null check (exam_year between 1900 and 9999),
+	 exam_month integer not null check (exam_month between 1 and 12),
+	 paper_type text not null default '' check (length(paper_type)<=80),
+	 paper_number text not null default '' check (length(paper_number)<=40),
+	 object_path text not null unique check (object_path ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.pdf$'),
+	 published boolean not null default false,
+	 created_at timestamptz not null default now(),
+	 updated_at timestamptz not null default now(),
+	 constraint question_papers_identity unique(subject_id,exam_year,exam_month,paper_type,paper_number)
+	);
+2026-11-19 14:11:02.585 UTC [12776] LOG:  rls_auto_enable: skip pg_temp.qp_delete_snapshot (either system schema or not in enforced list: pg_temp.)
+2026-11-19 14:11:02.585 UTC [12776] CONTEXT:  PL/pgSQL function public.rls_auto_enable() line 20 at RAISE
+2026-11-19 14:11:02.585 UTC [12776] STATEMENT:  create temp table qp_delete_snapshot as select pg_temp.qp_other_rows() others,
+	 (select jsonb_agg(to_jsonb(s) order by id) from public.subjects s where id not in ('qp_delete_empty','qp_delete_published','qp_delete_draft')) subjects;
+2026-11-19 14:11:02.591 UTC [12776] ERROR:  update or delete on table "subjects" violates foreign key constraint "question_papers_subject_id_fkey" on table "question_papers"
+2026-11-19 14:11:02.591 UTC [12776] DETAIL:  Key is still referenced from table "question_papers".
+2026-11-19 14:11:02.591 UTC [12776] STATEMENT:  with removed as (delete from public.subjects where id='qp_delete_published' returning id)
+	 select pg_temp.qp_delete_assert((select count(*)=1 from removed),'Admin deletes subject with published paper');
+

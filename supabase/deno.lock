@@ -83,5 +83,8 @@
     "tslib@2.8.1": {
       "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="
     }
+  },
+  "remote": {
+    "https://esm.sh/@supabase/supabase-js@2.47.10": "8352fea62a92ad2fef32bc6a1aa529a5d2da0c939819f41767dd1480f0f30d70"
   }
 }

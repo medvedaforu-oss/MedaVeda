@@ -1,0 +1,176 @@
+[
+  {
+    "name": "mobile-tsc",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "cwd": "mobile-app",
+    "code": 0,
+    "seconds": 34.98
+  },
+  {
+    "name": "admin-tsc",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-p",
+      "tsconfig.app.json",
+      "--noEmit"
+    ],
+    "cwd": "admin-panel",
+    "code": 0,
+    "seconds": 6.95
+  },
+  {
+    "name": "razorpay-reenable",
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-reenable-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.8
+  },
+  {
+    "name": "payment-provider",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-provider-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.05
+  },
+  {
+    "name": "payment-routing",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.75
+  },
+  {
+    "name": "payment-request",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-request-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.47
+  },
+  {
+    "name": "payment-summary",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-summary-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.61
+  },
+  {
+    "name": "payment-poll",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-poll-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.51
+  },
+  {
+    "name": "payment-success-owner",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-success-owner-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.68
+  },
+  {
+    "name": "payment-verdict",
+    "command": [
+      "node",
+      "mobile-app/scripts/payment-verdict-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.89
+  },
+  {
+    "name": "mv004-recovery",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv004-recovery-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.79
+  },
+  {
+    "name": "mv008-ownership",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv008-ownership-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 1.16
+  },
+  {
+    "name": "mv012-history",
+    "command": [
+      "node",
+      "mobile-app/scripts/mv012-history-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 1.25
+  },
+  {
+    "name": "razorpay-internal-test",
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-internal-test-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 1.16
+  },
+  {
+    "name": "razorpay-live-testing",
+    "command": [
+      "node",
+      "mobile-app/scripts/razorpay-live-testing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.8
+  },
+  {
+    "name": "razorpay-routing",
+    "command": [
+      "node",
+      "supabase/tests/razorpay-routing-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 1.05
+  },
+  {
+    "name": "razorpay-security",
+    "command": [
+      "node",
+      "supabase/tests/razorpay-security-selftest.cjs"
+    ],
+    "cwd": ".",
+    "code": 0,
+    "seconds": 0.78
+  }
+]

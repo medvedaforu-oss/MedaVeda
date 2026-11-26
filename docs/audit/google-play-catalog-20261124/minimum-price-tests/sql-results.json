@@ -1,0 +1,42 @@
+[
+  {
+    "file": "play_india_price_validation_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "play_catalog_sync_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "play_catalog_queue_regression_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "play_catalog_failure_access_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "admin_catalog_remediation_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "play_entitlement_snapshot_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "razorpay_snapshot_retry_checks.sql",
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "file": "play_payment_pg_checks.sql",
+    "exit": 0,
+    "passed": true
+  }
+]

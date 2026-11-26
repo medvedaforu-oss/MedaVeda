@@ -17,6 +17,7 @@ export type ProductType = "notes" | "notes_bundle" | "video" | "other";
 
 export interface Product {
   id: string;
+  revision: number;
 
   title: string;
   description: string;
@@ -55,4 +56,4 @@ export interface Product {
   courseTitle?: string;
 }
 
-export type ProductInput = Omit<Product, "id" | "createdAt">;
+export type ProductInput = Omit<Product, "id" | "createdAt" | "revision">;

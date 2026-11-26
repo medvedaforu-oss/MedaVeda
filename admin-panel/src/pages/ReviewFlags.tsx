@@ -1,3 +1,4 @@
+import ReviewFlagOrderLookup from "../components/ReviewFlagOrderLookup";
 import useRequestGuard from "../hooks/useRequestGuard";
 import { useCallback, useEffect, useState } from "react";
 
@@ -26,6 +27,7 @@ export default function ReviewFlags() {
   const beginRequest = useRequestGuard(JSON.stringify(showResolved));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [orderReference, setOrderReference] = useState<string | null>(null);
   const [target, setTarget] = useState<ReviewFlag | null>(null);
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
@@ -127,7 +129,11 @@ export default function ReviewFlags() {
                     </pre>
                   )}
                 </td>
-                <td className="p-4 font-mono text-xs">{flag.orderId ?? "-"}</td>
+                <td className="p-4 font-mono text-xs">{flag.orderId ? (
+                  <button type="button" className="text-green-700 underline break-all" onClick={() => setOrderReference(flag.orderId)} aria-label={`View order ${flag.orderId}`}>
+                    {flag.orderId}
+                  </button>
+                ) : "-"}</td>
                 <td className="p-4">{flag.walletAmount != null ? `₹${flag.walletAmount}` : "-"}</td>
                 <td className="p-4">
                   {flag.referralDiscount != null ? `₹${flag.referralDiscount}` : "-"}
@@ -156,6 +162,10 @@ export default function ReviewFlags() {
           </tbody>
         </table>
       </div>
+
+      <Modal open={orderReference !== null} title="Review flag order" onClose={() => setOrderReference(null)}>
+        {orderReference && <ReviewFlagOrderLookup key={orderReference} reference={orderReference} />}
+      </Modal>
 
       <Modal open={target !== null} title="Resolve flag" onClose={() => setTarget(null)}>
         <p className="mb-3 text-sm text-gray-600">

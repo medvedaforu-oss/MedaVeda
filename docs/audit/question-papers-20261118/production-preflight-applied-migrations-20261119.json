@@ -1,0 +1,347 @@
+{
+  "project_id": "xbvenkfmesugrbjuufyw",
+  "observed_date_utc": "2026-11-19",
+  "source": "Supabase list_migrations (read-only)",
+  "migrations": [
+    {
+      "version": "20260701000000",
+      "name": "baseline_live_schema"
+    },
+    {
+      "version": "20260718",
+      "name": "payment_backend"
+    },
+    {
+      "version": "20260721",
+      "name": "admin_orders_purchases_access"
+    },
+    {
+      "version": "20260801",
+      "name": "razorpay_webhook_atomic_grant"
+    },
+    {
+      "version": "20260801150000",
+      "name": "razorpay_webhook_atomic_grant"
+    },
+    {
+      "version": "20260919120000",
+      "name": "multi_course_and_referrals"
+    },
+    {
+      "version": "20260919130000",
+      "name": "referral_history_rpc"
+    },
+    {
+      "version": "20260920120000",
+      "name": "null_year_course_fallback"
+    },
+    {
+      "version": "20260920130000",
+      "name": "app_config"
+    },
+    {
+      "version": "20260920140000",
+      "name": "default_new_profile_course"
+    },
+    {
+      "version": "20260921120000",
+      "name": "analytics_retention"
+    },
+    {
+      "version": "20260921130000",
+      "name": "account_deletion_support"
+    },
+    {
+      "version": "20260922100000",
+      "name": "phase1a_sync_and_order_security"
+    },
+    {
+      "version": "20260923100000",
+      "name": "signup_profile_fields"
+    },
+    {
+      "version": "20260924100000",
+      "name": "critical1_lock_settlement_functions"
+    },
+    {
+      "version": "20260924110000",
+      "name": "critical2_orders_server_only"
+    },
+    {
+      "version": "20260924120000",
+      "name": "critical3_storage_profiles_rls"
+    },
+    {
+      "version": "20260924130000",
+      "name": "signup_name_phone_and_backfill"
+    },
+    {
+      "version": "20260924140000",
+      "name": "auth_rate_limits"
+    },
+    {
+      "version": "20260924150000",
+      "name": "free_preview"
+    },
+    {
+      "version": "20260925100000",
+      "name": "phase2_referral_config_and_product_type"
+    },
+    {
+      "version": "20260925110000",
+      "name": "phase2_wallet_ledger"
+    },
+    {
+      "version": "20260925120000",
+      "name": "phase2_orders_pricing_and_settlement"
+    },
+    {
+      "version": "20260925130000",
+      "name": "drop_debug_whoami"
+    },
+    {
+      "version": "20260925140000",
+      "name": "phase2_single_use_friend_discount"
+    },
+    {
+      "version": "20260926100000",
+      "name": "batch1_refund_dispute_revoke_access"
+    },
+    {
+      "version": "20260926110000",
+      "name": "batch1_settle_wallet_and_flags"
+    },
+    {
+      "version": "20260926120000",
+      "name": "batch1_block_owned_product"
+    },
+    {
+      "version": "20260926130000",
+      "name": "batch1_hygiene"
+    },
+    {
+      "version": "20260927100000",
+      "name": "f7_drop_legacy_admin_policies"
+    },
+    {
+      "version": "20260927110000",
+      "name": "f8_revoke_excess_grants"
+    },
+    {
+      "version": "20260927120000",
+      "name": "batch3_referral_hardening"
+    },
+    {
+      "version": "20260927130000",
+      "name": "batch3b_antifarming"
+    },
+    {
+      "version": "20260928100000",
+      "name": "referral_settings_limits_and_audit"
+    },
+    {
+      "version": "20260928110000",
+      "name": "referral_off_blocks_wallet"
+    },
+    {
+      "version": "20260929100000",
+      "name": "high_phone_change_rpc_and_notes_storage"
+    },
+    {
+      "version": "20260930100000",
+      "name": "medium_db_hardening"
+    },
+    {
+      "version": "20260930110000",
+      "name": "low_grants_tightening"
+    },
+    {
+      "version": "20261001100000",
+      "name": "admin_mfa_aal2"
+    },
+    {
+      "version": "20261012100000",
+      "name": "google_play_ucb"
+    },
+    {
+      "version": "20261012110000",
+      "name": "google_play_refunds"
+    },
+    {
+      "version": "20261012120000",
+      "name": "ucb_partial_refunds"
+    },
+    {
+      "version": "20261013090000",
+      "name": "ucb_atomic_completion"
+    },
+    {
+      "version": "20261013100000",
+      "name": "wallet_reservations"
+    },
+    {
+      "version": "20261013110000",
+      "name": "play_void_cursor"
+    },
+    {
+      "version": "20261014100000",
+      "name": "payment_audit_capture_inbox"
+    },
+    {
+      "version": "20261014110000",
+      "name": "payment_job_leases"
+    },
+    {
+      "version": "20261015100000",
+      "name": "play_payment_jobs"
+    },
+    {
+      "version": "20261015120000",
+      "name": "play_entitlement_order_snapshot"
+    },
+    {
+      "version": "20261016090000",
+      "name": "free_video_access"
+    },
+    {
+      "version": "20261016100000",
+      "name": "play_catalog_sync"
+    },
+    {
+      "version": "20261018100000",
+      "name": "verified_quiz_attempts"
+    },
+    {
+      "version": "20261018110000",
+      "name": "trusted_note_uploads"
+    },
+    {
+      "version": "20261018120000",
+      "name": "note_upload_deleted_retry"
+    },
+    {
+      "version": "20261018130000",
+      "name": "note_pdf_quarantine"
+    },
+    {
+      "version": "20261019150000",
+      "name": "play_catalog_queue_fences"
+    },
+    {
+      "version": "20261019151000",
+      "name": "play_duplicate_settlement_result"
+    },
+    {
+      "version": "20261020100000",
+      "name": "notes_service_reads"
+    },
+    {
+      "version": "20261020101000",
+      "name": "maintenance_mode_read"
+    },
+    {
+      "version": "20261020102000",
+      "name": "correct_stale_store_url"
+    },
+    {
+      "version": "20261020103000",
+      "name": "first_purchase_identity_retention"
+    },
+    {
+      "version": "20261020104000",
+      "name": "course_wide_content_browsing"
+    },
+    {
+      "version": "20261020105000",
+      "name": "quiz_answer_read_boundary"
+    },
+    {
+      "version": "20261020110000",
+      "name": "admin_url_mfa"
+    },
+    {
+      "version": "20261104100000",
+      "name": "razorpay_snapshot_discount_retry"
+    },
+    {
+      "version": "20261104110000",
+      "name": "course_year_profile_confirmation"
+    },
+    {
+      "version": "20261108100000",
+      "name": "notes_choice_checkout"
+    },
+    {
+      "version": "20261109100000",
+      "name": "billing_settlement_recovery"
+    },
+    {
+      "version": "20261109120000",
+      "name": "isolated_nonplay_test"
+    },
+    {
+      "version": "20261110100000",
+      "name": "mv003_razorpay_entitlement_commitment"
+    },
+    {
+      "version": "20261110120000",
+      "name": "mv005_razorpay_order_transitions"
+    },
+    {
+      "version": "20261110130000",
+      "name": "mv006_purchase_ownership_guard"
+    },
+    {
+      "version": "20261111100000",
+      "name": "phase_c_final_mv003_commitment"
+    },
+    {
+      "version": "20261111110000",
+      "name": "phase_c_play_entitlement_snapshot"
+    },
+    {
+      "version": "20261111120000",
+      "name": "p0_classified_reversal_commitment"
+    },
+    {
+      "version": "20261111175746",
+      "name": "all_row_foreign_key_indexes"
+    },
+    {
+      "version": "20261112104610",
+      "name": "audit_batch1_refund_revocation"
+    },
+    {
+      "version": "20261112150427",
+      "name": "audit_checkout_publication_guard"
+    },
+    {
+      "version": "20261114040000",
+      "name": "fix3_content_push_and_delete_guards"
+    },
+    {
+      "version": "20261114040100",
+      "name": "fix3_flag_resolution_row_count"
+    },
+    {
+      "version": "20261114050000",
+      "name": "fix4_new_sales_disabled"
+    },
+    {
+      "version": "20261114050200",
+      "name": "fix4_notification_requests"
+    },
+    {
+      "version": "20261114050300",
+      "name": "fix4_snapshot_rpcs"
+    },
+    {
+      "version": "20261114050400",
+      "name": "fix4_identity_retention_schedule"
+    },
+    {
+      "version": "20261114090000",
+      "name": "fix5_wallet_expiry_facts"
+    }
+  ]
+}

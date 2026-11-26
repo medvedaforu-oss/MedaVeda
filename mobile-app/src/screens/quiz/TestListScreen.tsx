@@ -17,7 +17,7 @@ import EmptyState from "../../components/EmptyState";
 
 import { COLORS } from "../../theme/colors";
 import { FONT } from "../../theme/fonts";
-import { SPACING } from "../../theme/spacing";
+import { SPACING, STUDY_LAYOUT } from "../../theme/spacing";
 
 import { fetchQuizTestsBySubject, QuizTest } from "../../services/quizService";
 import useDownloads from "../../hooks/useDownloads";
@@ -85,7 +85,7 @@ function TestListScreen() {
       <Text style={styles.subtitle}>MCQ Tests - Free</Text>
 
       {loading ? (
-        <ActivityIndicator size="large" color={COLORS.accent} />
+        <ActivityIndicator size="large" color={COLORS.accent} style={{ marginVertical: SPACING.lg }} />
       ) : error ? (
         <LoadError content="tests" retry={retry} />
       ) : (
@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SPACING.lg,
-    paddingTop: SPACING.md,
+    ...STUDY_LAYOUT,
   },
   title: {
     fontSize: FONT.title,
@@ -129,8 +128,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: FONT.body,
     color: COLORS.subtitle,
-    marginTop: 6,
-    marginBottom: SPACING.lg,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.md,
   },
 });
 

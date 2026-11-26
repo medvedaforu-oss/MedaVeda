@@ -22,7 +22,7 @@ function fixture(status,operation='catalog.patch',old=false,finish='ok',raw) {
     '../_shared/googlePlay.ts':{GoogleApiError},
     '../_shared/supabaseAdmin.ts':{supabaseAdmin:{rpc:async(name,args)=>{
       if(name==='fail_play_price_sync' && finish!=='ok') return {data:false,error:finish==='error'?{code:'fixture'}:null};
-      calls.push({name,args});return {data:name==='claim_play_price_sync'?[{price_inr:'49',candidate_sku:'fixture',purchase_option_id:'buy',lease_id:'lease'}]:true,error:null};
+      calls.push({name,args});return {data:name==='play_price_validation'?null:name==='claim_play_price_sync'?[{price_inr:'49',candidate_sku:'fixture',purchase_option_id:'buy',lease_id:'lease'}]:true,error:null};
     }}},
     '../_shared/playCatalog.ts':{priceCents:()=>4900, getOneTimeProduct:async()=>{
       if(old && (operation==='oauth.token' || status===0)) throw new Error('Google OAuth returned '+status);
@@ -48,7 +48,7 @@ function fixture(status,operation='catalog.patch',old=false,finish='ok',raw) {
     if (operation !== 'oauth.token' || retry) assert.equal(result.status,previous.status);
     const failed=f.calls.find(c=>c.name==='fail_play_price_sync');
     assert.equal(failed.args.p_retry,retry);
-    assert.deepEqual(f.calls.map(c=>c.name),old.calls.map(c=>c.name));
+    assert.deepEqual(f.calls.filter(c=>c.name!=='play_price_validation').map(c=>c.name),old.calls.map(c=>c.name));
     assert.match(failed.args.p_reason,new RegExp('operation='+operation));
     const log=JSON.parse(f.logs[0][1]);assert.equal(log.jobId,'49');assert.equal(log.leaseId,'lease');
     assert.equal(log.retryable,failed.args.p_retry);assert.equal(log.details[0].reason,'SERVICE_DISABLED');
