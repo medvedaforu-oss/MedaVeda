@@ -97,7 +97,8 @@ export function createCatalog(rows) {
       let node = groups.get(chain[level]);
       if (!node) {
         node = { path: chain[level], level, label: labels[level], sample: p, rows: [], children: new Map(),
-          crumbs: chain.slice(0,level+1).map((path,i) => ({ path, label: labels[i] })) };
+          crumbs: chain.slice(0,level+1).flatMap((path,i) => i === 4 && level >= 5 ? [] : [{ path,
+            label: i === 3 ? displaySubject(labels[i]) : i === 5 ? examination(p) : i === 6 ? 'Paper Details' : displayLabel(labels[i]) }]) };
         groups.set(node.path,node);
       }
       node.rows.push(p);
@@ -115,7 +116,7 @@ function context(node) {
     ...(node.level >= 5 ? [sessionName(p)] : []), ...(node.level >= 4 ? [String(p.exam_year)] : [])].join(' · ');
 }
 function baseMetadata(node) {
-  if (node.level === 0) return { title: 'Previous Year Question Papers', description: 'Browse published Question Papers by course, academic year, subject, examination year and session. Access papers on the MedVeda Android app.' };
+  if (node.level === 0) return { title: 'Previous Year Question Papers', description: 'Browse published Question Papers by course, academic year, subject and examination session. Access papers on the MedVeda Android app.' };
   const p = node.sample;
   const label = context(node);
   if (node.level === 6) {
@@ -124,7 +125,7 @@ function baseMetadata(node) {
     return { title: `${paperTitle(p)} · ${label}${number}`,
       description: `Find ${paperTitle(p)} (${label}${number}). Access this published Question Paper on the MedVeda Android app.` };
   }
-  const next = ['','academic year','subject','examination year','session','paper'][node.level];
+  const next = ['','academic year','subject','examination session','session','paper'][node.level];
   return { title: `${label} Question Papers`, description: `Browse ${label} Question Papers by ${next}. View available published papers and access them on the MedVeda Android app.` };
 }
 function metadata(node, catalog) {
@@ -139,13 +140,19 @@ function metadata(node, catalog) {
   return meta;
 }
 function sortedChildren(node) {
-  return [...node.children.values()].sort((a,b) => node.level === 3 ? Number(b.label)-Number(a.label) :
+  // Keep the stored hierarchy/URLs, but skip examination-year pages in browsing.
+  const children = node.level === 3 ? [...node.children.values()].flatMap(year => [...year.children.values()]) : [...node.children.values()];
+  const sessionOrder = p => p.exam_session === 'Winter' ? 12 : p.exam_session === 'Summer' ? 6 : p.exam_month ?? 0;
+  return children.sort((a,b) => [3,4].includes(node.level) ? b.sample.exam_year-a.sample.exam_year || sessionOrder(b.sample)-sessionOrder(a.sample) || Number(a.sample.exam_session === null)-Number(b.sample.exam_session === null) || compare(a.label,b.label) || compare(a.path,b.path) :
     node.level === 5 ? paperCompare(a.sample,b.sample) :
     (node.level === 0 ? a.sample.course_order-b.sample.course_order : node.level === 1 ? a.sample.year_order-b.sample.year_order :
       node.level === 2 ? a.sample.subject_order-b.sample.subject_order : 0) || compare(a.label,b.label) || compare(a.path,b.path));
 }
 const publishedCount = count => `${count} published ${count === 1 ? 'paper' : 'papers'}`;
-const examination = p => `${displayLabel(sessionName(p))} ${p.exam_year}`;
+const examination = p => `${displayLabel(sessionName(p))}-${p.exam_year}`;
+// A sole paper needs no selection screen. The existing session URL stays valid
+// for shared links and the clickable session breadcrumb, including as papers grow.
+const navigationPath = node => node.level === 5 && node.rows.length === 1 ? paths(node.sample)[6] : node.path;
 const chevron = '<svg class="qp-chevron" width="18" height="18" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>';
 function navigationLabel(node) {
   if (node.level === 3) return displaySubject(node.sample.subject_title);
@@ -174,12 +181,12 @@ function card(node, heading = 3) {
   const p = node.sample;
   const sub = node.level === 6 ? [examination(p), displayPaperNumber(p.paper_number)].filter(Boolean).join(' · ') : '';
   const symbol = ['','layers','book','book','clock','clock','file'][node.level];
-  return `<li><a class="card qp-card" href="${esc(node.path)}"><span class="icon">${icon(symbol)}</span><div class="qp-card-copy"><h${heading}>${esc(navigationLabel(node))}</h${heading}>${sub ? `<p class="meta">${esc(sub)}</p>` : ''}<span class="qp-card-count">${node.level === 6 ? 'Available in MedVeda app' : esc(publishedCount(node.rows.length))}</span></div>${chevron}</a></li>`;
+  return `<li><a class="card qp-card" href="${esc(navigationPath(node))}"><span class="icon">${icon(symbol)}</span><div class="qp-card-copy"><h${heading}>${esc(navigationLabel(node))}</h${heading}>${sub ? `<p class="meta">${esc(sub)}</p>` : ''}<span class="qp-card-count">${node.level === 6 ? 'Available in MedVeda app' : esc(publishedCount(node.rows.length))}</span></div>${chevron}</a></li>`;
 }
 
 function breadcrumbs(crumbs) {
   return `<nav class="qp-breadcrumbs" aria-label="Breadcrumb"><ol><li>${anchor('/','Home')}</li>${crumbs.map((c,i) => {
-    const label = i === 3 ? displaySubject(c.label) : i === 6 ? 'Paper details' : displayLabel(c.label);
+    const label = c.label;
     return `<li>${i === crumbs.length-1 ? `<span aria-current="page">${esc(label)}</span>` : anchor(c.path,label)}</li>`;
   }).join('')}</ol></nav>`;
 }
@@ -190,7 +197,7 @@ function jsonLd(node, meta, canonical, items) {
     breadcrumb:{'@id':url+'#breadcrumb'} };
   const graph = [page,breadcrumb];
   if (items.length) {
-    graph.push({ '@type':'ItemList','@id':url+'#list', itemListElement:items.map((n,i) => ({'@type':'ListItem',position:i+1,name:n.label,url:SITE+n.path})) });
+    graph.push({ '@type':'ItemList','@id':url+'#list', itemListElement:items.map((n,i) => ({'@type':'ListItem',position:i+1,name:navigationLabel(n),url:SITE+navigationPath(n)})) });
     page.mainEntity = {'@id':url+'#list'};
   }
   return {'@context':'https://schema.org','@graph':graph};
@@ -224,11 +231,11 @@ ${items.length ? `<section class="qp-related"><h2>Related Question Papers</h2><u
     const pages = Math.ceil(all.length/PAGE_SIZE);
     if (page > pages || page < 1) return null;
     items = all.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
-    const heading = ['Browse courses','Academic years','Subjects','Examination Years','Examination Sessions','Available Question Papers'][node.level];
+    const heading = ['Browse courses','Academic years','Subjects','Examination Sessions','Examination Sessions','Available Question Papers'][node.level];
     // Main catalog exposes compact academic year cards, grouped by actual course.
     if (node.level === 0) {
       body = `<h2>${heading}</h2>${items.map(course => `<section class="qp-course"><a class="qp-course-link" href="${esc(course.path)}"><span class="icon">${icon('layers')}</span><div class="qp-card-copy"><h3>${esc(displayLabel(course.label))}</h3><span class="qp-card-count">${esc(publishedCount(course.rows.length))}</span></div>${chevron}</a><ul class="qp-grid qp-compact">${sortedChildren(course).slice(0,PAGE_SIZE).map(n => card(n,4)).join('')}</ul>${course.children.size > PAGE_SIZE ? `<p>${anchor(course.path,'View all academic years')}</p>` : ''}</section>`).join('')}`;
-    } else body = `<div class="qp-results-head"><h2>${heading}</h2><span class="meta">${esc(publishedCount(node.rows.length))}</span></div><ul class="qp-grid${[1,3,4].includes(node.level) ? ' qp-compact' : ''}">${items.map(n => card(n)).join('')}</ul>`;
+    } else body = `<div class="qp-results-head"><h2>${heading}</h2><span class="meta">${esc(publishedCount(node.rows.length))}</span></div><ul class="qp-grid${[1,3,4,5].includes(node.level) ? ' qp-compact' : ''}">${items.map(n => card(n)).join('')}</ul>`;
     body += pagination(node,page,pages);
   }
   const { title, supporting } = pageHeading(node);

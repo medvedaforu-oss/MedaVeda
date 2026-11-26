@@ -46,8 +46,14 @@ for (const [path,node] of catalog.groups) {
   const graph = ld(html)['@graph'];
   assert.equal(graph[0]['@type'],node.level === 6 ? 'WebPage' : 'CollectionPage');
   const crumbs = graph.find(n => n['@type'] === 'BreadcrumbList').itemListElement;
-  assert.equal(crumbs.length,node.level+2);
+  assert.equal(crumbs.length,node.level+2-(node.level >= 5 ? 1 : 0));
   crumbs.forEach((c,i) => { assert.equal(c.position,i+1); assert(c.item.startsWith(SITE+'/')); });
+  const visibleCrumbs = [...html.match(/<nav class="qp-breadcrumbs"[\s\S]*?<\/nav>/)[0].matchAll(/<(?:a|span)\b[^>]*>([^<]*)<\/(?:a|span)>/g)].map(m=>m[1]);
+  assert.deepEqual(visibleCrumbs,crumbs.map(c=>c.name),'visible and structured breadcrumbs match');
+  if (node.level >= 5) {
+    assert.equal(crumbs.at(node.level === 6 ? -2 : -1).name,`${node.sample.exam_session ?? 'June'}-${node.sample.exam_year}`);
+    assert(!crumbs.some(c=>c.item === SITE+paths(node.sample)[4]),'no separate examination year crumb');
+  }
   const main = html.match(/<main id="main">([\s\S]*?)<\/main>/)[1];
   let previous = 0;
   for (const [,level] of main.matchAll(/<h([1-6])\b/g)) { assert(Number(level) <= previous+1); previous=Number(level); }
@@ -61,8 +67,27 @@ assert(paths(rows[0])[6] !== paths(rows[5])[6], 'identical titles must retain un
 assert.notEqual(attr(renderNode(catalog.papers.get(rows[0].id),catalog),'og:title'),attr(renderNode(catalog.papers.get(rows[5].id),catalog),'og:title'));
 assert.notEqual(attr(renderNode(catalog.groups.get(paths(rows[0])[3]),catalog),'og:title'),attr(renderNode(catalog.groups.get(paths(rows[6])[3]),catalog),'og:title'));
 const examPage = (await request(paths(rows[0])[3])).html;
-assert(examPage.includes('>2025</h3>') && examPage.includes('>2023</h3>'));
-assert(examPage.indexOf('>2025</h3>') < examPage.indexOf('>2023</h3>'));
+const sessionCards = [...examPage.matchAll(/class="card qp-card" href="([^"]+)"[\s\S]*?<h3>(.*?)<\/h3>/g)].map(m=>({path:m[1],label:m[2]}));
+assert.deepEqual(sessionCards.map(c=>c.label),['Summer-2025','Winter-2023','Summer-2023','June-2023']);
+assert.equal(sessionCards[0].path,paths(rows[2])[6],'single-paper session opens details');
+assert.equal(sessionCards[2].path,paths(rows[0])[5],'multiple-paper session opens existing list');
+assert.equal((await request(sessionCards[2].path)).html.match(/class="card qp-card"/g).length,2,'session lists only its published papers');
+assert.equal(new Set(sessionCards.map(c=>c.label)).size,sessionCards.length,'session cards are unique');
+assert(!examPage.includes('>Examination Years</h2>'));
+const listed = ld(examPage)['@graph'].find(n=>n['@type'] === 'ItemList').itemListElement;
+assert.deepEqual(listed.map(n=>({path:new URL(n.url).pathname,label:n.name})),sessionCards,'structured list matches session cards and destinations');
+assert.equal((await request(paths(rows[0])[4])).status,200,'existing examination-year URL remains functional');
+assert.equal((await request(paths(rows[2])[5])).status,200,'existing single-paper session URL remains functional');
+const winter2025 = fixture(10,{exam_year:2025,exam_session:'Winter'});
+current = [...rows,winter2025];
+const publishedSubject = (await request(paths(rows[0])[3])).html;
+assert(publishedSubject.indexOf('>Winter-2025</h3>') < publishedSubject.indexOf('>Summer-2025</h3>'),'new publication appears newest first, Winter before Summer');
+assert(publishedSubject.includes(`href="${paths(winter2025)[6]}"`));
+current = [...rows,fixture(11,{exam_year:2025})];
+assert((await request(paths(rows[0])[3])).html.includes(`href="${paths(rows[2])[5]}"`),'single to multiple publication updates card destination without build');
+current = rows.filter(p=>p.id !== rows[5].id);
+assert((await request(paths(rows[0])[3])).html.includes(`href="${paths(rows[0])[6]}"`),'unpublishing duplicate immediately restores direct paper navigation');
+current = rows;
 const marathi = (await request(paths(rows[3])[6])).html;
 assert(marathi.includes('शरीर रचना प्रश्नपत्रिका'));
 assert(slug('शरीर रचना').includes('शरीर'));
@@ -150,7 +175,7 @@ assert.deepEqual(displayCourse('BAMS'),{name:'BAMS',medium:''});
 const displayFixture = fixture(99,{course_name:'BAMS Marathi Medium',year_title:'BAMS 1st Year',subject_title:'Samhita adhyayan-1'});
 assert.equal(academicContext(displayFixture),'BAMS 1st Year · Marathi Medium');
 const displayCatalog = createCatalog([displayFixture]);
-const expectedHeadings = ['Question Papers','BAMS Question Papers','BAMS 1st Year Question Papers','Samhita Adhyayan – I','Samhita Adhyayan – I','Summer 2023 Question Papers','Fixture Anatomy Paper'];
+const expectedHeadings = ['Question Papers','BAMS Question Papers','BAMS 1st Year Question Papers','Samhita Adhyayan – I','Samhita Adhyayan – I','Summer-2023 Question Papers','Fixture Anatomy Paper'];
 for (const node of displayCatalog.groups.values()) {
   const html = renderNode(node,displayCatalog);
   assert.equal(html.match(/<h1>(.*?)<\/h1>/s)[1],expectedHeadings[node.level]);

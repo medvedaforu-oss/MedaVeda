@@ -106,8 +106,10 @@ try {
       results.push({ name:item.name, path:item.path,width,status:response.status(),...metrics,errors:errors.slice(before) });
     }
     // Exercise actual whole-card navigation through the hierarchy without leaving the preview.
-    const chain=paths(rows[0]);
-    for(let level=0;level<6;level++) {
+    const storedChain=paths(rows[0]);
+    const single=rows.filter(p=>paths(p)[5]===storedChain[5]).length===1;
+    const chain=storedChain.filter((_,level)=>level!==4 && !(single && level===5));
+    for(let level=0;level<chain.length-1;level++) {
       await page.goto(origin+chain[level]);
       // Exact href avoids confusing the same target in breadcrumbs and cards.
       const handle=await page.locator('main a').evaluateAll((links,href)=>links.findIndex(a=>a.getAttribute('href')===href),chain[level+1]);
@@ -115,7 +117,7 @@ try {
       await page.locator('main a').nth(handle).click();
       assert.equal(new URL(page.url()).pathname,chain[level+1]);
     }
-    await page.goto(origin+chain[6]);
+    await page.goto(origin+storedChain[6]);
     assert.equal(await page.getByRole('link',{name:'Open in MedVeda App',exact:true}).getAttribute('href'),'https://www.medveda.in/question-paper/'+rows[0].id);
     const install=new URL(await page.locator('[data-paper-install]').getAttribute('href'));
     assert.equal(install.origin,'https://play.google.com');
