@@ -32,7 +32,7 @@ const V = {
   ANALYTICS_RETENTION_PERIOD: "up to 12 months, after which it is deleted or kept only in anonymised, aggregated form",
   RIGHTS_RESPONSE_TIME: "within 30 days",
   TEAM_INTRO: "MedVeda is built by a small team from Maharashtra that understands the needs of AYUSH students \u2013 organised notes, clear video lectures and regular practice tests, arranged by course and year.",
-  IOS_STATUS: "MedVeda is currently available on Android. An iOS version is not available yet.",
+  IOS_STATUS: "MedVeda supports Android. An iOS version is not available yet.",
   PRICING_AND_TAX_NOTE: "All prices are shown in Indian Rupees (INR) and are inclusive of applicable taxes, if any.",
   TAX_NOTE: "Any applicable taxes are included in the displayed price.",
   ACCESS_PERIOD: "Purchased content has no fixed expiry. Access continues for as long as your account is active and the content is offered on the platform, subject to these Terms.",
@@ -59,7 +59,7 @@ const NAV = [
   ["/faq", "FAQ"], ["/about", "About"], ["/contact", "Contact"],
 ];
 const FOOT = {
-  Product: [["/", "Home"], ["/features", "Features"], ["/courses", "Courses"], ["/how-it-works", "How it works"], ["/download", "Download app"]],
+  Product: [["/", "Home"], ["/features", "Features"], ["/courses", "Courses"], ["/how-it-works", "How it works"], ["/download", "Download information"]],
   Company: [["/about", "About us"], ["/contact", "Contact"]],
   Legal: [["/privacy-policy", "Privacy Policy"], ["/terms", "Terms & Conditions"], ["/disclaimer", "Disclaimer"], ["/refund-policy", "Refund & Cancellation"], ["/shipping-policy", "Shipping & Delivery"]],
   Support: [["/faq", "FAQ"], ["/delete-account", "Delete account & data"], [`mailto:${EMAIL}`, EMAIL], [WHATSAPP, "WhatsApp"]],
@@ -68,7 +68,7 @@ const FOOT = {
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const icon = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[n] ?? ICONS.book}</svg>`;
 
-const playBadge = (cls = "") => `<a class="play-badge ${cls}" href="${PLAY}" rel="noopener" target="_blank"><svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path d="M2 1.2 15 14 2 26.8c-.6-.3-1-1-1-1.8V3c0-.8.4-1.500 1-1.800z" fill="#4c9a6b"/><path d="M15 14 19.500 9.500 4.200.6C3.500.2 2.700.2 2 1.200z" fill="#3e8e7e"/><path d="M15 14 2 26.800c.7 1 1.500 1 2.200.6l15.300-8.900z" fill="#e2703d"/><path d="m19.500 18.500 4.700-2.700c1.100-.6 1.100-2 0-2.600L19.500 9.500 15 14z" fill="#c99a3e"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a>`;
+const playBadge = (cls = "") => `<a class="play-badge ${cls}" href="${PLAY}" aria-label="Get it on Google Play: MedVeda (opens in a new tab)" rel="noopener" target="_blank"><svg width="26" height="28" viewBox="0 0 26 28" aria-hidden="true"><path d="M2 1.2 15 14 2 26.8c-.6-.3-1-1-1-1.8V3c0-.8.4-1.500 1-1.800z" fill="#4c9a6b"/><path d="M15 14 19.500 9.500 4.200.6C3.500.2 2.700.2 2 1.200z" fill="#3e8e7e"/><path d="M15 14 2 26.800c.7 1 1.500 1 2.200.6l15.300-8.900z" fill="#e2703d"/><path d="m19.500 18.500 4.700-2.700c1.100-.6 1.100-2 0-2.600L19.500 9.500 15 14z" fill="#c99a3e"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a>`;
 
 function faqHtml(items) {
   return items.map((q) => `<details><summary>${q.q}</summary><div class="ans">${q.a}</div></details>`).join("\n");
@@ -89,7 +89,7 @@ function header(path) {
 <header class="site-header"><div class="wrap header-in">
 <a class="brand" href="/" aria-label="MedVeda home"><img src="/assets/img/logo-64.png" width="40" height="40" alt="">MedVeda</a>
 <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-<nav class="nav" id="site-nav" aria-label="Main">${links}<a class="btn accent" href="/download">Download app</a></nav>
+<nav class="nav" id="site-nav" aria-label="Main">${links}<a class="btn accent" href="${PLAY}" aria-label="Download app: MedVeda on Google Play">Download app</a></nav>
 </div></header>`;
 }
 function footer() {
@@ -99,6 +99,51 @@ function footer() {
 <p>Notes, video lectures and MCQ tests for AYUSH degree students, in one app.</p>${playBadge()}<p style="margin-top:14px"><a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
 ${cols}</div>
 <div class="foot-bottom"><span>© ${YEAR} ${V.COMPANY_LEGAL_NAME}. All rights reserved.</span><span>MedVeda is an educational app, not medical advice. <a href="/disclaimer">Read the disclaimer</a>.</span></div></div></footer>`;
+}
+
+// Stable entity IDs connect pages without inventing reviews, prices or availability.
+function pageJsonLd(m) {
+  const url = SITE + m.path;
+  const organization = {
+    "@type": "Organization", "@id": SITE + "/#organization", name: "MedVeda",
+    url: SITE + "/", logo: SITE + "/assets/img/logo-512.png", email: EMAIL,
+    address: { "@type": "PostalAddress", addressLocality: "Dhule", addressRegion: "Maharashtra", addressCountry: "IN" },
+  };
+  const website = {
+    "@type": "WebSite", "@id": SITE + "/#website", name: "MedVeda", url: SITE + "/",
+    publisher: { "@id": organization["@id"] }, inLanguage: "en-IN",
+  };
+  const page = {
+    "@type": m.file === "about" ? "AboutPage" : m.file === "contact" ? "ContactPage" : "WebPage",
+    "@id": url + "#webpage", url, name: m.title, description: m.description,
+    isPartOf: { "@id": website["@id"] }, publisher: { "@id": organization["@id"] }, inLanguage: "en-IN",
+  };
+  const graph = [organization, website, page];
+  if (m.file === "index" || m.file === "download") {
+    const app = {
+      "@type": "MobileApplication", "@id": SITE + "/#app", name: "MedVeda",
+      operatingSystem: "Android", applicationCategory: "EducationalApplication",
+      url: SITE + "/download", downloadUrl: PLAY, image: SITE + "/assets/img/logo-512.png",
+      description: "MedVeda is an Android educational app for BAMS students with subject-wise PDF notes, video lectures and MCQ tests, organised by academic year.",
+      publisher: { "@id": organization["@id"] },
+    };
+    graph.push(app);
+    page.mainEntity = { "@id": app["@id"] };
+  }
+  if (m.file === "about" || m.file === "contact") page.mainEntity = { "@id": organization["@id"] };
+  // All public pages are linked directly from Home's shared navigation/footer.
+  if (m.path !== "/") {
+    const breadcrumb = {
+      "@type": "BreadcrumbList", "@id": url + "#breadcrumb",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE + "/" },
+        { "@type": "ListItem", position: 2, name: m.title, item: url },
+      ],
+    };
+    graph.push(breadcrumb);
+    page.breadcrumb = { "@id": breadcrumb["@id"] };
+  }
+  return { "@context": "https://schema.org", "@graph": graph };
 }
 
 function head(m) {
@@ -121,11 +166,17 @@ ${robots}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(m.description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/assets/img/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="${SITE}/assets/img/logo-512.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="MedVeda logo — Learn · Heal · Grow">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(m.description)}">
-<meta name="twitter:image" content="${SITE}/assets/img/og-image.png">
+<meta name="twitter:image" content="${SITE}/assets/img/logo-512.png">
+<meta name="twitter:image:alt" content="MedVeda logo — Learn · Heal · Grow">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -179,18 +230,15 @@ for (const f of readdirSync(join(root, "_src/pages")).filter((x) => x.endsWith("
   const m = JSON.parse(mm[1]);
   m.file = f.replace(/\.html$/, "");
   const body = src.slice(mm[0].length);
-  if (m.file === "index") {
-    m.jsonld = [
-      { "@context": "https://schema.org", "@type": "Organization", name: "MedVeda", url: SITE + "/", logo: SITE + "/assets/img/logo-512.png", email: EMAIL },
-      { "@context": "https://schema.org", "@type": "MobileApplication", name: "MedVeda", operatingSystem: "ANDROID", applicationCategory: "EducationalApplication", url: SITE + "/", downloadUrl: PLAY, image: SITE + "/assets/img/logo-512.png", description: m.description },
-    ];
+  if (!m.noindex) {
+    m.jsonld = [pageJsonLd(m)];
+    if (m.file === "faq") m.jsonld.push(faqJsonLd());
   }
-  if (m.file === "faq") m.jsonld = [faqJsonLd()];
   writeFileSync(join(root, m.file + ".html"), render(m, body));
   pages.push(m);
 }
 
 const urls = pages.filter((p) => !p.noindex && p.file !== "404");
-const today = new Date().toISOString().slice(0, 10);
-writeFileSync(join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((p) => `  <url><loc>${SITE}${p.path === "/" ? "/" : p.path}</loc><lastmod>${today}</lastmod></url>`).join("\n")}\n</urlset>\n`);
+// Omit optional lastmod: a build date does not establish a significant content change.
+writeFileSync(join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((p) => `  <url><loc>${SITE}${p.path === "/" ? "/" : p.path}</loc></url>`).join("\n")}\n</urlset>\n`);
 console.log(`built ${pages.length} pages, ${urls.length} in sitemap`);

@@ -3,7 +3,7 @@ export const FAQ = [
   // Getting started
   { group: "Getting started", home: true, q: "What is MedVeda?", a: "<p>MedVeda is a mobile study app for AYUSH degree students. For your course and academic year it organises study material as subject → chapter, with PDF notes, video lectures and MCQ tests.</p>" },
   { group: "Getting started", home: true, q: "Which courses are supported?", a: "<p>BAMS study content is currently available. MedVeda plans to expand to other AYUSH degrees, but those courses do not have published study content yet. Available subjects and chapters depend on your academic year.</p>" },
-  { group: "Getting started", q: "Which phones does MedVeda run on?", a: "<p>MedVeda is available on Android through <a href=\"{{PLAY_URL}}\" rel=\"noopener\">Google Play</a>. Check the <a href=\"/download\">Download page</a> for the latest availability.</p>" },
+  { group: "Getting started", q: "Which phones does MedVeda run on?", a: "<p>MedVeda supports Android. View the official listing on <a href=\"{{PLAY_URL}}\" rel=\"noopener\">Google Play</a>. Installation access depends on Google Play and your account; a listing link does not confirm public availability. See <a href=\"/download\">download information</a>.</p>" },
   { group: "Getting started", home: true, q: "Is MedVeda free?", a: "<p>Video lectures and MCQ tests are free. PDF notes are sold as paid packages (a few individual notes may be marked free). See <a href=\"/how-it-works\">How it works</a>.</p>" },
 
   // Account

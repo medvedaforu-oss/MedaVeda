@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /reset-password
-Disallow: /account-verified
 
+# Utility pages expose noindex in HTML; allow crawling so it can be read.
+# Access control is handled by the application, not by this file.
 Sitemap: https://www.medveda.in/sitemap.xml
