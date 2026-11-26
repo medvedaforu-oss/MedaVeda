@@ -21,7 +21,7 @@ for (const type of ['question-paper', 'note', 'quiz']) {
   const html = fs.readFileSync(root + '/' + type + '.html', 'utf8');
   assert.match(html, /name="robots" content="noindex/); assert(html.includes(PLAY));
   assert(!/supabase.js|signedUrl|object_path|<iframe|<object|correctAnswer/.test(html));
-  assert(!fs.readFileSync(root + '/sitemap.xml', 'utf8').includes('/' + type));
+  assert(!fs.readFileSync(root + '/_src/static-sitemap.xml', 'utf8').includes('/' + type));
 }
 assert.equal(fs.readFileSync(root + '/assets/js/question-paper-links.js','utf8'), fs.readFileSync(root + '/../mobile-app/src/features/question-papers/questionPaperLinks.js','utf8'));
 const dal = JSON.parse(fs.readFileSync(root + '/.well-known/assetlinks.json'));

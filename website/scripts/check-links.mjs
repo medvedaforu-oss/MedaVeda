@@ -12,6 +12,7 @@ let errors = 0;
 const err = (f, m) => { errors++; console.error(`✗ ${f}: ${m}`); };
 
 const resolve = (p) => {
+  if (p === "/question-papers") return "dynamic-catalog";
   if (p === "/" ) return "index.html";
   const clean = p.replace(/^\//, "");
   for (const c of [clean, clean + ".html"]) {
@@ -56,7 +57,7 @@ for (const f of files) {
     if (hash && target.endsWith(".html") && !idsOf(cache[target] ?? readFileSync(join(root, target), "utf8")).has(hash)) err(f, `missing anchor ${u}`);
   }
 }
-for (const p of ["robots.txt", "sitemap.xml", "site.webmanifest"]) if (!existsSync(join(root, p))) err(p, "missing");
+for (const p of ["robots.txt", "_src/static-sitemap.xml", "site.webmanifest"]) if (!existsSync(join(root, p))) err(p, "missing");
 // SEO contracts for the generated production artifact, without runtime dependencies.
 const SITE = "https://www.medveda.in";
 const PLAY = "https://play.google.com/store/apps/details?id=in.medveda.app";
@@ -139,7 +140,7 @@ for (const f of files) {
   }
   if (["index.html", "download.html"].includes(f) && !nodes.some((n) => n["@type"] === "MobileApplication")) err(f, "missing Android app entity");
 }
-const sitemap = readFileSync(join(root, "sitemap.xml"), "utf8");
+const sitemap = readFileSync(join(root, "_src/static-sitemap.xml"), "utf8");
 const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 if (locations.length !== indexable.size || new Set(locations).size !== locations.length || locations.some((u) => !indexable.has(u))) err("sitemap.xml", "must contain exactly all canonical indexable pages");
 if (/<lastmod>/.test(sitemap)) err("sitemap.xml", "lastmod needs verified significant-change dates, not build dates");

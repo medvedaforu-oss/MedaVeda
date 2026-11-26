@@ -108,6 +108,15 @@
           "value": "no-referrer"
         }
       ]
+    },
+    {
+      "source": "/api/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -123,6 +132,22 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/question-papers",
+      "destination": "/api/question-papers?route=/question-papers"
+    },
+    {
+      "source": "/question-papers/:path*",
+      "destination": "/api/question-papers?route=/question-papers/:path*"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/question-papers?route=/sitemap.xml"
+    },
+    {
+      "source": "/sitemaps/:file",
+      "destination": "/api/question-papers?route=/sitemaps/:file"
+    },
     {
       "source": "/question-paper/:paperId",
       "destination": "/question-paper.html"

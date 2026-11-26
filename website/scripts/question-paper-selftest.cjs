@@ -23,7 +23,7 @@ for(const suffix of ['bad',id+'%3Fx=y','../'+id,id+'/extra']) {
 assert.equal(page('/question-paper/'+id,'Desktop').open.hidden,true);
 const html=fs.readFileSync(path.join(root,'question-paper.html'),'utf8');
 assert.match(html,/name="robots" content="noindex/);assert(!html.includes('supabase.js'));assert(!/object_path|signedUrl|<object|<iframe/.test(html));
-assert(!fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('/question-paper'));
+assert(!fs.readFileSync(path.join(root,'_src/static-sitemap.xml'),'utf8').includes('/question-paper'));
 const assetlinks=JSON.parse(fs.readFileSync(path.join(root,'.well-known/assetlinks.json'),'utf8'));
 for(const relation of assetlinks) {
  assert.deepEqual(relation.relation,['delegate_permission/common.handle_all_urls']);assert.equal(relation.target.package_name,'in.medveda.app');
